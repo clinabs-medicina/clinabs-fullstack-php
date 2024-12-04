@@ -27,7 +27,7 @@ jobs:
       run: |
         # Define the FTP target directory and local build output (e.g., dist or build)
         TARGET_DIR="public_html"
-        LOCAL_DIR="build"  # Change this to the directory you want to upload
+        LOCAL_DIR=""  # Change this to the directory you want to upload
 
         # Upload files using lftp
         lftp -c "open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_HOST; mirror -R $LOCAL_DIR $TARGET_DIR"
