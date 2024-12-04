@@ -1,0 +1,34 @@
+name: FTP Deployment
+
+on:
+  push:
+    branches:
+      - main  # Change this to the branch you want to deploy from
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: |
+        # Install necessary dependencies like FTP client or other tools if needed
+        sudo apt-get update
+        sudo apt-get install -y lftp
+
+    - name: Deploy to FTP
+      env:
+        FTP_HOST: ${{ secrets.FTP_HOST }}
+        FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+      run: |
+        # Define the FTP target directory and local build output (e.g., dist or build)
+        TARGET_DIR="public_html"
+        LOCAL_DIR="build"  # Change this to the directory you want to upload
+
+        # Upload files using lftp
+        lftp -c "open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_HOST; mirror -R $LOCAL_DIR $TARGET_DIR"
+
