@@ -16,7 +16,7 @@ jobs:
     - name: Set up PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.1'  # Specify the PHP version you need
+        php-version: '8.3'  # Specify the PHP version you need
 
     - name: Install Composer dependencies
       run: |
@@ -32,7 +32,7 @@ jobs:
     - name: Install lftp (FTP client)
       run: sudo apt-get install -y lftp
 
-    - name: Deploy to FTP
+    - name: Deploy to FTP with Debug Logs and Skip SSL
       env:
         FTP_HOST: ${{ secrets.FTP_HOST }}
         FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
@@ -41,5 +41,12 @@ jobs:
         TARGET_DIR="public_html"  # The directory on the FTP server
         LOCAL_DIR="."  # Local directory to upload, typically your project root after Composer install
 
-        # Upload files using lftp
-        lftp -c "open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_HOST; mirror -R $LOCAL_DIR $TARGET_DIR --ignore-time --only-newer --verbose"
+        # Enable lftp debug logs, skip SSL verification, and mirror files
+        lftp -c "
+          set net:debug 1;  # Enable debugging (set to 2 or 3 for more verbosity)
+          set ftp:ssl-verify-certificate no;  # Skip SSL verification
+          set net:reconnect-interval-base 5;  # Reconnect interval for failures
+          set net:max-retries 3;  # Maximum retries on failure
+          open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_HOST;
+          mirror -R $LOCAL_DIR $TARGET_DIR --ignore-time --only-newer --verbose;
+        "
