@@ -1,9 +1,9 @@
-name: FTP Deployment
+name: PHP FTP Deployment
 
 on:
   push:
     branches:
-      - main  # Change this to the branch you want to deploy from
+      - main  # You can change this to any branch you wish to deploy from
 
 jobs:
   deploy:
@@ -13,11 +13,24 @@ jobs:
     - name: Checkout the code
       uses: actions/checkout@v3
 
-    - name: Install dependencies
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'  # Specify the PHP version you need
+
+    - name: Install Composer dependencies
       run: |
-        # Install necessary dependencies like FTP client or other tools if needed
-        sudo apt-get update
-        sudo apt-get install -y lftp
+        curl -sS https://getcomposer.org/installer | php
+        php composer.phar install --no-dev --optimize-autoloader  # Install dependencies
+
+    - name: Build/Prepare PHP Project (Optional)
+      run: |
+        # You can include additional steps here if needed to build your project
+        # For example, compiling assets or other tasks
+        echo "Nothing to build"  # Remove or modify based on your needs
+
+    - name: Install lftp (FTP client)
+      run: sudo apt-get install -y lftp
 
     - name: Deploy to FTP
       env:
@@ -25,10 +38,8 @@ jobs:
         FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
       run: |
-        # Define the FTP target directory and local build output (e.g., dist or build)
-        TARGET_DIR="public_html"
-        LOCAL_DIR=""  # Change this to the directory you want to upload
+        TARGET_DIR="public_html"  # The directory on the FTP server
+        LOCAL_DIR="."  # Local directory to upload, typically your project root after Composer install
 
         # Upload files using lftp
-        lftp -c "open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_HOST; mirror -R $LOCAL_DIR $TARGET_DIR"
-
+        lftp -c "open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_HOST; mirror -R $LOCAL_DIR $TARGET_DIR --ignore-time --only-newer --verbose"
