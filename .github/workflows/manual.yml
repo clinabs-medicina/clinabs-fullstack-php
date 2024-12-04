@@ -22,7 +22,7 @@ jobs:
       run: |
         curl -sS https://getcomposer.org/installer | php
         php composer.phar install --no-dev --optimize-autoloader  # Install dependencies
-
+        
     - name: Build/Prepare PHP Project (Optional)
       run: |
         # You can include additional steps here if needed to build your project
@@ -40,7 +40,6 @@ jobs:
       run: |
         TARGET_DIR="public_html"  # The directory on the FTP server
         LOCAL_DIR="."  # Local directory to upload, typically your project root after Composer install
-
         # Full command to ignore SSL certificates, force FTP, and debug logs
         lftp -c "
           set net:debug 1;  # Enable debugging (set to 2 or 3 for more verbosity)
