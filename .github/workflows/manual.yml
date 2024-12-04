@@ -29,10 +29,10 @@ jobs:
         # For example, compiling assets or other tasks
         echo "Nothing to build"  # Remove or modify based on your needs
 
-    - name: Install lftp (FTP client)
-      run: sudo apt-get install -y lftp
+    - name: Install ncftp (FTP client)
+      run: sudo apt-get install -y ncftp
 
-    - name: Deploy to FTP with Debug Logs and Ignore SSL Cert
+    - name: Deploy to FTP without SSL verification
       env:
         FTP_HOST: ${{ secrets.FTP_HOST }}
         FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
@@ -40,16 +40,5 @@ jobs:
       run: |
         TARGET_DIR="public_html"  # The directory on the FTP server
         LOCAL_DIR="."  # Local directory to upload, typically your project root after Composer install
-        # Full command to ignore SSL certificates, force FTP, and debug logs
-        lftp -c "
-          set -a;  # Show all variables (for debugging purposes)
-          set net:debug 1;  # Enable debugging (set to 2 or 3 for more verbosity)
-          set ftp:ssl-force no;  # Force plain FTP (don't use SSL)
-          set ftp:ssl-verify-certificate no;  # Skip SSL certificate verification
-          set ssl:check-certificate no;  # Ignore SSL certificate verification
-          set ssl:check-hostname no;  # Disable host verification (useful for self-signed certs)
-          set net:reconnect-interval-base 5;  # Reconnect interval for failures
-          set net:max-retries 3;  # Maximum retries on failure
-          open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_HOST;
-          mirror -R $LOCAL_DIR $TARGET_DIR --ignore-time --only-newer --verbose;
-        "
+        # Use ncftp to upload files without SSL, skip SSL verification
+        ncftpput -R -v -u $FTP_USERNAME -p $FTP_PASSWORD -P 21 $FTP_HOST $TARGET_DIR $LOCAL_DIR/*
