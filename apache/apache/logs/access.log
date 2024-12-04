@@ -1,3 +1,0 @@
-::1 - - [04/Dec/2024:15:24:38 -0300] "GET / HTTP/1.1" 302 301 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
-192.168.1.224 - - [04/Dec/2024:15:32:17 -0300] "GET / HTTP/1.1" 200 632
-192.168.1.224 - - [04/Dec/2024:15:32:19 -0300] "GET /favicon.ico HTTP/1.1" 200 165662

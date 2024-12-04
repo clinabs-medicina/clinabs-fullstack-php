@@ -44,7 +44,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 $sandbox = true;
 
 $servername = 'localhost';
-$database = 'clinabs_homolog';
+$database = 'clinabs_db';
 $username = 'clinabs_dev';
 $password = '&?7z?Yw$0]62N!gbn=l_@bbA0O{TRg:s';
 
