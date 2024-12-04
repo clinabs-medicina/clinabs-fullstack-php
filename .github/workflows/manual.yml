@@ -16,14 +16,14 @@ jobs:
     - name: Set up PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.1'  # Specify the PHP version you need
+        php-version: '8.3'  # Specify the PHP version you need
 
     - name: Install Composer dependencies
       run: |
         curl -sS https://getcomposer.org/installer | php
         php composer.phar install --no-dev --optimize-autoloader  # Install dependencies
         
-    - name: Build/Prepare PHP Project (Optional)
+    - name: Build/Prepare PHP Project
       run: |
         # You can include additional steps here if needed to build your project
         # For example, compiling assets or other tasks
@@ -32,7 +32,7 @@ jobs:
     - name: Install ncftp (FTP client)
       run: sudo apt-get install -y ncftp
 
-    - name: Deploy to FTP without SSL verification
+    - name: Deploy to FTP
       env:
         FTP_HOST: ${{ secrets.FTP_HOST }}
         FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
