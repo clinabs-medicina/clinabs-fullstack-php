@@ -1,0 +1,17 @@
+{
+    "require": {
+        "phpmailer/phpmailer": "^6.9",
+        "guzzlehttp/guzzle": "^7.8",
+      "ext-pdo": "*",
+        "ext-mysqli": "*",
+        "ext-mbstring": "*",
+        "mpdf/psr-http-message-shim": "^2.0",
+        "myclabs/deep-copy": "^1.12",
+        "paragonie/random_compat": "^9.99",
+        "php": "*",
+        "psr/http-message": "^2.0",
+        "psr/log": "^3.0",
+        "setasign/fpdi": "^2.6",
+        "mpdf/mpdf": "^8.2"
+    }
+}

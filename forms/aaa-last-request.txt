@@ -1,0 +1,1 @@
+{"errors":[{"code":"invalid_object","description":"É necessário enviar uma URL que use o mesmo domínio cadastrado nas suas Minha Conta na aba Informações."}]}

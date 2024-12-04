@@ -1,0 +1,31 @@
+{
+   "theme_color": "#05ad94",
+   "background_color": "#f4f5f6",
+   "icons": [
+      {
+         "purpose": "maskable",
+         "sizes": "512x512",
+         "src": "/assets/images/icon512_maskable.png",
+         "type": "image/png"
+      },
+      {
+         "purpose": "any",
+         "sizes": "512x512",
+         "src": "/assets/images/icon512_rounded.png",
+         "type": "image/png"
+      }
+   ],
+   "orientation": "portrait",
+   "display": "standalone",
+   "dir": "auto",
+   "lang": "pt-BR",
+   "name": "CLINABS",
+   "short_name": "CLINABS MEDICINA INTEGRATIVA",
+   "start_url": "/",
+   "description": "Clinabs App",
+   "resources": {
+      "fonts": [
+         "/assets/fonts/ProximaNova-Reg-webfont.woff2"
+      ]
+   }
+}

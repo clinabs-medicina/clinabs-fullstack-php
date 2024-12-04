@@ -1,0 +1,52 @@
+{
+  "object": "payment",
+  "id": "pay_jyruezwk57qdogzo",
+  "dateCreated": "2024-08-19",
+  "customer": "cus_000091421698",
+  "paymentLink": null,
+  "value": 50,
+  "netValue": 49.01,
+  "originalValue": null,
+  "interestValue": null,
+  "description": "VENDA DE CONSULTA Mu00c9DICA",
+  "billingType": "PIX",
+  "confirmedDate": "2024-08-19",
+  "pixTransaction": "6b3d6cbf-78ea-4865-a2b7-b361fcf844b0",
+  "pixQrCodeId": "PLACECENTRODEMEDIC00000354377933ASA",
+  "status": "RECEIVED",
+  "dueDate": "2024-08-19",
+  "originalDueDate": "2024-08-19",
+  "paymentDate": "2024-08-19",
+  "clientPaymentDate": "2024-08-19",
+  "installmentNumber": null,
+  "invoiceUrl": "https://www.asaas.com/i/jyruezwk57qdogzo",
+  "invoiceNumber": "434470079",
+  "externalReference": "fa0fde6bb6dbffd4f7005370f7a73e7366c34fabaaa88",
+  "deleted": false,
+  "anticipated": false,
+  "anticipable": false,
+  "creditDate": "2024-08-19",
+  "estimatedCreditDate": "2024-08-19",
+  "transactionReceiptUrl": "https://www.asaas.com/comprovantes/2705379508136477",
+  "nossoNumero": null,
+  "bankSlipUrl": null,
+  "lastInvoiceViewedDate": "2024-08-19T13:59:34Z",
+  "lastBankSlipViewedDate": null,
+  "discount": {
+    "value": 0,
+    "limitDate": null,
+    "dueDateLimitDays": 0,
+    "type": "FIXED"
+  },
+  "fine": {
+    "value": 0,
+    "type": "FIXED"
+  },
+  "interest": {
+    "value": 0,
+    "type": "PERCENTAGE"
+  },
+  "postalService": false,
+  "custody": null,
+  "refunds": null
+}

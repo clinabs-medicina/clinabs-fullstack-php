@@ -1,0 +1,29 @@
+{
+  "deploy": [
+    {
+      "name": "Sincronizar",
+      "icon": "sync",
+      "command": "rsync -av --update ./ /srv/http/homolog/ --exclude='/.git deploy.json ./scripts' && cp .rewrite /srv/http/homolog/.htaccess"
+    },
+    {
+      "name": "Deploy Local",
+      "icon": "server",
+      "command": "bash ./scripts/deploy-local.sh"
+    },
+    {
+      "name": "Deploy Remote",
+      "icon": "cloud-upload",
+      "command": "bash ./scripts/deploy-remote.sh"
+    },
+    {
+      "name": "Build Release",
+      "icon": "archive",
+      "command": "bash ./scripts/build.sh"
+    },
+    {
+      "name": "GitHub",
+      "icon": "github",
+      "command": "open https://github.com/necoadrianosilva/CLINABS-FULL-STACK-PHP"
+    }
+  ]
+}

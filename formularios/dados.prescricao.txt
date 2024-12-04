@@ -1,0 +1,12 @@
+Array
+(
+    [produto] => 2
+    [produto_nome] => DIPORONA - 10 mg
+    [frascos] => 1
+    [reference] => MEDICAMENTOS
+    [prescricao] => PHA+dGVzdGUgZGUgPHN0cm9uZz5tZWRpY2FtZW50bzwvc3Ryb25nPi48L3A+CjxwPnRlc3RlPC9wPgo8cD50ZXN0ZSBkZSBtZWRpY2FtZW50by48L3A+
+    [agenda_token] => 13eafc0447ac3cdf999a15e0f110b6a5674db1332f1cc
+    [user_token] => e119c7c738552d779a59bf1b47e44f83
+    [medico_token] => e119c7c738552d779a59bf1b47e44f83
+    [paciente_token] => 63a544c686c60d16507c214d1bd492fc
+)

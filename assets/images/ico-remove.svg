@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="220.1921 7.7941 32.0001 32.0001" xmlns="http://www.w3.org/2000/svg">
+  <g transform="matrix(0.06722700595855713, 0, 0, 0.06722700595855713, 218.99546813964844, 6.483180046081543)">
+    <path d="M493.8,257.5c0,131.4-106.6,238-238,238s-238-106.6-238-238s106.6-238,238-238S493.8,126.1,493.8,257.5z" style="fill: rgb(4, 155, 138);"/>
+  </g>
+  <g transform="matrix(0.06722700595855713, 0, 0, 0.06722700595855713, 218.99546813964844, 6.483180046081543)">
+    <polygon fill="none" points="310.9,381.1    201.1,381.1 180.6,170.3 331.4,170.3  " stroke="#FFFFFF" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="16"/>
+    <line fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="16" x1="180.6" x2="160" y1="170.3" y2="170.3"/>
+    <line fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="16" x1="331.4" x2="352" y1="170.3" y2="170.3"/>
+    <rect fill="none" height="27.4" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="16" width="51.4" x="230.1" y="142.9"/>
+  </g>
+</svg>
