@@ -44,8 +44,9 @@ jobs:
         # Enable lftp debug logs, skip SSL verification, and mirror files
         lftp -c "
           set net:debug 1;  # Enable debugging (set to 2 or 3 for more verbosity)
-          set ftp:ssl-verify-certificate no;  # Skip SSL verification
-          set ftp:ssl-force yes;  # Force SSL/TLS (if required by the server)
+          set ssl:check-certificate no;  # Ignore SSL certificate verification
+          set ftp:ssl-verify-certificate no;  # Skip SSL certificate verification
+          set ftp:ssl-force no;  # Force SSL/TLS (if required by the server)
           set ssl:check-hostname no;  # Disable host verification (useful for self-signed certs)
           set net:reconnect-interval-base 5;  # Reconnect interval for failures
           set net:max-retries 3;  # Maximum retries on failure
