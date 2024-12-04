@@ -16,7 +16,7 @@ jobs:
     - name: Set up PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.3'  # Specify the PHP version you need
+        php-version: '8.1'  # Specify the PHP version you need
 
     - name: Install Composer dependencies
       run: |
@@ -45,6 +45,8 @@ jobs:
         lftp -c "
           set net:debug 1;  # Enable debugging (set to 2 or 3 for more verbosity)
           set ftp:ssl-verify-certificate no;  # Skip SSL verification
+          set ftp:ssl-force yes;  # Force SSL/TLS (if required by the server)
+          set ssl:check-hostname no;  # Disable host verification (useful for self-signed certs)
           set net:reconnect-interval-base 5;  # Reconnect interval for failures
           set net:max-retries 3;  # Maximum retries on failure
           open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_HOST;
