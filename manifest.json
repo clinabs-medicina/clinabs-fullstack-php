@@ -27,5 +27,14 @@
       "fonts": [
          "/assets/fonts/ProximaNova-Reg-webfont.woff2"
       ]
-   }
+   },
+   "web_accessible_resources": [
+      {
+         "resources": [
+            "/assets/fonts/ProximaNova-Reg-webfont.woff2",
+            "/assets/fonts/ProximaNova-Bold-webfont.woff2"
+         ],
+         "matches": ["<all_urls>"]
+      }
+   ]   
 }

@@ -32,7 +32,8 @@ const comboSelect = function (selectBox, selectedEvent = null) {
 
         if (customSelect) 
             document.addEventListener('click', (e) => {
-                if (! customSelect.contains(e.target)) { // closeDropdown();
+                if (! customSelect.contains(e.target)) { 
+                    closeDropdown();
                 }
             });
         
@@ -65,12 +66,16 @@ const comboSelect = function (selectBox, selectedEvent = null) {
                 selectItems.style.display = isOpen ? 'none' : 'block';
                 selectArrow.classList.toggle('open', ! isOpen);
             }
-
-            function closeDropdown() {
+        }
+        
+        function closeDropdown() {
+            if (selectItems) {
                 selectItems.style.display = 'none';
                 selectArrow.classList.remove('open');
             }
         }
+
+
         function filterOptions() {
             const searchTerm = searchInput.value.toLowerCase();
             options.forEach(option => {
