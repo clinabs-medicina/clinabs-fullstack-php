@@ -1,0 +1,58 @@
+name: Deploy and Validate PHP Code
+
+on:
+  push:
+    branches:
+      - homolog  # Trigger on push to the main branch (after merge)
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up PHP and install required dependencies
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'  # Adjust PHP version as required
+
+      # Install Composer dependencies (optional, adjust if using Composer)
+      - name: Install Composer dependencies
+        run: |
+          curl -sS https://getcomposer.org/installer | php
+          php composer.phar install --no-interaction
+      # Validate PHP code (Linting)
+      - name: Validate PHP code
+        run: |
+          find . -type f -name "*.php" -exec php -l {} \;
+
+      # Install lftp (alternative to ncftp for FTP upload)
+      - name: Install lftp
+        run: sudo apt-get install -y lftp
+
+      # Prepare files for upload, respecting .gitignore
+      - name: Prepare files for upload (ignore gitignored files)
+        run: |
+          # Get list of files tracked by git (ignoring .gitignore files)
+          git ls-files --exclude-standard | tar -czf files_to_upload.tar.gz -T -
+      # Upload files via FTP using lftp (non-interactive)
+      - name: Upload files to FTP server (ignore SSL)
+        run: |
+          # Extract the files and upload via lftp
+          mkdir -p /tmp/uploaded_files
+          tar -xzf files_to_upload.tar.gz -C /tmp/uploaded_files
+          
+          # Use lftp for the FTP connection and file upload
+          lftp -d -e "
+            set ssl:verify-certificate no;
+            open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
+            mirror -R /tmp/uploaded_files /;
+            bye
+          "
+        env:
+          FTP_SERVER: ${{ secrets.HOMOLOG_FTP_HOST }}
+          FTP_USERNAME: ${{ secrets.HOMOLOG_FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.HOMOLOG_FTP_PASSWORD }}
