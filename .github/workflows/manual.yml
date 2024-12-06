@@ -3,7 +3,7 @@ name: Deploy and Validate PHP Code
 on:
   push:
     branches:
-      - homolog  # Trigger on push to the homolog branch (after merge)
+      - main  # Trigger on push to the homolog branch (after merge)
 
 jobs:
   build_and_deploy:
