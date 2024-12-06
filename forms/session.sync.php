@@ -50,7 +50,11 @@ if(isset($_GET['fetch'])) {
 else {
     $tableName = $_GET['user'];
     $token = $_GET['token'];
-
+    // Adicionando ao log de erros
+    error_log("Valor da variável \$tableName: $tableName\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+        
     $datetime = date('Y-m-d H:i:s');
-    $pdo->query("UPDATE {$tableName} SET session_online = 1,last_ping = '{$datetime}' WHERE token = '{$token}'");
+    if (($tableName != 'none') && ($tableName != 'noneS') && ($tableName != 'clinabs_homolog.nones')) {
+        $pdo->query("UPDATE {$tableName} SET session_online = 1,last_ping = '{$datetime}' WHERE token = '{$token}'");
+    }
 }
