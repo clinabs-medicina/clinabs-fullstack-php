@@ -53,8 +53,8 @@ jobs:
       - name: Upload files to FTP server (ignore SSL)
         run: |
           # Extract the files and upload via ncftp
-          mkdir -p  /var/uploaded_files
-          tar -xzf files_to_upload.tar.gz -C /var/uploaded_files
+          mkdir -p  /tmp/uploaded_files
+          tar -xzf files_to_upload.tar.gz -C /tmp/uploaded_files
           ncftp -z -f <(echo -e "open ${FTP_SERVER}\nuser ${FTP_USERNAME} ${FTP_PASSWORD}\ncd ${FTP_REMOTE_DIR}\nput -R  /var/uploaded_files/*\nquit")
         env:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
