@@ -49,7 +49,7 @@ jobs:
           tar -xzf files_to_upload.tar.gz -C /tmp/uploaded_files
           
           # Use lftp for the FTP connection and file upload
-          lftp -v -e "
+          lftp -d -e "
             set ssl:verify-certificate no;
             open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
             mirror -R /tmp/uploaded_files /;
