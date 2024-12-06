@@ -2,7 +2,8 @@
 global $pdo, $mailer;
 
 session_start();
-
+// Regenera o ID da sessão para segurança (após o session_start)
+session_regenerate_id(true);
 
 require_once '../config.inc.php';
 require_once '../libs/sendMail.php';

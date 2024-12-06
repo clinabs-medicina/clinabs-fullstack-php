@@ -26,7 +26,7 @@
     <div class="preloader-container">
         <div class="preloader-content"></div>
         <div class="preloader">
-            <img src="/assets/images/loading.gif">
+            <img src="/assets/images/loading.gif" title="Loading">
         </div>
     </div>
 

@@ -7,7 +7,11 @@ error_reporting(1);
 @ini_set('upload_max_size', '64M');
 @ini_set('post_max_size', '64M');
 @ini_set('max_execution_time', '120');
-session_set_cookie_params(0);
+session_set_cookie_params([
+    'secure' => true,  // Só envia o cookie por HTTPS
+    'httponly' => true,  // Impede acesso via JavaScript
+    'samesite' => 'Strict'  // Previne envio em requisições de outros sites
+]);
 session_start();
 
 
