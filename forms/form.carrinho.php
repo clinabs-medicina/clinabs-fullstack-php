@@ -1,6 +1,8 @@
 <?php
 
 session_start();
+// Regenera o ID da sessão para segurança (após o session_start)
+session_regenerate_id(true);
 require_once '../config.inc.php';
 ini_set('display_errors', 1);
 error_reporting(1);

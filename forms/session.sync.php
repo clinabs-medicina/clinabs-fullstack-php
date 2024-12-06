@@ -2,6 +2,8 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config.inc.php';
 
 if(isset($_GET['fetch'])) {
+    header('Cache-Control: no-store, no-cache, must-revalidate');
+    //header('Expires: 0');
     $events = [];
 
     $tableName = $_GET['fetch'];
@@ -48,6 +50,8 @@ if(isset($_GET['fetch'])) {
     echo json_encode($rows, JSON_PRETTY_PRINT);
 } 
 else {
+    header('Cache-Control: no-store, no-cache, must-revalidate');
+    //header('Expires: 0');    
     $tableName = $_GET['user'];
     $token = $_GET['token'];
     // Adicionando ao log de erros

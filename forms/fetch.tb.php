@@ -4,7 +4,7 @@ require_once '../config.inc.php';
 error_reporting(1);
 ini_set('display_errors', 1);
 set_time_limit(300); // Define o limite para 300 segundos (5 minutos)
-
+header("pragma: no-cache");
 
 if(isset($_REQUEST['tb'])) {
     if(isset($_REQUEST['q'])) {

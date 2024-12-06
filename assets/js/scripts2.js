@@ -539,7 +539,7 @@ function newPrescFunc() {
               <label for="prescricao_mod"><input type="radio" name="presc_mod" id="prescricao_mod" checked value="prescricao"> Prescrição de Medicamentos</label>
               <label for="acompanhamento_mod"><input type="radio" name="presc_mod" id="acompanhamento_mod" value="acompanhamento"> Acompanhamento Médico</label>
           </div>
-          <div class="ld-modal"><img src="/assets/images/loading.gif">
+          <div class="ld-modal"><img src="/assets/images/loading.gif" alt="Loading">
           <input type="hidden" id="product_ref" name="product_ref" value="PRODUTOS">
           </div>`;
 
@@ -2378,7 +2378,7 @@ const send_form = async function (method, url, formData, callback) {
         showCancelButton: false,
         width: "auto",
         height: "auto",
-        html: '<div class="swal2-preloader"><img src="/assets/images/loading.gif"> Enviando....</div>',
+        html: '<div class="swal2-preloader"><img src="/assets/images/loading.gif" title="Sending"> Enviando....</div>',
         didOpen: function () {
             let xhr = new XMLHttpRequest();
 
