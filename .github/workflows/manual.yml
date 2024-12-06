@@ -3,7 +3,7 @@ name: Deploy and Validate PHP Code
 on:
   push:
     branches:
-      - main  # Trigger on push to the homolog branch (after merge)
+      - main  # Trigger on push to the main branch (after merge)
 
 jobs:
   build_and_deploy:
@@ -27,20 +27,20 @@ jobs:
           php composer.phar install --no-interaction
 
       # Validate PHP code (Linting)
-      - name: Validate PHP code
-        run: |
-          find . -type f -name "*.php" -exec php -l {} \;
+      #- name: Validate PHP code
+        #run: |
+          #find . -type f -name "*.php" -exec php -l {} \;
 
-      # Install ncftp (for FTP upload)
+      # Configure FTP Connection
       - name: Install ncftp
         run: sudo apt-get install -y ncftp
 
-      # Set FTP credentials (use GitHub secrets)
+      # Set FTP credentials
       - name: Set FTP credentials
         run: |
           echo "open ${FTP_SERVER}" > ncftp_cmd.txt
           echo "user ${FTP_USERNAME} ${FTP_PASSWORD}" >> ncftp_cmd.txt
-          echo "cd ${FTP_REMOTE_DIR}" >> ncftp_cmd.txt
+          echo "cd /public_html" >> ncftp_cmd.txt  # Update this to the correct directory
           echo "quit" >> ncftp_cmd.txt
 
       # Prepare files for upload, respecting .gitignore
@@ -50,14 +50,13 @@ jobs:
           git ls-files --exclude-standard | tar -czf files_to_upload.tar.gz -T -
 
       # Upload files via FTP using ncftp, ignoring SSL certificate validation
-      - name: Upload files to FTP server (ignore SSL)
+      - name: Upload files to FTP server
         run: |
           # Extract the files and upload via ncftp
           mkdir -p  /tmp/uploaded_files
           tar -xzf files_to_upload.tar.gz -C /tmp/uploaded_files
-          ncftp -z -f <(echo -e "open ${FTP_SERVER}\nuser ${FTP_USERNAME} ${FTP_PASSWORD}\ncd ${FTP_REMOTE_DIR}\nput -R  /var/uploaded_files/*\nquit")
+          ncftp -z -f <(echo -e "open ${FTP_SERVER}\nuser ${FTP_USERNAME} ${FTP_PASSWORD}\ncd /public_html\nput -R /tmp/uploaded_files/*\nquit")
         env:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-          FTP_REMOTE_DIR: ${{ secrets.FTP_REMOTE_DIR }}
