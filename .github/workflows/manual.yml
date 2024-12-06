@@ -27,21 +27,13 @@ jobs:
           php composer.phar install --no-interaction
 
       # Validate PHP code (Linting)
-      #- name: Validate PHP code
-        #run: |
-          #find . -type f -name "*.php" -exec php -l {} \;
-
-      # Configure FTP Connection
-      - name: Install ncftp
-        run: sudo apt-get install -y ncftp
-
-      # Set FTP credentials
-      - name: Set FTP credentials
+      - name: Validate PHP code
         run: |
-          echo "open ${FTP_SERVER}" > ncftp_cmd.txt
-          echo "user ${FTP_USERNAME} ${FTP_PASSWORD}" >> ncftp_cmd.txt
-          echo "cd /public_html" >> ncftp_cmd.txt  # Update this to the correct directory
-          echo "quit" >> ncftp_cmd.txt
+          find . -type f -name "*.php" -exec php -l {} \;
+
+      # Install lftp (alternative to ncftp for FTP upload)
+      - name: Install lftp
+        run: sudo apt-get install -y lftp
 
       # Prepare files for upload, respecting .gitignore
       - name: Prepare files for upload (ignore gitignored files)
@@ -49,13 +41,21 @@ jobs:
           # Get list of files tracked by git (ignoring .gitignore files)
           git ls-files --exclude-standard | tar -czf files_to_upload.tar.gz -T -
 
-      # Upload files via FTP using ncftp, ignoring SSL certificate validation
-      - name: Upload files to FTP server
+      # Upload files via FTP using lftp (non-interactive)
+      - name: Upload files to FTP server (ignore SSL)
         run: |
           # Extract the files and upload via lftp
           mkdir -p /tmp/uploaded_files
           tar -xzf files_to_upload.tar.gz -C /tmp/uploaded_files
-          lftp -c "set ssl:verify-certificate no; open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER}; cd /public_html; mirror -R /tmp/uploaded_files /public_html; bye"
+          
+          # Use lftp for the FTP connection and file upload
+          lftp -e "
+            set ssl:verify-certificate no;
+            open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
+            cd /public_html;
+            mirror -R /tmp/uploaded_files /public_html;
+            bye
+          "
         env:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
