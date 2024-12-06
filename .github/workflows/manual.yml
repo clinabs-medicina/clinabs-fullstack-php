@@ -1,44 +1,62 @@
-name: PHP FTP Deployment
+name: Deploy and Validate PHP Code
 
 on:
   push:
     branches:
-      - homolog  # You can change this to any branch you wish to deploy from
+      - homolog  # Trigger on push to the homolog branch
 
 jobs:
-  deploy:
+  build_and_deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout the code
-      uses: actions/checkout@v3
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.3'
+      # Set up PHP and install required dependencies
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'  # Adjust PHP version as required
 
-    - name: Install Composer dependencies
-      run: |
-        curl -sS https://getcomposer.org/installer | php
-        php composer.phar install --no-dev --optimize-autoloader  # Install dependencies
-        
-    - name: Build/Prepare PHP Project
-      run: |
-        # You can include additional steps here if needed to build your project
-        # For example, compiling assets or other tasks
-        echo "Nothing to build"  # Remove or modify based on your needs
+      # Install Composer dependencies (optional, adjust if using Composer)
+      - name: Install Composer dependencies
+        run: |
+          curl -sS https://getcomposer.org/installer | php
+          php composer.phar install --no-interaction
 
-    - name: Install ncftp (FTP client)
-      run: sudo apt-get install -y ncftp
+      # Validate PHP code (Linting)
+      - name: Validate PHP code
+        run: |
+          find . -type f -name "*.php" -exec php -l {} \;
 
-    - name: Deploy to FTP
-      env:
-        FTP_HOST: ${{ secrets.FTP_HOST }}
-        FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-      run: |
-        TARGET_DIR="public_html"  # The directory on the FTP server
-        LOCAL_DIR="."  # Local directory to upload, typically your project root after Composer install
-        # Use ncftp to upload files without SSL, skip SSL verification
-        ncftpput -R -v -u $FTP_USERNAME -p $FTP_PASSWORD -P 21 $FTP_HOST $TARGET_DIR $LOCAL_DIR/*
+      # Install ncftp (for FTP upload)
+      - name: Install ncftp
+        run: sudo apt-get install -y ncftp
+
+      # Set FTP credentials (use GitHub secrets)
+      - name: Set FTP credentials
+        run: |
+          echo "open ${FTP_SERVER}" > ncftp_cmd.txt
+          echo "user ${FTP_USERNAME} ${FTP_PASSWORD}" >> ncftp_cmd.txt
+          echo "cd ${FTP_REMOTE_DIR}" >> ncftp_cmd.txt
+          echo "quit" >> ncftp_cmd.txt
+
+      # Prepare files for upload, respecting .gitignore
+      - name: Prepare files for upload (ignore gitignored files)
+        run: |
+          # Get list of files tracked by git (ignoring .gitignore files)
+          git ls-files --exclude-standard | tar -czf files_to_upload.tar.gz -T -
+
+      # Upload files via FTP using ncftp, ignoring SSL certificate validation
+      - name: Upload files to FTP server (ignore SSL)
+        run: |
+          # Extract the files and upload via ncftp
+          tar -xzf files_to_upload.tar.gz -C /tmp/uploaded_files
+          ncftp -z -f <(echo -e "open ${FTP_SERVER}\nuser ${FTP_USERNAME} ${FTP_PASSWORD}\ncd ${FTP_REMOTE_DIR}\nput -R /tmp/uploaded_files/*\nquit")
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_REMOTE_DIR: ${{ secrets.FTP_REMOTE_DIR }}
