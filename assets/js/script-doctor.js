@@ -731,5 +731,6 @@ function relatorioAcompanhamento(classItem, patientToken) {
     $(classItem).each(function () {
         items.push($(this).val());
     });
+    
     window.open("/cadastros/pacientes/relatorio/?paciente_token=" + patientToken + "&items=" + btoa(JSON.stringify(items)), "_relatorio_acompanhamento", "width=800,height=600");
 }

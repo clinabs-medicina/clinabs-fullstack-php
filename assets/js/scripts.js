@@ -2719,5 +2719,5 @@ $(document).ready(function () {
     $.get('/api/server/index.php').done(function (data) {
       $('.dashboard-conter-ram').html(`${data.memory.percentage}%`);
     });
-  }, 5000);
+  }, 15000);
 });
