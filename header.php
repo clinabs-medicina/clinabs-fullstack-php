@@ -62,7 +62,7 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
     <div class="flex-container">
         <a href="/"><img src="/assets/images/logo.svg" alt="logo"></a>
         <div class="link-consult-mobile"
-            style="text-align: center; text-decoration: none; color: #2c8a7a;  border: 1px solid #ffb60dc2;  padding: 0.50rem; border-radius: 8px; font-size: 14px;">
+            style="text-align: center; text-decoration: none; color: #2c8a7a;  border: 1px solid #ffb60dc2;  padding: 0.25rem; border-radius: 8px; font-size: 11px;">
             <a href="/agendamento" alt="Agendar Consulta" title=""
                 style="text-align: center; font-weight: 600; text-decoration: none; color:#05ad94;">AGENDAR CONSULTA</a>
         </div>
@@ -182,7 +182,7 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
             } else if($_SERVER['HTTP_HOST'] == 'dev.clinabs.com') {
                 echo '<div class="app-mode">DEV</div>';
             }
-            else if($_SERVER['HTTP_HOST'] == 'deploy.clinabs.com') {
+            else if($_SERVER['HTTP_HOST'] == 'deploy.clinabs.com' || $_SERVER['HTTP_HOST'] == 'deploy.clinabs.com.br') {
                 echo '<div class="app-mode">DEPLOY</div>';
             }
         ?>
