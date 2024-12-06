@@ -3,7 +3,7 @@ name: Deploy and Validate PHP Code
 on:
   push:
     branches:
-      - homolog  # Trigger on push to the homolog branch
+      - homolog  # Trigger on push to the homolog branch (after merge)
 
 jobs:
   build_and_deploy:
@@ -18,7 +18,7 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'  # Adjust PHP version as required
+          php-version: '8.1'  # Adjust PHP version as required
 
       # Install Composer dependencies (optional, adjust if using Composer)
       - name: Install Composer dependencies
