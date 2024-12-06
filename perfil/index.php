@@ -6,7 +6,7 @@ if(!isset($_COOKIE['sessid_clinabs'])) {
 }
 require_once $_SERVER['DOCUMENT_ROOT'].'/config.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/session.php';
-$file = '/home/clinabs.com/containers/mailserver/docker-data/dms/config/postfix-accounts.cf';
+
 $conf = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'].'/.auth.json'));
 
 $page = new stdClass();

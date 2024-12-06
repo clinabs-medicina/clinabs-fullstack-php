@@ -59,20 +59,36 @@ RewriteCond %{HTTPS} off
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=302,L,NE]
 
 Header always set X-Content-Type-Options "nosniff"
-Header always set Strict-Transport-Security: "max-age=31536000; includeSubDomains; preload"
+Header always set Strict-Transport-Security: "max-age=0; includeSubDomains; preload"
 Header always set Cross-Origin-Embedder-Policy: "unsafe-none"
 Header always set Cross-Origin-Resource-Policy: "cross-origin"
 Header always set Cross-Origin-Opener-Policy: "same-origin"
 
 Header always set X-Version: 1.8.25
-Header always set Cache-Control "max-age=31536000"
+Header always set Cache-Control "max-age=0"
 
 <IfModule mod_headers.c>
   Header set Content-Security-Policy "frame-ancestors 'self' https://clinabs.whereby.com https://clinabs.com https://www.clinabs.com;"
 </IfModule>
 
+
 <IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/css
-  AddOutputFilterByType DEFLATE text/javascript
-  AddOutputFilterByType DEFLATE image/*
+    # Enable gzip compression
+    AddOutputFilterByType DEFLATE text/plain
+</IfModule>
+
+<IfModule mod_brotli.c>
+    # Enable Brotli compression
+    #AddOutputFilterByType BROTLI text/plain text/html text/xml text/css application/x-javascript application/javascript application/json
+</IfModule>
+
+<IfModule mod_headers.c>
+    # Add Accept-Encoding header (this is generally handled by browsers)
+    Header set Accept-Encoding "gzip, compress, br"
+</IfModule>
+
+
+# Enable HTTP/2
+<IfModule mod_http2.c>
+    Protocols h2 http/1.1
 </IfModule>

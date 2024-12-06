@@ -1,7 +1,11 @@
 <?php
 $page = new stdClass();
 $page->title = 'Pacientes';
-$page->content = $_REQUEST['page'] == 'presc' ? 'cadastros/pacientes/prescricao.php':'cadastros/pacientes/main.php';
+if(isset($_REQUEST['page'])) {
+    $page->content = $_REQUEST['page'] == 'presc' ? 'cadastros/pacientes/prescricao.php':'cadastros/pacientes/main.php';
+} else {
+    $page->content = 'cadastros/pacientes/main.php';
+}
 $page->bc = true;
 $page->name = 'link_paciente';
 $page->require_login = true;
