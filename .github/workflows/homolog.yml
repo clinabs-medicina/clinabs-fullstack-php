@@ -44,7 +44,7 @@ jobs:
           # Extract the files and upload via lftp
           mkdir -p /tmp/uploaded_files
           tar -xzf files_to_upload.tar.gz -C /tmp/uploaded_files
-          
+          rm /tmp/uploaded_files/config.inc.php
           # Use lftp for the FTP connection and file upload
           lftp -d -e "
             set ssl:verify-certificate no;
