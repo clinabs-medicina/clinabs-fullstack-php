@@ -92,3 +92,19 @@ Header always set Cache-Control "max-age=0"
 <IfModule mod_http2.c>
     Protocols h2 http/1.1
 </IfModule>
+
+
+# Enable CORS for fonts.gstatic.com
+<IfModule mod_headers.c>
+    # Allow cross-origin requests from fonts.gstatic.com for font-related files
+    <FilesMatch "\.(eot|otf|ttf|woff|woff2)$">
+        Header set Access-Control-Allow-Origin "https://fonts.gstatic.com"
+        Header set Access-Control-Allow-Methods "GET"
+        Header set Access-Control-Allow-Headers "Content-Type"
+    </FilesMatch>
+</IfModule>
+
+# Alternatively, allow all domains to access the fonts (be cautious with this)
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+</IfModule>
