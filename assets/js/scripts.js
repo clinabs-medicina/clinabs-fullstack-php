@@ -2565,9 +2565,7 @@ $(document).ready(function () {
 
   $("input").trigger("input");
 
-  $(".preloader-container").fadeOut(600, function () {
-    $(".preloader-container").hide();
-  });
+ 
 
   $("#medico_token").on("change", function () {
     let opts = document.querySelector("#medico_token").options;
@@ -2720,4 +2718,9 @@ $(document).ready(function () {
       $('.dashboard-conter-ram').html(`${data.memory.percentage}%`);
     });
   }, 15000);
+
+
+  $(".preloader-container").fadeOut(600, function () {
+    $(".preloader-container").hide();
+  });
 });

@@ -3409,3 +3409,74 @@ button.btn-table-item {
   border-radius: 10px;
   height: 50px;
 }
+
+
+@media (max-width: 800px) {
+  .tab-toolbar {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-content: center;
+      justify-content: center;
+      align-items: stretch;
+  }
+
+  .tab-toolbar span {
+    display: flex;
+    width: 100%;
+  }
+
+  .calendar-box-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  section.calendar-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .week-item {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    padding: 0.1rem;
+    gap: 0.1rem;
+    width: 20%;
+  }
+
+  .week-head {
+    display: flex;
+    gap: 0.1rem;
+    margin: 1rem 0rem;
+    align-content: center;
+    justify-content: center;
+    align-items: stretch;
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  label.week-time.listmedic-box-dir-time {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    font-weight: bold;
+  }
+
+}

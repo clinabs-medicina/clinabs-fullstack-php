@@ -212,7 +212,7 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
   ?>
     <!-- FIM CONTEUDO PRINCIPAL -->
 
-    <?php require_once ROOT . '/footer.php'; ?>
+    <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/footer.php'; ?>
 
     <!-- FIM FOOTER -->
 
