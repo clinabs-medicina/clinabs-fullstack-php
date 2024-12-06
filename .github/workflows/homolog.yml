@@ -1,4 +1,4 @@
-name: Deploy and Validate PHP Code
+name: Deploy to Homolog
 
 on:
   push:
