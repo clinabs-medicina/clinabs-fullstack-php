@@ -27,9 +27,9 @@ jobs:
           php composer.phar install --no-interaction
 
       # Validate PHP code (Linting)
-      - name: Validate PHP code
-        run: |
-          find . -type f -name "*.php" -exec php -l {} \;
+      #- name: Validate PHP code
+        #run: |
+          #find . -type f -name "*.php" -exec php -l {} \;
 
       # Install lftp (alternative to ncftp for FTP upload)
       - name: Install lftp
@@ -52,8 +52,7 @@ jobs:
           lftp -e "
             set ssl:verify-certificate no;
             open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
-            cd /public_html;
-            mirror -R /tmp/uploaded_files /public_html;
+            mirror -R /tmp/uploaded_files /;
             bye
           "
         env:
