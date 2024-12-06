@@ -1,8 +1,9 @@
-data/*
-errors.log
 config.inc.php
-google_credentials.json
-ips.log
-wa-config.json
+/config.inc.php
+data/*
+/errors.log
+/google_credentials.json
+/ips.log
+/wa-config.json
 /data
-
+/config
