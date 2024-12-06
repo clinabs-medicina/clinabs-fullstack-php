@@ -65,12 +65,10 @@ function getAccounts($file) {
    return $accounts;
 }
 
-
-
-
-$mail_accounts = getAccounts($file);
+//$mail_accounts = getAccounts($file);
 
 require_once $_SERVER['DOCUMENT_ROOT'].'/session.php';
+
    if(isset($_GET['profile'])) {
          header('Content-Type: application/json');
          echo json_encode($user, JSON_PRETTY_PRINT);

@@ -62,7 +62,7 @@ $("document").ready(function () {
 
     // Reset search input every interval
     setInterval(function () {
-        $('input[type="search"]').val("").trigger("input");
+        //$('input[type="search"]').val("").trigger("input");
     });
 
     // Upload function constructor

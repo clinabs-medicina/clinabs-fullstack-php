@@ -1,0 +1,154 @@
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: noneS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+[06-Dec-2024 13:23:47 America/Sao_Paulo] PHP Fatal error:  Uncaught ValueError: Path cannot be empty in C:\xampp\htdocs\perfil\index.php:54
+Stack trace:
+#0 C:\xampp\htdocs\perfil\index.php(54): fopen('', 'r')
+#1 C:\xampp\htdocs\perfil\index.php(71): getAccounts(NULL)
+#2 {main}
+  thrown in C:\xampp\htdocs\perfil\index.php on line 54
+[06-Dec-2024 13:24:59 America/Sao_Paulo] PHP Fatal error:  Uncaught DivisionByZeroError: Division by zero in C:\xampp\htdocs\perfil\main.php:1139
+Stack trace:
+#0 C:\xampp\htdocs\MasterPage.php(211): require_once()
+#1 C:\xampp\htdocs\perfil\index.php(122): require_once('C:\\xampp\\htdocs...')
+#2 {main}
+  thrown in C:\xampp\htdocs\perfil\main.php on line 1139
