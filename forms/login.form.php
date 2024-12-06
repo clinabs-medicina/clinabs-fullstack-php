@@ -4,6 +4,9 @@ ini_set('display_errors', true);
 error_reporting(E_ALL);
 
 session_start();
+// Regenera o ID da sessão para segurança (após o session_start)
+session_regenerate_id(true);
+
 require_once '../config.inc.php';
 
 $pwd = md5(sha1(md5($_REQUEST['password'])));
