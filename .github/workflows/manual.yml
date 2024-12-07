@@ -50,7 +50,7 @@ jobs:
               set ssl:verify-certificate no;
               open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
               # Mirror remaining files
-              mirror -R --reverse --exclude .busy --exclude .apache --verbose / /tmp/remote_app;
+              mirror / /tmp/remote_app;
               bye
             "
 
