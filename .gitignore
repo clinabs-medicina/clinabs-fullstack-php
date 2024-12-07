@@ -4,5 +4,6 @@ google_credentials.json
 deploy.json
 *.log
 *.inc.php
+*.txt
 .anotacoes/
 .github/
