@@ -52,7 +52,7 @@ jobs:
             mirror /tmp/uploaded_files/manutencao.php /manutencao.php;
             mirror /tmp/uploaded_files/.busy /.htaccess;
             mirror -R /tmp/uploaded_files /;
-            mirror /tmp/uploaded_files/.apache /.htaccess
+            mirror /tmp/uploaded_files/.apache /.htaccess;
             bye
           "
 
