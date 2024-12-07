@@ -963,9 +963,6 @@
 
                     echo '</div>';
                     
-                    $certificate = json_decode(utf8_encode(base64_decode($_user->certificado)));
-                    
-                    file_put_contents('cert_data.txt', utf8_encode(base64_decode($_user->certificado)));
                     ?>
                 <div class="tab" data-index="5" data-tab="tabControl1">
                     <section class="form-grid area3">
@@ -997,7 +994,7 @@
                 }
 
                 if($user->tipo == 'FUNCIONARIO' && $user->perms->aba_api == 1){
-
+                    
                         $curl = curl_init();
 
                         curl_setopt_array($curl, array(
@@ -1017,6 +1014,7 @@
                         curl_close($curl);
 
                         if($whatsapp->result->state == 'disconnected') {
+                            /*
                             $curl = curl_init();
 
                             curl_setopt_array($curl, array(
@@ -1035,14 +1033,16 @@
 
                             curl_close($curl);
 
-
+                            */
                         }
 
 
-                        $ddi = substr($whatsapp->result->number, 0, 2);
-                        $ddd = substr($whatsapp->result->number, 2, 2);
-                        $cell_p1 = substr($whatsapp->result->number, 4, 4);
-                        $cell_p2 = substr($whatsapp->result->number, 8, 4);
+                        //$ddi = substr($whatsapp->result->number, 0, 2);
+                        //$ddd = substr($whatsapp->result->number, 2, 2);
+                        //$cell_p1 = substr($whatsapp->result->number, 4, 4);
+                        //$cell_p2 = substr($whatsapp->result->number, 8, 4);
+
+                        
                         
                         if($user->perms->aba_api == 1) {
                     ?>

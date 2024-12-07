@@ -7,8 +7,6 @@ if(!isset($_COOKIE['sessid_clinabs'])) {
 require_once $_SERVER['DOCUMENT_ROOT'].'/config.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/session.php';
 
-$conf = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'].'/.auth.json'));
-
 $page = new stdClass();
 $page->title = 'Meu Perfil';
 $page->content = 'perfil/main.php';
@@ -16,6 +14,7 @@ $page->bc = true;
 $page->name = 'link_perfil';
 $page->require_login = true;
 
+$conf = new stdClass();
 
 function parse_bool($value) {
    if(gettype($value) == 'string') {
@@ -39,35 +38,6 @@ function parse_bool($value) {
       return false;
    }
 }
-
-try {
-   $date_today = date('Y-m-d');
-   $stmtc = $pdo->query("SELECT COUNT(*) as cliques,ip,timestamp FROM `ACCESS_LOGS` WHERE timestamp LIKE '{$date_today}%' GROUP BY ip ORDER BY timestamp ASC");
-   $visitas_hoje = $stmtc->rowCount();
-} catch(Exception $ex) {
-   $visitas_hoje = 0;
-}
-
-function getAccounts($file) {
-   $accounts = [];
-
-   $handle = fopen($file, "r");
-   if ($handle) {
-       while (($line = fgets($handle)) !== false) {
-          $item = explode('|', $line);
-
-          $accounts[strtolower($item[0])] = $item[1];
-       }
-
-       fclose($handle);
-   }
-
-   return $accounts;
-}
-
-//$mail_accounts = getAccounts($file);
-
-require_once $_SERVER['DOCUMENT_ROOT'].'/session.php';
 
    if(isset($_GET['profile'])) {
          header('Content-Type: application/json');
@@ -131,6 +101,3 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/session.php';
       
       require_once $_SERVER['DOCUMENT_ROOT'].'/MasterPage.php';
    }
-
-
- 

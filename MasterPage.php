@@ -16,6 +16,7 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
+    <meta name="x-frame-options" content="sameorigin" />
     <title><?= $page->title == 'Home' ? 'Início' : $page->title ?> - Clinabs - O tratamento natural para seus problemas
         de saúde.</title>
     <?php if (isset($_REQUEST['pedido_code'])) {
@@ -144,7 +145,7 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
 <div class="preloader-container">
     <div class="preloader-content"></div>
     <div class="preloader">
-        <img src="/assets/images/loading.gif">
+        <img src="/assets/images/loading.gif" alt="Loading">
     </div>
 </div>
 
@@ -212,7 +213,7 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
   ?>
     <!-- FIM CONTEUDO PRINCIPAL -->
 
-    <?php require_once ROOT . '/footer.php'; ?>
+    <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/footer.php'; ?>
 
     <!-- FIM FOOTER -->
 
@@ -275,7 +276,7 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
     <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="/assets/js/clinabs.modules.js"></script>
     <script type="text/javascript" src="/assets/js/agenda.module.js"></script>
-
+    <script type="text/javascript" src="/assets/js/agendamento.js"></script>
     <?php
     /*
       if($warningMsg !== false && $warningMsg !== null) {

@@ -41,6 +41,7 @@ jobs:
       # Upload files via FTP using lftp (non-interactive)
       - name: Upload files to FTP server (ignore SSL)
         run: |
+<<<<<<< HEAD
           # Extract the files and upload via lftp
           mkdir -p /tmp/uploaded_files
           tar -xzf files_to_upload.tar.gz -C /tmp/uploaded_files
@@ -56,3 +57,25 @@ jobs:
           FTP_SERVER: ${{ secrets.HOMOLOG_FTP_HOST }}
           FTP_USERNAME: ${{ secrets.HOMOLOG_FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.HOMOLOG_FTP_PASSWORD }}
+=======
+          mkdir -p /tmp/uploaded_files
+          tar -xzf files_to_upload.tar.gz -C /tmp/uploaded_files
+          lftp -d -e "
+            set ssl:verify-certificate no;
+            open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
+            
+            # Upload and rename files
+            put -O / /tmp/uploaded_files/info/manutencao.php -o /manutencao.php;
+            put -O / /tmp/uploaded_files/.busy -o /.htaccess;
+            
+            # Mirror remaining files
+            mirror -R --exclude .busy --exclude .apache /tmp/uploaded_files /;
+            put -O / /tmp/uploaded_files/.apache -o /.htaccess;
+            bye
+          " 
+
+        env:
+          FTP_SERVER: ${{ secrets.HOMOLOG_FTP_HOST }}
+          FTP_USERNAME: ${{ secrets.HOMOLOG_FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.HOMOLOG_FTP_PASSWORD }}
+>>>>>>> homolog
