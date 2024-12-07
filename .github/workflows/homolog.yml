@@ -46,11 +46,12 @@ jobs:
           tar -xzf files_to_upload.tar.gz -C /tmp/uploaded_files
           # Use lftp for the FTP connection and file upload
           lftp -d -e "
-            cp /tmp/uploaded_files/.busy /.htaccess
-            cp /tmp/uploaded_files/manutencao.php /manutencao.php 
+            cp /tmp/uploaded_files/.busy /.htaccess;
+            cp /tmp/uploaded_files/manutencao.php /manutencao.php;
             set ssl:verify-certificate no;
             open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
             mirror -R /tmp/uploaded_files /;
+            cp /tmp/uploaded_files/.apache /.htaccess;
             bye
           "
           cp /tmp/uploaded_files/.apache /.htaccess
