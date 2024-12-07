@@ -49,12 +49,8 @@ jobs:
             lftp -d -e "
               set ssl:verify-certificate no;
               open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
-              # Upload and rename files
-              put -O / /tmp/uploaded_files/info/manutencao.php -o /manutencao.php;
-              put -O / /tmp/uploaded_files/.busy -o /.htaccess;
-              
               # Mirror remaining files
-              mirror -R --reverse --exclude .busy --exclude .apache / /tmp/remote_app;
+              mirror -R --reverse --exclude .busy --exclude .apache --verbose / /tmp/remote_app;
               bye
             "
 
