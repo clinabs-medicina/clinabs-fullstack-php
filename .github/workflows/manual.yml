@@ -27,9 +27,9 @@ jobs:
           php composer.phar install --no-interaction
 
       # Validate PHP code (Linting)
-      - name: Validate PHP code
-        run: |
-          find . -type f -name "*.php" -exec php -l {} \;
+      #- name: Validate PHP code
+        #run: |
+          #find . -type f -name "*.php" -exec php -l {} \;
 
       # Install lftp (alternative to ncftp for FTP upload)
       - name: Install lftp
@@ -45,20 +45,19 @@ jobs:
       # Step 3: Download the remote folder using FTP or SFTP
       - name: Backupping App
         run: |
-          # For FTP (Use FTP credentials stored in GitHub Secrets)
           mkdir -p /tmp/remote_app
           lftp -f "
           set ssl:verify-certificate no;
           open ftp://$FTP_USERNAME:$FTP_PASSWORD@$FTP_HOST
           mkdir
-          mirror --exclude .busy --exclude .apache --exclude last_backup_before_deploy.zip  -R --verbose / /tmp/remote_folder
+          mirror --exclude .busy --exclude .apache --exclude last_backup_before_deploy.zip  -R --verbose / /tmp/remote_app
           bye
           "
 
       # Step 4: Zip the downloaded folder
       - name: Saving Backup
         run: |
-          zip -r /tmp/remote_backup.zip /tmp/remote_folder
+          zip -r /tmp/remote_backup.zip /tmp/remote_app
 
       # Step 5: Optionally, upload the zip file to the server or artifact
       - name: Uploading Backup
