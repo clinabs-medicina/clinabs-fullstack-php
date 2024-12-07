@@ -48,8 +48,7 @@ jobs:
           mkdir -p /tmp/remote_app
           lftp -f "
           set ssl:verify-certificate no;
-          open ftp://$FTP_USERNAME:$FTP_PASSWORD@$FTP_SERVER
-          mkdir
+          open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
           mirror --exclude .busy --exclude .apache --exclude last_backup_before_deploy.zip  -R --verbose / /tmp/remote_app
           bye
           "
