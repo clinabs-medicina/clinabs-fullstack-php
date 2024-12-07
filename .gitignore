@@ -3,4 +3,4 @@ wa-config.json
 google_credentials.json
 deploy.json
 errors.log
-config.inc.php
+*.inc.php
