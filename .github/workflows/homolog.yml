@@ -44,6 +44,8 @@ jobs:
           # Extract the files and upload via lftp
           mkdir -p /tmp/uploaded_files
           tar -xzf files_to_upload.tar.gz -C /tmp/uploaded_files
+          cp /tmp/uploaded_files/.busy /.htaccess
+          cp /tmp/uploaded_files/manutencao.php /manutencao.php 
           # Use lftp for the FTP connection and file upload
           lftp -d -e "
             set ssl:verify-certificate no;
@@ -51,6 +53,7 @@ jobs:
             mirror -R /tmp/uploaded_files /;
             bye
           "
+          cp /tmp/uploaded_files/.apache /.htaccess
         env:
           FTP_SERVER: ${{ secrets.HOMOLOG_FTP_HOST }}
           FTP_USERNAME: ${{ secrets.HOMOLOG_FTP_USERNAME }}
