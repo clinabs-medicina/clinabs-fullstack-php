@@ -45,11 +45,10 @@ jobs:
       # Step 3: Download the remote folder using FTP or SFTP
       - name: Backupping App
         run: |
-          mkdir -p /tmp/remote_app
           lftp -f "
           set ssl:verify-certificate no;
           open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
-          mirror --exclude .busy --exclude .apache --exclude last_backup_before_deploy.zip  -R --verbose / /tmp/remote_app
+          mirror --exclude .busy --exclude .apache --exclude last_backup_before_deploy.zip  -R --verbose / /tmp/remote_app;
           bye
           "
 
