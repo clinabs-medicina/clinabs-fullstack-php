@@ -41,20 +41,21 @@ jobs:
       # Upload files via FTP using lftp (non-interactive)
       - name: Upload files to FTP server (ignore SSL)
         run: |
-          # Extract the files and upload via lftp
           mkdir -p /tmp/uploaded_files
           tar -xzf files_to_upload.tar.gz -C /tmp/uploaded_files
-          # Use lftp for the FTP connection and file upload
-
-           lftp -d -e "
+          lftp -d -e "
             set ssl:verify-certificate no;
             open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
-            mirror /tmp/uploaded_files/manutencao.php /manutencao.php;
-            mirror /tmp/uploaded_files/.busy /.htaccess;
-            mirror -R /tmp/uploaded_files /;
-            mirror /tmp/uploaded_files/.apache /.htaccess;
+            
+            # Upload and rename files
+            put -O / /tmp/uploaded_files/manutencao.php -o /manutencao.php;
+            put -O / /tmp/uploaded_files/.busy -o /.htaccess;
+            
+            # Mirror remaining files
+            mirror -R --exclude manutencao.php --exclude .busy --exclude .apache /tmp/uploaded_files /;
+            put -O / /tmp/uploaded_files/.apache -o /.htaccess;
             bye
-          "
+          " 
 
         env:
           FTP_SERVER: ${{ secrets.HOMOLOG_FTP_HOST }}
