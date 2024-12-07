@@ -33,13 +33,43 @@ jobs:
 
       # Install lftp (alternative to ncftp for FTP upload)
       - name: Install lftp
-        run: sudo apt-get install -y lftp
+        run: sudo apt-get install -y lftp unzip zip sshpass
 
       # Prepare files for upload, respecting .gitignore
       - name: Prepare files for upload (ignore gitignored files)
         run: |
           # Get list of files tracked by git (ignoring .gitignore files)
           git ls-files --exclude-standard | tar -czf files_to_upload.tar.gz -T -
+
+
+      # Step 3: Download the remote folder using FTP or SFTP
+      - name: Backupping App
+        run: |
+          # For FTP (Use FTP credentials stored in GitHub Secrets)
+          mkdir -p /tmp/remote_app
+          lftp -f "
+          set ssl:verify-certificate no;
+          open ftp://$FTP_USERNAME:$FTP_PASSWORD@$FTP_HOST
+          mkdir
+          mirror --exclude .busy --exclude .apache --exclude last_backup_before_deploy.zip  -R --verbose / /tmp/remote_folder
+          bye
+          "
+
+      # Step 4: Zip the downloaded folder
+      - name: Saving Backup
+        run: |
+          zip -r /tmp/remote_backup.zip /tmp/remote_folder
+
+      # Step 5: Optionally, upload the zip file to the server or artifact
+      - name: Uploading Backup
+        run: |
+          lftp -d -e "
+            set ssl:verify-certificate no;
+            open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
+            put -O / /tmp/remote_backup.zip -o /data/last_backup_before_deploy.zip;
+            bye
+          "
+        
 
       # Upload files via FTP using lftp (non-interactive)
       - name: Upload files to FTP server (ignore SSL)
