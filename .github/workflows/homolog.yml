@@ -45,16 +45,17 @@ jobs:
           mkdir -p /tmp/uploaded_files
           tar -xzf files_to_upload.tar.gz -C /tmp/uploaded_files
           # Use lftp for the FTP connection and file upload
-          lftp -d -e "
-            cp /tmp/uploaded_files/.busy /.htaccess;
-            cp /tmp/uploaded_files/manutencao.php /manutencao.php;
+
+           lftp -d -e "
             set ssl:verify-certificate no;
             open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
+            mirror /tmp/uploaded_files/manutencao.php /manutencao.php;
+            mirror /tmp/uploaded_files/.busy /.htaccess;
             mirror -R /tmp/uploaded_files /;
-            cp /tmp/uploaded_files/.apache /.htaccess;
+            mirror /tmp/uploaded_files/.apache /.htaccess
             bye
           "
-          cp /tmp/uploaded_files/.apache /.htaccess
+
         env:
           FTP_SERVER: ${{ secrets.HOMOLOG_FTP_HOST }}
           FTP_USERNAME: ${{ secrets.HOMOLOG_FTP_USERNAME }}
