@@ -48,7 +48,7 @@ jobs:
           lftp -f "
           set ssl:verify-certificate no;
           open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
-          mirror --exclude .busy --exclude .apache --exclude last_backup_before_deploy.zip  -R --verbose / /tmp/remote_app;
+          mirror --reverse --exclude .busy --exclude .apache --exclude last_backup_before_deploy.zip --verbose / /tmp/remote_app;
           bye
           "
 
