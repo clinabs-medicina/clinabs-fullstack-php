@@ -6,7 +6,7 @@ ini_set('display_errors', 1);
 set_time_limit(300); // Define o limite para 300 segundos (5 minutos)
 header("pragma: no-cache");
 
-if(isset($_REQUEST['tb'])) {
+if(isset($_REQUEST['tb']) && isset($_COOKIE['sessid_clinabs'])) {
     if(isset($_REQUEST['q'])) {
         if(strtolower($_REQUEST['tb']) == 'medicos') {
             $dados = $pdo->query("SELECT id,identidade_genero,".implode(', ', explode(',', $_REQUEST['key']))." AS text FROM ".strtoupper($_REQUEST['tb']).' WHERE LOWER('.$_REQUEST['key'].') LIKE "%'.strtolower($_REQUEST['q']).'%" AND status = "ATIVO" ORDER BY id ASC;');

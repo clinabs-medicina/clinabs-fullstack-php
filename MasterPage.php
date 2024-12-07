@@ -276,7 +276,7 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
     <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="/assets/js/clinabs.modules.js"></script>
     <script type="text/javascript" src="/assets/js/agenda.module.js"></script>
-
+    <script type="text/javascript" src="/assets/js/agendamento.js"></script>
     <?php
     /*
       if($warningMsg !== false && $warningMsg !== null) {

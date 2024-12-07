@@ -260,3 +260,19 @@ Stack trace:
 #1 C:\xampp\htdocs\perfil\index.php(102): require_once('C:\\xampp\\htdocs...')
 #2 {main}
   thrown in C:\xampp\htdocs\perfil\main.php on line 1139
+[07-Dec-2024 15:04:28 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function dueDate() in /home/clinabs/web/dev.clinabs.com.br/public_html/form/agendamento.manual.php:156
+Stack trace:
+#0 {main}
+  thrown in /home/clinabs/web/dev.clinabs.com.br/public_html/form/agendamento.manual.php on line 156
+[07-Dec-2024 15:07:30 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Attempt to assign property "socket" on false in /home/clinabs/web/dev.clinabs.com.br/public_html/forms/whereby.sync.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/clinabs/web/dev.clinabs.com.br/public_html/forms/whereby.sync.php on line 8
+[07-Dec-2024 15:07:58 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Attempt to assign property "socket" on false in /home/clinabs/web/dev.clinabs.com.br/public_html/forms/whereby.sync.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/clinabs/web/dev.clinabs.com.br/public_html/forms/whereby.sync.php on line 8
+[07-Dec-2024 15:08:30 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Attempt to assign property "socket" on false in /home/clinabs/web/dev.clinabs.com.br/public_html/forms/whereby.sync.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/clinabs/web/dev.clinabs.com.br/public_html/forms/whereby.sync.php on line 8
