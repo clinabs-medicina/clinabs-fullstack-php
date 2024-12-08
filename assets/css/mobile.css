@@ -3411,6 +3411,16 @@ button.btn-table-item {
 }
 
 
+<<<<<<< HEAD
+@media (max-width: 800px) {
+  .tab-toolbar {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-content: center;
+      justify-content: center;
+      align-items: stretch;
+=======
 input[type="radio"] {
   width: 22px !important;
   height: 22px !important;
@@ -3489,6 +3499,7 @@ input.strike {
     align-content: center;
     justify-content: center;
     align-items: stretch;
+>>>>>>> homolog
   }
 
   .tab-toolbar span {
@@ -3549,4 +3560,42 @@ input.strike {
     font-weight: bold;
   }
 
+<<<<<<< HEAD
+  .form-footer {
+    margin: 1rem 2rem;
+  }
+
+  .swal2-container .row {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 0 !important;
+    gap: 0rem !important;
+  }
+
+  .form-group-checkbox {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .row .form-group-checkbox {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: space-around;
+    justify-content: center;
+    align-items: center;
+  }
+=======
+>>>>>>> homolog
 }

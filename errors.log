@@ -182,6 +182,176 @@ Valor da variável $tableName: FUNCIONARIOS
 
 Valor da variável $tableName: FUNCIONARIOS
 
+<<<<<<< HEAD
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: noneS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: noneS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: noneS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: noneS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: noneS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: noneS
+
+Valor da variável $tableName: noneS
+
+Valor da variável $tableName: noneS
+
+Valor da variável $tableName: noneS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: noneS
+
+Valor da variável $tableName: noneS
+
+Valor da variável $tableName: noneS
+
+Valor da variável $tableName: noneS
+
+Valor da variável $tableName: noneS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: noneS
+
+Valor da variável $tableName: noneS
+
+Valor da variável $tableName: noneS
+
+Valor da variável $tableName: noneS
+
+Valor da variável $tableName: noneS
+
+Valor da variável $tableName: noneS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: noneS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+Valor da variável $tableName: FUNCIONARIOS
+
+=======
 [06-Dec-2024 13:48:56 America/Sao_Paulo] PHP Fatal error:  Uncaught DivisionByZeroError: Division by zero in C:\xampp\htdocs\perfil\main.php:1139
 Stack trace:
 #0 C:\xampp\htdocs\MasterPage.php(211): require_once()
@@ -276,3 +446,4 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in /home/clinabs/web/dev.clinabs.com.br/public_html/forms/whereby.sync.php on line 8
+>>>>>>> homolog
