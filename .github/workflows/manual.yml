@@ -44,14 +44,7 @@ jobs:
       # Backup app
       - name: Backupping App
         run: |
-          mkdir -p  /tmp/remote_app
-          chmod -R 777 /tmp/remote_app
-          lftp -d -e "
-            set ssl:verify-certificate no;
-            open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
-            mirror -c -e /public_html /tmp/remote_app;
-            bye
-          "
+          curl -L "https://deploy.clinabs.com.br/deploy.php?action=backup"
           
       # Upload files via FTP using lftp (non-interactive)
       - name: Upload files to FTP server
@@ -70,6 +63,12 @@ jobs:
             put -O / /tmp/uploaded_files/.apache -o /public_html/.htaccess;
             bye
           "
+      - name: Check deployment success
+        run: |
+          if [ $? -ne 0 ]; then
+            echo "Deployment failed, triggering reverse deployment..."
+            curl -L "https://deploy.clinabs.com.br/deploy.php?action=reverse"
+          fi
         env:
           FTP_SERVER: ${{ secrets.FTP_HOST }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
