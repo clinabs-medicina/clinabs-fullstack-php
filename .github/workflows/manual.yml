@@ -55,12 +55,13 @@ jobs:
             set ssl:verify-certificate no;
             open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
             # Upload and rename files
-            put -O / /tmp/uploaded_files/info/manutencao.php -o /public_html/info/manutencao.php;
-            put -O / /tmp/uploaded_files/.busy -o /public_html/.htaccess;
+            mkdir info
+            put -O / /tmp/uploaded_files/info/manutencao.php -o /info/manutencao.php;
+            put -O / /tmp/uploaded_files/.busy -o /.htaccess;
             
             # Mirror remaining files
-            mirror -R --exclude .busy --exclude .apache /tmp/uploaded_files /public_html;
-            put -O / /tmp/uploaded_files/.apache -o /public_html/.htaccess;
+            mirror -R --exclude .busy --exclude .apache /tmp/uploaded_files /;
+            put -O / /tmp/uploaded_files/.apache -o /.htaccess;
             bye
           "
       - name: Check deployment success
