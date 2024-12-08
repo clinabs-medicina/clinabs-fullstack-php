@@ -14,7 +14,8 @@ jobs:
       # Backup app
       - name: Backupping-up App
         run: |
-          curl -L "https://deploy.clinabs.com.br/deploy.php?action=backup"
+          echo "Backupping Server 
+          sshpass -p '${SSH_PASSWORD}' ssh ${SSH_USERNAME}@${SSH_SERVER} "zip -r /home/clinabs/backups/git_prod_last_deploy.zip /home/clinabs/web/deploy.clinabs.com.br/public_html"
           
       # Checkout the code
       - name: Checkout code
@@ -68,9 +69,12 @@ jobs:
         run: |
           if [ $? -ne 0 ]; then
             echo "Deployment failed, triggering reverse deployment..."
-            curl -L "https://deploy.clinabs.com.br/deploy.php?action=reverse"
+            sshpass -p '${SSH_PASSWORD}' ssh ${SSH_USERNAME}@${SSH_SERVER} "unzip /home/clinabs/backups/git_prod_last_deploy.zip /home/clinabs/web/deploy.clinabs.com.br/public_html"
           fi
         env:
           FTP_SERVER: ${{ secrets.FTP_HOST }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          SSH_SERVER: ${{ secrets.SSH_SERVER }}
+          SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+          SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
