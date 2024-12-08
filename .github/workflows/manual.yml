@@ -46,8 +46,9 @@ jobs:
       - name: Backupping App
         run: |
           mkdir -p /tmp/remote_app
-          lftp -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER} -e "
+          lftp -e "
           set ssl:verify-certificate no;
+          open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
           set ftp:list-options -a;
           mirror --verbose --continue --parallel=5 / /tmp/remote_app;
           bye;
