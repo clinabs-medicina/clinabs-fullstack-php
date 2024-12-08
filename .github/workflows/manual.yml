@@ -41,6 +41,17 @@ jobs:
           # Get list of files tracked by git (ignoring .gitignore files)
           git ls-files --exclude-standard | tar -czf files_to_upload.tar.gz -T -
 
+      # Backup app
+      - name: Backupping App
+        run: |
+          mkdir -p  /tmp/remote_app
+          lftp -d -e "
+            set ssl:verify-certificate no;
+            open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
+            mirror -c -e /public_html /tmp/remote_app;
+            bye
+          "
+          
       # Upload files via FTP using lftp (non-interactive)
       - name: Upload files to FTP server
         run: |
@@ -49,8 +60,6 @@ jobs:
           lftp -d -e "
             set ssl:verify-certificate no;
             open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
-            mv public_html public_app;
-            mkdir public_html;
             # Upload and rename files
             put -O / /tmp/uploaded_files/info/manutencao.php -o /public_html/manutencao.php;
             put -O / /tmp/uploaded_files/.busy -o /public_html/.htaccess;
