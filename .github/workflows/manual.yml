@@ -63,7 +63,7 @@ jobs:
             bye
           "
       # Check Deploy
-      - name: Backupping-up App
+      - name: Check Deploy
         run: |
           if [ $? -ne 0 ]; then
             echo "Deployment failed, triggering reverse deployment..."
