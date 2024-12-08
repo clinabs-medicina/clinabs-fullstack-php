@@ -5,20 +5,17 @@ on:
     branches:
       - main  # Trigger on push to the main branch (after merge)
 
-jobs:
-  Backup:
+jobs: 
+  Deploy:
     runs-on: ubuntu-latest
 
     steps:
+
       # Backup app
       - name: Backupping-up App
         run: |
           curl -L "https://deploy.clinabs.com.br/deploy.php?action=backup"
           
-  Deploy:
-    runs-on: ubuntu-latest
-
-    steps:
       # Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
@@ -67,7 +64,7 @@ jobs:
             put -O / /tmp/uploaded_files/.apache -o /public_html/.htaccess;
             bye
           "
-      - name: Check deployment success
+      - name: Check deployment
         run: |
           if [ $? -ne 0 ]; then
             echo "Deployment failed, triggering reverse deployment..."
@@ -77,15 +74,3 @@ jobs:
           FTP_SERVER: ${{ secrets.FTP_HOST }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-      
-  Checkout:
-      runs-on: ubuntu-latest
-
-      steps:
-        # Backup app
-        - name: Checkout Deploy
-          run: |
-            if [ $? -ne 0 ]; then
-              echo "Deployment failed, triggering reverse deployment..."
-              curl -L "https://deploy.clinabs.com.br/deploy.php?action=reverse"
-            fi
