@@ -3,9 +3,8 @@ name: Deploy to Production
 on:
   push:
     branches:
-      - main  # Trigger on push to the main branch (after merge)
-
-jobs:    
+      - homolog  # Trigger on push to the main branch (after merge)
+jobs:
   Deploy:
     runs-on: ubuntu-latest
 
@@ -14,7 +13,7 @@ jobs:
       - name: Backupping-up App
         run: |
           curl -s "https://deploy.clinabs.com.br/deploy.php?action=backup"
-          
+
       # Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
@@ -23,40 +22,38 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'  # Adjust PHP version as required
+          php-version: '8.2'  # Adjust PHP version as required
 
-      # Install Composer dependencies (optional, adjust if using Composer)
+      # Install Composer dependencies
       - name: Install Composer dependencies
         run: |
           curl -sS https://getcomposer.org/installer | php
           php composer.phar install --no-interaction
-
       # Validate PHP code (Linting)
-      #- name: Validate PHP code
-        #run: |
-          #find . -type f -name "*.php" -exec php -l {} \;
+      - name: Validate PHP code
+        run: |
+          find . -type f -name "*.php" -exec php -l {} \;
 
       # Install lftp (alternative to ncftp for FTP upload)
-      - name: Configuring FTP Client
-        run: sudo apt-get install -y lftp unzip zip sshpass
+      - name: Install lftp
+        run: sudo apt-get install -y lftp
 
       # Prepare files for upload, respecting .gitignore
-      - name: Prepare files for upload
+      - name: Prepare files for upload (ignore gitignored files)
         run: |
           # Get list of files tracked by git (ignoring .gitignore files)
           git ls-files --exclude-standard | tar -czf files_to_upload.tar.gz -T -
-
       # Upload files via FTP using lftp (non-interactive)
-      - name: Deploying
+      - name: Upload files to FTP server (ignore SSL)
         run: |
           mkdir -p /tmp/uploaded_files
           tar -xzf files_to_upload.tar.gz -C /tmp/uploaded_files
           lftp -d -e "
             set ssl:verify-certificate no;
             open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
+            
             # Upload and rename files
-            mkdir info
-            put -O / /tmp/uploaded_files/info/manutencao.php -o /info/manutencao.php;
+            put -O / /tmp/uploaded_files/info/manutencao.php -o /manutencao.php;
             put -O / /tmp/uploaded_files/.busy -o /.htaccess;
             
             # Mirror remaining files
@@ -64,7 +61,8 @@ jobs:
             put -O / /tmp/uploaded_files/.apache -o /.htaccess;
             bye
           "
-      - name: Check deployment success
+      # Check Deploy
+      - name: Backupping-up App
         run: |
           if [ $? -ne 0 ]; then
             echo "Deployment failed, triggering reverse deployment..."
