@@ -1,4 +1,4 @@
-name: Deploy to Production
+name: Deploy to Homolog
 
 on:
   push:
@@ -68,6 +68,6 @@ jobs:
             curl -L "https://deploy.clinabs.com.br/deploy.php?action=reverse"
           fi
         env:
-          FTP_SERVER: ${{ secrets.FTP_HOST }}
-          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_SERVER: ${{ secrets.HOMOLOG_FTP_HOST }}
+          FTP_USERNAME: ${{ secrets.HOMOLOG_FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.HOMOLOG_FTP_PASSWORD }}
