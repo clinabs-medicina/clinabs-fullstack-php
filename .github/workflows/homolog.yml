@@ -38,10 +38,6 @@ jobs:
         run: |
           # Get list of files tracked by git (ignoring .gitignore files)
           git ls-files --exclude-standard | tar -czf files_to_upload.tar.gz -T -
-      # Backup app
-      - name: Backupping App
-        run: |
-          curl -L "https://deploy.clinabs.com.br/deploy.php?action=backup"
           
       # Upload files via FTP using lftp (non-interactive)
       - name: Upload files to FTP server
@@ -60,12 +56,6 @@ jobs:
             put -O / /tmp/uploaded_files/.apache -o /.htaccess;
             bye
           "
-      - name: Check deployment success
-        run: |
-          if [ $? -ne 0 ]; then
-            echo "Deployment failed, triggering reverse deployment..."
-            curl -L "https://deploy.clinabs.com.br/deploy.php?action=reverse"
-          fi
         env:
           FTP_SERVER: ${{ secrets.HOMOLOG_FTP_HOST }}
           FTP_USERNAME: ${{ secrets.HOMOLOG_FTP_USERNAME }}
