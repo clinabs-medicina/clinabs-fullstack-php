@@ -52,8 +52,8 @@ jobs:
           set ftp:list-options -a;
           mirror --verbose --continue --parallel=5 / /tmp/remote_app;
           bye;
-        "
-
+          "
+         
       # Step 4: Zip the downloaded folder
       - name: Saving Backup
         run: |
