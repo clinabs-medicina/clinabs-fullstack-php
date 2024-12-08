@@ -6,6 +6,15 @@ on:
       - main  # Trigger on push to the main branch (after merge)
 
 jobs:
+  Backup:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Backup app
+      - name: Backupping-up App
+        run: |
+          curl -L "https://deploy.clinabs.com.br/deploy.php?action=backup"
+          
   Deploy:
     runs-on: ubuntu-latest
 
@@ -32,22 +41,17 @@ jobs:
           #find . -type f -name "*.php" -exec php -l {} \;
 
       # Install lftp (alternative to ncftp for FTP upload)
-      - name: Install lftp
+      - name: Configuring FTP Client
         run: sudo apt-get install -y lftp unzip zip sshpass
 
       # Prepare files for upload, respecting .gitignore
-      - name: Prepare files for upload (ignore gitignored files)
+      - name: Prepare files for upload
         run: |
           # Get list of files tracked by git (ignoring .gitignore files)
           git ls-files --exclude-standard | tar -czf files_to_upload.tar.gz -T -
 
-      # Backup app
-      - name: Backupping App
-        run: |
-          curl -L "https://deploy.clinabs.com.br/deploy.php?action=backup"
-          
       # Upload files via FTP using lftp (non-interactive)
-      - name: Upload files to FTP server
+      - name: Deploying
         run: |
           mkdir -p /tmp/uploaded_files
           tar -xzf files_to_upload.tar.gz -C /tmp/uploaded_files
@@ -73,3 +77,15 @@ jobs:
           FTP_SERVER: ${{ secrets.FTP_HOST }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+      
+  Checkout:
+      runs-on: ubuntu-latest
+
+      steps:
+        # Backup app
+        - name: Validating Deploy
+          run: |
+            if [ $? -ne 0 ]; then
+              echo "Deployment failed, triggering reverse deployment..."
+              curl -L "https://deploy.clinabs.com.br/deploy.php?action=reverse"
+            fi
