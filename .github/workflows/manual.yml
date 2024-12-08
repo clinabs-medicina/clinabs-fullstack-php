@@ -45,14 +45,14 @@ jobs:
       # Step 3: Download the remote folder using FTP or SFTP
       - name: Backupping App
         run: |
-          mkdir -p /tmp/remote_app
-          lftp -e "
-          set ssl:verify-certificate no;
-          open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
-          mv public_html private_app
-          mkdir -p public_html
-          bye;
+          lftp -d -e "
+              set ssl:verify-certificate no;
+              open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
+              mv public_html public_app;
+              mkdir public_html;
+              bye
           "
+
          
       # Step 4: Zip the downloaded folder
       - name: Saving Backup
@@ -78,7 +78,6 @@ jobs:
           lftp -d -e "
             set ssl:verify-certificate no;
             open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
-            glob -v rm -r -- !(data|tmp|config.inc.php)
             # Upload and rename files
             put -O / /tmp/uploaded_files/info/manutencao.php -o /public_html/manutencao.php;
             put -O / /tmp/uploaded_files/.busy -o /public_html/.htaccess;
