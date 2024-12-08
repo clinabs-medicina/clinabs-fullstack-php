@@ -83,7 +83,7 @@ jobs:
 
       steps:
         # Backup app
-        - name: Validating Deploy
+        - name: Checkout Deploy
           run: |
             if [ $? -ne 0 ]; then
               echo "Deployment failed, triggering reverse deployment..."
