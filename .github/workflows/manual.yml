@@ -49,8 +49,7 @@ jobs:
           lftp -e "
           set ssl:verify-certificate no;
           open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
-          set ftp:list-options -a;
-          mirror --verbose --continue --parallel=5 / /tmp/remote_app;
+          mirror / /tmp/remote_app;
           bye;
           "
          
