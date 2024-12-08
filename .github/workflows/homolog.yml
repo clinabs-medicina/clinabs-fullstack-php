@@ -3,8 +3,7 @@ name: Deploy to Homolog
 on:
   push:
     branches:
-      - homolog  # Trigger on push to the main branch (after merge)
-
+      - homolog
 jobs:
   Deploy:
     runs-on: ubuntu-latest
