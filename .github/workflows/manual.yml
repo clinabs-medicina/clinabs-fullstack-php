@@ -10,10 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Backup App
-        run: |
-          curl -s "https://deploy.clinabs.com.br/deploy.php?action=backup"
-          
       # Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
@@ -60,12 +56,6 @@ jobs:
             put -O / /tmp/uploaded_files/.apache -o /.htaccess;
             bye
           "
-      - name: Check deployment success
-        run: |
-          if [ $? -ne 0 ]; then
-            echo "Deployment failed, triggering reverse deployment..."
-            curl -L "https://deploy.clinabs.com.br/deploy.php?action=reverse"
-          fi
           
         env:
           FTP_SERVER: ${{ secrets.FTP_HOST }}
