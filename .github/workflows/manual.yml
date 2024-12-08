@@ -13,7 +13,7 @@ jobs:
       # Backup app
       - name: Backupping-up App
         run: |
-          curl -s "https://deploy.clinabs.com.br/deploy.php?action=backup"
+          curl -L "https://deploy.clinabs.com.br/deploy.php?action=backup"
           
   Deploy:
     runs-on: ubuntu-latest
@@ -87,5 +87,5 @@ jobs:
           run: |
             if [ $? -ne 0 ]; then
               echo "Deployment failed, triggering reverse deployment..."
-              curl -s "https://deploy.clinabs.com.br/deploy.php?action=reverse"
+              curl -L "https://deploy.clinabs.com.br/deploy.php?action=reverse"
             fi
