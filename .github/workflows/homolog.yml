@@ -5,9 +5,16 @@ on:
     branches:
       - homolog  # Trigger on push to the main branch (after merge)
 jobs:
-  build_and_deploy:
+  Backup:
     runs-on: ubuntu-latest
 
+  Deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        run: |
+          
     steps:
       # Checkout the code
       - name: Checkout code
@@ -63,7 +70,7 @@ jobs:
           lftp -d -e "
             set ssl:verify-certificate no;
             open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
-            
+            glob -v rm -r -- !(data|tmp|config.inc.php)
             # Upload and rename files
             put -O / /tmp/uploaded_files/info/manutencao.php -o /manutencao.php;
             put -O / /tmp/uploaded_files/.busy -o /.htaccess;
