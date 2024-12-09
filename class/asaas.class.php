@@ -215,8 +215,12 @@ class ASAAS {
     return $this->post('payments', $data);
   }
 
-  public function listarCobrancas() {
-    return $this->get('payments?limit=10000')->data;
+  public function listarCobrancas($status = null, $dueDate = null) {
+    if($status != null && $dueDate != null) {
+      return $this->get("payments?limit=10000&status=PENDING&dueDate[le]={$dueDate}")->data;
+    } else {
+      return $this->get('payments?limit=10000')->data;
+    }
   }
 
   public function getCobranca($id) {
@@ -227,8 +231,8 @@ class ASAAS {
     return $this->delete("payments/{$id}");
   }
 
-  public function estornarCobranca($id) {
-    return $this->post("payments/{$id}/refund");
+  public function desfazerCobrancaRemovida($id) {
+    return $this->post("payments/{$id}/restore");
   }
 
   public function getPixInfo($id) {
@@ -398,36 +402,45 @@ class ASAAS {
       
   
       public function create_or_get_client(string $token, string $nome, string $cpf, string $email, string $celular) {
-        $data = [
-            'name' => trim(strtoupper($nome)), 
-            'cpfCnpj' => trim(preg_replace("/[^A-Za-z0-9]/", "", $cpf)), 
-            'email' => trim(strtolower($email)), 
-            'mobilePhone' => trim(preg_replace("/[^A-Za-z0-9]/", "", $celular)), 
-            'notificationDisabled' => true,
-            'groupName' => 'PACIENTES', 
-            'company' => 'CLINABS', 
-            'externalReference' => trim($token)
-          ];
+        try {
+            $data = [
+              'name' => trim(strtoupper($nome)), 
+              'cpfCnpj' => trim(preg_replace("/[^A-Za-z0-9]/", "", $cpf)), 
+              'email' => trim(strtolower($email)), 
+              'mobilePhone' => trim(preg_replace("/[^A-Za-z0-9]/", "", $celular)), 
+              'notificationDisabled' => true,
+              'groupName' => 'PACIENTES', 
+              'company' => 'CLINABS', 
+              'externalReference' => trim($token)
+            ];
 
-        $clients = $this->getClients();
-        $c = [];
+          $clients = $this->getClients();
+          $c = [];
 
-        $exists = false;
+          $exists = false;
 
-        foreach($clients as $client) {
-            if($client->externalReference == trim($token) || $client->cpfCnpj == trim(preg_replace("/[^A-Za-z0-9]/", "", $cpf))) {
-                $exists = true;
-                $c = $client;
-                break;
-            }
-        }
+          foreach($clients as $client) {
+              if($client->externalReference == trim($token) || $client->cpfCnpj == trim(preg_replace("/[^A-Za-z0-9]/", "", $cpf))) {
+                  $exists = true;
+                  $c = $client;
+                  break;
+              }
+          }
 
-        if($exists) {
-            return $c;
-        } else {
-            $response = $this->request('POST', 'customers', $data);
-            file_put_contents("aaaag-user-new.txt", print_r($response, true));
-            return $response;
+          if($exists) {
+              return $c;
+          } else {
+              try {
+                $response = $this->request('POST', 'customers', $data);
+
+                return $response;
+              } catch(Exception $ex) {
+                return null;
+              }
+             
+          }
+        } catch(Exception $ex) {
+          return null;
         }
       }
 
@@ -497,7 +510,6 @@ class ASAAS {
         return 'Ocorreu um Erro ao Processar a Solicitação';
       }
   }
-
 
   private function post($path, $data = []) {
     $client = new \GuzzleHttp\Client();

@@ -155,7 +155,11 @@ foreach($rows as $row) {
         <h1 class="titulo-h1"><?=($user->tipo == 'PACIENTE' ? 'Meus Agendamentos':'Agenda do Médico')?></h1>
         <br>
         <div class="toolbar-btns">
-          <button id="btn_newAgendamento" class="btn-button1">NOVO AGENDAMENTO</button>
+          <?php
+            if($user->tipo == 'FUNCIONARIO') {
+              echo '<button id="btn_newAgendamento" class="btn-button1">NOVO AGENDAMENTO</button>';
+            }
+          ?>
         </div>
     </section>
     <div class="flex-container produtos-flex">
