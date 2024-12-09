@@ -1,7 +1,7 @@
 stdClass Object
 (
     [object] => payment
-    [id] => pay_2lvb9zxi6h4kd1dc
+    [id] => pay_xfq9loj7j46mw26w
     [dateCreated] => 2024-12-09
     [customer] => cus_000006177276
     [paymentLink] => 
@@ -15,14 +15,14 @@ stdClass Object
     [creditCard] => 
     [pixTransaction] => 
     [status] => PENDING
-    [dueDate] => 2024-12-10
-    [originalDueDate] => 2024-12-10
+    [dueDate] => 2024-12-09
+    [originalDueDate] => 2024-12-09
     [paymentDate] => 
     [clientPaymentDate] => 
     [installmentNumber] => 
-    [invoiceUrl] => https://sandbox.asaas.com/i/2lvb9zxi6h4kd1dc
-    [invoiceNumber] => 07167038
-    [externalReference] => 2003b3ec32c6c38e70e7176add6e717c6756fbb90f9b1
+    [invoiceUrl] => https://sandbox.asaas.com/i/xfq9loj7j46mw26w
+    [invoiceNumber] => 07167938
+    [externalReference] => 2003b3ec32c6c38e70e7176add6e717c67572c1101656
     [deleted] => 
     [anticipated] => 
     [anticipable] => 

@@ -231,8 +231,8 @@ class ASAAS {
     return $this->delete("payments/{$id}");
   }
 
-  public function estornarCobranca($id) {
-    return $this->post("payments/{$id}/refund");
+  public function desfazerCobrancaRemovida($id) {
+    return $this->post("payments/{$id}/restore");
   }
 
   public function getPixInfo($id) {

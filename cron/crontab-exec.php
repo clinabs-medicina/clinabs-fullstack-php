@@ -15,16 +15,26 @@ if (strtotime(date('H:i')) >= strtotime('07:00') && strtotime(date('H:i')) <= st
     if($stmt->rowCount() > 0) {
         foreach($rows as $row) {
             if(date('Y-m-d H:i', strtotime($row->data)) == date('Y-m-d H:i')) {
-                $wa->sendLinkMessage(
-                    $row->celular,  
-                    $row->message, 
-                    $row->link ?? 'https://clinabs.com/agenda', 
-                    'CLINABS', 
-                    'Lembrete de Consulta', 
-                    'https://clinabs.com/assets/images/logo.png'
-                );
+                if($row->type == 'AGENDA_MED') {
+                    $wa->sendLinkMessage(
+                        $row->celular,  
+                        $row->message, 
+                        $row->link ?? 'https://clinabs.com/agenda', 
+                        'CLINABS', 
+                        'Lembrete de Consulta', 
+                        'https://clinabs.com/assets/images/logo.png'
+                    );
+    
+                    $pdo->query("UPDATE `CRONTAB` SET `status` = 'FINALIZADO' WHERE `id` = '{$row->id}'");
+                } else if($row->type == 'DELETE_PAYMENT'){
+                    $payment = $asaas->getCobranca($row->payment_id);
 
-                $pdo->query("UPDATE `CRONTAB` SET `status` = 'FINALIZADO' WHERE `id` = '{$row->id}'");
+                    if($payment->status == 'PENDING' || $payment->status == 'OVERDUE') {
+                        $asaas->deleteCobranca($row->payment_id);
+                        $asaas->desfazerCobrancaRemovida($row->payment_id);
+                        $pdo->query("UPDATE `CRONTAB` SET `status` = 'FINALIZADO' WHERE `payment_id` = '{$row->payment_id}'");
+                    }
+                }
             } else {
                 
             }
