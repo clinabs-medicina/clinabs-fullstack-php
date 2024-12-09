@@ -45,22 +45,19 @@ function newAtestado() {
         didOpen: function () {
             $("#data-afastamento").val((new Date).toUTCString());
             $("#dias_afastamento").mask("00 dia(s)");
-            $.get(`/form/endereco.medico.php?medico_token=${
-                $('meta[name="user-id"]').attr("content")
-            }`).done(function (e) {
-                if ("data" in e) {
-                    for (let a = 0; a < e.data.length; a++) {
-                        let t = e.data[a];
-                        if (t.token !== null) {
-                            $("#local_atendimento").append(`<option value="${
-                                t.token
-                            }">${
-                                t.nome
-                            }</option>`);
+            $.get(`/form/endereco.medico.php?medico_token=${$('meta[name="user-id"]').attr("content")
+                }`).done(function (e) {
+                    if ("data" in e) {
+                        for (let a = 0; a < e.data.length; a++) {
+                            let t = e.data[a];
+                            if (t.token !== null) {
+                                $("#local_atendimento").append(`<option value="${t.token
+                                    }">${t.nome
+                                    }</option>`);
+                            }
                         }
                     }
-                }
-            });
+                });
         },
         showConfirmButton: true,
         showDenyButton: true,
@@ -70,23 +67,15 @@ function newAtestado() {
         if (e.isConfirmed) {
             let a = document.createElement("a");
             a.setAttribute("target", "_atestado");
-            a.setAttribute("href", `/api/pdf/atestado.php?date=${
-                $("#data-afastamento").val()
-            }&time=${
-                $("#hora-afastamento").val()
-            }&paciente_token=${
-                $("table[data-user]").data("user")
-            }&medico_token=${
-                $('meta[name="user-id"]').attr("content")
-            }&motivo=${
-                $("#motivo").val()
-            }&cid=${
-                $("#cid").val()
-            }&afastamento=${
-                $("#dias_afastamento").val()
-            }&local=${
-                $("#local_atendimento").val()
-            }`);
+            a.setAttribute("href", `/api/pdf/atestado.php?date=${$("#data-afastamento").val()
+                }&time=${$("#hora-afastamento").val()
+                }&paciente_token=${$("table[data-user]").data("user")
+                }&medico_token=${$('meta[name="user-id"]').attr("content")
+                }&motivo=${$("#motivo").val()
+                }&cid=${$("#cid").val()
+                }&afastamento=${$("#dias_afastamento").val()
+                }&local=${$("#local_atendimento").val()
+                }`);
             a.click();
         }
     });
@@ -224,9 +213,8 @@ function alterar_agendamento(e) {
           <div class="col-6">
               <div class="form-group">
                   <label for="valor_consulta">Valor da Consulta</label>
-                  <input readonly id="valor_consulta" name="valor_consulta" type="text" class="swal2-input" value="R$ ${
-                a.valor
-            }">
+                  <input readonly id="valor_consulta" name="valor_consulta" type="text" class="swal2-input" value="R$ ${a.valor
+                }">
               </div>
           </div>
   
@@ -299,13 +287,11 @@ function alterar_agendamento(e) {
                             let i = t.results[o];
                             let n = i.sexo === "MASCULINO" ? "Dr." : "Dra.";
                             if (i.id == a.mid) {
-                                var l = new Option(`${n} ${
-                                    i.text
-                                }`, i.id, false, true);
+                                var l = new Option(`${n} ${i.text
+                                    }`, i.id, false, true);
                             } else {
-                                var l = new Option(`${n} ${
-                                    i.text
-                                }`, i.id, false, false);
+                                var l = new Option(`${n} ${i.text
+                                    }`, i.id, false, false);
                             }
                             l.setAttribute("data-online", i.valor_consulta_online);
                             l.setAttribute("data-presencial", i.valor_consulta);
@@ -368,14 +354,14 @@ function alterar_agendamento(e) {
                 preloader("Validando Solicita\xE7\xE3o....");
                 $.post("/form/form.ag.alter.php", a).done(function (e) {
                     if (e.status === "success") {
-                        Swal.fire({title: "Aten\xE7\xE3o", text: "Sua Solicita\xE7\xE3o de Altera\xE7\xE3o do Agendamento foi Enviado com sucesso!\n\nAguarde a Confirma\xE7\xE3o da Altera\xE7\xE3o.", icon: "success", allowOutsideClick: false}).then(function () {
+                        Swal.fire({ title: "Aten\xE7\xE3o", text: "Sua Solicita\xE7\xE3o de Altera\xE7\xE3o do Agendamento foi Enviado com sucesso!\n\nAguarde a Confirma\xE7\xE3o da Altera\xE7\xE3o.", icon: "success", allowOutsideClick: false }).then(function () {
                             window.location.reload();
                         });
                     } else {
-                        Swal.fire({title: "Aten\xE7\xE3o", text: e.text, icon: "error"});
+                        Swal.fire({ title: "Aten\xE7\xE3o", text: e.text, icon: "error" });
                     }
                 }).fail(function () {
-                    Swal.fire({title: "Aten\xE7\xE3o", text: "Erro ao Enviar a Solicita\xE7\xE3o, tente novamente", icon: "error"});
+                    Swal.fire({ title: "Aten\xE7\xE3o", text: "Erro ao Enviar a Solicita\xE7\xE3o, tente novamente", icon: "error" });
                 });
             }
         });
@@ -396,11 +382,9 @@ function confirm_agendamento(e) {
           <div class="form-group">
               <label for="medico-id">M\xe9dico</label>
               <select disabled id="medico-id" disabled name="medico-id" class="swal2-input">
-                  <option value="${
-                a.medico_id
-            }" selected>${
-                a.medico_nome
-            }</option>
+                  <option value="${a.medico_id
+                }" selected>${a.medico_nome
+                }</option>
               </select>
           </div>
       </div>
@@ -408,27 +392,23 @@ function confirm_agendamento(e) {
       <div class="row">
           <div class="form-group">
               <label for="data-agendamento">Data de Agendamento</label>
-              <input disabled data-mask="00/00/0000" id="data-agendamento" name="data-agendamento" value="${
-                a.data_alterada
-            }" type="text" class="swal2-input">
+              <input disabled data-mask="00/00/0000" id="data-agendamento" name="data-agendamento" value="${a.data_alterada
+                }" type="text" class="swal2-input">
           </div>
   
           <div class="form-group">
               <label for="hora-agendamento">Hora</label>
-              <input disabled data-mask="00:00" id="hora-agendamento" name="hora-agendamento" type="text" value="${
-                a.hora_agendamento
-            }">
+              <input disabled data-mask="00:00" id="hora-agendamento" name="hora-agendamento" type="text" value="${a.hora_agendamento
+                }">
           </div>
       </div>
       <div class="row">
           <div class="form-group">
               <label for="modalidade-id">Modalidade</label>
               <select disabled id="modalidade-id" name="modalidade-id" class="swal2-input">
-                  <option value="${
-                a.modalidade
-            }" selected>${
-                a.modalidade
-            }</option>
+                  <option value="${a.modalidade
+                }" selected>${a.modalidade
+                }</option>
               </select>
           </div>
       </div>
@@ -436,9 +416,8 @@ function confirm_agendamento(e) {
       <div class="row">
           <div class="form-group">
               <label for="desc-id">Justificativa</label>
-              <textarea disabled id="desc-id">${
-                a.description
-            }</textarea>
+              <textarea disabled id="desc-id">${a.description
+                }</textarea>
           </div>
       </div>
   
@@ -453,9 +432,8 @@ function confirm_agendamento(e) {
           </div>
       </div>
   
-      <input type="hidden" id="medico_token" value="${
-                a.medico_token
-            }">
+      <input type="hidden" id="medico_token" value="${a.medico_token
+                }">
       `,
             didOpen: function () {
                 $("#payment_method").select2();
@@ -489,14 +467,14 @@ function confirm_agendamento(e) {
                 preloader("Validando Solicita\xE7\xE3o....");
                 $.post("/form/form.ag.alter.php", o).done(function (e) {
                     if (e.status === "success") {
-                        Swal.fire({title: "Aten\xE7\xE3o", text: e.text, icon: "success", allowOutsideClick: false}).then(function () {
+                        Swal.fire({ title: "Aten\xE7\xE3o", text: e.text, icon: "success", allowOutsideClick: false }).then(function () {
                             window.location.reload();
                         });
                     } else {
-                        Swal.fire({title: "Aten\xE7\xE3o", text: e.text, icon: "error"});
+                        Swal.fire({ title: "Aten\xE7\xE3o", text: e.text, icon: "error" });
                     }
                 }).fail(function () {
-                    Swal.fire({title: "Aten\xE7\xE3o", text: "Erro ao Enviar a Solicita\xE7\xE3o, tente novamente", icon: "error"});
+                    Swal.fire({ title: "Aten\xE7\xE3o", text: "Erro ao Enviar a Solicita\xE7\xE3o, tente novamente", icon: "error" });
                 });
             }
         });
@@ -531,7 +509,7 @@ function presc_form() {
         produto_nome: $("#produto_sa_x").children("option:selected").text(),
         frascos: $("#produto_frascos_x").val(),
         prescricao: tinyMCE.activeEditor.getContent(
-            {format: "text"}
+            { format: "text" }
         ),
         agenda_token: $("#presc-wb").data("token"),
         user_token: $('meta[name="user-id"]').attr("content"),
@@ -548,11 +526,10 @@ function presc_form() {
             if (e.status == "success") {
                 $("#x-form-presc").fadeOut(500);
                 $("section#tabControl1").fadeIn(500);
-                $.get(`/form/form.acompanhamento.list.php?token=${
-                    $("#presc-wb").data("paciente")
-                }`).done(function (e) {
-                    $("#acompanhamentos-list").html(e);
-                });
+                $.get(`/form/form.acompanhamento.list.php?token=${$("#presc-wb").data("paciente")
+                    }`).done(function (e) {
+                        $("#acompanhamentos-list").html(e);
+                    });
             }
         }
     });
@@ -573,76 +550,84 @@ function calcAge(e) {
 }
 $("document").ready(function () {
     if (window.matchMedia("(max-width: 767px)").matches) {
-            $("img.ico-hover.user").bind("click", function () {
-                if ($('meta[name="user-name"]').attr("content") == "none") {
-                    window.location = "/login";
-                } else {
-                    $(this).off("click");
-                }
-            });
-        }
-        $(".presc_mod").on("click", function () {
-            if (this.value == "acompanhamento") {
-                $(".row-presc").hide();
+        $("img.ico-hover.user").bind("click", function () {
+            if ($('meta[name="user-name"]').attr("content") == "none") {
+                window.location = "/login";
             } else {
-                $(".row-presc").show();
+                $(this).off("click");
             }
         });
-        if ($("#presc-wb").length > 0) {
-            $.get(`/form/form.acompanhamento.list.php?token=${
-                $("#presc-wb").data("paciente")
+    }
+    $(".presc_mod").on("click", function () {
+        if (this.value == "acompanhamento") {
+            $(".row-presc").hide();
+        } else {
+            $(".row-presc").show();
+        }
+    });
+    if ($("#presc-wb").length > 0) {
+        $.get(`/form/form.acompanhamento.list.php?token=${$("#presc-wb").data("paciente")
             }`).done(function (e) {
                 $(".acompanhamentos-list").html(e);
             });
-        }
-        $.get("/forms/fetch.tb.php?tb=PRODUTOS&key=nome,status").done(function (e) {
-            $.each(e.results, function (a) {
-                let t = e.results[a];
-                if (t.text === "ATIVO") {
-                    $("#produto_sa_x").append(`<option value="${
-                        t.id
-                    }">${
-                        t.nome.toUpperCase()
+    }
+    $.get("/forms/fetch.tb.php?tb=PRODUTOS&key=nome,status").done(function (e) {
+        $.each(e.results, function (a) {
+            let t = e.results[a];
+            if (t.text === "ATIVO") {
+                $("#produto_sa_x").append(`<option value="${t.id
+                    }">${t.nome.toUpperCase()
                     }</option>`);
-                }
-                $("#produto_sa_x").select2();
+            }
+            $("#produto_sa_x").select2();
+        });
+    });
+    $(".ql-snow .ql-tooltip a").each(function () {
+        $(this).remove();
+    });
+    $(".ql-snow .ql-tooltip input").each(function () {
+        $(this).remove();
+    });
+    $(".ql-snow .ql-tooltip").append('<a class="link-action" data-action="save">Salvar</a>');
+    $(".ql-snow .ql-tooltip").append('<a class="link-action" data-action="save">Atualizar</a>');
+    $(".listmedic-box-dir-boxtime.item-disabled").on("click", function (e) {
+        let a = $(this).closest(".box-mediclist").find(".listmedic-boxlink-box");
+        if ($(a).find(".btn-modalidade").is(":checked") === false) {
+            e.preventDefault();
+            Swal.fire({ title: "Aten\xE7\xE3o", icon: "info", text: "Voc\xEA Deve Selecionar uma Modalidade de Consulta Primeiro.!", allowOutsideClick: false }).then(function () {
+                $(a).css("border", "2px solid #009688");
+                $(a).css("padding", "5px");
             });
-        });
-        $(".ql-snow .ql-tooltip a").each(function () {
-            $(this).remove();
-        });
-        $(".ql-snow .ql-tooltip input").each(function () {
-            $(this).remove();
-        });
-        $(".ql-snow .ql-tooltip").append('<a class="link-action" data-action="save">Salvar</a>');
-        $(".ql-snow .ql-tooltip").append('<a class="link-action" data-action="save">Atualizar</a>');
-        $(".listmedic-box-dir-boxtime.item-disabled").on("click", function (e) {
-            let a = $(this).closest(".box-mediclist").find(".listmedic-boxlink-box");
-            if ($(a).find(".btn-modalidade").is(":checked") === false) {
-                e.preventDefault();
-                Swal.fire({title: "Aten\xE7\xE3o", icon: "info", text: "Voc\xEA Deve Selecionar uma Modalidade de Consulta Primeiro.!", allowOutsideClick: false}).then(function () {
-                    $(a).css("border", "2px solid #009688");
-                    $(a).css("padding", "5px");
+        }
+    });
+    $("#nacionalidade").val("BR").trigger("change");
+    $("#data_nascimento.validate-age").on("blur", function () {
+        let e = calcAge(this.value);
+        if (e < 18) {
+            Swal.fire({ text: "Voc\xEA n\xE3o tem idade igual ou superior a 18 anos, portanto deve preencher os dados do respons\xE1vel legal por voc\xEA.", icon: "warning", allowOutsideClick: false }).then(function () {
+                $("#responsavel-legal").find("input").each(function () {
+                    $(this).attr("required", "required");
                 });
-            }
-        });
-        $("#nacionalidade").val("BR").trigger("change");
-        $("#data_nascimento.validate-age").on("blur", function () {
-            let e = calcAge(this.value);
-            if (e < 18) {
-                Swal.fire({text: "Voc\xEA n\xE3o tem idade igual ou superior a 18 anos, portanto deve preencher os dados do respons\xE1vel legal por voc\xEA.", icon: "warning", allowOutsideClick: false}).then(function () {
-                    $("#responsavel-legal").find("input").each(function () {
-                        $(this).attr("required", "required");
-                    });
-                    $("#responsavel-legal").show();
-                });
-            } else if (isNaN(e)) {
-                $(this).trigger("blur");
-            }
-        });
-        $(".fill-form").mask("000.000.000-00", {
-            placeholder: "___.___.___-__",
-            onComplete: function (e) {
+                $("#responsavel-legal").show();
+            });
+        } else if (isNaN(e)) {
+            $(this).trigger("blur");
+        }
+    });
+    $(".fill-form").mask("000.000.000-00", {
+        placeholder: "___.___.___-__",
+        onComplete: function (e) {
+
+            if (!validateCPF(e)) {
+                Swal.fire({
+                    title: 'Atenção',
+                    icon: 'warning',
+                    text: 'CPF Inválido, verifique e tente novamente!',
+                    allowOutsideClick: false
+                }).then(function () {
+                    $("#cpf").val('').focus();
+                })
+            } else {
                 preloader("Processando...");
                 $.get(`/forms/paciente.exists.php?cpf=${e}`, function (e) {
                     if (e.exists) {
@@ -654,13 +639,10 @@ $("document").ready(function () {
                         $("#nacionalidade").val(e.data.nacionalidade).trigger("change");
                         $("#nome_preferencia").val(e.data.nome_preferencia);
                         $("#identidade_genero").val(e.data.identidade_genero).trigger("change");
-                        $("#data_nascimento").off("change").val(`${
-                            a[2]
-                        }/${
-                            a[1]
-                        }/${
-                            a[0]
-                        }`).trigger("change");
+                        $("#data_nascimento").off("change").val(`${a[2]
+                            }/${a[1]
+                            }/${a[0]
+                            }`).trigger("change");
                         $("#email").val(e.data.email);
                         $("#anamnese").val(e.data.queixa_principal);
                         $("#celular").val(e.data.celular);
@@ -675,62 +657,63 @@ $("document").ready(function () {
                     Swal.close();
                 });
             }
-        });
-        $("#celular").mask("+55 (00) 0 0000-0000", {
-            clearIfNotMatch: true,
-            placeholder: "+55 (00) 0 0000-0000"
-        });
+        }
+    });
+    $("#celular").mask("+55 (00) 0 0000-0000", {
+        clearIfNotMatch: true,
+        placeholder: "+55 (00) 0 0000-0000"
+    });
 
-        $("#anamnese[data-selected]").each(function () {
-            try {
-                    let e = $(this).data("selected").split(",");
-                    $(this).val(e);
-                    $(this).trigger("change");
-                } catch {}}
-        );
-
-
-        $(".input-upload-doc").off("change");
-        $(".input-upload-doc").on("change", function () {
-            let e = $(this).attr("id");
-            let a = $(this);
-            preloader("Enviando Arquivo...");
-            let t = new FormData;
-            t.append("file", this.files[0], this.files[0].name);
-            t.append("tb", $('input[name="tabela"]').val());
-            t.append("key", this.id);
-            t.append("token", $("#user_token").val());
-            fetch("/form/upload-docs.php", {
-                method: "POST",
-                body: t
-            }).then(e => e.json()).then(t => {
-                if (t.status === "success") {
-                    let o = t.ext === "pdf" ? "/assets/images/ico-doc-pdf.svg" : "/assets/images/ico-doc-img.svg";
-                    $(a).closest(".anexo-item").find("img").attr("src", o);
-                    if ($(a).closest(".anexo-item").find(`input[name="${e}"]`).length > 0) {
-                        $(a).closest(".anexo-item").find(`input[name="${e}"]`).val(t.path);
-                    } else {
-                        $(a).after(`<input type="hidden" name="${e}" value="${
-                            t.path
-                        }">`);
-                    }
-                    $(a).attr("disabled", true);
-                    Swal.close();
-                } else {
-                    $(a).closest(".anexo-item").find("img").attr("src", "/assets/images/ico-doc-large.svg");
-                    Swal.fire({title: "Aten\xE7\xE3o", text: t.message, icon: "error"});
-                }
-            }).catch(e => {
-                Swal.fire({title: "Aten\xE7\xE3o", text: e, icon: "error"});
-            });
-        });
+    $("#anamnese[data-selected]").each(function () {
+        try {
+            let e = $(this).data("selected").split(",");
+            $(this).val(e);
+            $(this).trigger("change");
+        } catch { }
     }
+    );
+
+
+    $(".input-upload-doc").off("change");
+    $(".input-upload-doc").on("change", function () {
+        let e = $(this).attr("id");
+        let a = $(this);
+        preloader("Enviando Arquivo...");
+        let t = new FormData;
+        t.append("file", this.files[0], this.files[0].name);
+        t.append("tb", $('input[name="tabela"]').val());
+        t.append("key", this.id);
+        t.append("token", $("#user_token").val());
+        fetch("/form/upload-docs.php", {
+            method: "POST",
+            body: t
+        }).then(e => e.json()).then(t => {
+            if (t.status === "success") {
+                let o = t.ext === "pdf" ? "/assets/images/ico-doc-pdf.svg" : "/assets/images/ico-doc-img.svg";
+                $(a).closest(".anexo-item").find("img").attr("src", o);
+                if ($(a).closest(".anexo-item").find(`input[name="${e}"]`).length > 0) {
+                    $(a).closest(".anexo-item").find(`input[name="${e}"]`).val(t.path);
+                } else {
+                    $(a).after(`<input type="hidden" name="${e}" value="${t.path
+                        }">`);
+                }
+                $(a).attr("disabled", true);
+                Swal.close();
+            } else {
+                $(a).closest(".anexo-item").find("img").attr("src", "/assets/images/ico-doc-large.svg");
+                Swal.fire({ title: "Aten\xE7\xE3o", text: t.message, icon: "error" });
+            }
+        }).catch(e => {
+            Swal.fire({ title: "Aten\xE7\xE3o", text: e, icon: "error" });
+        });
+    });
+}
 );
 function relatorioAcompanhamento(classItem, patientToken) {
     let items = [];
     $(classItem).each(function () {
         items.push($(this).val());
     });
-    
+
     window.open("/cadastros/pacientes/relatorio/?paciente_token=" + patientToken + "&items=" + btoa(JSON.stringify(items)), "_relatorio_acompanhamento", "width=800,height=600");
 }
