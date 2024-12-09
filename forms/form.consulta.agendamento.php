@@ -180,7 +180,14 @@ if((strtotime($date) - time()) > $tempo_limite) {
 
             $paciente = $paciente->fetch(PDO::FETCH_OBJ);
 
-            try {
+            $birthdate = Modules::parseDate($_REQUEST["data_nascimento"]);
+
+                $birthDate = new DateTime($birthdate);
+                $currentDate = new DateTime();
+                $age = $currentDate->diff($birthDate);
+
+            try
+             {
                 $birthdate = Modules::parseDate($_REQUEST["data_nascimento"]);
 
                 $birthDate = new DateTime($birthdate);
@@ -188,30 +195,38 @@ if((strtotime($date) - time()) > $tempo_limite) {
                 $age = $currentDate->diff($birthDate);
 
                 if($age->y < 18) {
-                    $pac = $asaas->create_or_get_client(
-                        token: uniqid(),
-                        nome: $_REQUEST['responsavel_nome_completo'],
-                        cpf: $_REQUEST['responsavel_cpf'],
-                        email: $_REQUEST['email'],
-                        celular: $_REQUEST['responsavel_celular']
-                    );
-                } else {
-                    $pac = $asaas->create_or_get_client(
-                        token: $ag->paciente_token,
-                        nome: $paciente->nome_completo,
-                        cpf: $paciente->cpf,
-                        email: $paciente->email,
-                        celular: $paciente->celular
-                    );
+                    try {
+                        $pac = $asaas->create_or_get_client(
+                            token: uniqid(),
+                            nome: $_REQUEST['responsavel_nome_completo'],
+                            cpf: $_REQUEST['responsavel_cpf'],
+                            email: $_REQUEST['email'],
+                            celular: $_REQUEST['responsavel_celular']
+                        );
+                    }  catch(Exception $ex) {
+                        $pac = null;
+                    }
+                } 
+                
+                else {
+                    try {
+                        $pac = $asaas->create_or_get_client(
+                            token: $ag->paciente_token,
+                            nome: $paciente->nome_completo,
+                            cpf: $paciente->cpf,
+                            email: $paciente->email,
+                            celular: $paciente->celular
+                        );
+                    } catch(Exception $ex) {
+                        $pac = null;
+                    }
                 }
 
-                if (
-                    !isset($pac->errors) &&
-                    isset($pac->id)
-                )
+                if (!isset($pac->errors) && isset($pac->id) && $pac != null)
                 {
                    
-                    try {
+                    try 
+                    {
                         $link = $asaas->cobrar(
                             id: $pac->id, 
                             tipo:  $ag->payment_method == 'PAYMENT_LINK' ? 'UNDEFINED':$ag->payment_method, 
@@ -525,14 +540,18 @@ if((strtotime($date) - time()) > $tempo_limite) {
                                 "data" => $link->errors
                             ];
                         }
-                        } catch(Exception $ex) {
+                        } 
+                        
+                    catch(Exception $ex) {
                             $json = [
                                 "status" => "error",
                                 "text" => "Erro ao Agendar Consulta, Verifique os dados digitados",
                                 "data" => $link->errors
                             ];
                         }
-                } else {
+                } 
+                
+                else {
                     $json = [
                         "status" => "error",
                         "icon" => "error",
@@ -540,15 +559,15 @@ if((strtotime($date) - time()) > $tempo_limite) {
                         "data" => $pac->errors
                     ];
                 }
-        } 
-        catch (Exception $error) {
-            $json = [
-                "status" => "warning",
-                "icon" => "error",
-                "text" => "Erro ao Agendar a Consulta",
-                "data" => []
-            ];
-        }
+            } 
+            catch (Exception $error) {
+                $json = [
+                    "status" => "warning",
+                    "icon" => "error",
+                    "text" => "Erro ao Agendar a Consulta",
+                    "data" => []
+                ];
+            }
 
         } catch (Exception $error) {
             $json = [

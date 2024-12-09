@@ -3491,7 +3491,40 @@ input.strike {
   color: red;
 }
 
+
+.menu-user-links {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 1rem 2rem;
+  overflow-y: auto;
+}
+
+
 @media (max-width: 800px) {
+  .swal2-container .row {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 0 !important;
+    gap: 0rem !important;
+  }
+
+  .row.check-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+  }
+
   .tab-toolbar {
     display: flex;
     flex-direction: column;
