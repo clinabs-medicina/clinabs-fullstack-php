@@ -17,28 +17,28 @@
         <div class="row text-center">
             <div class="col-6 col-lg-3 col-md-6 col-sm-6" data-aos="fade-right" data-aos-duration="2000"
                 data-aos-once="true">
-                <img src="/assets/images/icons/icon-can.png" alt="Especialistas em CBD" class="custom-icon">
+                <img src="/assets/images/icons/icon-can.webp" alt="Especialistas em CBD" class="custom-icon">
                 <div class="rounded-5 ml-1 custom-box square-card">
                     <h3 class="fs-4 fw-semibold" style="font-family: 'Poppins';"><br>Especialistas em CBD</h3>
                 </div>
             </div>
             <div class="col-6 col-lg-3 col-md-6 col-sm-6" data-aos="fade-right" data-aos-duration="1500"
                 data-aos-once="true">
-                <img src="/assets/images/icons/icon-call.png" alt="Atendimento rápido e fácil" class="custom-icon">
+                <img src="/assets/images/icons/icon-call.webp" alt="Atendimento rápido e fácil" class="custom-icon">
                 <div class="rounded-5 ml-1 custom-box square-card rounded-4">
                     <h3 class="fs-4 fw-semibold" style="font-family: 'Poppins';"><br>Atendimento rápido e fácil</h3>
                 </div>
             </div>
             <div class="col-6 col-lg-3 col-md-6 col-sm-6" data-aos="fade-left" data-aos-duration="1500"
                 data-aos-once="true">
-                <img src="/assets/images/icons/icon-cruz.png" alt="Diversas especialidades" class="custom-icon">
+                <img src="/assets/images/icons/icon-cruz.webp" alt="Diversas especialidades" class="custom-icon">
                 <div class="rounded-5 ml-1 custom-box square-card rounded-4">
                     <h3 class="fs-4 fw-semibold" style="font-family: 'Poppins';"><br>Diversas especialidades</h3>
                 </div>
             </div>
             <div class="col-6 col-lg-3 col-md-6 col-sm-6" data-aos="fade-left" data-aos-duration="2000"
                 data-aos-once="true">
-                <img src="/assets/images/icons/icon-hand.png" alt="Valores acessíveis" class="custom-icon">
+                <img src="/assets/images/icons/icon-hand.webp" alt="Valores acessíveis" class="custom-icon">
                 <div class="rounded-5 ml-1 custom-box square-card rounded-4">
                     <h3 class="fs-4 fw-semibold" style="font-family: 'Poppins';"><br>Valores acessíveis</h3>
                 </div>
@@ -46,7 +46,7 @@
 
             <div class="col-6 col-lg-3 col-md-6 col-sm-6" data-aos="fade-left" data-aos-duration="2000"
                 data-aos-once="true">
-                <img src="/assets/images/img1.png" alt="Valores acessíveis" class="custom-icon">
+                <img src="/assets/images/img1.webp" alt="Valores acessíveis" class="custom-icon">
                 <div class="rounded-5 ml-1 custom-box square-card rounded-4">
                     <h3 class="fs-4 fw-semibold" style="font-family: 'Poppins';"><br>Acolhimento</h3>
                 </div>
@@ -54,7 +54,7 @@
 
             <div class="col-6 col-lg-3 col-md-6 col-sm-6" data-aos="fade-left" data-aos-duration="2000"
                 data-aos-once="true">
-                <img src="/assets/images/img2.png" alt="Valores acessíveis" class="custom-icon">
+                <img src="/assets/images/img2.webp" alt="Valores acessíveis" class="custom-icon">
                 <div class="rounded-5 ml-1 custom-box square-card rounded-4">
                     <h3 class="fs-4 fw-semibold" style="font-family: 'Poppins';"><br>Atendimento Humanizado</h3>
                 </div>

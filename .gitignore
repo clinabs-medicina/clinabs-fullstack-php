@@ -10,3 +10,4 @@ deploy.json
 *.txt
 .anotacoes/
 .github/
+.htaccess

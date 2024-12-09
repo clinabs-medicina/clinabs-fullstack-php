@@ -36,7 +36,7 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
 
     <link rel="manifest" href="/manifest.json" />
     <link rel="icon favicon" href="/assets/images/favicon.ico">
-    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="/assets/css/sweetalert.css" crossorigin="sameorign">
     <link rel="preload" rel="stylesheet" href="/assets/css/croppie.css" crossorigin="sameorign" as="style"
         onload="this.onload=null;this.rel='stylesheet'">
@@ -162,8 +162,8 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
     <section class="slider" id="slider1">
         <div class="slider-content">
             <div class="slider-box active">
-                <img class="img-desktop" src="/assets/images/banner-home.png" alt="slider1" preload>
-                <img class="img-mobile" src="/assets/images/banner-home-mobile.jpg" alt="slider1" preload>
+                <img width="100%" class="img-desktop" src="/assets/images/banner-home.webp" alt="slider1" preload>
+                <img class="img-mobile" src="/assets/images/banner-home-mobile.webp" alt="slider1" preload>
                 <div id="row-btn-banner" class="row">
                     <div class="col-4 col-lg-4 col-md-6">
                     </div>
