@@ -132,6 +132,8 @@ if(isset($ag->data_agendamento)) {
             } catch (PDOException $ex) {
                 
             }
+
+            $pdo->query("DELETE FROM `CRONTAB` WHERE payment_id = '{$data->payment->id}' AND `type` = 'DELETE_PAYMENT'");
         } 
         catch (Exception $ex) {
     
@@ -389,6 +391,8 @@ if(isset($ag->data_agendamento)) {
             } catch (PDOException $ex) {
 
             }
+
+            $pdo->query("DELETE FROM `CRONTAB` WHERE payment_id = '{$data->payment->id}' AND `type` = 'DELETE_PAYMENT'");
         } catch (Exception $ex) {
 
         }
