@@ -56,7 +56,8 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
     <link rel="stylesheet" href="/assets/css/font-awesome.css" crossorigin="sameorign">
     <link href="/assets/css/quill.snow.css" rel="stylesheet" />
     <link rel="stylesheet" href="/assets/css/theme3.css" />
-    <link rel="stylesheet" href="/assets/css/mobile.css" />
+    <link rel="stylesheet" href="/assets/css/template1.css" />
+    <link rel="stylesheet" href="/assets/css/template2.css" />
     <link rel="stylesheet" href="/assets/css//clinabs.plugins.css" />
 
     <style>

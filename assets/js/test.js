@@ -1,3 +1,4 @@
+
 function wb_fs() { document.fullscreenElement ? (document.exitFullscreen(), $(".breadcrumbs").show(), $("header.header").show(), $("section.footer-1").show(), $("section.footer-2").show()) : (document.body.requestFullscreen(), $(".breadcrumbs").hide(), $("header.header").hide(), $("section.footer-1").hide(), $("section.footer-2").hide()) } function newPrescFuncWb() {
     let t = `<div class="flex-col"><p>
     <table width="100%" data-list="none">

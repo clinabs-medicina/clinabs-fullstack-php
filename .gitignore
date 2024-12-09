@@ -1,8 +1,9 @@
 data/
+.anotacoes/
+.github/
+*_credentials.json
 wa-config.json
 google_credentials.json
 deploy.json
 *.log
 *.inc.php
-.anotacoes/
-.github/
