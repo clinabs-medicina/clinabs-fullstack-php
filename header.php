@@ -60,7 +60,7 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
 <!-- FIM BREADCRUMBS -->
 <header class="header">
     <div class="flex-container">
-        <a href="/"><img src="/assets/images/logo.svg" alt="logo"></a>
+    <img width="65.24" height="64px" src="/assets/images/logo.svg" alt="logo">
         <div class="link-consult-mobile"
             style="text-align: center; text-decoration: none; color: #2c8a7a;  border: 1px solid #ffb60dc2;  padding: 0.25rem; border-radius: 8px; font-size: 11px;">
             <a href="/agendamento" alt="Agendar Consulta" title=""

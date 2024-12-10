@@ -5,13 +5,34 @@
     height: 500px;
     border-radius: 20px;
 }
+
+section.custom-container.my-5.lh-base {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.whatsapp-widget.aos-init {
+    border-top: solid 1px rgb(255 255 255 / 50%);
+    background-color: rgb(0 0 0 / 20%);
+    backdrop-filter: blur(2px);
+    box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);
+    border-radius: 10px;
+    overflow: hidden;
+    right: 306px;
+}
 </style>
 
 <section class="main">
 
-    <section class="custom-container my-5 lh-base">
-        <h2 class="text-center fs-1 fw-bold mb-5 text-dark"
-            style="font-family: 'Poppins';font-size: 1.50rem !important;">Por que <spam class="text-primary"
+    <section class="custom-container my-5 lh-base" style="text-align: center">
+        <h2 class="text-center fs-1 fw-bold mb-1 text-dark"
+            style="font-family: 'Poppins';font-size: 1.50rem !important; max-width: 270px">Por que <spam class="text-primary"
                 style="font-family: 'Poppins';">a Clinabs?</spam>
         </h2>
         <div class="row text-center">

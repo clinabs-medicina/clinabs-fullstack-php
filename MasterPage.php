@@ -28,125 +28,143 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
+        rel="preload" as="style">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"
-        onload="this.media='all'; this.onload = null; this.rel='stylesheet'">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-        onload="this.media='all'; this.onload = null; this.rel='stylesheet'">
-
+        rel="preload" as="style">
+    
     <link rel="manifest" href="/manifest.json" />
     <link rel="icon favicon" href="/assets/images/favicon.ico">
-    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css" crossorigin="anonymous">
+    
     <link rel="stylesheet" href="/assets/css/sweetalert.css" crossorigin="sameorign">
     <link rel="preload" rel="stylesheet" href="/assets/css/croppie.css" crossorigin="sameorign" as="style"
         onload="this.onload=null;this.rel='stylesheet'">
 
     <link rel="preload" rel="stylesheet" href="/assets/css/datatable.css" crossorigin="anonymsameorignous" as="style"
         onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" rel="stylesheet" href="/assets/css/responsive.dataTables.css" crossorigin="sameorign" as="style"
-            onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" rel="stylesheet" href="/assets/css/buttons.dataTables.css" crossorigin="sameorign" as="style"
-            onload="this.onload=null;this.rel='stylesheet'">
+    <!--<link rel="preload" rel="stylesheet" href="/assets/css/responsive.dataTables.css" crossorigin="sameorign" as="style"
+            onload="this.onload=null;this.rel='stylesheet'">-->
+    <!--<link rel="preload" rel="stylesheet" href="/assets/css/buttons.dataTables.css" crossorigin="sameorign" as="style"
+            onload="this.onload=null;this.rel='stylesheet'">-->
 
-
+<!--
     <link rel="stylesheet" href="/assets/css/select2.css" crossorigin="sameorign">
     <link rel="stylesheet" href="/assets/css/calendar.css" crossorigin="sameorign">
     <link href="/assets/css/select2.css" rel="stylesheet" type="text/css" crossorigin="sameorign" />
-    <link href="/assets/css/style.css" rel="stylesheet" type="text/css" crossorigin="sameorign" />
-    <link rel="stylesheet" href="/assets/css/font-awesome.css" crossorigin="sameorign">
+-->
+    
+    <!--<link rel="stylesheet" href="/assets/css/font-awesome.css" crossorigin="sameorign">-->
     <link href="/assets/css/quill.snow.css" rel="stylesheet" />
-    <link rel="stylesheet" href="/assets/css/theme3.css" />
-    <link rel="stylesheet" href="/assets/css/template1.css" />
-    <link rel="stylesheet" href="/assets/css/template2.css" />
+    
     <link rel="stylesheet" href="/assets/css//clinabs.plugins.css" />
 
     <style>
-    .doctor-card {
-        background-color: #24b39e;
-        color: white;
-        padding: 20px;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-        max-height: 160px;
+        <?php
+            echo file_get_contents($_SERVER['DOCUMENT_ROOT']."/assets/css/style.css");
+            echo file_get_contents($_SERVER['DOCUMENT_ROOT']."/assets/css/style2.css");
+            echo file_get_contents($_SERVER['DOCUMENT_ROOT']."/assets/css/style3.css");
+            echo file_get_contents($_SERVER['DOCUMENT_ROOT']."/assets/css/theme3.css");
+            echo file_get_contents($_SERVER['DOCUMENT_ROOT']."/assets/css/template1.css");
+            echo file_get_contents($_SERVER['DOCUMENT_ROOT']."/assets/css/template2.css");
+        ?>
+        .doctor-card {
+            background-color: #24b39e;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            max-height: 160px;
 
-    }
+        }
 
-    .doctor-card img {
-        border-radius: 50%;
-        width: 225px;
-        height: 225px;
-        object-fit: cover;
-        margin-right: 20px;
-    }
+        .doctor-card img {
+            border-radius: 50%;
+            width: 225px;
+            height: 225px;
+            object-fit: cover;
+            margin-right: 20px;
+        }
 
-    .doctor-info {
-        flex-grow: 1;
-    }
+        .doctor-info {
+            flex-grow: 1;
+        }
 
-    .doctor-info h5 {
-        margin: 0;
-        font-size: 1.25rem;
-    }
+        .doctor-info h5 {
+            margin: 0;
+            font-size: 1.25rem;
+        }
 
-    .doctor-info p {
-        margin: 0;
-    }
+        .doctor-info p {
+            margin: 0;
+        }
 
-    .doctor-link {
-        color: #007bff;
-        text-decoration: none;
-    }
+        .doctor-link {
+            color: #007bff;
+            text-decoration: none;
+        }
 
-    .doctor-link:hover {
-        text-decoration: underline;
-    }
+        .doctor-link:hover {
+            text-decoration: underline;
+        }
+        </style>
+
+        <style>
+        .custom-icon {
+            width: 80px;
+            height: 80px;
+            margin-bottom: -45px;
+        }
+
+        .custom-box {
+            background-color: #24b39e;
+            padding: 30px;
+            border-radius: 15px;
+            font-family: "Poppins";
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .custom-box h5 {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .custom-container {
+            letter-spacing: 0.2px;
+            margin: 0 auto;
+            padding: 10px 5%;
+        }
+
+        .square-card {
+            aspect-ratio: 1/1;
+            max-width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+       
     </style>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+rel="preload" as="style">
     <style>
-    .custom-icon {
-        width: 80px;
-        height: 80px;
-        margin-bottom: -45px;
-    }
-
-    .custom-box {
-        background-color: #24b39e;
-        padding: 30px;
-        border-radius: 15px;
-        font-family: "Poppins";
-        text-align: center;
-        color: white;
-        margin-bottom: 20px;
-    }
-
-    .custom-box h5 {
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
-
-    .custom-container {
-        letter-spacing: 0.2px;
-        margin: 0 auto;
-        padding: 10px 5%;
-    }
-
-    .square-card {
-        aspect-ratio: 1/1;
-        max-width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+    <?php
+    
+    echo file_get_contents($_SERVER['DOCUMENT_ROOT']."/assets/bootstrap/css/bootstrap.css");
+    echo file_get_contents($_SERVER['DOCUMENT_ROOT']."/assets/bootstrap/css/bootstrap2.css");
+    echo file_get_contents($_SERVER['DOCUMENT_ROOT']."/assets/bootstrap/css/bootstrap3.css");
+    echo file_get_contents($_SERVER['DOCUMENT_ROOT']."/assets/bootstrap/css/bootstrap4.css");
+    
+    ?>
     </style>
-
 </head>
 
 <div class="preloader-container">
     <div class="preloader-content"></div>
     <div class="preloader">
-        <img src="/assets/images/loading.gif" alt="Loading">
+        <img src="/assets/images/loading.gif" width="64px" height="64px" alt="Loading">
     </div>
 </div>
 
@@ -162,8 +180,7 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
     <section class="slider" id="slider1">
         <div class="slider-content">
             <div class="slider-box active">
-                <img width="100%" class="img-desktop" src="/assets/images/banner-home.webp" alt="slider1" preload>
-                <img class="img-mobile" src="/assets/images/banner-home-mobile.webp" alt="slider1" preload>
+                
                 <div id="row-btn-banner" class="row">
                     <div class="col-4 col-lg-4 col-md-6">
                     </div>
@@ -219,6 +236,8 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
     <!-- FIM FOOTER -->
 
     <!-- POLITICA DE PRIVACIDADE -->
+
+    <!--
     <div class="rounded-1 cmplz-cookiebanne hide">
         <div class="container">
             <div class="icogroup">
@@ -236,6 +255,7 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
             </div>
         </div>
     </div>
+    -->
 
     <!-- FIM POLITICA DE PRIVACIDADE -->
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
@@ -243,23 +263,20 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
     AOS.init();
     </script>
     <script type="text/javascript" src="/assets/js/ClinabsJS.js"></script>
-    <script type="text/javascript" src="/assets/js/datatable.js"></script>
+    
     <script type="text/javascript" src="/assets/js/clinabs.js"></script>
 
     <script type="text/javascript" src="/assets/js/calendar.js"></script>
 
     <script type="text/javascript" src="/assets/js/select2.js"></script>
-    <script type="text/javascript" src="/assets/modules/sweetalert2/sweetalert2.js"></script>
+    
     <script type="text/javascript" src="/assets/js/croppie.js"></script>
-    <script type="text/javascript" src="/assets/js/datatable.js"></script>
     <script type="text/javascript" src="/assets/js/buttons.colVis.js"></script>
     <script type="text/javascript" src="/assets/js/dataTables.buttons.js"></script>
-    <script type="text/javascript" src="/assets/js/dataTables.rowReorder.js"></script>
-    <script type="text/javascript" src="/assets/js/responsive.dataTables.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+    
     <!--<script src="https://cdn.tiny.cloud/1/o69uuqv853g4pxc40ctycrnc5e3imuz426yspmq9l28bvv0v/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>-->
-    <script src="/assets/js/plugins/tinymce/tinymce.min.js"></script>
+    
 
     <script src="/assets/js/imask.min.js"></script>
     <script src="/assets/js/clinabs.plugins.js"></script>
@@ -274,7 +291,7 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
     <script type="text/javascript" src="/assets/js/test.js"></script>
     <script type="text/javascript" src="/assets/js/certificado.js"></script>
     <script type="text/javascript" src="/assets/js/dashboard.js"></script>
-    <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!--<script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>-->
     <script type="text/javascript" src="/assets/js/clinabs.modules.js"></script>
     <script type="text/javascript" src="/assets/js/agenda.module.js"></script>
     <script type="text/javascript" src="/assets/js/agendamento.js"></script>
@@ -341,6 +358,7 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
    }
    ?>
 
+<!--<script id="banner-load" type="text/javascript" src="/assets/js/load.js"></script>-->
 </body>
 
 </html>
