@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
       $(this).data('duration'),
       $(this).data('week'));
   });
-})
+});
 function getDates(startDate, endDate, daysOfWeek, startTime, endTime, duration) {
   const start_date = new Date(startDate);
   const end_date = new Date(endDate);
@@ -205,13 +205,22 @@ function configAgenda(dateStart, startTime, endTime, duration, w) {
         medico_id: $('#medico_id').val(),
         medico_token: $('#medico_token').val()
       }, function (data) {
+        //console.log(data);
         for (let i = 0; i < data.length; i++) {
           let unidade = data[i];
           let option = document.createElement('option');
-          option.value = `${unidade.nome}, ${unidade.logradouro}, ${unidade.numero} | ${unidade.bairro} | ${unidade.cidade}/${unidade.uf}`;
+          option.value = unidade.id;
+          option.dataset.tipo = unidade.tipo;
           option.textContent = `${unidade.nome}`;
           document.getElementById('unidade_atendimento').appendChild(option);
         }
+
+        $('#unidade_atendimento').on('change', function () {
+          $('label.week-time.week-schedule.listmedic-box-dir-time.active').each(function () {
+            //$(this).attr('data-endereco', $('#unidade_atendimento option:selected').val());
+            //$(this).attr('data-endereco-tipo', $('#unidade_atendimento option:selected').data('tipo'));
+          });
+        });
       });
     },
     preConfirm: () => {
@@ -227,6 +236,8 @@ function configAgenda(dateStart, startTime, endTime, duration, w) {
       });
 
       let dates = getDates(start_date, end_date, daysOfWeek, start_time, end_time, duration);
+
+      //console.log(dates);
 
       let daysitems = [];
 
@@ -245,9 +256,15 @@ function configAgenda(dateStart, startTime, endTime, duration, w) {
         });
 
         for (let i = 0; i < times.length; i++) {
+          //console.log(`${date} ${times[i]}`);
+
           $(`label.week-time.week-schedule.listmedic-box-dir-time[data-obj="${date} ${times[i]}"]`).addClass('active');
           $(`label.week-time.week-schedule.listmedic-box-dir-time[data-obj="${date} ${times[i]}"]`).data('presencial', modalidade.includes('PRESENCIAL'));
           $(`label.week-time.week-schedule.listmedic-box-dir-time[data-obj="${date} ${times[i]}"]`).data('online', modalidade.includes('ONLINE'));
+
+          let chi = $(`label.week-time.week-schedule.listmedic-box-dir-time[data-obj="${date} ${times[i]}"]`);
+          $(chi).attr('data-endereco', $('#unidade_atendimento option:selected').val());
+          $(chi).attr('data-endereco-tipo', $('#unidade_atendimento option:selected').data('tipo'));
 
           $(`label.week-time.week-schedule.listmedic-box-dir-time[data-obj="${date} ${times[i]}"]`).find('i[name="presencial"]').toggleClass('icon-disabled', !modalidade.includes('PRESENCIAL'));
           $(`label.week-time.week-schedule.listmedic-box-dir-time[data-obj="${date} ${times[i]}"]`).find('i[name="online"]').toggleClass('icon-disabled', !modalidade.includes('ONLINE'));
@@ -258,6 +275,7 @@ function configAgenda(dateStart, startTime, endTime, duration, w) {
         Swal.showValidationMessage(`Selecione uma Unidade de Atendimento.`);
         return false;
       }
+
     }
   });
 }
