@@ -1247,24 +1247,6 @@ function editPrescFunc(elem, presc = false) {
     });
 }
 
-function addTableButton(elem, btnInfo) {
-    let btn = document.createElement("button");
-    btn.type = "button";
-    btn.title = btnInfo.hint;
-    btn.className = "btn-table-item";
-    btn.innerHTML = `<img src="/assets/images/icons?icon=${btnInfo.icon}&color=white" class="icon-cli"></i>`;
-
-    if (btnInfo.click.indexOf("(") !== -1) {
-        btn.setAttribute("onclick", `${btnInfo.click}`);
-    } else {
-        btn.setAttribute("onclick", `${btnInfo.click}()`);
-    }
-
-    let id = $(`${elem}`).attr("id");
-
-    $(`#${id}_filter`).append(btn);
-}
-
 function newTrackItem() {
     Swal.fire({
         title: "Novo Evento de Rastreio",

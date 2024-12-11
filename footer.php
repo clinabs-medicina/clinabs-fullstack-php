@@ -2,7 +2,7 @@
     <div class="footer-column">
         <div class="footer-flex">
             <div class="footer-box flex-column" style="width: 23%;">
-                <h4 class="h4 ico-set-1">LINKS</h4>
+                <strong class="h4 ico-set-1">LINKS</strong>
                 <ul class="">
                     <li><a href="/" class="link-1">home</a></li>
                     <li><a href="/agendamento" class="link-1">agendar consulta</a></li>
@@ -11,7 +11,7 @@
                 </ul>
             </div>
             <div class="footer-box flex-column" style="width: 23%;">
-                <h4 class="h4 ico-set-1">Clinabs Medicina Integrativa</h4>
+                <strong class="h4 ico-set-1">Clinabs Medicina Integrativa</strong>
                 <ul class="">
                     <li><a href="/docs/politica_privacidade.pdf" class="link-1" target="_blank">Políticas de privacidade</a></li>
                     <li><a href="/docs/termo_uso.pdf" class="link-1" target="_blank">Termo de Uso</a></li>
@@ -19,7 +19,7 @@
                 </ul>
             </div>
             <div class="footer-box flex-column" style="width: 25%;">
-                <h4 class="h4 ico-set-1">ATENDIMENTO</h4>
+                <strong class="h4 ico-set-1">ATENDIMENTO</strong>
                 <p class="font-1" style="display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap;"><img src="/assets/images/ico-fone1.svg" alt="telefone" /><b><a href="tel:4133000790">(41) 3300-0790</a></b></p>
                 <p class="p1">
                     <strong>Endereço: </strong>
@@ -36,7 +36,7 @@
                 </p>
 
                 <div class="footer-box flex-column boxespaco-1">
-                    <h4 class="boxespaco-1">SOCIAL MEDIA</h4>
+                    <strong class="boxespaco-1">SOCIAL MEDIA</strong>
                     <div class="gap">
                         <a href="<?=$FACEBOOK_LINK?>" target="_facebook"><img src="/assets/images/ico-footer-facebook.svg" target="_facebook" class="ico-socialfooter" alt="facebook" /></a>
                         <a href="<?=$INSTAGEM_LINK?>" target="_instagram"><img src="/assets/images/ico-instagram-medico.svg" class="ico-socialfooter" alt="instagram" /></a>
@@ -69,14 +69,14 @@
         overflow: hidden;
         ">
         <div class="whatsapp-header">
-            <h5 class="m-0">
+            <strong class="m-0">
                 <i class="fab fa-whatsapp"></i> WhatsApp
-            </h5>
+            </strong>
             <div class="rounded-circle btn btn-light">
                 <i class="fas fa-times"></i>
             </div>       
         </div>
-        <div class="whatsapp-body" style="background-image: url(/assets/images/whatsapp-bg.jpg); background-position: center;">
+        <div class="whatsapp-body hide" style="background-image: url('/assets/images/whatsapp-bg.jpg'); background-position: center;">
             <div class="border rounded-3 p-2 border-3 whatsapp-msg bg-white" style="box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 88%);">
                 <i class="fas fa-user"></i> Atendimento:<br>
                 Seja bem vindo. Clique no botão para falar com um de nossos atendentes.

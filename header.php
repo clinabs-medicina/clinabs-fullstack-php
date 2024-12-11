@@ -96,7 +96,7 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
             </ul>
         </nav>
         <nav class="menu-ico">
-            <ul class="m-0">
+            <div class="m-0">
                 <?= $user->perms->link_cart ? '<li data-badge="' . count($carrinho->getAll($user->cpf)) . '" data-source="cart-items-count"><a href="/carrinho"><img class="ico-hover" src="/assets/images/ico-cart.svg" alt=""></a></li>' : '' ?>
 
                 <?= $user->perms->link_notificacao && !$is_nabscare ? '<li data-badge="0"><a href="#"><img class="ico-hover" src="/assets/images/ico-notifica.svg" alt=""></a></li>' : '' ?>
@@ -150,7 +150,7 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
                             </div>
 
                         </div>
-                    </ul>
+                </div>
                 </div>
 
                 <!--<li  id="user-link-menu"><a><img class="ico-hover user" src="<?= $user !== null && $user->profileImage !== null ? $user->profileImage : '/assets/images/user2.png' ?>" alt="" width="29px"></a>-->

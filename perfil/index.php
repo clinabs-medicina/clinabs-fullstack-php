@@ -14,6 +14,10 @@ $page->bc = true;
 $page->name = 'link_perfil';
 $page->require_login = true;
 
+$useDT = true;
+$useSelector = true;
+$useEditor = true;
+
 $conf = new stdClass();
 
 function parse_bool($value) {

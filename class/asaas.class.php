@@ -21,6 +21,13 @@ class ASAAS {
     return $this->get("lean/payments?status=PENDING");
   }
 
+  public function refund($id, $valor, $description) {
+    return $this->post("payments/$id/refund", [
+      "value" => preg_replace("/[^0-9]/", "", $valor),
+      "description" => $description
+    ]);
+  }
+
 
   public function get_status($code) {
     return strtr($code, array(
@@ -526,8 +533,20 @@ class ASAAS {
 
         return json_decode($response->getBody());
       } catch(Exception $e) {
-        return 'Ocorreu um Erro ao Processar a Solicitação';
+        // Find the position of the first curly brace `{` and the last closing square bracket `]`
+        $startPos = strpos($e->getMessage(), '{');
+        $endPos = strrpos($e->getMessage(), ']');
+
+        // Ensure valid positions are found
+        if ($startPos !== false && $endPos !== false && $endPos > $startPos) {
+            // Extract the substring from { to ]
+            $partialData = substr($e->getMessage(), $startPos, $endPos - $startPos + 1);
+            
+          return json_decode($partialData.'}')->errors[0];
+        } else {
+          return 'Ocorreu um Erro ao Processar a Solicitação';
       }
+    }
   }
   
   private function get($path, $data = []) {
@@ -543,7 +562,19 @@ class ASAAS {
       
       return json_decode($response->getBody());
     } catch(Exception $e) {
-      return 'Ocorreu um Erro ao Processar a Solicitação';
+       // Find the position of the first curly brace `{` and the last closing square bracket `]`
+       $startPos = strpos($e->getMessage(), '{');
+       $endPos = strrpos($e->getMessage(), ']');
+
+       // Ensure valid positions are found
+       if ($startPos !== false && $endPos !== false && $endPos > $startPos) {
+           // Extract the substring from { to ]
+           $partialData = substr($e->getMessage(), $startPos, $endPos - $startPos + 1);
+           
+         return json_decode($partialData.'}')->errors[0];
+       } else {
+         return 'Ocorreu um Erro ao Processar a Solicitação';
+     }
     }
   }
 
