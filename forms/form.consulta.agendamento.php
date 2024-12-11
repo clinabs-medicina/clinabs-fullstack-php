@@ -276,7 +276,7 @@ if((strtotime($date) - time()) > $tempo_limite) {
                             $stmt1->bindValue(":nome", "VENDA DE CONSULTA MÉDICA");
                             $stmt1->bindValue(":token", $token);
                             $stmt1->bindValue(":valor", $ag->valor);
-                            $stmt1->bindValue(":paciente_token", $ag->paciente_token);
+                            $stmt1->bindValue(":paciente_token", $pac->id);
                             $stmt1->bindValue(":sts", "AGUARDANDO PAGAMENTO");
                             $stmt1->bindValue(":payment_method", "NÃO DEFINIDO");
                             $stmt1->bindValue(":reference", $token);
@@ -297,12 +297,6 @@ if((strtotime($date) - time()) > $tempo_limite) {
                                     "paymentLink" => true,
                                     "createPwd" => $added
                                 ];
-
-
-                                if($ag->modalidade == "ONLINE") {
-                                    $msg1 = "Olá {$paciente->nome_completo}\n\nsegue o link da Teleconsulta  com {$prefixo}. {$medico_nome}\n*Data*: {$data_agendamento}\n*Especialidade*: {$especialidade}\n*Link*: {$room->roomUrl}";
-                                    $wa->sendTextMessage($paciente->celular, $msg1);
-                                }
 
 
                                 foreach($notificacoes_consultas as $phoneNumber) {

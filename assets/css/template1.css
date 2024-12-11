@@ -1409,6 +1409,7 @@ td.td-act {
     padding: 5px 12px;
     white-space: nowrap;
 }
+<<<<<<< HEAD
 */
 
 .row-presc {
@@ -3410,17 +3411,6 @@ button.btn-table-item {
   height: 50px;
 }
 
-
-<<<<<<< HEAD
-@media (max-width: 800px) {
-  .tab-toolbar {
-      display: flex;
-      flex-direction: column;
-      flex-wrap: nowrap;
-      align-content: center;
-      justify-content: center;
-      align-items: stretch;
-=======
 input[type="radio"] {
   width: 22px !important;
   height: 22px !important;
@@ -3532,7 +3522,6 @@ input.strike {
     align-content: center;
     justify-content: center;
     align-items: stretch;
->>>>>>> homolog
   }
 
   .tab-toolbar span {
@@ -3593,7 +3582,6 @@ input.strike {
     font-weight: bold;
   }
 
-<<<<<<< HEAD
   .form-footer {
     margin: 1rem 2rem;
   }
@@ -3629,6 +3617,4 @@ input.strike {
     justify-content: center;
     align-items: center;
   }
-=======
->>>>>>> homolog
 }

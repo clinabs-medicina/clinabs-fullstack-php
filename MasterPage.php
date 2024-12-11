@@ -1,12 +1,22 @@
 <?php
-define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
+define('ROOT', $_SERVER['DOCUMENT_ROOT']); 
+function inline_files(string $type, array $files) {
+    echo "<{$type}>";
+    
+    foreach($files as $f) {
+        echo file_get_contents($_SERVER['DOCUMENT_ROOT']."/{$f}");
+    }
+
+    echo "</{$type}>";
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5">
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.2, maximum-scale=5">
     <meta content="text/html; charset=UTF-8;" http-equiv="Content-Type" />
     <meta name="user" content="<?= $user->tipo ?? 'none' ?>" />
     <meta name="user-id" content="<?= $user->token ?? 'none' ?>" />
@@ -22,43 +32,120 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
     <?php if (isset($_REQUEST['pedido_code'])) {
     echo '<meta name="track_id" content="' . $_REQUEST["pedido_code"] . '">';
   } ?>
+
+<?php
+    
+    $fws = [
+        "/assets/font-awesome/css/all.min.css",
+        //"/assets/font-awesome/css/fws.min.css",
+       // "/assets/font-awesome/css/fws2.min.css",
+        //"/assets/font-awesome/css/fws3.min.css",
+        //"/assets/font-awesome/css/fws4.min.css",
+        //"/assets/font-awesome/css/fws5.min.css",
+        //"/assets/css/calendar.css",
+        //"/assets/css/select2.css"
+    ];
+
+    inline_files('style', $fws);
+    ?>
     <meta name="description"
         content="Agende sua consulta online hoje mesmo e comece a aproveitar os benefícios do CBD. Nossos médicos especialistas em canabinoides estão aqui para ajudá-lo a melhorar sua vida com o uso de CBD.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"
-        onload="this.media='all'; this.onload = null; this.rel='stylesheet'">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-        onload="this.media='all'; this.onload = null; this.rel='stylesheet'">
-
+    
     <link rel="manifest" href="/manifest.json" />
     <link rel="icon favicon" href="/assets/images/favicon.ico">
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="/assets/css/sweetalert.css" crossorigin="sameorign">
     <link rel="preload" rel="stylesheet" href="/assets/css/croppie.css" crossorigin="sameorign" as="style"
         onload="this.onload=null;this.rel='stylesheet'">
+    <style>
+        @font-face {
+            font-family: 'Inter';
+            src: url('/assets/fonts/Inter-Regular.ttf') format('truetype');
+        }
 
-    <link rel="preload" rel="stylesheet" href="/assets/css/datatable.css" crossorigin="anonymsameorignous" as="style"
-        onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" rel="stylesheet" href="/assets/css/responsive.dataTables.css" crossorigin="sameorign" as="style"
-            onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" rel="stylesheet" href="/assets/css/buttons.dataTables.css" crossorigin="sameorign" as="style"
-            onload="this.onload=null;this.rel='stylesheet'">
+        @font-face {
+            font-family: 'Proxima Nova';
+            src: url('/assets/fonts/ProximaNova-Reg-webfont.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
 
 
-    <link rel="stylesheet" href="/assets/css/select2.css" crossorigin="sameorign">
-    <link rel="stylesheet" href="/assets/css/calendar.css" crossorigin="sameorign">
+        * {
+            user-select: none;
+        }
+
+
+        :root {
+            --main-bg-color1: #05ad94;
+            --main-bg-color2: #03e3c1;
+            --primary: #0d6efd;
+            --secondary: #6c757d;
+            --success: #198754;
+            --info: #0dcaf0;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+
+    </style>
+    <?php
+
+    if(isset($useDT)) {
+        echo '<link href="/assets/css/datatable.css" rel="stylesheet" type="text/css" crossorigin="sameorign" />';
+        echo '<link href="/assets/css/responsive.dataTables.css" rel="stylesheet" type="text/css" crossorigin="sameorign" />';
+        echo '<link href="/assets/css/buttons.dataTables.css" rel="stylesheet" type="text/css" crossorigin="sameorign" />';
+    }
+    
+    $bootstrap = [
+        "/assets/bootstrap/css/bootstrap.css",
+        "/assets/bootstrap/css/bootstrap2.css",
+        "/assets/bootstrap/css/bootstrap3.css",
+        "/assets/bootstrap/css/bootstrap4.css",
+        "/assets/bootstrap/css/bootstrap5.css",
+        "/assets/css/sweetalert.css",
+        "/assets/css/croppie.css"
+    ];
+
+    inline_files('style', $bootstrap);
+    ?>
+
+
     <link href="/assets/css/select2.css" rel="stylesheet" type="text/css" crossorigin="sameorign" />
-    <link href="/assets/css/style.css" rel="stylesheet" type="text/css" crossorigin="sameorign" />
-    <link rel="stylesheet" href="/assets/css/font-awesome.css" crossorigin="sameorign">
-    <link href="/assets/css/quill.snow.css" rel="stylesheet" />
-    <link rel="stylesheet" href="/assets/css/theme3.css" />
-    <link rel="stylesheet" href="/assets/css/template1.css" />
-    <link rel="stylesheet" href="/assets/css/template2.css" />
-    <link rel="stylesheet" href="/assets/css//clinabs.plugins.css" />
+
+    <?php
+    $templates = [
+        "/assets/css/style.css",
+        "/assets/css/style2.css",
+        "/assets/css/style3.css",
+        "/assets/css/style4.css"
+    ];
+
+    inline_files('style', $templates);
+    ?>
+    <?php
+
+    if(isset($page->useDT) && $page->useDT == true) {
+    echo '<link rel="preload" rel="stylesheet" href="/assets/css/datatable.css" crossorigin="anonymsameorignous">
+    <link rel="preload" rel="stylesheet" href="/assets/css/responsive.dataTables.css" crossorigin="sameorign">
+    <link rel="preload" rel="stylesheet" href="/assets/css/buttons.dataTables.css" crossorigin="sameorign">';
+    }
+
+    $templates = [
+        "/assets/css/theme3.css",
+        "/assets/css/template1.css",
+        "/assets/css/template2.css",
+        "/assets/css/template3.css",
+        "/assets/css//clinabs.plugins.css",
+        "/assets/css/quill.snow.css"
+    ];
+
+        inline_files('style', $templates);
+    ?>
+    
 
     <style>
     .doctor-card {
@@ -146,7 +233,7 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
 <div class="preloader-container">
     <div class="preloader-content"></div>
     <div class="preloader">
-        <img src="/assets/images/loading.gif" alt="Loading">
+        <img height="64px" width="64px" src="/assets/images/loading.gif" alt="Loading">
     </div>
 </div>
 
@@ -162,8 +249,6 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
     <section class="slider" id="slider1">
         <div class="slider-content">
             <div class="slider-box active">
-                <img width="100%" class="img-desktop" src="/assets/images/banner-home.webp" alt="slider1" preload>
-                <img class="img-mobile" src="/assets/images/banner-home-mobile.webp" alt="slider1" preload>
                 <div id="row-btn-banner" class="row">
                     <div class="col-4 col-lg-4 col-md-6">
                     </div>
@@ -219,10 +304,10 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
     <!-- FIM FOOTER -->
 
     <!-- POLITICA DE PRIVACIDADE -->
-    <div class="rounded-1 cmplz-cookiebanne hide">
+    <div class="rounded-1 cmplz-cookiebanner hide">
         <div class="container">
             <div class="icogroup">
-                <img src="/assets/images/ico-cookies.svg" alt="Cookie">
+                <img height="50px" src="/assets/images/ico-cookies.svg" alt="Cookie">
                 <h4>Esse site usa Cookies</h4>
             </div>
             <p>Armazenamos dados temporariamente para melhorar a sua experincia de navegação. Ao utilizar nossos
@@ -238,43 +323,57 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
     </div>
 
     <!-- FIM POLITICA DE PRIVACIDADE -->
-    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-    <script>
-    AOS.init();
-    </script>
+    
+    
     <script type="text/javascript" src="/assets/js/ClinabsJS.js"></script>
-    <script type="text/javascript" src="/assets/js/datatable.js"></script>
     <script type="text/javascript" src="/assets/js/clinabs.js"></script>
-
-    <script type="text/javascript" src="/assets/js/calendar.js"></script>
 
     <script type="text/javascript" src="/assets/js/select2.js"></script>
     <script type="text/javascript" src="/assets/modules/sweetalert2/sweetalert2.js"></script>
     <script type="text/javascript" src="/assets/js/croppie.js"></script>
-    <script type="text/javascript" src="/assets/js/datatable.js"></script>
-    <script type="text/javascript" src="/assets/js/buttons.colVis.js"></script>
-    <script type="text/javascript" src="/assets/js/dataTables.buttons.js"></script>
-    <script type="text/javascript" src="/assets/js/dataTables.rowReorder.js"></script>
-    <script type="text/javascript" src="/assets/js/responsive.dataTables.js"></script>
+    
+    <?php
+    if(isset($useDT)) {
+        echo '<script type="text/javascript" src="/assets/js/datatable.js"></script>
+                <script type="text/javascript" src="/assets/js/buttons.colVis.js"></script>
+                <script type="text/javascript" src="/assets/js/dataTables.buttons.js"></script>
+                <script type="text/javascript" src="/assets/js/dataTables.rowReorder.js"></script>
+                <script type="text/javascript" src="/assets/js/responsive.dataTables.js"></script>
+                <script type="text/javascript" src="/assets/js/dts.js"></script>';
+    }
+    ?>
 
-    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
     <!--<script src="https://cdn.tiny.cloud/1/o69uuqv853g4pxc40ctycrnc5e3imuz426yspmq9l28bvv0v/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>-->
-    <script src="/assets/js/plugins/tinymce/tinymce.min.js"></script>
+    
+    <?php
+    if(isset($useEditor)) {
+        echo '<script src="/assets/js/plugins/tinymce/tinymce.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>';
+    }
+    ?>
 
     <script src="/assets/js/imask.min.js"></script>
     <script src="/assets/js/clinabs.plugins.js"></script>
-    <script type="text/javascript" src="/assets/js/scripts.js"></script>
-    <script type="text/javascript" src="/assets/js/scripts2.js"></script>
     <script type="text/javascript" src="/assets/js/agenda.js"></script>
     <script type="text/javascript" src="/assets/js/endereco.js"></script>
     <script type="text/javascript" src="/assets/js/services.js"></script>
     <script type="text/javascript" src="/assets/js/services.upload.js"></script>
-    <script type="text/javascript" src="/assets/js/plugins.calendar.js"></script>
+    
+     
+    <script type="text/javascript" src="/assets/js/scripts2.js"></script>
+    <script type="text/javascript" src="/assets/js/scripts.js"></script>
+    
+    <?php
+        if($page->name == 'link_agendar_consulta') {
+            echo '<script type="text/javascript" src="/assets/js/calendar.js"></script>';
+            echo '<script type="text/javascript" src="/assets/js/plugins.calendar.js"></script>';
+        }
+    ?>
+
     <script type="text/javascript" src="/assets/js/script-doctor.js"></script>
     <script type="text/javascript" src="/assets/js/test.js"></script>
     <script type="text/javascript" src="/assets/js/certificado.js"></script>
     <script type="text/javascript" src="/assets/js/dashboard.js"></script>
-    <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="/assets/js/clinabs.modules.js"></script>
     <script type="text/javascript" src="/assets/js/agenda.module.js"></script>
     <script type="text/javascript" src="/assets/js/agendamento.js"></script>
@@ -339,8 +438,7 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
    if(isset($useWb)) {
         echo '<script src="https://cdn.srv.whereby.com/embed/v2-embed.js" type="module"></script>';
    }
-   ?>
-
+   ?> 
 </body>
 
 </html>

@@ -7,6 +7,9 @@ $page->name = 'link_funcionarios';
 $page->require_login = true;
 $page->includePlugins = true;
 
+$useDT = true;
+$useSelector = true;
+
 
 
 require_once $_SERVER['DOCUMENT_ROOT'].'/session.php';

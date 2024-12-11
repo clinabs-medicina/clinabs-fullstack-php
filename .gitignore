@@ -8,6 +8,4 @@ deploy.json
 *.log
 *.inc.php
 *.txt
-.anotacoes/
-.github/
-.htaccess
+forms/*.txt

@@ -1,12 +1,20 @@
 // scripts.js
 const calendar = document.getElementById('calendar');
 let monthSelect = 0;
+let _year = new Date().getFullYear();
+
 const renderCalendar = (date, events = {}) => {
+    document.getElementById('calendar').dataset.year = _year;
+
+    $('.calendar-prev-btn').off('click');
+    $('.calendar-next-btn').off('click');
+
     monthSelect = date.getMonth();
     const selectedMonth = parseInt(monthSelect);
     let months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
     const element = document.querySelector('#calendar-info');
+
     if (element)
         element.textContent = `${months[monthSelect]}, ${date.getFullYear()}`;
 
@@ -15,6 +23,7 @@ const renderCalendar = (date, events = {}) => {
     date.setDate(1);
     const firstDayIndex = date.getDay();
     let selectedYear = date.getFullYear();
+
 
     // Get the last day of the month
     date.setMonth(selectedMonth + 1);
@@ -148,11 +157,12 @@ const renderCalendar = (date, events = {}) => {
 
     const elementClk = document.querySelector('.calendar-next-btn');
     if (elementClk)
-        elementClk.addEventListener('click', () => {
+        $(elementClk).off('click');
+    elementClk.addEventListener('click', () => {
         let nextMonth = selectedMonth + 1;
+
         if (nextMonth > 11) {
             nextMonth = 0;
-            selectedYear++;
         }
 
         monthSelect = nextMonth;
@@ -176,6 +186,9 @@ const renderCalendar = (date, events = {}) => {
                 events.push(resp[k]);
             }
 
+            if (monthSelect == 0) {
+                selectedYear += 1;
+            }
 
 
             renderCalendar(new Date(selectedYear, monthSelect), events);
@@ -199,7 +212,8 @@ const renderCalendar = (date, events = {}) => {
 
     const elementCalend = document.querySelector('.calendar-prev-btn');
     if (elementCalend)
-        elementCalend.addEventListener('click', () => {
+        $(elementCalend).off('click');
+    elementCalend.addEventListener('click', () => {
         let prevMonth = selectedMonth - 1;
         if (prevMonth < 0) {
             prevMonth = 11;
@@ -268,6 +282,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let selectedYear = new Date().getFullYear();
 
+    document.getElementById('calendar').dataset.year = selectedYear;
+
     let query = queryStringToJSON(window.location.search);
 
     $('input[name="filter_ag"]').on('change', function () {
@@ -316,7 +332,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         setTimeout(function () {
             $('#filter_ag_medicos').on('change', function () {
-
                 if ($(this).is(':checked')) {
                     $('#select2-filter_ag_select-container').text(this.dataset.title);
                     $('#filter_ag_select').select2('open');
@@ -536,4 +551,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         }
     }
+
+    $('.calendar-prev-btn').off('click');
+    $('.calendar-next-btn').off('click');
 });

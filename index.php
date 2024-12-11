@@ -4,8 +4,8 @@ $page->title = 'Home';
 $page->content = 'main.php';
 $page->bc = true;
 $page->name = 'link_home';
-
-
+$page->useDT = false;
+$page->useSelector = false;
 //require_once $_SERVER['DOCUMENT_ROOT'].'/session.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/config.inc.php';
 
