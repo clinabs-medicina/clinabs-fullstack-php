@@ -1148,7 +1148,6 @@ body {
 
 .main .box-pm .box-body {
     display: flex;
-    margin: 0.7rem;
     text-align: left;
     gap: 1.35rem;
 }

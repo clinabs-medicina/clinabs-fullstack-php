@@ -558,6 +558,23 @@ button.btn-prev {
     background-position-x: 15px !important;
 }
 
+
+
+
+
+.custom-container {
+    display: flex;
+    letter-spacing: 0.2px;
+    margin: 0 auto;
+    padding: 10px 5%;
+    margin: 0 auto;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
 @media screen and (max-width: 765px) {
     .login-modal {
         width: 90%;
@@ -2027,4 +2044,83 @@ input#produtoSearch {
     height: 25px !important;
     margin-right: 10px;
     align-items: center;
+}
+
+
+
+
+@media (max-width: 1200px) {
+
+    .main,
+    body {
+        display: flex;
+        width: 95%;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-content: center;
+        justify-content: center;
+        align-items: stretch;
+    }
+}
+
+@media (max-width: 900px) {
+
+    .main,
+    body {
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .row {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .row>* {
+        font-size: 11px !important;
+        width: 100%;
+    }
+
+    .whatsapp-widget {
+        display: block;
+        position: fixed;
+        height: auto;
+        right: 1rem;
+        bottom: 1.5rem;
+        width: 300px;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        padding: 10px;
+    }
+
+    img.doctor-ard-img.border.border-4.border-primary.rounded-circle {
+        width: 100px !important;
+        height: 100px !important;
+    }
+
+    span.doctor-title {
+        font-size: 0.75rem !important;
+        font-family: 'Poppins';
+        font-weight: 700;
+    }
+
+    section.container-medicos {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .doctor-card {
+        height: 100px !important;
+        width: 100% !important;
+    }
+
+    img.doctor-ard-img.border.border-4.border-primary.rounded-circle {
+        width: 100px !important;
+        height: 100px !important;
+        margin-bottom: 3px !important;
+    }
 }
