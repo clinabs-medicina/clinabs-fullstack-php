@@ -59,6 +59,7 @@ function inline_files(string $type, array $files) {
     <link rel="stylesheet" href="/assets/css/sweetalert.css" crossorigin="sameorign">
     <link rel="preload" rel="stylesheet" href="/assets/css/croppie.css" crossorigin="sameorign" as="style"
         onload="this.onload=null;this.rel='stylesheet'">
+    <link href="/assets/css/select2.css" rel="stylesheet" type="text/css" crossorigin="sameorign" />
     <style>
         @font-face {
             font-family: 'Inter';
@@ -111,12 +112,7 @@ function inline_files(string $type, array $files) {
     ];
 
     inline_files('style', $bootstrap);
-    ?>
 
-
-    <link href="/assets/css/select2.css" rel="stylesheet" type="text/css" crossorigin="sameorign" />
-
-    <?php
     $templates = [
         "/assets/css/style.css",
         "/assets/css/style2.css",
@@ -329,8 +325,12 @@ function inline_files(string $type, array $files) {
     <script type="text/javascript" src="/assets/js/clinabs.js"></script>
 
     <script type="text/javascript" src="/assets/js/select2.js"></script>
+
     <script type="text/javascript" src="/assets/modules/sweetalert2/sweetalert2.js"></script>
     <script type="text/javascript" src="/assets/js/croppie.js"></script>
+
+    <script type="text/javascript" src="/assets/js/scripts.js"></script>
+    <script type="text/javascript" src="/assets/js/scripts2.js"></script>
     
     <?php
     if(isset($useDT)) {
@@ -358,11 +358,7 @@ function inline_files(string $type, array $files) {
     <script type="text/javascript" src="/assets/js/endereco.js"></script>
     <script type="text/javascript" src="/assets/js/services.js"></script>
     <script type="text/javascript" src="/assets/js/services.upload.js"></script>
-    
-     
-    <script type="text/javascript" src="/assets/js/scripts2.js"></script>
-    <script type="text/javascript" src="/assets/js/scripts.js"></script>
-    
+
     <?php
         if($page->name == 'link_agendar_consulta') {
             echo '<script type="text/javascript" src="/assets/js/calendar.js"></script>';
@@ -439,6 +435,15 @@ function inline_files(string $type, array $files) {
         echo '<script src="https://cdn.srv.whereby.com/embed/v2-embed.js" type="module"></script>';
    }
    ?> 
+
+   <script>
+        $('document').ready(function(){
+            $('select').select2();
+            $('select.form-control.select-tags').select2({
+                tags: true
+            });
+        })
+   </script>
 </body>
 
 </html>
