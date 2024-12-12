@@ -1,7 +1,26 @@
 <?php
 global $user, $favoritos, $carrinho;
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if(isset($_SESSION['token'])) {
+    if (isset($_SESSION['user'])) {
+        try {
+            $user = (object) $_SESSION['user'];
+        } catch (PDOException $e) {
 
-if (isset($_COOKIE['sessid_clinabs_uid'])) {
+        }
+    } else {
+        error_log("Usuário não encontrado na sessão.\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+    }
+    $nome = $user->nome_completo;
+try{    
+    error_log("Valor da variável header \$user: $nome \r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+} catch (PDOException $e) {
+}
+
+//if (isset($_COOKIE['sessid_clinabs_uid'])) {
+
     $sql = "SELECT
       objeto AS tipo
    FROM
@@ -25,9 +44,13 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
       WHERE 
       F.token = :token
       )";
+try{
+    error_log("Valor da variável header \$sql: $sql \r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+} catch (PDOException $e) {
+}
 
     $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':token', isset($_COOKIE['sessid_clinabs_uid']) ? $_COOKIE['sessid_clinabs_uid'] : $user->token);
+    $stmt->bindValue(':token', isset($_SESSION['token']) ? $_SESSION['token'] : $user->token);
     $stmt->execute();
     $obj = $stmt->fetch(PDO::FETCH_OBJ);
 
@@ -35,7 +58,7 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
 
     if ($tableName !== 'S') {
         $stmt2 = $pdo->prepare("SELECT * FROM $tableName WHERE token = :token");
-        $stmt2->bindValue(':token', isset($_COOKIE['sessid_clinabs_uid']) ? $_COOKIE['sessid_clinabs_uid'] : $user->token);
+        $stmt2->bindValue(':token', isset($_SESSION['token']) ? $_SESSION['token'] : $user->token);
 
         $stmt2->execute();
         $_user = $stmt2->fetch(PDO::FETCH_OBJ);
@@ -43,7 +66,12 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
         $_user = false;
     }
 } else {
-    
+    try {
+    $tok = isset($_SESSION['token']);
+    error_log("Token não carregado: header \$tok: $tok \r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+    } catch (PDOException $e) {
+    }
+
 }
 ?>
 <!-- BREADCRUMBS -->
@@ -70,7 +98,7 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
             <ul class="m-0">
                 <li class="<?= $page->name == 'link_home' ? 'active' : ''?>" data-ref="/"><a href="/" alt=""
                         title="">INÍCIO</a></li>
-                <?php if (isset($_COOKIE['sessid_clinabs']) && $_COOKIE['sessid_clinabs'] != null) { ?>
+                <?php if (isset($_SESSION['token']) && $_SESSION['token'] != null) { ?>
                 <?= !$is_nabscare && $user->perms->link_agendar_consulta ? '<li class="consult-li-link data-ref="consulta"><a href="/agendamento" alt="Agendar Consulta" title="">AGENDAR CONSULTA</a></li>' : '' ?>
                 <?= $user->perms->link_medicos && !$is_nabscare ? '<li data-ref="medicos"><a href="/medicos" alt="Nossos Médicos" title="">MÉDICOS</a></li>' : '' ?>
                 <?= $user->perms->link_produtos == 1 ? '<li data-ref="produtos"><a href="/produtos" alt="Nossos produtos" title="">PRODUTOS</a></li>' : '' ?>
@@ -110,7 +138,7 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
                                 href="/perfil"><?=  trim($_user->nome_preferencia ?? trim(explode(' ', $user->nome_completo)[0])) ?></a>
                         </p>
                         <p class="m-0"><a href="/perfil">MINHA CONTA</a> | <a
-                                href="/logout<?= isset($_COOKIE['sessid_clinabs_uid']) || isset($_COOKIE['sessid_clinabs_uid']) ? '?session=user' : '' ?>">SAIR</a>
+                                href="/logout<?= isset($_SESSION['token']) || isset($_SESSION['token']) ? '?session=user' : '' ?>">SAIR</a>
                         </p>
                     </div>
 

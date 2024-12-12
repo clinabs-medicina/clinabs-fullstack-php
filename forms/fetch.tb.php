@@ -8,6 +8,12 @@ header("pragma: no-cache");
 
 if(isset($_REQUEST['tb'])) {
     if(isset($_REQUEST['q'])) {
+        $tab = $_REQUEST['tb'];
+	try {
+    	error_log("Valor da variável fetch.tb \$_REQUEST['tb']: $tab\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+	} catch (PDOException $e) {
+	}
+
         if(strtolower($_REQUEST['tb']) == 'medicos') {
             $dados = $pdo->query("SELECT id,identidade_genero,".implode(', ', explode(',', $_REQUEST['key']))." AS text FROM ".strtoupper($_REQUEST['tb']).' WHERE LOWER('.$_REQUEST['key'].') LIKE "%'.strtolower($_REQUEST['q']).'%" AND status = "ATIVO" ORDER BY id ASC;');
         } else {

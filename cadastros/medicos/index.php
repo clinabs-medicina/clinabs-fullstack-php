@@ -1,4 +1,16 @@
 <?php
+
+          if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+          }
+          if(isset($_SESSION['user'])) {
+            try {
+                $user = (object) $_SESSION['user'];
+            } catch (PDOException $e) {
+        
+            }
+          }
+
 $page = new stdClass();
 $page->title = 'Médicos';
 $page->content = 'cadastros/medicos/main.php';

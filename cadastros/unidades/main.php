@@ -17,7 +17,7 @@ if($user->tipo == 'FUNCIONARIO') {
                                     <div class="secunid-flex">
                                         <div>
                                             <div class="secunid-img">
-                                                <img src="'.$unidade->image.'" />
+                                                <img src="'.$unidade->image.'" alt="" >
                                             </div>
                                     
                                             <div class="secunid-content">
@@ -26,14 +26,14 @@ if($user->tipo == 'FUNCIONARIO') {
                                                     <hr />
                                                 </div>
                                                 <div class="secunid-box">
-                                                    <img src="/assets/images/ico-map.svg" height="25px" />
+                                                    <img src="/assets/images/ico-map.svg" height="25px" alt="" >
                                                     <p>
                                                         '.$unidade->logradouro.', Nº '.$unidade->numero.' - '.$unidade->bairro.'<br />
                                                         '.$unidade->cidade.' - '.$unidade->uf.', '.$unidade->cep.'
                                                     </p>
                                                 </div>
                                                 <div class="secunid-box">
-                                                    <img src="/assets/images/ico-fone-bw.svg" height="25px" />
+                                                    <img src="/assets/images/ico-fone-bw.svg" height="25px" alt="" >
                                                     <p class="secunid-fone">'.$unidade->contato.'</p>
                                                 </div>
                                                 <a href="https://www.google.com/maps/search/?api=1&query='.str_replace(' ', '%20', $unidade->logradouro.', '.$unidade->numero.'  ,'.$unidade->bairro.', '.$unidade->cidade.' - '.$unidade->uf.','.$unidade->cep).'" target="_blank">

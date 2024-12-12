@@ -30,6 +30,18 @@
          <tbody>
 
           <?php
+          
+          if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+          }
+          if(isset($_SESSION['user'])) {
+            try {
+                $user = (object) $_SESSION['user'];
+            } catch (PDOException $e) {
+        
+            }
+          }
+        
 
           foreach($pdo->query("SELECT
             `nome_completo`,

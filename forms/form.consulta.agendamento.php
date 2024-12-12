@@ -5,7 +5,16 @@ $added = false;
 error_reporting(1);
 ini_set("display_erros", 1);
 $date = trim($_REQUEST["data_agendamento"]);
-
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if(isset($_SESSION['user'])) {
+    try {
+       $user = (object) $_SESSION['user'];
+   } catch (PDOException $e) {
+ 
+   }
+}
 
 function dueDate($data_gendamento, $data_atual) {
     $agendamento = strtotime($data_gendamento);
@@ -48,7 +57,11 @@ if((strtotime($date) - time()) > $tempo_limite) {
     );
 
     $token = md5($_REQUEST['cpf']).uniqid();
-
+    try{    
+        error_log("token form.consulta.agendamento \$user: $token \r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+    } catch (PDOException $e) {
+    }
+    
 
     $pwd = md5(sha1(uniqid()));
     $payment_error = "";
@@ -278,7 +291,7 @@ if((strtotime($date) - time()) > $tempo_limite) {
                                     "icon" => "success",
                                     "text" => "Consulta Agendada com Sucesso!",
                                     "link" => $link->invoiceUrl,
-                                    'linkUrl' => $added && !isset($_COOKIE['sessid_clinabs']) ? 'https://'.$hostname.'/login?action=newPassword&token='.$ag->paciente_token : '',
+                                    'linkUrl' => $added && !isset($_SESSION['token']) ? 'https://'.$hostname.'/login?action=newPassword&token='.$ag->paciente_token : '',
                                     "paymentLink" => true,
                                     "createPwd" => $added
                                 ];
@@ -367,8 +380,8 @@ if((strtotime($date) - time()) > $tempo_limite) {
                                 
                                 if($stmt2->rowCount() > 0) {
                                     $msg .= "". PHP_EOL;
-                                    $msg .= "Clinica: ${$medico->clinica_nome}". PHP_EOL;
-                                    $msg .= "Endereço: {$endereco->logradouro}, ${$endereco->numero}". PHP_EOL;
+                                    $msg .= "Clinica: {$medico->clinica_nome}". PHP_EOL;
+                                    $msg .= "Endereço: {$endereco->logradouro}, {$endereco->numero}". PHP_EOL;
                                     $msg .= "Cidade: {$endereco->cidade}". PHP_EOL;
                                     $msg .= "Bairro: {$endereco->bairro}". PHP_EOL;
                                 }
@@ -575,6 +588,10 @@ if((strtotime($date) - time()) > $tempo_limite) {
         "text" =>  "Descupe-nos, mas este horário não está mais disponível no momento.",
         "data" => []
     ];
+}
+try {
+error_log("Valor da variável agendam.. \$json: $json\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+} catch (PDOException $e) {
 }
 
 header("content-type: application/json");

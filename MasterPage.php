@@ -1,5 +1,16 @@
 <?php
-define('ROOT', $_SERVER['DOCUMENT_ROOT']); ?>
+define('ROOT', $_SERVER['DOCUMENT_ROOT']); 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if(isset($_SESSION['user'])) {
+   try {
+      $user = (object) $_SESSION['user'];
+  } catch (PDOException $e) {
+
+  }
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 

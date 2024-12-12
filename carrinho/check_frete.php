@@ -1,6 +1,6 @@
 <?php
 require_once '../config.inc.php';
-$produtos_carrinho = $carrinho->getAll($_COOKIE['sessid_clinabs_uid']);
+$produtos_carrinho = $carrinho->getAll($_SESSION['token']);
 
 header('Content-Type: application/json');
 

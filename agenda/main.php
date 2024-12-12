@@ -1,5 +1,15 @@
 <?php
-if(isset($_COOKIE['sessid_clinabs_uid']) && $user->tipo == 'FUNCIONARIO') {
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if(isset($_SESSION['user'])) {
+  $user = (object) $_SESSION['user'];
+  try {
+  error_log("Valor da variável main.php \$user tipo: $user->tipo\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+  } catch (PDOException $e) {
+  }
+}
+if(isset($_SESSION['token']) && $user->tipo == 'FUNCIONARIO') {
   $query = "SELECT
   AGENDA_MED.data_agendamento, 
   AGENDA_MED.paciente_token, 
@@ -31,7 +41,7 @@ if(isset($_COOKIE['sessid_clinabs_uid']) && $user->tipo == 'FUNCIONARIO') {
   anamnese as anamnese_id
 FROM
   AGENDA_MED
-  WHERE paciente_token = '".$_COOKIE['sessid_clinabs_uid']."';";
+  WHERE paciente_token = '".$_SESSION['token']."';";
 }
 else if($user->tipo == 'PACIENTE') {
 $query = "SELECT
@@ -67,7 +77,6 @@ FROM
 AGENDA_MED
 WHERE paciente_token = '".$user->token."';";
 }
-
 else if($user->tipo == 'MEDICO') {
 $query = "SELECT
 AGENDA_MED.data_agendamento, 
@@ -136,6 +145,10 @@ else {
 FROM
   AGENDA_MED";
 } 
+try{    
+  error_log("Valor da variável agenda main \$query: $query \r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+} catch (PDOException $e) {
+}
 
 $rows = $pdo->query($query)->fetchAll(PDO::FETCH_OBJ);
 
@@ -145,7 +158,7 @@ $status = [];
 
 foreach($rows as $row) {
   $medicos[$row->medico_id] = $row->medico_nome;
-  $status[] = $row->status;
+  $status[$row->medico_id] = $row->status;
   $pacientes[$row->paciente_id] = $row->paciente_nome;
 }
 
@@ -347,7 +360,7 @@ foreach($rows as $row) {
                 $date_formated = date('d/m/Y', strtotime($date));
 
 
-              echo "<tr data-room=\"{$roomName}\" data-index=\"{$i}\" class=\"ag_row ag_row${i}\" data-date=\"{$date}\" data-paciente=\"{$column->paciente_token}\" data=ts=\"{$ts}\" id=\"{$column->token}\" data-stime=\"{$startTime}\">";
+              echo "<tr data-room=\"{$roomName}\" data-index=\"{$i}\" class=\"ag_row ag_row{$i}\" data-date=\"{$date}\" data-paciente=\"{$column->paciente_token}\" data=ts=\"{$ts}\" id=\"{$column->token}\" data-stime=\"{$startTime}\">";
                 echo "<td data-value=\"{$date}\" data-label=\"Data: \" width=\"260px\" class=\"ag-day\"><div class=\"calendar-day\">
                 <img src=\"/assets/images/ico-calendar.svg\" height=\"32px\">
                 <div class=\"datetime-column\">

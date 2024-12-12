@@ -13,8 +13,9 @@ session_set_cookie_params([
     'httponly' => true,  // Impede acesso via JavaScript
     'samesite' => 'Strict'  // Previne envio em requisições de outros sites
 ]);
-session_start();
-
+if (session_status() === PHP_SESSION_NONE) {
+	session_start();
+}
 
 $YOUTUBE_LINK = 'https://www.youtube.com/@Clinabs';
 $FACEBOOK_LINK = 'https://www.facebook.com/share/U8N9ob4r3pvJJ1FT/?mibextid=qi2Omg';
