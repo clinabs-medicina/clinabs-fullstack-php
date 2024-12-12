@@ -64,7 +64,7 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
         <div class="link-consult-mobile"
             style="text-align: center; text-decoration: none; color: #2c8a7a;  border: 1px solid #ffb60dc2;  padding: 0.25rem; border-radius: 8px; font-size: 11px;">
             <a href="/agendamento" alt="Agendar Consulta" title=""
-                style="text-align: center; font-weight: 600; text-decoration: none; color:#05ad94;">AGENDAR CONSULTA</a>
+                style="text-align: center; font-weight: 600; text-decoration: none; color:#05ad94;font-size: 12pxs">AGENDAR CONSULTA</a>
         </div>
         <nav class="menu-header">
             <ul class="m-0">
@@ -170,7 +170,7 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
         <div class="mobile-menu" style="background-color: #05ad94; height: 90px; padding: 28px 10px; width: auto;">
             <a href="#" id="mobile-toggle-menu"
                 style="color: white; text-decoration: none; font-size: 30px; float:left;">
-                <h6 class="menu-mobile-title" style="text-align: revert-layer; float: left; padding: 6px;">MENU</h6>
+                <h6 class="menu-mobile-title" style="text-align: revert-layer;font-size: 0.90rem; float: left; padding: 6px;">MENU</h6>
                 <img class="ico-hover" src="/assets/images/ico-menu-burger.svg" alt="Menu"
                     style="filter: brightness(0) invert(1); display: none;">
             </a>

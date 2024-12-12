@@ -72,11 +72,11 @@
             <strong class="m-0">
                 <i class="fab fa-whatsapp"></i> WhatsApp
             </strong>
-            <div class="rounded-circle btn btn-light">
+            <div class="rounded-circle btn btn-light" id="wa-close-modal">
                 <i class="fas fa-times"></i>
             </div>       
         </div>
-        <div class="whatsapp-body hide" style="background-image: url('/assets/images/whatsapp-bg.jpg'); background-position: center;">
+        <div class="whatsapp-body" style="background-image: url('/assets/images/whatsapp-bg.jpg'); background-position: center;">
             <div class="border rounded-3 p-2 border-3 whatsapp-msg bg-white" style="box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 88%);">
                 <i class="fas fa-user"></i> Atendimento:<br>
                 Seja bem vindo. Clique no botão para falar com um de nossos atendentes.
