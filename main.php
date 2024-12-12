@@ -13,7 +13,7 @@
             style="font-family: 'Poppins';font-size: 1.50rem !important;">Por que <spam class="text-primary"
                 style="font-family: 'Poppins';">a Clinabs?</spam>
         </h2>
-        <div class="row text-center">
+        <div class="row text-center doctor-rows">
             <div class="col-3 col-lg-3 col-md-3 col-sm-12" data-aos="fade-right" data-aos-duration="2000"
                 data-aos-once="true">
                 <img src="/assets/images/icons/icon-can.webp" alt="Especialistas em CBD" class="custom-icon">
@@ -106,7 +106,7 @@
                      <div class="col text-center medico-item p-0" data-aos="fade-up" data-aos-duration="1000" data-aos-once="true">
                          <div class="doctor-card rounded-pill ms-3 mt-5">
                              <div class="mt-5">
-                                 <img class="border border-4 border-primary rounded-circle" src="'.$img.'" alt="Profile Picture" class="img-fluid rounded-circle" style="z-index: 1; margin-top: -45px; margin-left: -20px;">
+                                 <img height="100px" class="border border-4 border-primary rounded-circle" src="'.$img.'" alt="Profile Picture" class="img-fluid rounded-circle" style="z-index: 1; margin-top: -45px; margin-left: -20px;">
                              </div>                        
                              <div class="doctor-info">
                                  <div class="py-3 pe-5 text-start">

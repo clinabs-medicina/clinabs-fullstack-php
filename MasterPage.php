@@ -16,7 +16,7 @@ function inline_files(string $type, array $files) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, minimum-scale=1.2, maximum-scale=5">
+        content="width=device-width, initial-scale=0.9, minimum-scale=0.9, maximum-scale=0.9">
     <meta content="text/html; charset=UTF-8;" http-equiv="Content-Type" />
     <meta name="user" content="<?= $user->tipo ?? 'none' ?>" />
     <meta name="user-id" content="<?= $user->token ?? 'none' ?>" />
@@ -32,7 +32,13 @@ function inline_files(string $type, array $files) {
     <?php if (isset($_REQUEST['pedido_code'])) {
     echo '<meta name="track_id" content="' . $_REQUEST["pedido_code"] . '">';
   } ?>
-
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+</style>
 <?php
     
     $fws = [
@@ -188,6 +194,12 @@ function inline_files(string $type, array $files) {
     </style>
 
     <style>
+
+    .main, body {
+        width: 100%;
+        overflow-x: hidden;
+        min-width: 100%;
+    }
     .custom-icon {
         width: 80px;
         height: 80px;
@@ -221,6 +233,425 @@ function inline_files(string $type, array $files) {
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+
+    
+    @media (max-width: 1000px) {
+        img.border.border-4.border-primary.rounded-circle {
+            width: 100px !important;
+            height: 100px !important;
+        }
+
+        span.doctor-title {
+            font-size: 12px;
+            font-family: 'Poppins';
+            font-weight: 700;
+        }
+
+        .doctor-card {
+            background-color: #24b39e;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            max-height: 100px;
+        }
+
+        .row.text-center.doctor-rows {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-content: center;
+            justify-content: center;
+            align-items: stretch;
+        }
+
+        .row.text-center.doctor-rows .col-3.col-lg-3.col-md-3.col-sm-12 {
+            width: 100%;
+        }
+
+        .help-flex button {
+            font-size: 16px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: -1.3px;
+            fill: #FFFFFF;
+            color: #FFFFFF;
+            background-color: transparent;
+            background-image: linear-gradient(89deg, #03e3c1 0%, #05ad94 100%);
+            border-style: solid;
+            border-width: 0px 0px 0px 0px;
+            border-color: #03e3c1;
+            border-radius: 100px 100px 100px 100px;
+            padding: 25px 50px 25px 50px;
+            transition: .4s;
+            cursor: pointer;
+            margin: 2rem 0;
+        }
+
+        .medico-item a {
+            margin: 0px !important;
+            font-size: 12px;
+        }
+
+        .header .flex-container img:first-child {
+            height: 50px;
+        }
+
+        .whatsapp-widget {
+            display: block;
+            position: fixed;
+            height: auto;
+            right: 1rem;
+            bottom: 1.5rem;
+            width: 300px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 10px;
+        }
+
+        .footer-column * {
+            font-size: 12px;
+        }
+
+        .agendamento-filters h3 {
+            font-size: 14px;
+        }
+
+        .agendamento-filters .filtros label {
+            font-size: 11px;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            align-content: space-between;
+            justify-items: center;
+            align-items: baseline;
+            gap: 4px;
+            padding: 3px;
+            font-size: 11px;
+        }
+
+
+        div#calendar .day {
+            font-size: 10px;
+            padding: 2px 2px;
+            width: 28px;
+        }
+
+        .calendar-container {
+            background: #fff;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.3);
+            padding: 0px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 520px;
+            text-align: center;
+            height: auto;
+        }
+
+        h2#calendar-info {
+            font-size: 14px;
+        }
+
+        .calendar-header button {
+            background-color: white;
+            border: none;
+            color: #333333c4;
+            padding: 2px 13px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-size: 1.50rem;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-content: center;
+            gap: 15px;
+        }
+
+        h5, .h5 {
+            font-size: 1rem;
+        }
+
+        .listmedic-box-dir-boxtime {
+            width: 100%;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: stretch;
+            align-content: center;
+        }
+
+        .listmedic-box-dir-ico.location-clinic {
+            display: none;
+        }
+
+        .listmedic-box-dir-user {
+            display: flex;
+            width: fit-content;
+            flex-direction: column;
+            padding: 1rem;
+            gap: 6px;
+        }
+
+        .listmedic-box-dir-user>* {
+            display: flex;
+            font-size: 12px;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-content: center;
+            justify-content: center;
+            align-items: flex-start;
+            font-size: 10px;
+        }
+
+        .header .flex-container {
+            width: 94%;
+            gap: 0.35rem;
+        }
+
+        .link-consult-mobile a {
+            font-size: 11px !important;
+        }
+
+        .toolbar-btns {
+            display: flex;
+            padding: 1rem;
+        }
+
+        .toolbar-btns button {
+            padding: 10px 8px;
+        }
+
+        .toolbar-btns button {
+            padding: 4px 5px;
+            width: 128px;
+            font-size: 12px;
+        }
+
+        fieldset.filter-field legend {
+            font-size: 11px;
+            background: #eee;
+            width: 256px;
+            margin-top: 10px;
+            margin-right: 32px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        td > * {
+            font-size: 11px !important;
+        }
+
+        ul.user-menu {
+            width: 65%;
+        }
+
+        .menu-user-links {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 1rem 0rem;
+            overflow-y: auto;
+        }
+
+        .flex-container .menu-ico ul {
+            display: flex;
+            align-items: center;
+            gap: 0.30rem;
+        }
+
+        .menu-user-title {
+            padding: 0rem 0rem !important;
+        }
+
+        ol, ul {
+            padding-left: 1rem;
+        }
+
+        .mobile-menu {
+            background-color: #05ad94;
+            height: 90px;
+            padding: 21px 0px;
+            width: auto;
+        }
+
+        section.grid-container {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-content: flex-start;
+            justify-content: center;
+            align-items: center;
+        }
+
+        section.grid-container .grid-item {
+            width: 100%;
+        }
+
+        .page-boxlement {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.3rem;
+            flex-direction: column;
+        }
+
+        .page .page-flex {
+            width: 90%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+
+        h1, .h1 {
+            font-size: calc(1rem + 1.5vw);
+        }
+
+        .week-name span:nth-child(1) {
+            font-size: 0.7rem;
+            text-transform: uppercase !important;
+            text-align: center;
+        }
+
+        .week-name span:nth-child(2) {
+            font-size: 0.7rem;
+            text-transform: uppercase !important;
+            text-align: center;
+        }
+
+        .main .flex-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            margin: 0 auto !important;
+            padding: 0rem !important;
+        }
+
+        form {
+            width: 100% !important;
+            padding: 0 !important;
+            flex-direction: column;
+        }
+
+        .calendar-slide.active {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items: stretch;
+            min-height: 400px;
+            justify-content: flex-start;
+            align-content: center;
+        }
+
+        .tabControl .tab.active {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 0;
+            align-content: flex-start;
+            flex-wrap: nowrap;
+        }
+
+        .week-name span:nth-child(2) {
+            font-size: 10px;
+            text-transform: uppercase !important;
+            text-align: center;
+        }
+
+        .calendar-slide.active {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items: stretch;
+            min-height: 400px;
+            justify-content: center;
+            align-content: center;
+            gap: 5px;
+        }
+
+       .week-item {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+            padding: 0.1rem;
+            gap: 0.35rem;
+            width: 15%;
+        }
+
+        label.week-time.listmedic-box-dir-time {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+            font-size: 9px;
+            font-weight: bold;
+        }
+
+
+        .tabControl .tab.active {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            padding: 0;
+            align-content: flex-start;
+            flex-wrap: nowrap;
+            justify-content: center;
+        }
+
+        .main, body {
+            width: 100%;
+            overflow-x: hidden;
+            min-width: 100%;
+        }
+
+        label.week-schedule.listmedic-box-dir-time i {
+            z-index: 9999;
+        }
+
+
+        button.next-week {
+            margin-right: 12px;
+        }
+
+        button.prev-week {
+            margin-left: 0px;
+            visibility: hidden;
+        }
+    }
+
+    nav.menu-ico .m-0 {
+        gap: 8px;
     }
     </style>
 
@@ -438,11 +869,21 @@ function inline_files(string $type, array $files) {
 
    <script>
         $('document').ready(function(){
-            $('select').select2();
+            //$('select').select2();
             $('select.form-control.select-tags').select2({
                 tags: true
             });
-        })
+
+            setTimeout(() => {
+                $(".whatsapp-header i").trigger('click');
+            }, 3500);
+
+            if(window.innerWidth < 600) {
+                $('label.week-time.listmedic-box-dir-time').on('contextmenu', function(){
+                    $(this).trigger('dblclick');
+                });
+            }
+        });
    </script>
 </body>
 
