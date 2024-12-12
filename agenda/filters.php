@@ -1,8 +1,18 @@
 <?php
 require_once('../config.inc.php');
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if(isset($_SESSION['userObj'])) {
+  $user = (object) $_SESSION['userObj'];
+}
+	try {
+      $tp = $user->tipo;
+    	error_log("Valor da variável agenda \$user->tipo: $tp\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+	} catch (PDOException $e) {
+	}
 
-
-if(isset($_COOKIE['sessid_clinabs_uid']) && $user->tipo == 'FUNCIONARIO') {
+if(isset($_SESSION['token']) && $user->tipo == 'FUNCIONARIO') {
   $query = "SELECT
   AGENDA_MED.data_agendamento, 
   AGENDA_MED.paciente_token, 
@@ -29,7 +39,7 @@ if(isset($_COOKIE['sessid_clinabs_uid']) && $user->tipo == 'FUNCIONARIO') {
   (SELECT VENDAS.status FROM VENDAS WHERE VENDAS.reference = AGENDA_MED.token) AS payment_status
 FROM
   AGENDA_MED
-  WHERE paciente_token = '".$_COOKIE['sessid_clinabs_uid']."';";
+  WHERE paciente_token = '".$_SESSION['token']."';";
 }
 else if($user->tipo == 'PACIENTE') {
 $query = "SELECT

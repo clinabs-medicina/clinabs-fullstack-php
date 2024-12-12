@@ -25,6 +25,10 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
       WHERE 
       F.token = :token
       )";
+try{
+    error_log("Valor da variável header \$sql: $sql \r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+} catch (PDOException $e) {
+}
 
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':token', isset($_COOKIE['sessid_clinabs_uid']) ? $_COOKIE['sessid_clinabs_uid'] : $user->token);
@@ -43,7 +47,12 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
         $_user = false;
     }
 } else {
-    
+    try {
+    $tok = isset($_SESSION['token']);
+    error_log("Token não carregado: header \$tok: $tok \r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+    } catch (PDOException $e) {
+    }
+
 }
 ?>
 <!-- BREADCRUMBS -->
@@ -110,7 +119,7 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
                                 href="/perfil"><?=  trim($_user->nome_preferencia ?? trim(explode(' ', $user->nome_completo)[0])) ?></a>
                         </p>
                         <p class="m-0"><a href="/perfil">MINHA CONTA</a> | <a
-                                href="/logout<?= isset($_COOKIE['sessid_clinabs_uid']) || isset($_COOKIE['sessid_clinabs_uid']) ? '?session=user' : '' ?>">SAIR</a>
+                                href="/logout.php<?= isset($_COOKIE['sessid_clinabs_uid']) || isset($_COOKIE['sessid_clinabs_uid']) ? '?session=user' : '' ?>">SAIR</a>
                         </p>
                     </div>
 
@@ -146,7 +155,7 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
                             </div>
                             <div class="menu-user-logout">
                                 <hr>
-                                <p><a href="/logout">Sair</a></p>
+                                <p><a href="/logout.php">Sair</a></p>
                             </div>
 
                         </div>
@@ -159,7 +168,7 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
                 <div class="user-default">
                     <img class="ico-hover user" src="/assets/images/user-deafualt.svg" alt="Usuário">
                     <div class="user-link">
-                        <p class="m-0">Fazer <a href="/login">LOGIN</a> ou</p>
+                        <p class="m-0">Fazer <a href="/login.php">LOGIN</a> ou</p>
                         <p class="m-0">crie sua <a href="/cadastro">CONTA</a></p>
                     </div>
                 </div>

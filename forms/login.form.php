@@ -1,11 +1,12 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 global $pdo;
 ini_set('display_errors', true);
 error_reporting(E_ALL);
 
-session_start();
-// Regenera o ID da sessão para segurança (após o session_start)
-session_regenerate_id(true);
 
 require_once '../config.inc.php';
 
@@ -19,7 +20,12 @@ $sql = "
     celular,
     email,
     token,
-    objeto
+    objeto,
+    perm,
+    '[]' AS marcas,
+	'' AS prescricao_sem_receita,
+	'' AS inicio_ag,
+	'' AS fim_ag
 FROM
     `FUNCIONARIOS`
 WHERE
@@ -32,7 +38,12 @@ SELECT
     celular,
     email,
     token,
-    objeto
+    objeto,
+    perm,
+    '[]' AS marcas,
+	'' AS prescricao_sem_receita,
+	'' AS inicio_ag,
+	'' AS fim_ag
 FROM
     `PACIENTES`
 WHERE
@@ -45,7 +56,12 @@ SELECT
     celular,
     email,
     token,
-    objeto
+    objeto,
+    perm,
+    '[]' AS marcas,
+	prescricao_sem_receita,
+	inicio_ag,
+	fim_ag
 FROM
     `MEDICOS`
 WHERE
@@ -58,7 +74,12 @@ SELECT
     celular,
     email,
     token,
-    objeto
+    objeto,
+    perm,
+    marcas,
+	'' AS prescricao_sem_receita,
+	'' AS inicio_ag,
+	'' AS fim_ag
 FROM
     `USUARIOS`
 WHERE
@@ -125,6 +146,23 @@ if ($stmt->rowCount() > 0) {
         'secure' => true,
         'domain' => $hostname
     ]);
+
+    if ($user !== false) {
+        $_SESSION['token'] = $user['token'];
+        $_SESSION['usuario'] = $user['nome_completo'];
+        $_SESSION['cpf'] = $user['cpf'];
+        $_SESSION['celular'] = $user['celular'];
+        $_SESSION['email'] = $user['email'];
+        $_SESSION['objeto'] = $user['objeto'];
+        $_SESSION['perms_id'] = $user['perm'];
+        $_SESSION['marcas'] = $user['marcas'];
+        $_SESSION['prescricao_sem_receita'] = $user['prescricao_sem_receita'];
+        $_SESSION['inicio_ag'] = $user['inicio_ag'];
+        $_SESSION['fim_ag'] = $user['fim_ag'];
+        if (isset($user) && is_array($user)) {        
+          $_SESSION['userObj'] = $user;
+        }
+    }
 
 } else {
     $json = json_encode([

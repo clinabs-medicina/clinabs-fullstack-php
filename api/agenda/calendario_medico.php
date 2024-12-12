@@ -2,8 +2,18 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'].'/config.inc.php';
 global $pdo;
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+if(isset($_SESSION['userObj'])) {
+  try {
+     $user = (object) $_SESSION['userObj'];
+ } catch (PDOException $e) {
 
-$token = $_REQUEST['medico_token'];
+ }
+}
+
+$token = $_SESSION['token'];
 
 $dados = $pdo->query("SELECT calendario FROM `AGENDA_MEDICA` WHERE medico_token = '$token'")->fetch(PDO::FETCH_OBJ);
 $ags = [];

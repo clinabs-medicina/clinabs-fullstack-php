@@ -937,7 +937,7 @@ $(document).ready(function () {
 
   $("#user-link").on("click", function () {
     if (confirm("Deseja Encerrar a Sessão Atual?")) {
-      window.location = "/logout";
+      window.location = "/logout.php";
     }
   });
 

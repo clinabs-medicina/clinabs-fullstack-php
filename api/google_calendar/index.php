@@ -6,6 +6,10 @@ if(isset($_GET['token'])) {
 } else {
   $medico = "";
 }
+try {
+error_log("Valor da variável \$medico: $medico\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+} catch (PDOException $e) {
+}
 
 date_default_timezone_set('America/Sao_Paulo');
 $headers = ['Authorization' => 'all'];

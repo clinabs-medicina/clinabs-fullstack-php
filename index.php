@@ -1,4 +1,7 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 $page = new stdClass();
 $page->title = 'Home';
 $page->content = 'main.php';
