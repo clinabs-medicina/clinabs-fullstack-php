@@ -1,13 +1,34 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 if(isset(getallheaders()['X-Forwarded-For'])) {
 	$ips = explode(',', getallheaders()['X-Forwarded-For']);
 }
 
 
+//$user = [];
 
-$user = [];
+ if(isset($_SESSION['user'])) {
+	try {
+		$user = (object) $_SESSION['user'];
+	} catch (PDOException $e) {
 
-if(isset($_COOKIE[$sessionName]))
+	}
+
+//  try {
+// 	$perm = isset($_SESSION['token']);
+// 	error_log("Valor da variável application \isset(_SESSION['token']): $perm\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+// 	$perm = isset($user);
+// 	error_log("Valor da variável application \isset(user): $perm\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+// 	$perm = $user->nome_completo;
+// 	error_log("Valor da variável application \$user->nome: $perm\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+//  } catch (PDOException $e) {
+// 	error_log("Erro sessao\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+// }
+
+if(isset($_SESSION['token']) && ((!isset($user)) || ($user === [])))
 {
     $sql = "
  SELECT
@@ -26,7 +47,7 @@ if(isset($_COOKIE[$sessionName]))
 FROM
 	USUARIOS AS U 
 	WHERE 
-	MD5(U.token) = :token
+	(U.token) = :token
  UNION ALL
  SELECT
 	id,
@@ -44,7 +65,7 @@ FROM
 FROM
 	MEDICOS AS M 
 	WHERE 
-	MD5(M.token) = :token
+	(M.token) = :token
 	UNION ALL
 	(
 	SELECT
@@ -63,7 +84,7 @@ FROM
 	FROM
 		PACIENTES AS P
 		WHERE 
-		MD5(P.token) = :token
+		(P.token) = :token
 	) UNION ALL
 	(
 	SELECT
@@ -82,116 +103,62 @@ FROM
 	FROM
 	FUNCIONARIOS AS F
 	WHERE 
-	MD5(F.token) = :token
+	(F.token) = :token
 	)";
 
 
-  if(isset($_COOKIE[$sessionName]))
+  if(isset($_SESSION['token']))
   {
-	$stmt = $pdo->prepare($sql);
+	// try {
+    // 	error_log("Valor da variável application \$sql: $sql\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+	// } catch (PDOException $e) {
+	// }
 
-    $stmt->bindValue(':token', $_COOKIE[$sessionName]);
-    $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_OBJ);
+	// $stmt = $pdo->prepare($sql);
+    // $stmt->bindValue(':token', $_SESSION['token']);
+    // $stmt->execute();
+    // $user = $stmt->fetch(PDO::FETCH_OBJ);
+	// $_SESSION['user'] = $user;
+ try {
+	$perm = $_SESSION['perms_id'];
+ 	error_log("Valor da variável application \$_SESSION['perms_id']: $perm\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+ } catch (PDOException $e) {
+	error_log("Erro sessao\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+}
 
+try {
 	$sql = "SELECT * FROM PERMISSOES WHERE id = :id";
     $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':id', $user->perms);
+    $stmt->bindValue(':id', $perm);
     $stmt->execute();
+} catch (PDOException $e) {
+	error_log("Falha executar permissoes\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+}
 
-	$sqlx = "
- SELECT
-	id,
-	nome_completo,
-	cpf,
-	celular,
-	objeto AS tipo,
-	objeto AS setor,
-	perm as perms,
-    marcas,
-	token,
-	'' AS prescricao_sem_receita,
-	'' AS inicio_ag,
-	'' AS fim_ag,
-	'' AS perms_adicional,
-	objeto AS esp
-FROM
-	USUARIOS AS U 
-	WHERE 
-	MD5(U.token) = '{$_COOKIE[$sessionName]}'
- UNION ALL
- SELECT
-	id,
-	nome_completo,
-	cpf,
-	celular,
-	objeto AS tipo,
-	objeto AS setor,
-	perm as perms,
-    '[]' AS marcas,
-	token,
-	prescricao_sem_receita,
-	inicio_ag,
-	fim_ag,
-	'' AS perms_adicional,
-	(SELECT nome FROM ESPECIALIDADES WHERE id = especialidade) AS esp
-FROM
-	MEDICOS AS M 
-	WHERE 
-	MD5(M.token) = '{$_COOKIE[$sessionName]}'
-	UNION ALL
-	(
-	SELECT
-	id,
-	nome_completo,
-	cpf,
-	celular,
-	objeto AS tipo,
-	objeto AS setor,
-	perm as perms,
-    '[]' AS marcas,
-	token,
-	'' AS prescricao_sem_receita,
-	'' AS inicio_ag,
-	'' AS fim_ag,
-	'' AS perms_adicional,
-	esp
-	FROM
-		PACIENTES AS P
-		WHERE 
-		MD5(P.token) = '{$_COOKIE[$sessionName]}'
-	) UNION ALL
-	(
-	SELECT
-	id,
-	nome_completo,
-	cpf,
-	celular,
-	objeto AS tipo,
-	setor,
-	perm as perms,
-    '[]' AS marcas,
-	token,
-	'' AS prescricao_sem_receita,
-	'' AS inicio_ag,
-	'' AS fim_ag,
-	perms_adicional,
-	objeto AS esp
-	FROM
-	FUNCIONARIOS AS F
-	WHERE 
-	MD5(F.token) = '{$_COOKIE[$sessionName]}'
-	)";
-    
+	// try {
+	// 	error_log("Valor da variável application \$stmt->rowCount(): $stmt->rowCount()\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+	// } catch (PDOException $e) {
+	// }
 
-	if($stmt->rowCount() > 0){
-		$user->perms = $stmt->fetch(PDO::FETCH_OBJ);
-    
-		if(isset($user->marcas)) {
-			$user->marcas = json_decode($user->marcas, true);
+//	if($stmt->rowCount() > 0){
+		try {
+			$user->perms = $stmt->fetch(PDO::FETCH_OBJ);
+			if(isset($user->perms->id)) {
+				$_SESSION['user'] = $user;			
+            	$nom = $user->perms->nome;
+				error_log("Valor da variável application \$user->perms nome: $nom\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+			}
+			if(isset($user->marcas)) {
+ 				$user->marcas = json_decode($user->marcas, true);
+				$_SESSION['user'] = $user;			
+			}
+		} catch (PDOException $e) {
+			error_log("Falha ao gravar permissoes\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
 		}
-	}
+
+//	}
   }
+}
 }
 
 
@@ -337,7 +304,6 @@ values
   'error' => $e->getMessage()
   ], true));
 }
-
 
 if(isset($user) && isset($_REQUEST)) {
 	try {

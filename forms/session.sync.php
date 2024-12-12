@@ -1,5 +1,24 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config.inc.php';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if(isset($_SESSION['token'])) {
+    if (isset($_SESSION['user'])) {
+        try {
+            $user = (object) $_SESSION['user'];
+        } catch (PDOException $e) {
+
+        }
+    } else {
+        error_log("Usuário não encontrado na sessão.\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+    }
+    $nome = $user->nome_completo;
+
+    try{    
+        error_log("Valor da variável session.sync \$user: $nome \r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+    } catch (PDOException $e) {
+    }
 
 if(isset($_GET['fetch'])) {
     header('Cache-Control: no-store, no-cache, must-revalidate');
@@ -52,13 +71,15 @@ if(isset($_GET['fetch'])) {
 else {
     header('Cache-Control: no-store, no-cache, must-revalidate');
     //header('Expires: 0');    
-    $tableName = $_GET['user'];
-    $token = $_GET['token'];
+    $tableName = $user->tipo .'S';
+    $token = $_SESSION['token'];
     // Adicionando ao log de erros
-    error_log("Valor da variável \$tableName: $tableName\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+    //error_log("Valor da variável \$tableName: $tableName\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
         
     $datetime = date('Y-m-d H:i:s');
     if (($tableName != 'none') && ($tableName != 'noneS') && ($tableName != 'clinabs_homolog.nones')) {
         $pdo->query("UPDATE {$tableName} SET session_online = 1,last_ping = '{$datetime}' WHERE token = '{$token}'");
     }
+}
+
 }
