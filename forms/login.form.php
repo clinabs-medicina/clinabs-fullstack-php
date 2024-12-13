@@ -3,10 +3,6 @@ global $pdo;
 ini_set('display_errors', true);
 error_reporting(E_ALL);
 
-session_start();
-// Regenera o ID da sessão para segurança (após o session_start)
-session_regenerate_id(true);
-
 require_once '../config.inc.php';
 
 $pwd = md5(sha1(md5($_REQUEST['password'])));
@@ -69,9 +65,6 @@ $stmt = $pdo->query($sql);
 
 if ($stmt->rowCount() > 0) {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    
-   
 
     $json = json_encode([
         'type' => 'application/json',
@@ -117,7 +110,7 @@ if ($stmt->rowCount() > 0) {
 
     $pdo->query("UPDATE {$user['objeto']}S SET session_online = 1,first_ping = '{$datetime}', last_ping = '{$datetime}' WHERE token = '{$user['token']}'");
    // setcookie('sessid_clinabs', $sessid, $time, '/', $hostname, true, false);
-
+/*
    setcookie('sessid_clinabs', $sessid, [
         'expires' => time() + 3600,
         'path' => '/',
@@ -125,6 +118,15 @@ if ($stmt->rowCount() > 0) {
         'secure' => true,
         'domain' => $hostname
     ]);
+
+    */
+
+    $_SESSION['sessid_clinabs'] = $sessid;
+
+    session_start();
+    // Regenera o ID da sessão para segurança (após o session_start)
+    session_regenerate_id(true);
+
 
 } else {
     $json = json_encode([

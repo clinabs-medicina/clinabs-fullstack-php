@@ -1,10 +1,10 @@
 $('docuement').ready(function () {
     $('#btn_newAgendamento').on('click', function () {
-        newAgendamento();
+        new_Agendamento();
     });
 });
 
-function newAgendamento() {
+function new_Agendamento() {
     Swal.fire({
         title: 'Novo Agendamento',
         allowOutsideClick: false,
@@ -114,6 +114,8 @@ function newAgendamento() {
         },
         didOpen: () => {
             $.get('/forms/fetch.tb.php?tb=pacientes&key=token,nome_completo').done(function (data) {
+                console.log(data);
+
                 for (let i in data.results) {
                     let paciente = data.results[i];
 
@@ -186,6 +188,8 @@ function newAgendamento() {
             $('.swal2-deny').on('click', function () {
                 Swal.close();
             });
+
+            $('select').select2();
         }
     }).then(function (evt) {
         if (evt.isConfirmed) {

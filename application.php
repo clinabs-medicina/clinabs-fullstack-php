@@ -7,7 +7,7 @@ if(isset(getallheaders()['X-Forwarded-For'])) {
 
 $user = [];
 
-if(isset($_COOKIE[$sessionName]))
+if(isset($_SESSION[$sessionName]))
 {
     $sql = "
  SELECT
@@ -86,11 +86,11 @@ FROM
 	)";
 
 
-  if(isset($_COOKIE[$sessionName]))
+  if(isset($_SESSION[$sessionName]))
   {
 	$stmt = $pdo->prepare($sql);
 
-    $stmt->bindValue(':token', $_COOKIE[$sessionName]);
+    $stmt->bindValue(':token', $_SESSION[$sessionName]);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_OBJ);
 
@@ -118,7 +118,7 @@ FROM
 FROM
 	USUARIOS AS U 
 	WHERE 
-	MD5(U.token) = '{$_COOKIE[$sessionName]}'
+	MD5(U.token) = '{$_SESSION[$sessionName]}'
  UNION ALL
  SELECT
 	id,
@@ -138,7 +138,7 @@ FROM
 FROM
 	MEDICOS AS M 
 	WHERE 
-	MD5(M.token) = '{$_COOKIE[$sessionName]}'
+	MD5(M.token) = '{$_SESSION[$sessionName]}'
 	UNION ALL
 	(
 	SELECT
@@ -159,7 +159,7 @@ FROM
 	FROM
 		PACIENTES AS P
 		WHERE 
-		MD5(P.token) = '{$_COOKIE[$sessionName]}'
+		MD5(P.token) = '{$_SESSION[$sessionName]}'
 	) UNION ALL
 	(
 	SELECT
@@ -180,7 +180,7 @@ FROM
 	FROM
 	FUNCIONARIOS AS F
 	WHERE 
-	MD5(F.token) = '{$_COOKIE[$sessionName]}'
+	MD5(F.token) = '{$_SESSION[$sessionName]}'
 	)";
     
 

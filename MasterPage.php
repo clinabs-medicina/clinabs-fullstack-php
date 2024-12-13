@@ -656,6 +656,16 @@ function inline_files(string $type, array $files) {
             font-size: 9px;
         }
     }
+
+
+    @media (max-width: 1000px) {
+        div#calendar .day {
+            font-size: 10px;
+            padding: 2px 2px;
+            width: 40px;
+            height: 32px;
+        }
+    }
     </style>
 
 </head>
@@ -760,11 +770,10 @@ function inline_files(string $type, array $files) {
 
     <script type="text/javascript" src="/assets/js/select2.js"></script>
 
+
     <script type="text/javascript" src="/assets/modules/sweetalert2/sweetalert2.js"></script>
     <script type="text/javascript" src="/assets/js/croppie.js"></script>
 
-    <script type="text/javascript" src="/assets/js/scripts.js"></script>
-    <script type="text/javascript" src="/assets/js/scripts2.js"></script>
     
     <?php
     if(isset($useDT)) {
@@ -776,6 +785,12 @@ function inline_files(string $type, array $files) {
                 <script type="text/javascript" src="/assets/js/dts.js"></script>';
     }
     ?>
+
+    <script type="text/javascript" src="/assets/js/scripts2.js"></script>
+    <script type="text/javascript" src="/assets/js/scripts.js"></script>
+
+    <script type="text/javascript" src="/assets/js/agendamento.js"></script>
+
 
     <!--<script src="https://cdn.tiny.cloud/1/o69uuqv853g4pxc40ctycrnc5e3imuz426yspmq9l28bvv0v/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>-->
     
@@ -806,7 +821,7 @@ function inline_files(string $type, array $files) {
     <script type="text/javascript" src="/assets/js/dashboard.js"></script>
     <script type="text/javascript" src="/assets/js/clinabs.modules.js"></script>
     <script type="text/javascript" src="/assets/js/agenda.module.js"></script>
-    <script type="text/javascript" src="/assets/js/agendamento.js"></script>
+    
     <?php
     /*
       if($warningMsg !== false && $warningMsg !== null) {
@@ -888,6 +903,9 @@ function inline_files(string $type, array $files) {
             }
         });
    </script>
+
+   
+
 </body>
 
 </html>

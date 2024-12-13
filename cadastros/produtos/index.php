@@ -1,4 +1,7 @@
 <?php
+session_start();
+
+
 $page = new stdClass();
 $page->title = 'Produtos';
 $page->content = 'cadastros/produtos/main.php';

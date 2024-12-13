@@ -1,4 +1,7 @@
 <?php
+session_start();
+
+
 $page = new stdClass();
 $page->title = 'Unidades';
 $page->content = 'cadastros/unidades/main.php';

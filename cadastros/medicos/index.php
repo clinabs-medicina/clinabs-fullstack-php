@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 $page = new stdClass();
 $page->title = 'Médicos';
 $page->content = 'cadastros/medicos/main.php';

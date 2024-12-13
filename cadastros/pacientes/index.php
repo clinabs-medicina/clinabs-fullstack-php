@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 $page = new stdClass();
 $page->title = 'Pacientes';
 if(isset($_REQUEST['page'])) {

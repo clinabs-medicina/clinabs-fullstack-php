@@ -1,4 +1,7 @@
 <?php
+session_start();
+
+
 $page = new stdClass();
 $page->title = 'Usuários';
 $page->content = 'cadastros/usuarios/main.php';

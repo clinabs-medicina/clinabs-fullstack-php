@@ -1,7 +1,9 @@
 <?php
+session_start();
+
 header('Content-Type: text/html; charset=utf-8');
 
-if(!isset($_COOKIE['sessid_clinabs'])) {
+if(!isset($_SESSION['sessid_clinabs'])) {
    header('Location: /login');
 }
 require_once $_SERVER['DOCUMENT_ROOT'].'/config.inc.php';

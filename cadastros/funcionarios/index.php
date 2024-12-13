@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 $page = new stdClass();
 $page->title = 'Funcionários';
 $page->content = 'cadastros/funcionarios/main.php';
