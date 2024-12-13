@@ -649,6 +649,13 @@ function inline_files(string $type, array $files) {
     nav.menu-ico .m-0 {
         gap: 8px;
     }
+
+
+    @media (max-width: 1000px) {
+        table.dataTable td *, table.dataTable th * {
+            font-size: 9px;
+        }
+    }
     </style>
 
 </head>

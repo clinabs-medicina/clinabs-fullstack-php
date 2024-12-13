@@ -70,7 +70,7 @@ function newAtestado() {
             a.setAttribute("href", `/api/pdf/atestado.php?date=${$("#data-afastamento").val()
                 }&time=${$("#hora-afastamento").val()
                 }&paciente_token=${$("table[data-user]").data("user")
-                }&medico_token=${$('meta[name="user-id"]').attr("content")
+                }&medico_token=${$('#tablePrescricao').data("medico")
                 }&motivo=${$("#motivo").val()
                 }&cid=${$("#cid").val()
                 }&afastamento=${$("#dias_afastamento").val()
