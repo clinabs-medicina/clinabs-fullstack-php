@@ -15,7 +15,7 @@
              if(isset($_GET['data'])) {
                  $DATE = $_GET['data'];
                 try {
-                 error_log("Valor da variável \$DATE: $DATE\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+                 error_log("Valor da variável \$DATE: $DATE\r\n" . PHP_EOL);
                 } catch (PDOException $e) {
                 }
             

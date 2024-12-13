@@ -1,4 +1,11 @@
 <?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if(isset($_SESSION['userObj'])) {
+	    $user = (object) $_SESSION['userObj'];
+    }
+
 $page = new stdClass();
 $page->title = $user->tipo == 'FUNCIONARIO' ? 'Pedidos':'Meus Pedidos';
 $page->content = !isset($_REQUEST['pedido_code']) ? 'pedidos/main.php':'pedidos/pedido.php';

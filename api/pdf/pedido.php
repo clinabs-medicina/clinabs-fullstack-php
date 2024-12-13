@@ -4,6 +4,13 @@ require_once $_SERVER['DOCUMENT_ROOT']. '/vendor/autoload.php';
 require_once $_SERVER['DOCUMENT_ROOT']. '/libs/Modules.php';
 require_once $_SERVER['DOCUMENT_ROOT']. '/api/vendor/autoload.php';
 
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+if(isset($_SESSION['userObj'])) {
+$user = (object) $_SESSION['userObj'];
+}
+
 
 ini_set('diusplay_errors', 1);
 error_reporting(1);

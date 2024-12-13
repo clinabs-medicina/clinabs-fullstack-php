@@ -10,7 +10,7 @@ if(isset($_REQUEST['tb']) && isset($_COOKIE['sessid_clinabs'])) {
     if(isset($_REQUEST['q'])) {
         $tab = $_REQUEST['tb'];
 	try {
-    	error_log("Valor da variável fetch.tb \$_REQUEST['tb']: $tab\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+    	error_log("Valor da variável fetch.tb \$_REQUEST['tb']: $tab\r\n" . PHP_EOL);
 	} catch (PDOException $e) {
 	}
 

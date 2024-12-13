@@ -7,7 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
 //if(isset($_GET['session'])) {
 if (session_status() === PHP_SESSION_NONE) {
     try{    
-        error_log("logout \: session_destroy \r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+        error_log("logout \: session_destroy \r\n" . PHP_EOL);
     } catch (PDOException $e) {
     }
     session_destroy();
@@ -31,7 +31,7 @@ if (session_status() === PHP_SESSION_NONE) {
 		}
     } else {
         try{    
-            error_log("logout destroy\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+            error_log("logout destroy\r\n" . PHP_EOL);
         } catch (PDOException $e) {
         }
 

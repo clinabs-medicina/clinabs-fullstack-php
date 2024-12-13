@@ -39,7 +39,7 @@
 
                 $action = $_GET['action'];
                 try {
-                    error_log("Valor da variável login \$action: $action\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+                    error_log("Valor da variável login \$action: $action\r\n" . PHP_EOL);
                 } catch (PDOException $e) {
                 }
         
@@ -188,7 +188,7 @@
             }
             try {
             $redir = $_REQUEST['redirect'];
-            error_log("Valor da variável login.php \$_REQUEST['redirect']: $redir\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+            error_log("Valor da variável login.php \$_REQUEST['redirect']: $redir\r\n" . PHP_EOL);
             } catch (PDOException $e) {
             }
     

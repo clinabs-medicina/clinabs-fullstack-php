@@ -1,3 +1,11 @@
+<?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if(isset($_SESSION['userObj'])) {
+	    $user = (object) $_SESSION['userObj'];
+    }
+?>
 <section class="main">
     <section>
         <h1 class="titulo-h1">Detalhes do Pedido</h1>

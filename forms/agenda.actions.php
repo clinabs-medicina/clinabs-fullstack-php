@@ -9,7 +9,7 @@ function get_ref_status($sts,$btn, $pdo, $paciente, $wap, $token) {
     $result = $sts;
     $action = $btn;
     try {
-    error_log("Valor da variável agenda \$action: $action\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+    error_log("Valor da variável agenda \$action: $action\r\n" . PHP_EOL);
     } catch (PDOException $e) {
     }
 

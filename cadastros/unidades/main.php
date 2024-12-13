@@ -1,4 +1,11 @@
 <?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if(isset($_SESSION['userObj'])) {
+	    $user = (object) $_SESSION['userObj'];
+    }
+
 if($user->tipo == 'FUNCIONARIO') {
    $unidades = $pdo->query('SELECT * FROM `UNIDADES`');
    $unidades = $unidades->fetchAll(PDO::FETCH_OBJ);

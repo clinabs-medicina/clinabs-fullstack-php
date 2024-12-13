@@ -1,4 +1,11 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+// if(isset($_SESSION['userObj'])) {
+//     $user = (object) $_SESSION['userObj'];
+// }
+
 $page = new stdClass();
 $page->title = 'Dashboard';
 $page->content = 'dashboard/main.php';

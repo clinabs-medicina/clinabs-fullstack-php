@@ -16,6 +16,9 @@ $usr = $_REQUEST['usuario'];
 $sql = "
         SELECT
     nome_completo,
+    nome_preferencia,
+    data_nascimento,
+    0 as disponibilizar_agenda,
     cpf,
     celular,
     email,
@@ -34,6 +37,9 @@ WHERE
 UNION
 SELECT
     nome_completo,
+    nome_preferencia,
+    data_nascimento,
+    0 as disponibilizar_agenda,
     cpf,
     celular,
     email,
@@ -52,6 +58,9 @@ WHERE
 UNION
 SELECT
     nome_completo,
+    nome_preferencia,
+    data_nascimento,
+    disponibilizar_agenda,
     cpf,
     celular,
     email,
@@ -70,6 +79,9 @@ WHERE
 UNION
 SELECT
     nome_completo,
+    nome_preferencia,
+    data_nascimento,
+    0 as disponibilizar_agenda,
     cpf,
     celular,
     email,
@@ -147,21 +159,30 @@ if ($stmt->rowCount() > 0) {
         'domain' => $hostname
     ]);
 
-    if ($user !== false) {
+    if (isset($user)) {
         $_SESSION['token'] = $user['token'];
         $_SESSION['usuario'] = $user['nome_completo'];
+        $_SESSION['apelido'] = $user['nome_preferencia'];
         $_SESSION['cpf'] = $user['cpf'];
         $_SESSION['celular'] = $user['celular'];
         $_SESSION['email'] = $user['email'];
+        $_SESSION['nascimento'] = $user['data_nascimento'];
         $_SESSION['objeto'] = $user['objeto'];
+        $_SESSION['tipo'] = $user['objeto'];
         $_SESSION['perms_id'] = $user['perm'];
         $_SESSION['marcas'] = $user['marcas'];
         $_SESSION['prescricao_sem_receita'] = $user['prescricao_sem_receita'];
         $_SESSION['inicio_ag'] = $user['inicio_ag'];
         $_SESSION['fim_ag'] = $user['fim_ag'];
+        $_SESSION['disponibilizar_agenda'] = $user['disponibilizar_agenda'];
         if (isset($user) && is_array($user)) {        
           $_SESSION['userObj'] = $user;
         }
+    } else {
+        try {
+            error_log("Token não carregado login.form \r\n" . PHP_EOL);
+            } catch (PDOException $e) {
+            }
     }
 
 } else {

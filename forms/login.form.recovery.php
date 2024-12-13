@@ -2,7 +2,10 @@
 global $pdo, $mailer;
 
 if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+	session_start();
+}
+if(isset($_SESSION['userObj'])) {
+	$user = (object) $_SESSION['userObj'];
 }
 // Regenera o ID da sessão para segurança (após o session_start)
 session_regenerate_id(true);

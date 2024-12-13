@@ -1,5 +1,11 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'].'/config.inc.php');
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if(isset($_SESSION['userObj'])) {
+    $user = (object) $_SESSION['userObj'];
+}
 
 $roomName = $_GET['roomName'];
 

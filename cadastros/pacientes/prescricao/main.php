@@ -1,4 +1,11 @@
 <?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if(isset($_SESSION['userObj'])) {
+	    $user = (object) $_SESSION['userObj'];
+    }
+
  $stmt2 = $pdo->prepare("SELECT * FROM PACIENTES WHERE token = :token");
  $stmt2->bindValue(':token', $_GET['token']);
 

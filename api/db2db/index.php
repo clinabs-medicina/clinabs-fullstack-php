@@ -19,7 +19,7 @@ $allTablesData = [];
 $input = file_get_contents('php://input');
 $tables = json_decode($input, true)['tables'];
 try {
-error_log("Valor da variável \$tables: $tables\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+error_log("Valor da variável \$tables: $tables\r\n" . PHP_EOL);
 } catch (PDOException $e) {
 }
 

@@ -1,15 +1,12 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-if(isset($_SESSION['userObj'])) {
-  $user = (object) $_SESSION['userObj'];
-  try {
-  error_log("Valor da variável main.php \$user tipo: $user->tipo\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
-  } catch (PDOException $e) {
+  if (session_status() === PHP_SESSION_NONE) {
+      session_start();
   }
-}
-if(isset($_SESSION['token']) && $user->tipo == 'FUNCIONARIO') {
+  if(isset($_SESSION['userObj'])) {
+    $user = (object) $_SESSION['userObj'];
+  }
+
+if(isset($_COOKIE['sessid_clinabs_uid']) && $user->tipo == 'FUNCIONARIO') {
   $query = "SELECT
   AGENDA_MED.data_agendamento, 
   AGENDA_MED.paciente_token, 
@@ -41,7 +38,7 @@ if(isset($_SESSION['token']) && $user->tipo == 'FUNCIONARIO') {
   anamnese as anamnese_id
 FROM
   AGENDA_MED
-  WHERE paciente_token = '".$_SESSION['token']."';";
+  WHERE paciente_token = '".$_COOKIE['sessid_clinabs_uid']."';";
 }
 else if($user->tipo == 'PACIENTE') {
 $query = "SELECT
@@ -77,6 +74,7 @@ FROM
 AGENDA_MED
 WHERE paciente_token = '".$user->token."';";
 }
+
 else if($user->tipo == 'MEDICO') {
 $query = "SELECT
 AGENDA_MED.data_agendamento, 
@@ -145,10 +143,6 @@ else {
 FROM
   AGENDA_MED";
 } 
-try{    
-  error_log("Valor da variável agenda main \$query: $query \r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
-} catch (PDOException $e) {
-}
 
 $rows = $pdo->query($query)->fetchAll(PDO::FETCH_OBJ);
 
@@ -158,7 +152,7 @@ $status = [];
 
 foreach($rows as $row) {
   $medicos[$row->medico_id] = $row->medico_nome;
-  $status[$row->medico_id] = $row->status;
+  $status[] = $row->status;
   $pacientes[$row->paciente_id] = $row->paciente_nome;
 }
 
@@ -166,14 +160,6 @@ foreach($rows as $row) {
 <section class="main">
     <section>
         <h1 class="titulo-h1"><?=($user->tipo == 'PACIENTE' ? 'Meus Agendamentos':'Agenda do Médico')?></h1>
-        <br>
-        <div class="toolbar-btns">
-          <?php
-            if($user->tipo == 'FUNCIONARIO') {
-              echo '<button id="btn_newAgendamento" class="btn-button1">NOVO AGENDAMENTO</button>';
-            }
-          ?>
-        </div>
     </section>
     <div class="flex-container produtos-flex">
         <form class="filter-container" id="agendamento-filters">
@@ -211,7 +197,7 @@ foreach($rows as $row) {
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label id="select_medico" for="filtro_medico">Selecione um Médico</label>
+                                    <label for="filter_medicos">Selecione um Médico</label>
 
 
                                     <div class="select-container">
@@ -246,7 +232,7 @@ foreach($rows as $row) {
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label id="select_paciente" for="filtro_paciente">Selecione um Paciente</label>
+                                    <label for="filter_pacientes">Selecione um Paciente</label>
                                     <div class="select-container">
                                         <div class="custom-select" id="filtro_paciente" data-value="paciente_nome">
                                             <div class="select-selected">Selecione uma Opção</div>
@@ -277,7 +263,7 @@ foreach($rows as $row) {
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label id="select_status" for="filtro_status">Selecione um Status</label>
+                                    <label for="filtro_status">Selecione um Status</label>
                                     <div class="select-container">
                                         <div class="custom-select" id="filtro_status" data-value="status">
                                             <div class="select-selected">Selecione uma Opção</div>
@@ -307,7 +293,7 @@ foreach($rows as $row) {
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label id="select_modalidade" for="filtro_modalidade">Selecione uma Modalidade</label>
+                                    <label for="filter_modalidade">Selecione uma Modalidade</label>
                                     <div class="select-container">
                                         <div class="custom-select" id="filtro_modalidade" data-value="modalidade">
                                             <div class="select-selected">Selecione uma Opção</div>
@@ -368,7 +354,7 @@ foreach($rows as $row) {
                 $date_formated = date('d/m/Y', strtotime($date));
 
 
-              echo "<tr data-room=\"{$roomName}\" data-index=\"{$i}\" class=\"ag_row ag_row{$i}\" data-date=\"{$date}\" data-paciente=\"{$column->paciente_token}\" data=ts=\"{$ts}\" id=\"{$column->token}\" data-stime=\"{$startTime}\">";
+              echo "<tr data-room=\"{$roomName}\" data-index=\"{$i}\" class=\"ag_row ag_row${i}\" data-date=\"{$date}\" data-paciente=\"{$column->paciente_token}\" data=ts=\"{$ts}\" id=\"{$column->token}\" data-stime=\"{$startTime}\">";
                 echo "<td data-value=\"{$date}\" data-label=\"Data: \" width=\"260px\" class=\"ag-day\"><div class=\"calendar-day\">
                 <img src=\"/assets/images/ico-calendar.svg\" height=\"32px\">
                 <div class=\"datetime-column\">

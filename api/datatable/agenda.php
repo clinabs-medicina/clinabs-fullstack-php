@@ -3,6 +3,13 @@ global $pdo;
 require_once $_SERVER['DOCUMENT_ROOT'].'/agenda/Calendar.php';
 
 require_once $_SERVER['DOCUMENT_ROOT'].'/config.inc.php';
+if (session_status() === PHP_SESSION_NONE) {
+   session_start();
+}
+if(isset($_SESSION['userObj'])) {
+  $user = (object) $_SESSION['userObj'];
+}
+
 
 $calendar = new Calendar();
 

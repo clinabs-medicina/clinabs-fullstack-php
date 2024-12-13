@@ -58,7 +58,7 @@ if((strtotime($date) - time()) > $tempo_limite) {
 
     $token = md5($_REQUEST['cpf']).uniqid();
     try{    
-        error_log("token form.consulta.agendamento \$user: $token \r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+        error_log("token form.consulta.agendamento \$user: $token \r\n" . PHP_EOL);
     } catch (PDOException $e) {
     }
     
@@ -603,7 +603,7 @@ if((strtotime($date) - time()) > $tempo_limite) {
     ];
 }
 try {
-error_log("Valor da variável agendam.. \$json: $json\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+error_log("Valor da variável agendam.. \$json: $json\r\n" . PHP_EOL);
 } catch (PDOException $e) {
 }
 
