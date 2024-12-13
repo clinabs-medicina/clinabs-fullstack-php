@@ -6,7 +6,7 @@ function customErrorHandler($errno, $errstr, $errfile, $errline) {
 
 
 require_once $_SERVER['DOCUMENT_ROOT']. '/config.inc.php';
-require_once $_SERVER['DOCUMENT_ROOT']. '/api/vendor/autoload.php';
+require_once $_SERVER['DOCUMENT_ROOT']. '/vendor/autoload.php';
 require_once $_SERVER['DOCUMENT_ROOT']. '/libs/Modules.php';
 
 

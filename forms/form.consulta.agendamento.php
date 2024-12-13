@@ -49,7 +49,7 @@ function dueDate($data_gendamento, $data_atual) {
 $medico = $pdo->query("SELECT duracao_atendimento,tempo_limite_online,tempo_limite_presencial FROM MEDICOS WHERE token = '{$_REQUEST["medico_token"]}'");
 $medico = $medico->fetch(PDO::FETCH_OBJ);
 
-$tempo_limite = strtoupper($_REQUEST['modalidade']) == "ONLINE" ? ($medico->tempo_limite_online * 60) : ($medico->tempo_limite_presencial * 60);
+$tempo_limite = strtoupper($_REQUEST['modalidade']) == "ONLINE" ? ($medico->tempo_limite_online) : ($medico->tempo_limite_presencial);
 
 if((strtotime($date) - time()) > $tempo_limite) {
     $stmt_ag = $pdo->query(
