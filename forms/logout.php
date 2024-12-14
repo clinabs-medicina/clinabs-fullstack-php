@@ -1,5 +1,5 @@
 <?php
-if(isset($_COOKIE['sessid_clinabs_uid'])) {
+if(isset($_SESSION['token'])) {
     setcookie('sessid_clinabs_uid', '', time() - 3600, '/'); 
 } else {
     setcookie('sessid_clinabs_uid', '', time() - 3600, '/');
