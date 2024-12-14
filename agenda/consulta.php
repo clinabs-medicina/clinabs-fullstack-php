@@ -1,5 +1,15 @@
 <?php
 $valor_consulta = strtolower($_GET['atendimento']) == 'online' ? $_GET['valor_consulta_online'] : $_GET['valor_consulta_presencial'];
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if(isset($_SESSION['userObj'])) {
+    try {
+       $user = (object) $_SESSION['userObj'];
+   } catch (PDOException $e) {
+ 
+   }
+}
 ?>
 
 <section class="main">
@@ -146,7 +156,7 @@ $valor_consulta = strtolower($_GET['atendimento']) == 'online' ? $_GET['valor_co
                                
                         <?php
                         
-                        if((in_array($_SERVER['REMOTE_ADDR'], $ALLOWED_IP) || $_SERVER['REMOTE_ADDR'] == '127.0.0.1') && $user->tipo == 'FUNCIONARIO') 
+                        if(/*(in_array($_SERVER['REMOTE_ADDR'], $ALLOWED_IP) || $_SERVER['REMOTE_ADDR'] == '127.0.0.1') && */$user->tipo == 'FUNCIONARIO') 
                         {
                             
                            echo "<input type=\"hidden\" name=\"external_payment\" value=\"{$_REQUEST['medico_token']}\">";

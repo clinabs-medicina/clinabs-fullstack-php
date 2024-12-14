@@ -1,4 +1,11 @@
 <?php
+  if (session_status() === PHP_SESSION_NONE) {
+      session_start();
+  }
+  if(isset($_SESSION['userObj'])) {
+    $user = (object) $_SESSION['userObj'];
+  }
+
 if(isset($_COOKIE['sessid_clinabs_uid']) && $user->tipo == 'FUNCIONARIO') {
   $query = "SELECT
   AGENDA_MED.data_agendamento, 
@@ -153,14 +160,6 @@ foreach($rows as $row) {
 <section class="main">
     <section>
         <h1 class="titulo-h1"><?=($user->tipo == 'PACIENTE' ? 'Meus Agendamentos':'Agenda do Médico')?></h1>
-        <br>
-        <div class="toolbar-btns">
-          <?php
-            if($user->tipo == 'FUNCIONARIO') {
-              echo '<button id="btn_newAgendamento" class="btn-button1">NOVO AGENDAMENTO</button>';
-            }
-          ?>
-        </div>
     </section>
     <div class="flex-container produtos-flex">
         <form class="filter-container" id="agendamento-filters">
@@ -198,7 +197,7 @@ foreach($rows as $row) {
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label id="select_medico" for="filtro_medico">Selecione um Médico</label>
+                                    <label for="filter_medicos">Selecione um Médico</label>
 
 
                                     <div class="select-container">
@@ -233,7 +232,7 @@ foreach($rows as $row) {
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label id="select_paciente" for="filtro_paciente">Selecione um Paciente</label>
+                                    <label for="filter_pacientes">Selecione um Paciente</label>
                                     <div class="select-container">
                                         <div class="custom-select" id="filtro_paciente" data-value="paciente_nome">
                                             <div class="select-selected">Selecione uma Opção</div>
@@ -264,7 +263,7 @@ foreach($rows as $row) {
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label id="select_status" for="filtro_status">Selecione um Status</label>
+                                    <label for="filtro_status">Selecione um Status</label>
                                     <div class="select-container">
                                         <div class="custom-select" id="filtro_status" data-value="status">
                                             <div class="select-selected">Selecione uma Opção</div>
@@ -294,7 +293,7 @@ foreach($rows as $row) {
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label id="select_modalidade" for="filtro_modalidade">Selecione uma Modalidade</label>
+                                    <label for="filter_modalidade">Selecione uma Modalidade</label>
                                     <div class="select-container">
                                         <div class="custom-select" id="filtro_modalidade" data-value="modalidade">
                                             <div class="select-selected">Selecione uma Opção</div>
