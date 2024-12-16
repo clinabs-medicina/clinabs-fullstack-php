@@ -163,156 +163,162 @@ foreach($rows as $row) {
     </section>
     <div class="flex-container produtos-flex">
         <form class="filter-container" id="agendamento-filters">
-            <div class="row">
-                <div class="col-md-3">
-                    <fieldset class="filter-field">
-                        <legend>Filtrar Data de Agendamento</legend>
-                        <i class="fa-solid fa-filter-circle-xmark filter-clear"></i>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="date_start">Data de Inicio</label>
-                                    <input name="data_agendamento" type="date" id="date_start"
-                                        class="form-control filter-element" data-value="data_agendamento"
-                                        onchange="filter_ag_req(this)">
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="date_end">Data de Fim</label>
-                                    <input name="data_agendamento" type="date" id="date_end"
-                                        class="form-control filter-element" data-value="data_agendamento"
-                                        onchange="filter_ag_req(this)">
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-                </div>
-
-                <div class="col-md-3">
-                    <fieldset class="filter-field">
-                        <legend>Filtrar por Médico</legend>
-                        <i class="fa-solid fa-filter-circle-xmark filter-clear"></i>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="filter_medicos">Selecione um Médico</label>
-
-
-                                    <div class="select-container">
-                                        <div class="custom-select" id="filtro_medico" data-value="medico_nome">
-                                            <div class="select-selected">Selecione uma Opção</div>
-                                            <div class="select-arrow"></div>
-                                            <div class="select-items">
-                                                <input type="text" class="search-input" placeholder="Pesquisar...">
-                                                <ul class="options-list">
-                                                    <?php
-                            foreach(array_unique($medicos) as $id => $medico) {
-                              echo "<li data-value=\"{$id}\">{$medico}</li>";
-                            }
-                            ?>
-                                                </ul>
-                                            </div>
-                                        </div>
+            <div class="filters-mb">
+              <label for="filtros-mb" class="filter-toggle">Filtros</label>
+              <div id="filtros-mb" class="row-filters">
+                  <div class="row">
+                    <div class="col-md-4">
+                        <fieldset class="filter-field">
+                            <legend>Filtrar Data de Agendamento</legend>
+                            <i class="fa-solid fa-filter-circle-xmark filter-clear"></i>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="date_start">Data de Inicio</label>
+                                        <input name="data_agendamento" type="date" id="date_start"
+                                            class="form-control filter-element" data-value="data_agendamento"
+                                            onchange="filter_ag_req(this)">
                                     </div>
-
-
-
                                 </div>
-                            </div>
-                        </div>
-                    </fieldset>
-                </div>
 
-                <div class="col-md-2">
-                    <fieldset class="filter-field">
-                        <legend>Filtrar por Paciente</legend>
-                        <i class="fa-solid fa-filter-circle-xmark filter-clear"></i>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="filter_pacientes">Selecione um Paciente</label>
-                                    <div class="select-container">
-                                        <div class="custom-select" id="filtro_paciente" data-value="paciente_nome">
-                                            <div class="select-selected">Selecione uma Opção</div>
-                                            <div class="select-arrow"></div>
-                                            <div class="select-items">
-                                                <input type="text" class="search-input" placeholder="Pesquisar..."
-                                                    data-value="paciente_nome">
-                                                <ul class="options-list">
-                                                    <?php
-                            foreach(array_unique($pacientes) as $id => $paciente) {
-                              echo "<li data-value=\"{$id}\">{$paciente}</li>";
-                            }
-                            ?>
-                                                </ul>
-                                            </div>
-                                        </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="date_end">Data de Fim</label>
+                                        <input name="data_agendamento" type="date" id="date_end"
+                                            class="form-control filter-element" data-value="data_agendamento"
+                                            onchange="filter_ag_req(this)">
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </fieldset>
-                </div>
+                        </fieldset>
+                    </div>
 
-                <div class="col-md-2">
-                    <fieldset class="filter-field">
-                        <legend>Filtrar por Status</legend>
-                        <i class="fa-solid fa-filter-circle-xmark filter-clear"></i>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="filtro_status">Selecione um Status</label>
-                                    <div class="select-container">
-                                        <div class="custom-select" id="filtro_status" data-value="status">
-                                            <div class="select-selected">Selecione uma Opção</div>
-                                            <div class="select-arrow"></div>
-                                            <div class="select-items">
-                                                <input type="text" class="search-input" placeholder="Pesquisar...">
-                                                <ul class="options-list">
-                                                    <?php
-                            foreach(array_unique($status) as $sts) {
-                              echo "<li data-value=\"{$sts}\">{$sts}</li>";
-                            }
-                            ?>
-                                                </ul>
+                    <div class="col-md-4">
+                        <fieldset class="filter-field">
+                            <legend>Filtrar por Médico</legend>
+                            <i class="fa-solid fa-filter-circle-xmark filter-clear"></i>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="filter_medicos">Selecione um Médico</label>
+
+
+                                        <div class="select-container">
+                                            <div class="custom-select" id="filtro_medico" data-value="medico_nome">
+                                                <div class="select-selected">Selecione uma Opção</div>
+                                                <div class="select-arrow"></div>
+                                                <div class="select-items">
+                                                    <input type="text" class="search-input" placeholder="Pesquisar...">
+                                                    <ul class="options-list">
+                                                        <?php
+                                foreach(array_unique($medicos) as $id => $medico) {
+                                  echo "<li data-value=\"{$id}\">{$medico}</li>";
+                                }
+                                ?>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-md-4">
+                        <fieldset class="filter-field">
+                            <legend>Filtrar por Paciente</legend>
+                            <i class="fa-solid fa-filter-circle-xmark filter-clear"></i>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="filter_pacientes">Selecione um Paciente</label>
+                                        <div class="select-container">
+                                            <div class="custom-select" id="filtro_paciente" data-value="paciente_nome">
+                                                <div class="select-selected">Selecione uma Opção</div>
+                                                <div class="select-arrow"></div>
+                                                <div class="select-items">
+                                                    <input type="text" class="search-input" placeholder="Pesquisar..."
+                                                        data-value="paciente_nome">
+                                                    <ul class="options-list">
+                                                        <?php
+                                foreach(array_unique($pacientes) as $id => $paciente) {
+                                  echo "<li data-value=\"{$id}\">{$paciente}</li>";
+                                }
+                                ?>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </fieldset>
+                        </fieldset>
+                    </div>
                 </div>
-
-                <div class="col-md-2">
-                    <fieldset class="filter-field">
-                        <legend>Filtrar por Modalidade</legend>
-                        <i class="fa-solid fa-filter-circle-xmark filter-clear"></i>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="filter_modalidade">Selecione uma Modalidade</label>
-                                    <div class="select-container">
-                                        <div class="custom-select" id="filtro_modalidade" data-value="modalidade">
-                                            <div class="select-selected">Selecione uma Opção</div>
-                                            <div class="select-arrow"></div>
-                                            <div class="select-items">
-                                                <input type="text" class="search-input" placeholder="Pesquisar...">
-                                                <ul class="options-list">
-                                                    <li data-value="ONLINE">ONLINE</li>
-                                                    <li data-value="PRESENCIAL">PRESENCIAL</li>
-                                                </ul>
+                    
+                <div class="row">
+                  <div class="col-md-4">
+                        <fieldset class="filter-field">
+                            <legend>Filtrar por Status</legend>
+                            <i class="fa-solid fa-filter-circle-xmark filter-clear"></i>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="filtro_status">Selecione um Status</label>
+                                        <div class="select-container">
+                                            <div class="custom-select" id="filtro_status" data-value="status">
+                                                <div class="select-selected">Selecione uma Opção</div>
+                                                <div class="select-arrow"></div>
+                                                <div class="select-items">
+                                                    <input type="text" class="search-input" placeholder="Pesquisar...">
+                                                    <ul class="options-list">
+                                                        <?php
+                                foreach(array_unique($status) as $sts) {
+                                  echo "<li data-value=\"{$sts}\">{$sts}</li>";
+                                }
+                                ?>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </fieldset>
-                </div>
+                        </fieldset>
+                    </div>
 
+                  <div class="col-md-4">
+                        <fieldset class="filter-field">
+                            <legend>Filtrar por Modalidade</legend>
+                            <i class="fa-solid fa-filter-circle-xmark filter-clear"></i>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="filter_modalidade">Selecione uma Modalidade</label>
+                                        <div class="select-container">
+                                            <div class="custom-select" id="filtro_modalidade" data-value="modalidade">
+                                                <div class="select-selected">Selecione uma Opção</div>
+                                                <div class="select-arrow"></div>
+                                                <div class="select-items">
+                                                    <input type="text" class="search-input" placeholder="Pesquisar...">
+                                                    <ul class="options-list">
+                                                        <li data-value="ONLINE">ONLINE</li>
+                                                        <li data-value="PRESENCIAL">PRESENCIAL</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+              </div>
             </div>
         </form>
         <table id="tableAgendamento" class="display dataTable">

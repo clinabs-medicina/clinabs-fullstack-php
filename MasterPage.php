@@ -664,6 +664,8 @@ function inline_files(string $type, array $files) {
             font-size: 9px;
         }
     }
+
+    <?=file_get_contents($_SERVER['DOCUMENT_ROOT'].'/assets/css/template.min.css') ?>
     </style>
 
 </head>
@@ -882,6 +884,13 @@ function inline_files(string $type, array $files) {
 
    <script>
         $('document').ready(function(){
+            $('.filter-toggle').on('click', function () {
+                if ($('#filtros-mb.row-filters').css('display') === 'none') {
+                    $('#filtros-mb.row-filters').css('display', 'flex');
+                } else {
+                    $('#filtros-mb.row-filters').css('display', 'none');
+                }
+            });
             //$('select').select2();
             $('select.form-control.select-tags').select2({
                 tags: true

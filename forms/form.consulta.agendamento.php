@@ -1,6 +1,8 @@
 <?php
 global $agenda;
+
 require_once $_SERVER["DOCUMENT_ROOT"] . "/config.inc.php";
+
 $added = false;
 error_reporting(1);
 ini_set("display_erros", 1);
@@ -158,10 +160,6 @@ if((strtotime($date) - time()) > $tempo_limite) {
                         linkImage: "https://$hostname/assets/images/logo.png"
                     );
                 }
-
-                $sessid = md5($ag->paciente_token);
-                $time = time() + (3600 * 24) * 365;
-                setcookie('sessid_clinabs', $sessid, $time, '/', hostname, true);
             }
             else {
                 $paciente->nome_completo = strtoupper($_REQUEST["nome_completo"]);

@@ -16,6 +16,8 @@ $page->name = 'link_agenda';
 $page->require_login = false;
 $page->includePlugins = true;
 
+$useDT = true;
+
 if($user->tipo == 'FUNCIONARIO' && isset($_COOKIE['sessid_clinabs_uid'])) {
     $stmt2 = $pdo->prepare("SELECT * FROM PACIENTES WHERE MD5(token) = :token");
     $stmt2->bindValue(':token', $_COOKIE['sessid_clinabs_uid']);
