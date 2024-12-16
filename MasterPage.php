@@ -765,6 +765,8 @@ function inline_files(string $type, array $files) {
 
     <script type="text/javascript" src="/assets/js/scripts.js"></script>
     <script type="text/javascript" src="/assets/js/scripts2.js"></script>
+
+    <script type="text/javascript" src="/assets/js/agendamento.js"></script>
     
     <?php
     if(isset($useDT)) {
@@ -806,7 +808,7 @@ function inline_files(string $type, array $files) {
     <script type="text/javascript" src="/assets/js/dashboard.js"></script>
     <script type="text/javascript" src="/assets/js/clinabs.modules.js"></script>
     <script type="text/javascript" src="/assets/js/agenda.module.js"></script>
-    <script type="text/javascript" src="/assets/js/agendamento.js"></script>
+   
     <?php
     /*
       if($warningMsg !== false && $warningMsg !== null) {

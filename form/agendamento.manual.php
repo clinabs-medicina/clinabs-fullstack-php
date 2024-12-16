@@ -52,7 +52,7 @@ $ag->paciente_token = $_REQUEST["pacienteSelect"];
 $ag->medico_token = $_REQUEST["medicoSelect"];
 $ag->anamnese = $paciente->queixa_principal;
 $ag->modalidade = $_REQUEST["modalidadeSelect"];
-$ag->data_agendamento = date('Y-m-d H:m:s', strtotime($_REQUEST["dataAgendamento"]));
+$ag->data_agendamento = date('Y-m-d H:i:s', strtotime($_REQUEST["dataAgendamento"]));
 $ag->duracao_agendamento = $medico->duracao_atendimento;
 $ag->valor = $_REQUEST["valorConsulta"];
 $ag->meet = json_encode($room);
@@ -133,7 +133,8 @@ try {
                 email: $paciente->email,
                 celular: $paciente->celular
             );
-    
+
+
             $link = $asaas->cobrar(
                 id: $pac->id, 
                 tipo:  $ag->payment_method, 
@@ -143,8 +144,6 @@ try {
                 paymentDue: date('Y-m-d', strtotime($ag->data_agendamento))
             );
 
-           
-    
             
             if(isset($link->invoiceUrl)) {
                 if($_REQUEST['formaPgto'] == 'ABONAR') {
@@ -304,7 +303,7 @@ try {
                     "status" => "warning",
                     "icon" => "error",
                     "text" => "Erro ao Agendar a Consulta",
-                    "data" => []
+                    "data" => ['errro1']
                 ];
             }
         } 
@@ -470,7 +469,7 @@ try {
                     "status" => "warning",
                     "icon" => "error",
                     "text" => "Erro ao Agendar a Consulta",
-                    "data" => []
+                    "data" => ['errro2']
                 ];
             }
         }
@@ -481,10 +480,11 @@ try {
         "status" => "warning",
         "icon" => "error",
         "text" => "Erro ao Agendar a Consulta",
-        "data" => []
+        "data" => $error
     ];
 }
 
 header('Content-Type: application/json');
+file_put_contents('data.json', json_encode($json, JSON_PRETTY_PRINT));
 
-echo json_encode(['title' => 'Atenção', 'icon' => 'success', 'text' => 'Agendamento realizado com sucesso!'], JSON_PRETTY_PRINT);
+echo json_encode($json, JSON_PRETTY_PRINT);
