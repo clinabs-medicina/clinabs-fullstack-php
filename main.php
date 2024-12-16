@@ -8,53 +8,52 @@
 </style>
 
 <section class="main">
-
     <section class="custom-container my-5 lh-base">
         <h2 class="text-center fs-1 fw-bold mb-5 text-dark"
             style="font-family: 'Poppins';font-size: 1.50rem !important;">Por que <spam class="text-primary"
                 style="font-family: 'Poppins';">a Clinabs?</spam>
         </h2>
-        <div class="row text-center">
-            <div class="col-6 col-lg-3 col-md-6 col-sm-6" data-aos="fade-right" data-aos-duration="2000"
+        <div class="row text-center doctor-rows">
+            <div class="col-3 col-lg-3 col-md-3 col-sm-12" data-aos="fade-right" data-aos-duration="2000"
                 data-aos-once="true">
-                <img src="/assets/images/icons/icon-can.png" alt="Especialistas em CBD" class="custom-icon">
+                <img src="/assets/images/icons/icon-can.webp" alt="Especialistas em CBD" class="custom-icon">
                 <div class="rounded-5 ml-1 custom-box square-card">
                     <h3 class="fs-4 fw-semibold" style="font-family: 'Poppins';"><br>Especialistas em CBD</h3>
                 </div>
             </div>
-            <div class="col-6 col-lg-3 col-md-6 col-sm-6" data-aos="fade-right" data-aos-duration="1500"
+            <div class="col-3 col-lg-3 col-md-3 col-sm-12" data-aos="fade-right" data-aos-duration="1500"
                 data-aos-once="true">
-                <img src="/assets/images/icons/icon-call.png" alt="Atendimento rápido e fácil" class="custom-icon">
+                <img src="/assets/images/icons/icon-call.webp" alt="Atendimento rápido e fácil" class="custom-icon">
                 <div class="rounded-5 ml-1 custom-box square-card rounded-4">
                     <h3 class="fs-4 fw-semibold" style="font-family: 'Poppins';"><br>Atendimento rápido e fácil</h3>
                 </div>
             </div>
-            <div class="col-6 col-lg-3 col-md-6 col-sm-6" data-aos="fade-left" data-aos-duration="1500"
+            <div class="col-3 col-lg-3 col-md-3 col-sm-12" data-aos="fade-left" data-aos-duration="1500"
                 data-aos-once="true">
-                <img src="/assets/images/icons/icon-cruz.png" alt="Diversas especialidades" class="custom-icon">
+                <img src="/assets/images/icons/icon-cruz.webp" alt="Diversas especialidades" class="custom-icon">
                 <div class="rounded-5 ml-1 custom-box square-card rounded-4">
                     <h3 class="fs-4 fw-semibold" style="font-family: 'Poppins';"><br>Diversas especialidades</h3>
                 </div>
             </div>
-            <div class="col-6 col-lg-3 col-md-6 col-sm-6" data-aos="fade-left" data-aos-duration="2000"
+            <div class="col-3 col-lg-3 col-md-3 col-sm-12" data-aos="fade-left" data-aos-duration="2000"
                 data-aos-once="true">
-                <img src="/assets/images/icons/icon-hand.png" alt="Valores acessíveis" class="custom-icon">
+                <img src="/assets/images/icons/icon-hand.webp" alt="Valores acessíveis" class="custom-icon">
                 <div class="rounded-5 ml-1 custom-box square-card rounded-4">
                     <h3 class="fs-4 fw-semibold" style="font-family: 'Poppins';"><br>Valores acessíveis</h3>
                 </div>
             </div>
 
-            <div class="col-6 col-lg-3 col-md-6 col-sm-6" data-aos="fade-left" data-aos-duration="2000"
+            <div class="col-3 col-lg-3 col-md-3 col-sm-12" data-aos="fade-left" data-aos-duration="2000"
                 data-aos-once="true">
-                <img src="/assets/images/img1.png" alt="Valores acessíveis" class="custom-icon">
+                <img src="/assets/images/img1.webp" alt="Valores acessíveis" class="custom-icon">
                 <div class="rounded-5 ml-1 custom-box square-card rounded-4">
                     <h3 class="fs-4 fw-semibold" style="font-family: 'Poppins';"><br>Acolhimento</h3>
                 </div>
             </div>
 
-            <div class="col-6 col-lg-3 col-md-6 col-sm-6" data-aos="fade-left" data-aos-duration="2000"
+            <div class="col-3 col-lg-3 col-md-3 col-sm-12" data-aos="fade-left" data-aos-duration="2000"
                 data-aos-once="true">
-                <img src="/assets/images/img2.png" alt="Valores acessíveis" class="custom-icon">
+                <img src="/assets/images/img2.webp" alt="Valores acessíveis" class="custom-icon">
                 <div class="rounded-5 ml-1 custom-box square-card rounded-4">
                     <h3 class="fs-4 fw-semibold" style="font-family: 'Poppins';"><br>Atendimento Humanizado</h3>
                 </div>
@@ -107,11 +106,11 @@
                      <div class="col text-center medico-item p-0" data-aos="fade-up" data-aos-duration="1000" data-aos-once="true">
                          <div class="doctor-card rounded-pill ms-3 mt-5">
                              <div class="mt-5">
-                                 <img class="border border-4 border-primary rounded-circle" src="'.$img.'" alt="Profile Picture" class="img-fluid rounded-circle" style="z-index: 1; margin-top: -45px; margin-left: -20px;">
+                                 <img height="100px" class="border border-4 border-primary rounded-circle" src="'.$img.'" alt="Profile Picture" class="img-fluid rounded-circle" style="z-index: 1; margin-top: -45px; margin-left: -20px;">
                              </div>                        
                              <div class="doctor-info">
                                  <div class="py-3 pe-5 text-start">
-                                     <h5 style="font-family: \'Poppins\';">'.$prefixo. ' '. $nome.'</h5>
+                                     <span class="doctor-title" style="font-family: \'Poppins\';">'.$prefixo. ' '. $nome.'</span>
                                      <p>'.$especialidade.'</p>
                                  </div>
                              </div>
@@ -132,7 +131,7 @@
             <section>
                 <div class="help-flex">
                     <p><b>DÚVIDAS?</b></p>
-                    <h5>FALE AGORA COM UM ESPECIALISTA</h5>
+                    <span class="help-flex-title">FALE AGORA COM UM ESPECIALISTA</span>
                     <p>Estamos online!</p>
                     <a href="https://wa.me/554133000790?text=Seja+bem+vindo%21" target="_blank"><button>CONTATE-NOS
                             AGORA!</button></a>

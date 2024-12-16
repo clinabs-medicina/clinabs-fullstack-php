@@ -17,6 +17,5 @@ CURLOPT_POSTFIELDS => array('fLogin' => '9V60VP5I-SYAxyJ-AMbim7a2-ZHY47UPR3LCY',
 
 $result = curl_exec($curl);
 
-file_put_contents('wa-info.txt', print_r($result, true));
 
 curl_close($curl);

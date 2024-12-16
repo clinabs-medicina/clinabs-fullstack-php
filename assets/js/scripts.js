@@ -19,6 +19,18 @@ $(document).ready(function () {
   $('#responsavel_cpf, #cpf').mask('000.000.000-00', {
     placeholder: '___.___.___-__',
     clearIfNotMatch: true,
+    onComplete: function (cpf) {
+      if (!validateCPF(cpf)) {
+        Swal.fire({
+          title: 'Atenção',
+          icon: 'warning',
+          text: 'CPF Inválido',
+          allowOutSideClick: false
+        }).then(function () {
+          $('#cpf').val('').focus();
+        })
+      }
+    }
   });
 
   $('.btn-play-wb').on('click', function () {
@@ -234,6 +246,20 @@ $(document).ready(function () {
   $("#cpf, #doc_cpf").mask("000.000.000-00", {
     placeholder: "___.___.___-__",
     clearIfNotMatch: true,
+    onComplete: function (cpf) {
+      console.log(cpf);
+
+      if (!validateCPF(cpf)) {
+        Swal.fire({
+          title: 'Atenção',
+          icon: 'warning',
+          text: 'CPF Inválido',
+          allowOutSideClick: false
+        }).then(function () {
+          $("#cpf, #doc_cpf").val('').focus();
+        })
+      }
+    }
   });
 
   $("#doc_validation").on("change", function () {
@@ -301,180 +327,15 @@ $(document).ready(function () {
     }
   });
 
-  $(".table").each(function () {
-    $(this).dataTable({
-      dom: "Bfrtip",
-      stateSave: true,
-      responsive: true,
-      processing: false,
-      retrieve: true,
-      serverSide: false,
-      buttons: ["colvis"],
-    });
-  });
 
-  $(".table-default").each(function () {
-    $(this).dataTable({
-      dom: "Bfrtip",
-      stateSave: true,
-      responsive: true,
-      processing: false,
-      retrieve: true,
-      serverSide: false,
-      paging: false,
-      searching: false,
-    });
-  });
 
-  $("#tablePrescricao.prescricao").dataTable({
-    dom: "Bfrtip",
-    stateSave: true,
-    responsive: true,
-    processing: false,
-    retrieve: true,
-    serverSide: false,
-    buttons: ["colvis"],
-  });
 
-  $("#tablePrescricaoWb").dataTable({
-    dom: "Bfrtip",
-    stateSave: true,
-    responsive: true,
-    processing: false,
-    retrieve: true,
-    serverSide: false,
-    buttons: ["colvis"],
-  });
 
-  $("#tablePrescricaoSR.prescricao").dataTable({
-    dom: "Bfrtip",
-    stateSave: true,
-    responsive: true,
-    processing: false,
-    retrieve: true,
-    serverSide: false,
-    buttons: ["colvis"],
-  });
 
-  $("#mailAccounts").dataTable({
-    dom: "Bfrtip",
-    stateSave: true,
-    responsive: true,
-    processing: false,
-    retrieve: true,
-    serverSide: false,
-  });
 
-  $("#tablePrescricao.acompanhamento").dataTable({
-    dom: "Bfrtip",
-    stateSave: true,
-    responsive: true,
-    processing: false,
-    retrieve: true,
-    serverSide: false,
-    buttons: ["colvis"],
-  });
 
-  $("#tableRastreio").dataTable({
-    dom: "Bfrtip",
-    stateSave: true,
-    responsive: true,
-    processing: false,
-    retrieve: true,
-    serverSide: false,
-    paging: true,
-    buttons: ["colvis"],
-  });
 
-  new DataTable("#presc-wb");
 
-  addTableButton("#mailAccounts", {
-    icon: "plus",
-    hint: "Nova Conta",
-    click: "newMailAccount",
-  });
-
-  addTableButton("#tableRastreio", {
-    icon: "plus",
-    hint: "Novo Evento",
-    click: "newTrackItem",
-  });
-
-  addTableButton("#tablePrescricao.prescricao", {
-    icon: "plus",
-    hint: "Nova Prescrição/Acompanhamento Médico",
-    click: "newPrescFunc",
-  });
-
-  addTableButton("#tablePrescricao", {
-    icon: "signature-pen",
-    hint: "Assinar com Certificado Digital",
-    click: "certificado",
-  });
-
-  if ($("#tablePrescricao.prescricao").data("doc")) {
-    addTableButton("#tablePrescricao.prescricao", {
-      icon: "download",
-      hint: "Baixar Receita para Assinar",
-      click: "downloadReceita",
-    });
-
-    addTableButton("#tablePrescricao.prescricao", {
-      icon: "upload",
-      hint: "Atualizar Receita Assinada",
-      click: "uploadReceita",
-    });
-
-    addTableButton("#tablePrescricao.prescricao", {
-      icon: "print",
-      hint: "Imprimir Receita",
-      click: "printPrescFuncSigned",
-    });
-
-    addTableButton("#tablePrescricao.prescricao", {
-      icon: "whatsapp",
-      hint: "Enviar Receita para seu WhatsApp para Assinar",
-      click: "WaSendReceita",
-    });
-  } else if ($("#tablePrescricao.prescricao").data("upld")) {
-
-  } else {
-    addTableButton("#tablePrescricao.prescricao", {
-      icon: "download",
-      hint: "Baixar Receita para Assinar",
-      click: "downloadReceita",
-    });
-
-    addTableButton("#tablePrescricao.prescricao", {
-      icon: "upload",
-      hint: "Enviar Receita Assinada",
-      click: "uploadReceita",
-    });
-  }
-
-  addTableButton("#tablePrescricaoSR.prescricao", {
-    icon: "plus",
-    hint: "Nova Prescrição/Acompanhamento Médico",
-    click: "newPrescFuncSR",
-  });
-
-  addTableButton("#tablePrescricao.prescricao", {
-    icon: "file-pdf",
-    hint: "Enviar Receita,Exame e Laudo",
-    click: "addPrescFunc2(false, 'Enviar Anexo ao Prontuário')",
-  });
-
-  addTableButton("#tablePrescricao.prescricao", {
-    icon: "file-medical",
-    hint: "Atestado",
-    click: "newAtestado()",
-  });
-
-  addTableButton("#tablePrescricaoSR.prescricao", {
-    icon: "print",
-    hint: "Imprimir Receita",
-    click: "printPrescFunc2",
-  });
 
   $("small[data-time]").each(function () {
     let elem = this;
@@ -502,11 +363,7 @@ $(document).ready(function () {
     });
   }, 60000);
 
-  $("#select-marcas").select2({
-    language: "pt",
-    tags: true,
-    multiple: true,
-  });
+
 
   $('input[name="filter_ag"]').on("change", function () {
     $('select[name="select_filter"]').select2({
@@ -2132,64 +1989,6 @@ $(document).ready(function () {
     }
   );
 
-  /*
-    if ($("#tableAgendamento").length > 0) {
-        $.fn.dataTable.ext.buttons.calendar = {
-            text: "Calendrio",
-            action: function(e, dt, node, config) {
-                window.location = "/agenda/calendario";
-            },
-        };
- 
-        $.fn.dataTable.ext.buttons.rel = {
-            text: "Relatório",
-            action: function(e, dt, node, config) {
-                window.location = "/agenda/relatorios";
-            },
-        };
- 
-        $.fn.dataTable.ext.buttons.new = {
-            text: "Novo Agendamento",
-            action: function(e, dt, node, config) {
-                window.location = "/agendamento";
-            },
-        };
- 
-        
- 
- 
-        let table = $("#tableAgendamento").DataTable({
-            dom: "Bfrtip",
-            stateSave: true,
-            responsive: true,
-            processing: false,
-            retrieve: true,
-            serverSide: false,
-            buttons: [
-                "colvis", 
-                "pageLength", 
-                $('meta[name="user"]').attr("content") === "FUNCIONARIO" ? "new" : ""
-            ]
-        });
- 
- 
-        $('#min,#max').on('change', function() { 
-            table.rows( {search: '30/09/2024'} ).every( function ( rowIdx, tableLoop, rowLoop ) {
-                var data = this.data();
-              });
- 
-            table.draw(); 
-        });
- 
- 
- 
-        //filterTable(agendamento_table);
- 
-        $("#tableAgendamento_length > label").css("font-size", "0px !important");
- 
-        //$('#tableAgendamento_filter').after('<div class="dt-buttons"><button class="dt-button button-add" onclick="window.location=\'/agenda/consulta\'" style="background-color: var(--main-bg-color1); color: #fff">NOVO <img src="/assets/images/ico-add.svg"></button></div>');
-    }
-*/
 
   if ($("#tableAgendamento").length > 0) {
     //$('select.filter-element').off('all');
@@ -2321,229 +2120,7 @@ $(document).ready(function () {
     });
   }
 
-  if ($("#tablePedidos").length > 0) {
-    $.fn.dataTable.ext.buttons.new = {
-      text: "Novo",
-      action: function (e, dt, node, config) {
-        window.location = "/produtos";
-      },
-    };
 
-    $("#tablePedidos").DataTable({
-      dom: "Bfrtip",
-      stateSave: true,
-      responsive: true,
-      processing: false,
-      retrieve: true,
-      serverSide: false,
-      buttons: [
-        "colvis",
-        "pageLength",
-        $('meta[name="user"]').attr("content") === "FUNCIONARIO" ? "new" : "",
-      ],
-    });
-
-    $("#tablePedidos_length > label").css("font-size", "0px !important");
-  }
-
-  $("#tableMedicos").DataTable({
-    dom: "Bfrtip",
-
-    stateSave: true,
-
-    responsive: true,
-
-    processing: false,
-
-    retrieve: true,
-
-    serverSide: false,
-
-    autoFill: {
-      columns: ":not(:first-child)",
-    },
-
-    buttons: [
-      "colvis",
-      "pageLength",
-      "print",
-      {
-        text: "NOVO MÉDICO",
-        action: function (e, dt, node, config) {
-          window.location = "/cadastro/medico";
-        },
-      },
-    ],
-  });
-
-  $("#tablePacientes").DataTable({
-    dom: "Bfrtip",
-
-    stateSave: true,
-
-    responsive: true,
-
-    processing: false,
-
-    retrieve: true,
-
-    serverSide: false,
-
-    autoFill: {
-      columns: ":not(:last-child)",
-    },
-    buttons: [
-      "colvis",
-      "pageLength",
-      "print",
-      {
-        text: "NOVO PACIENTE",
-        action: function (e, dt, node, config) {
-          window.location = "/cadastro/cadastro-paciente";
-        },
-      },
-    ],
-  });
-
-  $("#faturamento-lf").DataTable({
-    dom: "Bfrtip",
-    stateSave: true,
-    responsive: true,
-    processing: false,
-    retrieve: true,
-    serverSide: false,
-    autoFill: {
-      columns: ":not(:last-child)",
-    },
-    columnDefs: [
-      {
-        target: 0,
-        visible: false,
-        searchable: false,
-      },
-    ],
-    buttons: [
-      "colvis",
-      "pageLength",
-      "print",
-      {
-        text: "EXTRATO",
-        action: function (e, dt, node, config) {
-          window.location = "?extrato";
-        },
-      },
-    ],
-  });
-
-  $("#tableFinanceiro").DataTable({
-    dom: "Bfrtip",
-    stateSave: true,
-    responsive: true,
-    processing: false,
-    retrieve: true,
-    serverSide: false,
-    autoFill: {
-      columns: ":not(:last-child)",
-    },
-    columnDefs: [
-      {
-        target: 0,
-        visible: false,
-        searchable: false,
-      },
-    ],
-    buttons: [
-      "colvis",
-      "pageLength",
-      "print",
-      {
-        text: "RELATÓRIO",
-        action: function (e, dt, node, config) {
-          window.location = "/";
-        },
-      },
-    ],
-  });
-
-  $("#tableProdutos").DataTable({
-    dom: "Bfrtip",
-
-    stateSave: true,
-
-    responsive: true,
-
-    processing: false,
-
-    retrieve: true,
-
-    serverSide: false,
-
-    autoFill: {
-      columns: ":not(:first-child)",
-    },
-
-    buttons: ["colvis", "pageLength", "print"],
-  });
-
-  $("#tableFuncionarios").DataTable({
-    dom: "Bfrtip",
-
-    stateSave: true,
-
-    responsive: true,
-
-    processing: false,
-
-    retrieve: true,
-
-    serverSide: false,
-
-    autoFill: {
-      columns: ":not(:last-child)",
-    },
-
-    buttons: [
-      "colvis",
-      "pageLength",
-      "print",
-      {
-        text: "NOVO FUNCIONARIO",
-        action: function (e, dt, node, config) {
-          window.location = "/cadastro/funcionario";
-        },
-      },
-    ],
-  });
-
-  $("#tableUsuarios").DataTable({
-    dom: "Bfrtip",
-
-    stateSave: true,
-
-    responsive: true,
-
-    processing: false,
-
-    retrieve: true,
-
-    serverSide: false,
-
-    autoFill: {
-      columns: ":not(:last-child)",
-    },
-
-    buttons: [
-      "colvis",
-      "pageLength",
-      "print",
-      {
-        text: "NOVO USURIO",
-        action: function (e, dt, node, config) {
-          window.location = "/cadastro/usuario";
-        },
-      },
-    ],
-  });
 
   $('input[type="search"]').attr("placeholder", "Pesquisar....");
   $("#cadastroConsulta").find(".btn-step-submit").show();
@@ -2565,7 +2142,7 @@ $(document).ready(function () {
 
   $("input").trigger("input");
 
- 
+
 
   $("#medico_token").on("change", function () {
     let opts = document.querySelector("#medico_token").options;
@@ -2608,7 +2185,7 @@ $(document).ready(function () {
         `/forms/paciente.dados.php?paciente_cpf=${cpf.replace(
           /\D/g,
           ""
-        )}&autologin=true`,
+        )}&autologin=false`,
         function (paciente) {
           $("#cpf").val(paciente.cpf);
           $("#nome_completo").val(paciente.nome_completo);
@@ -2722,5 +2299,123 @@ $(document).ready(function () {
 
   $(".preloader-container").fadeOut(600, function () {
     $(".preloader-container").hide();
+
+    setTimeout(() => {
+      $('#row-btn-banner').before(`
+        <img width="100%" class="img-desktop" src="/assets/images/banner-home.png" alt="slider1" preload>
+        <img width="100%"  class="img-mobile" src="/assets/images/banner-home-mobile.jpg" alt="slider1" preload>
+      `);
+    }, 3500);
   });
 });
+
+
+
+function validateCPF(cpf) {
+  // Remove non-numeric characters
+  cpf = cpf.replace(/[^\d]+/g, '');
+
+  // Check if CPF length is 11
+  if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) {
+    return false; // CPF is invalid if it's too short or has all identical digits
+  }
+
+  // Validate first check digit
+  let sum = 0;
+  for (let i = 0; i < 9; i++) {
+    sum += parseInt(cpf.charAt(i)) * (10 - i);
+  }
+  let firstCheckDigit = 11 - (sum % 11);
+  if (firstCheckDigit === 10 || firstCheckDigit === 11) {
+    firstCheckDigit = 0;
+  }
+
+  // Validate second check digit
+  sum = 0;
+  for (let i = 0; i < 10; i++) {
+    sum += parseInt(cpf.charAt(i)) * (11 - i);
+  }
+  let secondCheckDigit = 11 - (sum % 11);
+  if (secondCheckDigit === 10 || secondCheckDigit === 11) {
+    secondCheckDigit = 0;
+  }
+
+  // Check if the calculated check digits match the ones in the CPF
+  return cpf.charAt(9) == firstCheckDigit && cpf.charAt(10) == secondCheckDigit;
+}
+
+
+function refund_payment(id, value) {
+  const vl = (value * 100);
+
+  Swal.fire({
+    title: 'Estornar Pagamento',
+    width: 350,
+    allowOutSideClick: false,
+    showConfirmButton: true,
+    showDenyButton: true,
+    confirmButtonText: 'ESTORNAR',
+    denyButtonText: 'CANCELAR',
+    html: `
+    <div class="rowcol">
+      <div class="col-12">
+        <div class="form-group">
+          <label for="valor_estorno">Valor a Devolver</label>
+          <input id="valor_estorno" value="${vl}" data-mask="#.###0.00">
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="form-group">
+          <label for="desc_estorno">Descrição</label>
+          <textarea id="desc_estorno"></textarea>
+        </div>
+      </div>
+    </div>`,
+    didOpen: function () {
+      $("#valor_estorno").mask("#.##0,00", {
+        reverse: true,
+        placeholder: "0.00",
+        clearIfNotMatch: true
+      });
+    },
+    preConfirm: function () {
+      return ($('#valor_estorno').val().length > 0);
+    }
+  }).then(function (e) {
+    if (e.isConfirmed) {
+      valor = $('#valor_estorno').val();
+      let desc = $('#desc_estorno').val();
+
+      preloader('Estornando Pagamento...');
+
+      $.get('/forms/payment.refund.php', {
+        payment_id: id,
+        valor: valor,
+        description: desc
+      }).done(function (resp) {
+        console.log(resp);
+
+        if ('code' in resp) {
+          Swal.fire({
+            title: 'Atenção',
+            text: resp.description,
+            icon: 'warning'
+          });
+        } else {
+          Swal.fire({
+            title: 'Atenção',
+            text: 'Estorno Solicitado com Sucesso!',
+            icon: 'success'
+          });
+        }
+      }).fail(function (error) {
+        Swal.fire({
+          title: 'Atenção',
+          text: 'Falha ao Estornar Pagamento',
+          icon: 'error'
+        });
+      });
+    }
+  });
+}

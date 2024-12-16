@@ -1247,24 +1247,6 @@ function editPrescFunc(elem, presc = false) {
     });
 }
 
-function addTableButton(elem, btnInfo) {
-    let btn = document.createElement("button");
-    btn.type = "button";
-    btn.title = btnInfo.hint;
-    btn.className = "btn-table-item";
-    btn.innerHTML = `<img src="/assets/images/icons?icon=${btnInfo.icon}&color=white" class="icon-cli"></i>`;
-
-    if (btnInfo.click.indexOf("(") !== -1) {
-        btn.setAttribute("onclick", `${btnInfo.click}`);
-    } else {
-        btn.setAttribute("onclick", `${btnInfo.click}()`);
-    }
-
-    let id = $(`${elem}`).attr("id");
-
-    $(`#${id}_filter`).append(btn);
-}
-
 function newTrackItem() {
     Swal.fire({
         title: "Novo Evento de Rastreio",
@@ -1955,7 +1937,7 @@ function editPrescFuncSR(elem, presc = false) {
 
 function addUnidade(elem = null) {
     Swal.fire({
-        title: "Nova Unidade",
+        title: (elem === null ? "Nova Unidade" : "Editar Unidade"),
         width: "75%",
         html: `<form id="unidadeItem" style="width: 100%;padding: 0">
                       <section class="form-grid area5">
@@ -2007,7 +1989,7 @@ function addUnidade(elem = null) {
                                   <option value="MG">Minas Gerais</option>
                                   <option value="PA">Par</option>
                                   <option value="PB">Paraba</option>
-                                  <option value="PR">Paran</option>
+                                  <option value="PR">Paraná</option>
                                   <option value="PE">Pernambuco</option>
                                   <option value="PI">Piau</option>
                                   <option value="RJ">Rio de Janeiro</option>
@@ -2022,6 +2004,35 @@ function addUnidade(elem = null) {
                               </select>
                              
                           </section>
+                      </section>
+
+                      <section class="form-grid area-x3">
+                        <section class="form-group"> 
+                            <label for="inicio_expediente">Inicio Expediente</label>
+                            <input autocomplete="off" type="time" id="inicio_expediente" class="form-control" name="inicio_expediente" placeholder="">
+                        </section>
+
+                        <section class="form-group">
+                            <label for="fim_expediente">Fim de Expediente</label>
+                            <input autocomplete="off" type="time" id="fim_expediente" class="form-control" name="fim_expediente" placeholder="">
+                        </section>
+
+                        <section class="form-group">
+                            <label for="tipo_atendimento">Tipo de Atendimento</label>
+                            <select class="form-select form-control" id="tipo_atendimento" name="tipo_atendimento">
+                                <option value="ONLINE">ONLINE</option>
+                                <option value="PRESENCIAL">PRESENCIAL</option>
+                                <option value="ALL">ONLINE e PRESENCIAL</option>
+                            </select>
+                        </section>
+
+                        <section class="form-group">
+                            <label for="unidade_status">Status</label>
+                            <select class="form-select form-control" id="unidade_status" name="unidade_status">
+                                <option value="ATIVO">ATIVO</option>
+                                <option value="INATIVO">INATIVO</option>
+                            </select>
+                        </section>
                       </section>
                       
                       <section class="form-grid area-full">
@@ -2079,6 +2090,11 @@ function addUnidade(elem = null) {
                 $("#unidade_cidade").val(data.cidade);
                 $("#unidade_bairro").val(data.bairro);
                 $("#unidade_uf").val(data.uf);
+
+                $("#inicio_expediente").val(data.inicio_expediente);
+                $("#fim_expediente").val(data.fim_expediente);
+                $("#tipo_atendimento").val(data.tipo_atendimento);
+                $("#unidade_status").val(data.unidade_status);
             }
 
             $("#unidade_contato").mask("(00) 0000-0000", {

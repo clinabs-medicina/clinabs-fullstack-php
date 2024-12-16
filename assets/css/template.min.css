@@ -1,0 +1,33 @@
+fieldset.filter-field legend {
+    font-size: 12px !important;
+}
+
+.filters-mb label[for="filtros-mb"] {
+    display: none;
+}
+
+@media (max-width: 800px) {
+    .filters-mb label[for="filtros-mb"] {
+        display: flex;
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 700;
+        width: 100%;
+        background-color: #1316162b;
+        border-radius: 1rem;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: nowrap;
+        flex-direction: row;
+    }
+
+    .filters-mb label[for="filtros-mb"]:hover {
+        cursor: pointer;
+    }
+
+    #filtros-mb.row-filters {
+        display: none;
+        flex-direction: column;
+    }
+}

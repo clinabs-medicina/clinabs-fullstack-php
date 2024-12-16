@@ -1,5 +1,15 @@
 <?php
 $valor_consulta = strtolower($_GET['atendimento']) == 'online' ? $_GET['valor_consulta_online'] : $_GET['valor_consulta_presencial'];
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if(isset($_SESSION['userObj'])) {
+    try {
+       $user = (object) $_SESSION['userObj'];
+   } catch (PDOException $e) {
+ 
+   }
+}
 ?>
 
 <section class="main">
@@ -128,25 +138,25 @@ $valor_consulta = strtolower($_GET['atendimento']) == 'online' ? $_GET['valor_co
             <div class="step">
                 <section class="form-grid area-two">
                     <section class="form-group payment-method">
-                        <!--
+         
                         <div class="payment-button credit-card" style="filter: grayscale(1); point-events: none">
-                                    <label for="payment_credit">
-                                        <input id="payment_credit" type="radio" id="payment_pix" name="payment_mode" value="PIX" required> PIX
+                                    <label for="payment_pix">
+                                        <input id="payment_pix" type="radio" name="payment_mode" value="PIX" required> PIX
                                     </label>
                                     <span class="payment_pix">R$ <?=number_format($valor_consulta,2, ',','.')?></span>
                                 </div>
-                                 -->
+                                 
 
                                 <div class="payment-button credit-card">
                                     <label for="payment_credit">
-                                        <input id="payment_credit" type="radio" id="payment_pix" name="payment_mode" value="CREDIT_CARD" required> CARTÃO DE CRÉDITO ou DÉBITO
+                                        <input id="payment_credit" type="radio" name="payment_mode" value="CREDIT_CARD" required> CARTÃO DE CRÉDITO ou DÉBITO
                                     </label>
                                     <span class="payment_pix">R$ <?=number_format($valor_consulta,2, ',','.')?></span>
                                 </div>
                                
                         <?php
                         
-                        if((in_array($_SERVER['REMOTE_ADDR'], $ALLOWED_IP) || $_SERVER['REMOTE_ADDR'] == '127.0.0.1') && $user->tipo == 'FUNCIONARIO') 
+                        if(/*(in_array($_SERVER['REMOTE_ADDR'], $ALLOWED_IP) || $_SERVER['REMOTE_ADDR'] == '127.0.0.1') && */$user->tipo == 'FUNCIONARIO') 
                         {
                             
                            echo "<input type=\"hidden\" name=\"external_payment\" value=\"{$_REQUEST['medico_token']}\">";

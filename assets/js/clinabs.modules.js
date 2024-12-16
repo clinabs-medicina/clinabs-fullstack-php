@@ -19,7 +19,9 @@ function invoke_payment_reminder(elem) {
                 } else {
                     Swal.fire({ icon: 'error', title: 'Erro ao Enviar Notificação.' });
                 }
-            })
+            });
+
+            window.location.reload();
         }
     })
 }
@@ -123,7 +125,7 @@ function caixa_recebimento_exec(payment_id, payment_value, client_name) {
                     <div class="col-4">
                         <div class="form-group c-flex">
                             <label for="valor_recebido">Valor Recebido</label>
-                            <input name="valor_recebido" class="form-control text-center money-format" value="0,00" id="valor_recebido">
+                            <input name="valor_recebido" class="form-control text-center money-format" value="${payment_value}" id="valor_recebido">
                         </div>
                     </div>
 
@@ -246,6 +248,8 @@ function caixa_recebimento_exec(payment_id, payment_value, client_name) {
                           
                             });
             */
+
+            window.location.reload();
         }
     });
 }

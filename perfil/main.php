@@ -1,9 +1,66 @@
+<?php
+   if(isset($_GET['token']) && $_GET['token'] != "") {
+    $sql = "
+   SELECT
+    objeto AS tipo
+ FROM
+    USUARIOS AS U 
+    WHERE 
+    U.token = :token
+    UNION ALL
+  SELECT
+    objeto AS tipo
+ FROM
+    MEDICOS AS M 
+    WHERE 
+    M.token = :token
+    UNION ALL
+    (
+    SELECT
+       objeto AS tipo
+    FROM
+       PACIENTES AS P
+       WHERE 
+       P.token = :token
+    ) UNION ALL
+    (
+    SELECT
+       objeto AS tipo
+    FROM
+    FUNCIONARIOS AS F
+    WHERE 
+    F.token = :token
+    )";
+
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':token', isset($_GET['token']) ? $_GET['token'] : $user->token);
+    $stmt->execute();
+    $obj = $stmt->fetch(PDO::FETCH_OBJ);
+
+    $tableName = $obj->tipo.'S';
+    $stmt2 = $pdo->prepare("SELECT * FROM $tableName WHERE token = :token");
+    $stmt2->bindValue(':token', isset($_GET['token']) ? $_GET['token'] : $user->token);
+
+    $stmt2->execute();
+    $_user = $stmt2->fetch(PDO::FETCH_OBJ);
+ }
+ else{
+    $tableName = $user->tipo.'S';
+    $stmt2 = $pdo->prepare("SELECT * FROM $tableName WHERE token = :token");
+    $stmt2->bindValue(':token', $user->token);
+
+    $stmt2->execute();
+    $_user = $stmt2->fetch(PDO::FETCH_OBJ);
+ }
+
+ ?>
+
 <section class="main" id="user-main">
     <div class="flex-container">
         <form id="formUpdateCadastro" action="/form/form.cadastro.update.<?=strtolower($_user->tipo)?>.php"
             method="POST" class="form-paciente">
             <h3 class="form-title titulo-h1">Meu Perfil</h3>
-
             <section id="tabControl1" class="tabControl locked">
                 <div class="container-profile">
                     <section class="user-profile">
@@ -890,14 +947,14 @@
                                                         if ($currentDate < $specificDate) {
                                                            
                                             
-                                                            echo '<label data-obj="'.date('d/m/Y', strtotime($item['day'])).' '.$h.'" data-selection="'.$_id.'" data-atendimento="'.($checked ? $_item['endereco'] : $street->id).'"  data-atendimento-name="'.($checked ? $_item['endereco_nome'] : $street->nome).'" data-atendimento-desc="'.($checked ? $_item['desc'] : sprintf("%s,%s - %s/%s - %s", $street->logradouro,$street->numero,$street->cidade, $street->uf, $street->bairro)).'" data-online="'.($_item['online'] == 1 ? 'true' : 'false').'" data-presencial="'.($_item['presencial'] == 1 ? 'true' : 'false').'" data-date="'.$item['day'].'" data-time="'.$h.'" class="week-time week-schedule listmedic-box-dir-time'.($checked ? ' active':'').'" checked="false">
+                                                            echo '<label data-obj="'.date('d/m/Y', strtotime($item['day'])).' '.$h.'" data-selection="'.$_id.'" data-atendimento="'.($_item['endereco']).'"  data-atendimento-name="'.($checked ? $_item['endereco_tipo'] : $street->nome).'" data-atendimento-desc="'.($checked ? $_item['desc'] : sprintf("%s,%s - %s/%s - %s", $street->logradouro,$street->numero,$street->cidade, $street->uf, $street->bairro)).'" data-online="'.($_item['online'] == 1 ? 'true' : 'false').'" data-presencial="'.($_item['presencial'] == 1 ? 'true' : 'false').'" data-date="'.$item['day'].'" data-time="'.$h.'" class="week-time week-schedule listmedic-box-dir-time'.($checked ? ' active':'').'" checked="false">
                                                                     '.$h.'H
                                                                     <i class="fa fa-home'.(!parse_bool($_item['presencial']) && $checked ? ' icon-disabled':'').'" name="presencial"></i>
                                                                     <i class="fa fa-globe'.(!parse_bool($_item['online']) && $checked ? ' icon-disabled':'').'" name="online"></i>
                                                                 </label>';
                                                             
                                                         } else {
-                                                            echo '<label data-obj="'.date('d/m/Y', strtotime($item['day'])).' '.$item['day'].' '.$h.'" data-selection="'.$_id.'"  data-atendimento="'.($checked ? $_item['endereco'] : $street->id).'" data-atendimento-name="'.($checked ? $_item['endereco_nome'] : $street->nome).'" data-atendimento-desc="'.($checked ? $_item['desc'] : sprintf("%s,%s - %s/%s - %s", $street->logradouro,$street->numero,$street->cidade, $street->uf, $street->bairro)).'" data-atendimento="2" data-atendimento-desc="" data-online="true" data-presencial="true" data-date="'.$item['day'].'" data-time="'.$h.'" class="week-time week-schedule week-schedule-btn-disabled listmedic-box-dir-time'.($checked ? ' active':'').'"  checked="false">
+                                                            echo '<label data-obj="'.date('d/m/Y', strtotime($item['day'])).' '.$item['day'].' '.$h.'" data-selection="'.$_id.'" data-atendimento="'.($_item['endereco']).'" data-atendimento-name="'.($checked ? $_item['endereco_tipo'] : $street->nome).'" data-atendimento-desc="'.($checked ? $_item['desc'] : sprintf("%s,%s - %s/%s - %s", $street->logradouro,$street->numero,$street->cidade, $street->uf, $street->bairro)).'" data-atendimento="2" data-atendimento-desc="" data-online="true" data-presencial="true" data-date="'.$item['day'].'" data-time="'.$h.'" class="week-time week-schedule week-schedule-btn-disabled listmedic-box-dir-time'.($checked ? ' active':'').'"  checked="false">
                                                                     '.$h.'H
                                                                     <i class="fa fa-home" name="presencial"></i>
                                                                     <i class="fa fa-globe" name="online"></i>

@@ -23,7 +23,7 @@ $cell_p1 = substr($whatsapp->result->number, 4, 4);
 $cell_p2 = substr($whatsapp->result->number, 8, 4);
 
 if($whatsapp->result->state != 'disconnected') {
-    file_put_contents('../wa-config.json', json_encode($whatsapp->result, JSON_PRETTY_PRINT));
+
 }
 
 curl_close($curl);

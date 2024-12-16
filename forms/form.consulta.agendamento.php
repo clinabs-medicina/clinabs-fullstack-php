@@ -1,11 +1,22 @@
 <?php
 global $agenda;
+
 require_once $_SERVER["DOCUMENT_ROOT"] . "/config.inc.php";
+
 $added = false;
 error_reporting(1);
 ini_set("display_erros", 1);
 $date = trim($_REQUEST["data_agendamento"]);
-
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if(isset($_SESSION['userObj'])) {
+    try {
+       $user = (object) $_SESSION['userObj'];
+   } catch (PDOException $e) {
+ 
+   }
+}
 
 function dueDate($data_gendamento, $data_atual) {
     $agendamento = strtotime($data_gendamento);
@@ -40,7 +51,7 @@ function dueDate($data_gendamento, $data_atual) {
 $medico = $pdo->query("SELECT duracao_atendimento,tempo_limite_online,tempo_limite_presencial FROM MEDICOS WHERE token = '{$_REQUEST["medico_token"]}'");
 $medico = $medico->fetch(PDO::FETCH_OBJ);
 
-$tempo_limite = strtoupper($_REQUEST['modalidade']) == "ONLINE" ? ($medico->tempo_limite_online * 60) : ($medico->tempo_limite_presencial * 60);
+$tempo_limite = strtoupper($_REQUEST['modalidade']) == "ONLINE" ? ($medico->tempo_limite_online) : ($medico->tempo_limite_presencial);
 
 if((strtotime($date) - time()) > $tempo_limite) {
     $stmt_ag = $pdo->query(
@@ -48,7 +59,11 @@ if((strtotime($date) - time()) > $tempo_limite) {
     );
 
     $token = md5($_REQUEST['cpf']).uniqid();
-
+    try{    
+        error_log("token form.consulta.agendamento \$user: $token \r\n" . PHP_EOL);
+    } catch (PDOException $e) {
+    }
+    
 
     $pwd = md5(sha1(uniqid()));
     $payment_error = "";
@@ -145,10 +160,6 @@ if((strtotime($date) - time()) > $tempo_limite) {
                         linkImage: "https://$hostname/assets/images/logo.png"
                     );
                 }
-
-                $sessid = md5($ag->paciente_token);
-                $time = time() + (3600 * 24) * 365;
-                setcookie('sessid_clinabs', $sessid, $time, '/', hostname, true);
             }
             else {
                 $paciente->nome_completo = strtoupper($_REQUEST["nome_completo"]);
@@ -180,7 +191,14 @@ if((strtotime($date) - time()) > $tempo_limite) {
 
             $paciente = $paciente->fetch(PDO::FETCH_OBJ);
 
-            try {
+            $birthdate = Modules::parseDate($_REQUEST["data_nascimento"]);
+
+                $birthDate = new DateTime($birthdate);
+                $currentDate = new DateTime();
+                $age = $currentDate->diff($birthDate);
+
+            try
+             {
                 $birthdate = Modules::parseDate($_REQUEST["data_nascimento"]);
 
                 $birthDate = new DateTime($birthdate);
@@ -188,30 +206,38 @@ if((strtotime($date) - time()) > $tempo_limite) {
                 $age = $currentDate->diff($birthDate);
 
                 if($age->y < 18) {
-                    $pac = $asaas->create_or_get_client(
-                        token: uniqid(),
-                        nome: $_REQUEST['responsavel_nome_completo'],
-                        cpf: $_REQUEST['responsavel_cpf'],
-                        email: $_REQUEST['email'],
-                        celular: $_REQUEST['responsavel_celular']
-                    );
-                } else {
-                    $pac = $asaas->create_or_get_client(
-                        token: $ag->paciente_token,
-                        nome: $paciente->nome_completo,
-                        cpf: $paciente->cpf,
-                        email: $paciente->email,
-                        celular: $paciente->celular
-                    );
+                    try {
+                        $pac = $asaas->create_or_get_client(
+                            token: uniqid(),
+                            nome: $_REQUEST['responsavel_nome_completo'],
+                            cpf: $_REQUEST['responsavel_cpf'],
+                            email: $_REQUEST['email'],
+                            celular: $_REQUEST['responsavel_celular']
+                        );
+                    }  catch(Exception $ex) {
+                        $pac = null;
+                    }
+                } 
+                
+                else {
+                    try {
+                        $pac = $asaas->create_or_get_client(
+                            token: $ag->paciente_token,
+                            nome: $paciente->nome_completo,
+                            cpf: $paciente->cpf,
+                            email: $paciente->email,
+                            celular: $paciente->celular
+                        );
+                    } catch(Exception $ex) {
+                        $pac = null;
+                    }
                 }
 
-                if (
-                    !isset($pac->errors) &&
-                    isset($pac->id)
-                )
+                if (!isset($pac->errors) && isset($pac->id) && $pac != null)
                 {
                    
-                    try {
+                    try 
+                    {
                         $link = $asaas->cobrar(
                             id: $pac->id, 
                             tipo:  $ag->payment_method == 'PAYMENT_LINK' ? 'UNDEFINED':$ag->payment_method, 
@@ -261,7 +287,7 @@ if((strtotime($date) - time()) > $tempo_limite) {
                             $stmt1->bindValue(":nome", "VENDA DE CONSULTA MÉDICA");
                             $stmt1->bindValue(":token", $token);
                             $stmt1->bindValue(":valor", $ag->valor);
-                            $stmt1->bindValue(":paciente_token", $ag->paciente_token);
+                            $stmt1->bindValue(":paciente_token", $pac->id);
                             $stmt1->bindValue(":sts", "AGUARDANDO PAGAMENTO");
                             $stmt1->bindValue(":payment_method", "NÃO DEFINIDO");
                             $stmt1->bindValue(":reference", $token);
@@ -278,16 +304,10 @@ if((strtotime($date) - time()) > $tempo_limite) {
                                     "icon" => "success",
                                     "text" => "Consulta Agendada com Sucesso!",
                                     "link" => $link->invoiceUrl,
-                                    'linkUrl' => $added && !isset($_COOKIE['sessid_clinabs']) ? 'https://'.$hostname.'/login?action=newPassword&token='.$ag->paciente_token : '',
+                                    'linkUrl' => $added && !isset($_SESSION['token']) ? 'https://'.$hostname.'/login?action=newPassword&token='.$ag->paciente_token : '',
                                     "paymentLink" => true,
                                     "createPwd" => $added
                                 ];
-
-
-                                if($ag->modalidade == "ONLINE") {
-                                    $msg1 = "Olá {$paciente->nome_completo}\n\nsegue o link da Teleconsulta  com {$prefixo}. {$medico_nome}\n*Data*: {$data_agendamento}\n*Especialidade*: {$especialidade}\n*Link*: {$room->roomUrl}";
-                                    $wa->sendTextMessage($paciente->celular, $msg1);
-                                }
 
 
                                 foreach($notificacoes_consultas as $phoneNumber) {
@@ -367,8 +387,8 @@ if((strtotime($date) - time()) > $tempo_limite) {
                                 
                                 if($stmt2->rowCount() > 0) {
                                     $msg .= "". PHP_EOL;
-                                    $msg .= "Clinica: ${$medico->clinica_nome}". PHP_EOL;
-                                    $msg .= "Endereço: {$endereco->logradouro}, ${$endereco->numero}". PHP_EOL;
+                                    $msg .= "Clinica: {$medico->clinica_nome}". PHP_EOL;
+                                    $msg .= "Endereço: {$endereco->logradouro}, {$endereco->numero}". PHP_EOL;
                                     $msg .= "Cidade: {$endereco->cidade}". PHP_EOL;
                                     $msg .= "Bairro: {$endereco->bairro}". PHP_EOL;
                                 }
@@ -525,14 +545,18 @@ if((strtotime($date) - time()) > $tempo_limite) {
                                 "data" => $link->errors
                             ];
                         }
-                        } catch(Exception $ex) {
+                        } 
+                        
+                    catch(Exception $ex) {
                             $json = [
                                 "status" => "error",
                                 "text" => "Erro ao Agendar Consulta, Verifique os dados digitados",
                                 "data" => $link->errors
                             ];
                         }
-                } else {
+                } 
+                
+                else {
                     $json = [
                         "status" => "error",
                         "icon" => "error",
@@ -540,15 +564,15 @@ if((strtotime($date) - time()) > $tempo_limite) {
                         "data" => $pac->errors
                     ];
                 }
-        } 
-        catch (Exception $error) {
-            $json = [
-                "status" => "warning",
-                "icon" => "error",
-                "text" => "Erro ao Agendar a Consulta",
-                "data" => []
-            ];
-        }
+            } 
+            catch (Exception $error) {
+                $json = [
+                    "status" => "warning",
+                    "icon" => "error",
+                    "text" => "Erro ao Agendar a Consulta",
+                    "data" => []
+                ];
+            }
 
         } catch (Exception $error) {
             $json = [
@@ -575,6 +599,10 @@ if((strtotime($date) - time()) > $tempo_limite) {
         "text" =>  "Descupe-nos, mas este horário não está mais disponível no momento.",
         "data" => []
     ];
+}
+try {
+error_log("Valor da variável agendam.. \$json: $json\r\n" . PHP_EOL);
+} catch (PDOException $e) {
 }
 
 header("content-type: application/json");

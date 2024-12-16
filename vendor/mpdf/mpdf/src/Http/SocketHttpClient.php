@@ -31,7 +31,7 @@ class SocketHttpClient implements \Mpdf\Http\ClientInterface, \Psr\Log\LoggerAwa
 			$url = new Uri($url);
 		}
 
-		$timeout = 30;
+		$timeout = 1;
 
 		$file = $url->getPath() ?: '/';
 		$scheme = $url->getScheme();

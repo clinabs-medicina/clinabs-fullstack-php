@@ -203,6 +203,9 @@
                                 $include = false;
 
 
+
+
+
                                 foreach($agendamentos as $ag) {
                                     $online = $ag['online'];
                                     $presencial = $ag['presencial'];
@@ -283,6 +286,7 @@
                                                       if(!in_array(date('Y-m-d H:i', strtotime($_GET['data'].' '.$ag['time'])), $hrs) && strtotime($_GET['data'].' '.$ag['time']) > strtotime(date('Y-m-d H:i')))
                                                         {
                                                             $xx = $pdo->query("SELECT data_agendamento FROM AGENDA_MED WHERE data_agendamento = '{$_GET["data"]} {$ag["time"]}' AND medico_token = '{$item->medico_token}'");
+                                                            
                                                             if($xx->rowCount() == 0){
                                                                 $online  = $online ? 'SIM':'NÃO';
                                                                 $presencial = $presencial ? 'SIM':'NÃO';

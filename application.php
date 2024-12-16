@@ -1,4 +1,11 @@
 <?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    // if(isset($_SESSION['userObj'])) {
+	//     $user = (object) $_SESSION['userObj'];
+    // }
+
 if(isset(getallheaders()['X-Forwarded-For'])) {
 	$ips = explode(',', getallheaders()['X-Forwarded-For']);
 }

@@ -10,6 +10,10 @@ $resp = [];
 
 $continue = false;
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once $_SERVER["DOCUMENT_ROOT"] . "/config.inc.php";
 function dueDate($data_gendamento, $data_atual) {
     $agendamento = strtotime($data_gendamento);
@@ -430,7 +434,7 @@ if($continue) {
                                     "icon" => "success",
                                     "text" => "Consulta Agendada com Sucesso!",
                                     "link" => $link->invoiceUrl,
-                                    'linkUrl' => $added && !isset($_COOKIE['sessid_clinabs']) ? 'https://'.$_SERVER['HTTP_HOST'].'/login?action=newPassword&token='.$ag->paciente_token : '',
+                                    'linkUrl' => $added && !isset($_SESSION['token']) ? 'https://'.$_SERVER['HTTP_HOST'].'/login?action=newPassword&token='.$ag->paciente_token : '',
                                     "paymentLink" => true,
                                     "createPwd" => $added
                                 ];
@@ -519,8 +523,8 @@ if($continue) {
                                 
                                 if($stmt2->rowCount() > 0) {
                                     $msg .= "". PHP_EOL;
-                                    $msg .= "Clinica: ${$medico->clinica_nome}". PHP_EOL;
-                                    $msg .= "Endereço: {$endereco->logradouro}, ${$endereco->numero}". PHP_EOL;
+                                    $msg .= "Clinica: {$medico->clinica_nome}". PHP_EOL;
+                                    $msg .= "Endereço: {$endereco->logradouro}, {$endereco->numero}". PHP_EOL;
                                     $msg .= "Cidade: {$endereco->cidade}". PHP_EOL;
                                     $msg .= "Bairro: {$endereco->bairro}". PHP_EOL;
                                 }
@@ -712,7 +716,7 @@ if($continue) {
                                         "icon" => "success",
                                         "text" => "Consulta Agendada com Sucesso!",
                                         "link" => $link->invoiceUrl,
-                                        'linkUrl' => $added && !isset($_COOKIE['sessid_clinabs']) ? 'https://'.$_SERVER['HTTP_HOST'].'/login?action=newPassword&token='.$ag->paciente_token : '',
+                                        'linkUrl' => $added && !isset($_SESSION['token']) ? 'https://'.$_SERVER['HTTP_HOST'].'/login?action=newPassword&token='.$ag->paciente_token : '',
                                         "paymentLink" => true,
                                         "createPwd" => $added
                                     ];

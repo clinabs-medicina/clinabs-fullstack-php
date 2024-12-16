@@ -1,7 +1,14 @@
 <?php
-global $user, $favoritos, $carrinho;
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+// if(isset($_SESSION['userObj'])) {
+//     $user = (object) $_SESSION['userObj'];
+// }
 
-if (isset($_COOKIE['sessid_clinabs_uid'])) {
+global $favoritos, $carrinho;
+
+if (isset($_SESSION['token'])) {
     $sql = "SELECT
       objeto AS tipo
    FROM
@@ -25,9 +32,13 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
       WHERE 
       F.token = :token
       )";
+try{
+    //error_log("Valor da variável header \$sql: $sql \r\n" . PHP_EOL);
+} catch (PDOException $e) {
+}
 
     $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':token', isset($_COOKIE['sessid_clinabs_uid']) ? $_COOKIE['sessid_clinabs_uid'] : $user->token);
+    $stmt->bindValue(':token', isset($_SESSION['token']) ? $_SESSION['token'] : $user->token);
     $stmt->execute();
     $obj = $stmt->fetch(PDO::FETCH_OBJ);
 
@@ -35,7 +46,7 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
 
     if ($tableName !== 'S') {
         $stmt2 = $pdo->prepare("SELECT * FROM $tableName WHERE token = :token");
-        $stmt2->bindValue(':token', isset($_COOKIE['sessid_clinabs_uid']) ? $_COOKIE['sessid_clinabs_uid'] : $user->token);
+        $stmt2->bindValue(':token', isset($_SESSION['token']) ? $_SESSION['token'] : $user->token);
 
         $stmt2->execute();
         $_user = $stmt2->fetch(PDO::FETCH_OBJ);
@@ -43,7 +54,12 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
         $_user = false;
     }
 } else {
-    
+    try {
+    $tok = $_SESSION['token'];
+    error_log("Token não carregado: header \$tok: $tok \r\n" . PHP_EOL);
+    } catch (PDOException $e) {
+    }
+
 }
 ?>
 <!-- BREADCRUMBS -->
@@ -64,7 +80,7 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
         <div class="link-consult-mobile"
             style="text-align: center; text-decoration: none; color: #2c8a7a;  border: 1px solid #ffb60dc2;  padding: 0.25rem; border-radius: 8px; font-size: 11px;">
             <a href="/agendamento" alt="Agendar Consulta" title=""
-                style="text-align: center; font-weight: 600; text-decoration: none; color:#05ad94;">AGENDAR CONSULTA</a>
+                style="text-align: center; font-weight: 600; text-decoration: none; color:#05ad94;font-size: 12pxs">AGENDAR CONSULTA</a>
         </div>
         <nav class="menu-header">
             <ul class="m-0">
@@ -96,21 +112,21 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
             </ul>
         </nav>
         <nav class="menu-ico">
-            <ul class="m-0">
+            <div class="m-0">
                 <?= $user->perms->link_cart ? '<li data-badge="' . count($carrinho->getAll($user->cpf)) . '" data-source="cart-items-count"><a href="/carrinho"><img class="ico-hover" src="/assets/images/ico-cart.svg" alt=""></a></li>' : '' ?>
 
                 <?= $user->perms->link_notificacao && !$is_nabscare ? '<li data-badge="0"><a href="#"><img class="ico-hover" src="/assets/images/ico-notifica.svg" alt=""></a></li>' : '' ?>
 
-                <?php if (isset($user->nome_completo)) { ?>
+                <?php if (isset($_SESSION['token'])) { ?>
                 <div class="user-default" id="user-link-menu">
-                    <img class="ico-hover user" src="<?= Modules::getUserImage($_user->token ?? $user->token) ?>"
+                    <img class="ico-hover user" src="<?= Modules::getUserImage($_SESSION['token'] ?? $_SESSION['token']) ?>"
                         alt="Usuário">
                     <div class="user-link">
                         <p class="m-0">Olá, <a
                                 href="/perfil"><?=  trim($_user->nome_preferencia ?? trim(explode(' ', $user->nome_completo)[0])) ?></a>
                         </p>
                         <p class="m-0"><a href="/perfil">MINHA CONTA</a> | <a
-                                href="/logout<?= isset($_COOKIE['sessid_clinabs_uid']) || isset($_COOKIE['sessid_clinabs_uid']) ? '?session=user' : '' ?>">SAIR</a>
+                                href="/logout.php<?= isset($_SESSION['token']) || isset($_SESSION['token']) ? '?session=user' : '' ?>">SAIR</a>
                         </p>
                     </div>
 
@@ -146,11 +162,11 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
                             </div>
                             <div class="menu-user-logout">
                                 <hr>
-                                <p><a href="/logout">Sair</a></p>
+                                <p><a href="/logout.php">Sair</a></p>
                             </div>
 
                         </div>
-                    </ul>
+                </div>
                 </div>
 
                 <!--<li  id="user-link-menu"><a><img class="ico-hover user" src="<?= $user !== null && $user->profileImage !== null ? $user->profileImage : '/assets/images/user2.png' ?>" alt="" width="29px"></a>-->
@@ -159,7 +175,7 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
                 <div class="user-default">
                     <img class="ico-hover user" src="/assets/images/user-deafualt.svg" alt="Usuário">
                     <div class="user-link">
-                        <p class="m-0">Fazer <a href="/login">LOGIN</a> ou</p>
+                        <p class="m-0">Fazer <a href="/login.php">LOGIN</a> ou</p>
                         <p class="m-0">crie sua <a href="/cadastro">CONTA</a></p>
                     </div>
                 </div>
@@ -170,7 +186,7 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
         <div class="mobile-menu" style="background-color: #05ad94; height: 90px; padding: 28px 10px; width: auto;">
             <a href="#" id="mobile-toggle-menu"
                 style="color: white; text-decoration: none; font-size: 30px; float:left;">
-                <h6 class="menu-mobile-title" style="text-align: revert-layer; float: left; padding: 6px;">MENU</h6>
+                <h6 class="menu-mobile-title" style="text-align: revert-layer;font-size: 0.90rem; float: left; padding: 6px;">MENU</h6>
                 <img class="ico-hover" src="/assets/images/ico-menu-burger.svg" alt="Menu"
                     style="filter: brightness(0) invert(1); display: none;">
             </a>

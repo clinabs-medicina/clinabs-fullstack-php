@@ -1,11 +1,17 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if(isset($_SESSION['userObj'])) {
+    $user = (object) $_SESSION['userObj'];
+}
 $page = new stdClass();
 $page->title = 'Home';
 $page->content = 'main.php';
 $page->bc = true;
 $page->name = 'link_home';
-
-
+$page->useDT = false;
+$page->useSelector = false;
 //require_once $_SERVER['DOCUMENT_ROOT'].'/session.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/config.inc.php';
 

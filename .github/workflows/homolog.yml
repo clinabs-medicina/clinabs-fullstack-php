@@ -28,7 +28,7 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'  # Adjust PHP version as required
+          php-version: '8.3'  # Adjust PHP version as required
 
       # Install Composer dependencies (optional, adjust if using Composer)
       - name: Install Composer dependencies
@@ -36,9 +36,9 @@ jobs:
           curl -sS https://getcomposer.org/installer | php
           php composer.phar install --no-interaction
       # Validate PHP code (Linting)
-      #- name: Validate PHP code
-        #run: |
-          #find . -type f -name "*.php" -exec php -l {} \;
+      - name: Validate PHP code
+        run: |
+          find . -type f -name "*.php" -exec php -l {} \;
 
       # Install lftp (alternative to ncftp for FTP upload)
       - name: Install lftp
@@ -49,10 +49,6 @@ jobs:
         run: |
           # Get list of files tracked by git (ignoring .gitignore files)
           git ls-files --exclude-standard | tar -czf files_to_upload.tar.gz -T -
-      # Backup app
-      - name: Backupping App
-        run: |
-          curl -L "https://deploy.clinabs.com.br/deploy.php?action=backup"
           
       # Upload files via FTP using lftp (non-interactive)
       - name: Upload files to FTP server
@@ -75,12 +71,6 @@ jobs:
             put -O / /tmp/uploaded_files/.apache -o /.htaccess;
             bye
           "
-      - name: Check deployment success
-        run: |
-          if [ $? -ne 0 ]; then
-            echo "Deployment failed, triggering reverse deployment..."
-            curl -L "https://deploy.clinabs.com.br/deploy.php?action=reverse"
-          fi
         env:
           FTP_SERVER: ${{ secrets.HOMOLOG_FTP_HOST }}
           FTP_USERNAME: ${{ secrets.HOMOLOG_FTP_USERNAME }}

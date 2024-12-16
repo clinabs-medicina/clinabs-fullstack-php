@@ -5,9 +5,12 @@
       <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico"/>
       <meta charset="utf-8" />
       <meta name="X-App-Version" content="1.0.2"/>
-      <meta name="viewport" content="width=device-width, initial-scale=1"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=5"/>
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.9.0/dist/sweetalert2.min.css">
       <link rel="stylesheet" href="/assets/css/style.css">
+      <link rel="stylesheet" href="/assets/css/style2.css">
+      <link rel="stylesheet" href="/assets/css/style3.css">
+      <link rel="stylesheet" href="/assets/css/style4.css">
   </head>
 
   <body>
@@ -35,12 +38,16 @@
                 require_once('libs/Modules.php');
 
                 $action = $_GET['action'];
-
+                try {
+                    error_log("Valor da variável login \$action: $action\r\n" . PHP_EOL);
+                } catch (PDOException $e) {
+                }
+        
 
                     switch($action) {
                     case'recovery': {
                             echo '<div>
-                                    <label>E-mail</label>
+                                    <label for="usuario">E-mail</label>
                                     <input name="usuario" id="user-login" type="text" placeholder="Digite seu E-mail" required autocomplete="off">
                                     <input name="action" value="resetPassword" type="hidden">
                                 </div>
@@ -74,7 +81,7 @@
                     echo '<input type="hidden" name="action" value="resetNewPassword">';
 
                     echo '<div>
-                                <label>Senha</label>
+                                <label for="password">Senha</label>
                                 <input name="password" id="user-password" type="password" placeholder="Digite sua senha" required autocomplete="off">
                                 <span class="password-strength" id="password-strength"></span>
                             </div>
@@ -179,7 +186,12 @@
                     break;
                 }
             }
-
+            try {
+            $redir = $_REQUEST['redirect'];
+            error_log("Valor da variável login.php \$_REQUEST['redirect']: $redir\r\n" . PHP_EOL);
+            } catch (PDOException $e) {
+            }
+    
                 if(isset($_REQUEST['redirect'])) {
                     echo '<input type="hidden" name="redirect" value="'.str_replace('/login', '', $_SERVER['REQUEST_URI']).'">';
                 }
@@ -192,9 +204,9 @@
             <img class="login-logoright" src="/assets/images/logo-sys.svg">
             <p>Sistema de consultas online para pacientes que dependem de medicamentos com canabidiol. Um ambiente seguro, informativo e interativo para melhorar a qualidade de vida dos pacientes que necessitam desse tratamento.</p>
             <ul class="login-icosocial">
-                <li><a href="<?=$INSTAGEM_LINK?>"><img src="/assets/images/ico-facebook.svg" width="50px"></a></li>
-                <li><a href="<?=$FACEBOOK_LINK?>"><img src="/assets/images/ico-instagram.svg" width="50px"></a></li>
-                <li><a href="<?=$YOUTUBE_LINK?>"><img src="/assets/images/ico-youtube.svg" width="50px"></a></li>
+                <li><a href="<?=$INSTAGEM_LINK?>"><img src="/assets/images/ico-facebook.svg" alt="" width="50px"></a></li>
+                <li><a href="<?=$FACEBOOK_LINK?>"><img src="/assets/images/ico-instagram.svg" alt="" width="50px"></a></li>
+                <li><a href="<?=$YOUTUBE_LINK?>"><img src="/assets/images/ico-youtube.svg" alt="" width="50px"></a></li>
             </ul>
         </div><!-- BOX DIREITA LOGIN -->
         
