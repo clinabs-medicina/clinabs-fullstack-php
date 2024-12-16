@@ -10,23 +10,31 @@ if(isset($_GET['token'])) {
 date_default_timezone_set('America/Sao_Paulo');
 $headers = ['Authorization' => 'all'];
 
-$servername = '68.183.159.246';
-$database = 'clinabs_app';
-$username = 'clinabs_admin';
-$password = 'GenP+s+J6Cisa^vB7visr@%3c0nCaOz#3Bb7jaGJ6pyOqC*C';
+file_put_contents('last_sync.txt', date('Y-m-d H:i:s'));
+
+if($_SERVER['HTTP_HOST'] != 'clinabs.com' || $_SERVER['HTTP_HOST'] != 'www.clinabs.com') {
+  $servername = 'localhost';
+  $database = 'clinabs_homolog';
+  $username = 'clinabs_dev';
+  $password = '&?7z?Yw$0]62N!gbn=l_@bbA0O{TRg:s';
+} else {
+  $servername = '68.183.159.246';
+  $database = 'clinabs_app';
+  $username = 'clinabs_admin';
+  $password = 'GenP+s+J6Cisa^vB7visr@%3c0nCaOz#3Bb7jaGJ6pyOqC*C';
+}
 
 date_default_timezone_set('America/Sao_Paulo');
 
 $removed = [];
 $results = [];
-// Banco de Dados
+
 try {
   $pdo = new PDO("mysql:host=$servername;dbname=$database;charset=utf8mb4", $username, $password);
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
   echo "Connection Failed: " . $e->getMessage();
 }
-
 
 function isTimeInRange($checkTime, $startTime, $endTime) {
     return strtotime($checkTime) >= strtotime($startTime) && strtotime($checkTime) <= strtotime($endTime);
@@ -86,6 +94,11 @@ function isTimeInRange($checkTime, $startTime, $endTime) {
 
               $calendario = json_encode($agendamentos, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
               $pdo->query("UPDATE AGENDA_MEDICA SET calendario = '{$calendario}' WHERE medico_token = '{$medico->token}'");
+
+              $eventsArray = [
+                'status' => 'success',
+                'text' => 'Atualizado com Sucesso!'
+              ];
             }
             catch(Exception $ex) {
                 $eventsArray = [
@@ -102,7 +115,5 @@ function isTimeInRange($checkTime, $startTime, $endTime) {
         }
     }
 
-file_put_contents('last_sync.txt', date('Y-m-d H:i:s'));
-
-//header('Content-Type: application/json');
-//echo json_encode($events, JSON_PRETTY_PRINT);
+header('Content-Type: application/json');
+echo json_encode($events, JSON_PRETTY_PRINT);

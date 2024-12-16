@@ -51,7 +51,6 @@ RewriteRule ^produtos/editar/([^/\.]+)/?$ produtos/index.php?product=$1&id=edita
 
 RewriteRule ^api/v4/([^/\.]+)/?$ dashboard/api.php?$1  [L,QSA]
 
-
 # Rewrite Meet Link
 RewriteRule ^teleconsulta/([^/\.]+)/?$ api/whereby/index.php?roomName=$1  [L,QSA]
 
