@@ -1,6 +1,6 @@
 <?php
 $page = new stdClass();
-$page->title = 'Faturamento (Teste)';
+$page->title = 'Faturamento';
 $page->content = 'faturamento/main.php';
 $page->bc = true;
 $page->name = 'link_faturamento';

@@ -3,13 +3,7 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']);
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-// if(isset($_SESSION['userObj'])) {
-//    try {
-//       $user = (object) $_SESSION['userObj'];
-//   } catch (PDOException $e) {
 
-//   }
-// }
 function inline_files(string $type, array $files) {
     echo "<{$type}>";
     
@@ -795,8 +789,10 @@ function inline_files(string $type, array $files) {
     
     <?php
     if(isset($useEditor)) {
-        echo '<script src="/assets/js/plugins/tinymce/tinymce.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>';
+        echo '
+            <script src="/assets/js/plugins/tinymce/tinymce.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+            ';
     }
     ?>
 

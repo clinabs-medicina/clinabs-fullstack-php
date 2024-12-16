@@ -1,6 +1,5 @@
 <?php
 require_once '../config.inc.php';
-file_put_contents('last_sync_cron.txt', date('Y-m-d H:i:s'));
 
 if (strtotime(date('H:i')) >= strtotime('07:00') && strtotime(date('H:i')) <= strtotime('22:00')) {
     $today = date('Y-m-d');
@@ -43,7 +42,6 @@ if (strtotime(date('H:i')) >= strtotime('07:00') && strtotime(date('H:i')) <= st
 
     header('content-Type: application/json');
     echo json_encode($rows, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    file_put_contents('last_sync_exec.txt', date('Y-m-d H:i'));
 } else {
     header('content-Type: application/json');
 

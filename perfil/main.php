@@ -1,9 +1,66 @@
+<?php
+   if(isset($_GET['token']) && $_GET['token'] != "") {
+    $sql = "
+   SELECT
+    objeto AS tipo
+ FROM
+    USUARIOS AS U 
+    WHERE 
+    U.token = :token
+    UNION ALL
+  SELECT
+    objeto AS tipo
+ FROM
+    MEDICOS AS M 
+    WHERE 
+    M.token = :token
+    UNION ALL
+    (
+    SELECT
+       objeto AS tipo
+    FROM
+       PACIENTES AS P
+       WHERE 
+       P.token = :token
+    ) UNION ALL
+    (
+    SELECT
+       objeto AS tipo
+    FROM
+    FUNCIONARIOS AS F
+    WHERE 
+    F.token = :token
+    )";
+
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':token', isset($_GET['token']) ? $_GET['token'] : $user->token);
+    $stmt->execute();
+    $obj = $stmt->fetch(PDO::FETCH_OBJ);
+
+    $tableName = $obj->tipo.'S';
+    $stmt2 = $pdo->prepare("SELECT * FROM $tableName WHERE token = :token");
+    $stmt2->bindValue(':token', isset($_GET['token']) ? $_GET['token'] : $user->token);
+
+    $stmt2->execute();
+    $_user = $stmt2->fetch(PDO::FETCH_OBJ);
+ }
+ else{
+    $tableName = $user->tipo.'S';
+    $stmt2 = $pdo->prepare("SELECT * FROM $tableName WHERE token = :token");
+    $stmt2->bindValue(':token', $user->token);
+
+    $stmt2->execute();
+    $_user = $stmt2->fetch(PDO::FETCH_OBJ);
+ }
+
+ ?>
+
 <section class="main" id="user-main">
     <div class="flex-container">
         <form id="formUpdateCadastro" action="/form/form.cadastro.update.<?=strtolower($_user->tipo)?>.php"
             method="POST" class="form-paciente">
             <h3 class="form-title titulo-h1">Meu Perfil</h3>
-
             <section id="tabControl1" class="tabControl locked">
                 <div class="container-profile">
                     <section class="user-profile">

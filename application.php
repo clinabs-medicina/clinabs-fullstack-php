@@ -8,8 +8,6 @@
 
 if(isset(getallheaders()['X-Forwarded-For'])) {
 	$ips = explode(',', getallheaders()['X-Forwarded-For']);
-
-	file_put_contents('ips.log', print_r($ips, true), FILE_APPEND);
 }
 
 
