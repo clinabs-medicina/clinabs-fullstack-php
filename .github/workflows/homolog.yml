@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v3
 
       # Set up PHP and install required dependencies
-      - name: Set up PHP
+      - name: Configuring PHP Environment
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'  # Adjust PHP version as required
@@ -25,16 +25,16 @@ jobs:
           curl -sS https://getcomposer.org/installer | php
           php composer.phar install --no-interaction
       # Validate PHP code (Linting)
-      - name: Validate PHP code
+      - name: Checking project files
         run: |
           find . -type f -name "*.php" -exec php -l {} \;
 
       # Install lftp (alternative to ncftp for FTP upload)
-      - name: Install lftp
+      - name: Configuring FTP Connection
         run: sudo apt-get install -y lftp unzip zip sshpass
 
       # Prepare files for upload, respecting .gitignore
-      - name: Prepare files for upload (ignore gitignored files)
+      - name: Prepare files for upload
         run: |
           # Get list of files tracked by git (ignoring .gitignore files)
           git ls-files --exclude-standard | tar -czf files_to_upload.tar.gz -T -
