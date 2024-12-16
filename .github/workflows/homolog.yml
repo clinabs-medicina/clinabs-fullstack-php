@@ -1,0 +1,62 @@
+name: Deploy to Homolog
+
+on:
+  push:
+    branches:
+      - homolog
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up PHP and install required dependencies
+      - name: Configuring PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'  # Adjust PHP version as required
+
+      # Install Composer dependencies (optional, adjust if using Composer)
+      - name: Install Composer dependencies
+        run: |
+          curl -sS https://getcomposer.org/installer | php
+          php composer.phar install --no-interaction
+      # Validate PHP code (Linting)
+      - name: Checking project files
+        run: |
+          find . -type f -name "*.php" -exec php -l {} \;
+
+      # Install lftp (alternative to ncftp for FTP upload)
+      - name: Configuring FTP Connection
+        run: sudo apt-get install -y lftp unzip zip sshpass
+
+      # Prepare files for upload, respecting .gitignore
+      - name: Prepare files for upload
+        run: |
+          # Get list of files tracked by git (ignoring .gitignore files)
+          git ls-files --exclude-standard | tar -czf files_to_upload.tar.gz -T -
+          
+      # Upload files via FTP using lftp (non-interactive)
+      - name: Upload files to FTP server
+        run: |
+          mkdir -p /tmp/uploaded_files
+          tar -xzf files_to_upload.tar.gz -C /tmp/uploaded_files
+          lftp -d -e "
+            set ssl:verify-certificate no;
+            open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER};
+            glob -v rm -r -- !(data|tmp|config.inc.php)
+            # Upload and rename files
+            put -O / /tmp/uploaded_files/info/manutencao.php -o /manutencao.php;
+            put -O / /tmp/uploaded_files/.busy -o /.htaccess;
+            
+            # Mirror remaining files
+            mirror -R --exclude .busy --exclude .apache /tmp/uploaded_files /;
+            put -O / /tmp/uploaded_files/.apache -o /.htaccess;
+            bye
+          "
+        env:
+          FTP_SERVER: ${{ secrets.HOMOLOG_FTP_HOST }}
+          FTP_USERNAME: ${{ secrets.HOMOLOG_FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.HOMOLOG_FTP_PASSWORD }}
