@@ -13,7 +13,10 @@ $page->title = 'Agenda do Médico';
 $page->content = isset($_GET['page']) ? 'agenda/'.$_GET['page'].'.php':'agenda/main.php';
 $page->bc = true;
 $page->name = 'link_agenda';
-$page->require_login = false;
+if(!isset($_GET['page'])) {
+    $page->require_login = true;
+}
+
 $page->includePlugins = true;
 
 $useDT = true;
