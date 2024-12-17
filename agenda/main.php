@@ -2,10 +2,7 @@
   if (session_status() === PHP_SESSION_NONE) {
       session_start();
   }
-  if(isset($_SESSION['userObj'])) {
-    $user = (object) $_SESSION['userObj'];
-  }
-
+  
 if(isset($_COOKIE['sessid_clinabs_uid']) && $user->tipo == 'FUNCIONARIO') {
   $query = "SELECT
   AGENDA_MED.data_agendamento, 

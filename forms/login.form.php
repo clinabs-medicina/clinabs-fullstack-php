@@ -7,7 +7,6 @@ global $pdo;
 ini_set('display_errors', true);
 error_reporting(E_ALL);
 
-
 require_once '../config.inc.php';
 
 $pwd = md5(sha1(md5($_REQUEST['password'])));
@@ -102,9 +101,6 @@ $stmt = $pdo->query($sql);
 
 if ($stmt->rowCount() > 0) {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    
-   
 
     $json = json_encode([
         'type' => 'application/json',
@@ -149,7 +145,6 @@ if ($stmt->rowCount() > 0) {
     $datetime = date('Y-m-d H:i:s');
 
     $pdo->query("UPDATE {$user['objeto']}S SET session_online = 1,first_ping = '{$datetime}', last_ping = '{$datetime}' WHERE token = '{$user['token']}'");
-   // setcookie('sessid_clinabs', $sessid, $time, '/', $hostname, true, false);
 
    setcookie('sessid_clinabs', $sessid, [
         'expires' => time() + 3600,
@@ -175,9 +170,6 @@ if ($stmt->rowCount() > 0) {
         $_SESSION['inicio_ag'] = $user['inicio_ag'];
         $_SESSION['fim_ag'] = $user['fim_ag'];
         $_SESSION['disponibilizar_agenda'] = $user['disponibilizar_agenda'];
-        if (isset($user) && is_array($user)) {        
-          $_SESSION['userObj'] = $user;
-        }
     } else {
         try {
             error_log("Token não carregado login.form \r\n" . PHP_EOL);

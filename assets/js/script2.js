@@ -17,28 +17,34 @@ $(document).ready(function () {
                 <div class="row">
                     <div class="col-12 col-md-6 row-center">
                         <div class="form-group-checkbox">
-                        <input name="modalidade[]" id="modalidade_online" type="checkbox" checked="" value="ONLINE">
-                        <label for="modalidade_online">ONLINE</label>
+                            <input name="modalidade[]" id="modalidade_online" type="checkbox" checked="" value="ONLINE">
+                            <label for="modalidade_online">ONLINE</label>
                         </div>
                     </div>
 
                     <div class="col-12 col-md-6 row-center">
                         <div class="form-group-checkbox">
-                        <input name="modalidade[]" id="modalidade_presencial" type="checkbox" checked="" value="PRESENCIAL">
-                        <label for="modalidade_presencial">PRESENCIAL</label>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row" id="row-unidade">
-                    <div class="col-12">
-                        <div class="form-group">
-                        <label for="unidade_atendimento">Unidade de Atendimento</label>
-                        <select name="unidade_atendimento" id="unidade_atendimento">
-                            <option disabled="" selected="">Selecione uma Opção</option>
+                            <input name="modalidade[]" id="modalidade_presencial" type="checkbox" checked="" value="PRESENCIAL">
+                            <label for="modalidade_presencial">PRESENCIAL</label>
                         </div>
                     </div>
-            </div>
+                </div>
+            
+                <div class="row" id="row-unidade">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="unidade_atendimento">Unidade de Atendimento</label>
+                            <select name="unidade_atendimento" id="unidade_atendimento">
+                                <option disabled="" selected="">Selecione uma Opção</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row-d-flex">
+                    <input type="checkbox" id="clone-items">
+                    <label>Copiar para os demais</label>
+                </div>
             `,
             preConfirm: () => {
                 $(elem).data('online', $('#modalidade_online').is(':checked'));
@@ -57,6 +63,31 @@ $(document).ready(function () {
                     $(elem).find('i.fa-home').removeClass('icon-disabled');
                 } else {
                     $(elem).find('i.fa-home').addClass('icon-disabled');
+                }
+
+                if ($('input#clone-items').is(':checked')) {
+                    let i = $(elem).index();
+                    $(elem).closest('.week-item').find('label').each(function () {
+                        if ($(this).index() >= i) {
+                            $(this).addClass("active");
+                            $(this).data('online', $('#modalidade_online').is(':checked'));
+                            $(this).data('presencial', $('#modalidade_presencial').is(':checked'));
+                            $(this).removeAttr('data-atendimento');
+                            $(this).attr('data-atendimento', street_id);
+
+                            if ($('#modalidade_online').is(':checked')) {
+                                $(this).find('i.fa-globe').removeClass('icon-disabled');
+                            } else {
+                                $(this).find('i.fa-globe').addClass('icon-disabled');
+                            }
+
+                            if ($('#modalidade_presencial').is(':checked')) {
+                                $(this).find('i.fa-home').removeClass('icon-disabled');
+                            } else {
+                                $(this).find('i.fa-home').addClass('icon-disabled');
+                            }
+                        }
+                    });
                 }
             },
             didOpen: () => {

@@ -992,7 +992,7 @@ $default_street = null;
                                                                     '.$h.'H
                                                                     <i class="fa fa-home'.(!parse_bool($_item['presencial']) && $checked ? ' icon-disabled':'').'" name="presencial"></i>
                                                                     <i class="fa fa-globe'.(!parse_bool($_item['online']) && $checked ? ' icon-disabled':'').'" name="online"></i>
-                                                                    <i class="fa fa-calendar" name="config" data-id="'.$bid.'"></i>
+                                                                    <i class="fa fa-calendar" name="cfg" data-id="'.$bid.'"></i>
                                                                 </label>';
                                                             
                                                         } else {
@@ -1002,7 +1002,7 @@ $default_street = null;
                                                                     '.$h.'H
                                                                     <i class="fa fa-home" name="presencial"></i>
                                                                     <i class="fa fa-globe" name="online"></i>
-                                                                    <i class="fa fa-calendar" name="config" data-id="'.$bid.'"></i>
+                                                                    <i class="fa fa-calendar" name="cfg" data-id="'.$bid.'"></i>
                                                                 </label>';
                                                         }
                                                     }

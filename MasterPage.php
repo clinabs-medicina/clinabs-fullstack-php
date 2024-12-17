@@ -670,6 +670,17 @@ function inline_files(string $type, array $files) {
 }
 
     <?=file_get_contents($_SERVER['DOCUMENT_ROOT'].'/assets/css/template.min.css') ?>
+
+    .row-d-flex {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+    }
     </style>
 
 </head>
