@@ -1,6 +1,4 @@
 <?php
-$default_street = null;
-
    if(isset($_GET['token']) && $_GET['token'] != "") {
     $sql = "
    SELECT
@@ -549,8 +547,7 @@ $default_street = null;
                 <div class="tab tab-disabled" data-index="2" data-tab="tabControl1">
                     <div class="street-editor">
                         <section class="form-grid area1">
-                            <section class="form-group"> <label for="endereco_nome">Nome</label> 
-                            <input
+                            <section class="form-group"> <label for="endereco_nome">Nome</label> <input
                                     autocomplete="off" disabled="true" value="" type="text" id="endereco_nome"
                                     name="nome" class="form-control" maxlength="100"> </section>
                             <section class="form-group"> <label for="endereco_nome">Tipo de Endereço</label> <select
@@ -618,40 +615,7 @@ $default_street = null;
                                     <option value="SE" <?=($_user->uf == 'SE' ? ' selected':'')?>>Sergipe</option>
                                     <option value="TO" <?=($_user->uf == 'TO' ? ' selected':'')?>>Tocantins</option>
                                 </select> </section>
-                        </section>
-                        
-                        
-                        <section class="form-grid area-x3">
-                        <section class="form-group"> 
-                            <label for="inicio_expediente">Inicio Expediente</label>
-                            <input autocomplete="off" type="time" id="inicio_expediente" class="form-control" name="inicio_expediente" placeholder="">
-                        </section>
-
-                        <section class="form-group">
-                            <label for="fim_expediente">Fim de Expediente</label>
-                            <input autocomplete="off" type="time" id="fim_expediente" class="form-control" name="fim_expediente" placeholder="">
-                        </section>
-
-                        <section class="form-group">
-                            <label for="tipo_atendimento">Tipo de Atendimento</label>
-                            <select class="form-select form-control" id="tipo_atendimento" name="tipo_atendimento">
-                                <option value="ONLINE">ONLINE</option>
-                                <option value="PRESENCIAL">PRESENCIAL</option>
-                                <option value="ALL">ONLINE e PRESENCIAL</option>
-                            </select>
-                        </section>
-
-                        <section class="form-group">
-                            <label for="unidade_status">Status</label>
-                            <select class="form-select form-control" id="unidade_status" name="unidade_status">
-                                <option value="ATIVO">ATIVO</option>
-                                <option value="INATIVO">INATIVO</option>
-                            </select>
-                        </section>
-                      </section>
-                        
-                        
-                        <input autocomplete="off" type="hidden" name="isDefault" value="false"> <button
+                        </section> <input autocomplete="off" type="hidden" name="isDefault" value="false"> <button
                             class="btn-button1" type="button" onclick="addAddress()">SALVAR ENDEREÇO</button>
                     </div>
                     <section class="street-container"> <?php
@@ -665,9 +629,7 @@ $default_street = null;
                                 
                                 if($item->isDefault && $item->tipo_endereco == 'ATENDIMENTO') {
                                     $street = $item;
-                                    $default_street = $item->token;
                                 }
-
                                 echo '<div class="street-item'.($item->isDefault ? ' selected':'').'" id="'.$item->token.'">
                                             <div class="street-info">
                                                 <span class="street-label">
@@ -683,9 +645,9 @@ $default_street = null;
                                                 </div>
 
                                                 <div class="btns-street">
-                                                    <label data-action="editar" data-token="'.$item->token.'" data-id="'.$item->id.'">Editar</label>
-                                                    <label data-action="excluir" data-token="'.$item->token.'" data-id="'.$item->id.'">Excluir</label>
-                                                    <label data-action="def" data-token="'.$item->token.'" data-id="'.$item->id.'" onclick="defEndPadrao(this)">Deixar Padrão</label>
+                                                    <label data-action="editar" data-token="'.$item->token.'">Editar</label>
+                                                    <label data-action="excluir" data-token="'.$item->token.'">Excluir</label>
+                                                    <label data-action="def" data-token="'.$item->token.'" onclick="defEndPadrao(this)">Deixar Padrão</label>
                                                 </div>
                                             </div>
                                             
@@ -726,9 +688,6 @@ $default_street = null;
                         <p><button class="btn-button1" type="button" id="add-address" onclick="addStreet()">NOVO
                                 ENDEREÇO</button></p>
                     </section>
-
-
-
                 </div>
                 <div class="tab tab-disabled" data-index="3" data-tab="tabControl1">
                     <section class="form-grid area6">
@@ -936,7 +895,7 @@ $default_street = null;
                     
                                             {
                     
-                                                echo '<div data-id="'.$_user->id.'" data-token="'.$_GET['token'].'" class="calendar-slide'.($first ? ' active':'').'" data-index="'.$i.'">';
+                                                echo '<div class="calendar-slide'.($first ? ' active':'').'" data-index="'.$i.'">';
                     
                                                 foreach($weekDay as $item) {
                     
@@ -986,23 +945,19 @@ $default_street = null;
                                                         $currentDate = time();
                                        
                                                         if ($currentDate < $specificDate) {
-                                                            $bid = uniqid();
-
-                                                            echo '<label id="'.$bid.'" data-obj="'.date('d/m/Y', strtotime($item['day'])).' '.$h.'" data-selection="'.$_id.'" data-atendimento="'.($_item['endereco'] ?? $default_street).'"  data-atendimento-name="'.($checked ? $_item['endereco_tipo'] : $street->nome).'" data-atendimento-desc="'.($checked ? $_item['desc'] : sprintf("%s,%s - %s/%s - %s", $street->logradouro,$street->numero,$street->cidade, $street->uf, $street->bairro)).'" data-online="'.($_item['online'] == 1 ? 'true' : 'false').'" data-presencial="'.($_item['presencial'] == 1 ? 'true' : 'false').'" data-date="'.$item['day'].'" data-time="'.$h.'" class="week-time week-schedule listmedic-box-dir-time'.($checked ? ' active':'').'" checked="false">
+                                                           
+                                            
+                                                            echo '<label data-obj="'.date('d/m/Y', strtotime($item['day'])).' '.$h.'" data-selection="'.$_id.'" data-atendimento="'.($_item['endereco']).'"  data-atendimento-name="'.($checked ? $_item['endereco_tipo'] : $street->nome).'" data-atendimento-desc="'.($checked ? $_item['desc'] : sprintf("%s,%s - %s/%s - %s", $street->logradouro,$street->numero,$street->cidade, $street->uf, $street->bairro)).'" data-online="'.($_item['online'] == 1 ? 'true' : 'false').'" data-presencial="'.($_item['presencial'] == 1 ? 'true' : 'false').'" data-date="'.$item['day'].'" data-time="'.$h.'" class="week-time week-schedule listmedic-box-dir-time'.($checked ? ' active':'').'" checked="false">
                                                                     '.$h.'H
                                                                     <i class="fa fa-home'.(!parse_bool($_item['presencial']) && $checked ? ' icon-disabled':'').'" name="presencial"></i>
                                                                     <i class="fa fa-globe'.(!parse_bool($_item['online']) && $checked ? ' icon-disabled':'').'" name="online"></i>
-                                                                    <i class="fa fa-calendar" name="config" data-id="'.$bid.'"></i>
                                                                 </label>';
                                                             
                                                         } else {
-                                                            $bid = uniqid();
-
-                                                            echo '<label id="'.$bid.'" data-obj="'.date('d/m/Y', strtotime($item['day'])).' '.$item['day'].' '.$h.'" data-selection="'.$_id.'" data-atendimento="'.($_item['endereco'] ?? $default_street).'" data-atendimento-name="'.($checked ? $_item['endereco_tipo'] : $street->nome).'" data-atendimento-desc="'.($checked ? $_item['desc'] : sprintf("%s,%s - %s/%s - %s", $street->logradouro,$street->numero,$street->cidade, $street->uf, $street->bairro)).'" data-atendimento="2" data-atendimento-desc="" data-online="true" data-presencial="true" data-date="'.$item['day'].'" data-time="'.$h.'" class="week-time week-schedule week-schedule-btn-disabled listmedic-box-dir-time'.($checked ? ' active':'').'"  checked="false">
+                                                            echo '<label data-obj="'.date('d/m/Y', strtotime($item['day'])).' '.$item['day'].' '.$h.'" data-selection="'.$_id.'" data-atendimento="'.($_item['endereco']).'" data-atendimento-name="'.($checked ? $_item['endereco_tipo'] : $street->nome).'" data-atendimento-desc="'.($checked ? $_item['desc'] : sprintf("%s,%s - %s/%s - %s", $street->logradouro,$street->numero,$street->cidade, $street->uf, $street->bairro)).'" data-atendimento="2" data-atendimento-desc="" data-online="true" data-presencial="true" data-date="'.$item['day'].'" data-time="'.$h.'" class="week-time week-schedule week-schedule-btn-disabled listmedic-box-dir-time'.($checked ? ' active':'').'"  checked="false">
                                                                     '.$h.'H
                                                                     <i class="fa fa-home" name="presencial"></i>
                                                                     <i class="fa fa-globe" name="online"></i>
-                                                                    <i class="fa fa-calendar" name="config" data-id="'.$bid.'"></i>
                                                                 </label>';
                                                         }
                                                     }

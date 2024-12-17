@@ -54,7 +54,7 @@
             }
 
             echo '<tr>';
-                echo '<td><img src="'.Modules::getUserImage($item['token']).'" width="48px" style="border-radius: 48px;display:inline-flex; vertical-align:middle; margin: -5px 5px 0 5px;"><span class="user-item '.$item['token'].'" data-online="'.$item['session_online'].'">'.$item['nome_completo'].'</td>';
+                echo '<td><img src="'.Modules::getUserImage($item['token']).'" width="48px" style="border-radius: 48px;display:inline-flex; vertical-align:middle; margin: -5px 5px 0 5px;"><span class="user-item '.$item['token'].'">'.$item['nome_completo'].'</td>';
                 echo '<td>'.$item['telefone'].'</td>';
                 echo '<td>'.$item['setor'].'</td>'; 
                 echo '<td id="session_'.$item['token'].'">'.$item['duration'] .'</td>';

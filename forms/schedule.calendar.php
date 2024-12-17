@@ -14,6 +14,8 @@ if(isset($calendario)){
         
     try {
         $stmt->execute();
+
+        file_put_contents('agenda_calendario_amostra.json', json_encode(json_decode($calendario, JSON_PRETTY_PRINT)));
     } catch(PDOException $ex) {
         
     }

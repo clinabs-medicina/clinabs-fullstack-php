@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'].'/config.inc.php';
-require_once $_SERVER['DOCUMENT_ROOT'].'/session.php';
+//require_once $_SERVER['DOCUMENT_ROOT'].'/session.php';
 
 
 if(!isset($_SESSION[$sessionName])) {
@@ -11,7 +11,7 @@ if(!isset($_SESSION[$sessionName])) {
 
 $page = new stdClass();
 $page->title = 'Meu Perfil';
-$page->content = 'perfil/main.php';
+$page->content = 'profile/main.php';
 $page->bc = true;
 $page->name = 'link_perfil';
 $page->require_login = true;

@@ -360,7 +360,7 @@ foreach($rows as $row) {
                 $date_formated = date('d/m/Y', strtotime($date));
 
 
-              echo "<tr data-room=\"{$roomName}\" data-index=\"{$i}\" class=\"ag_row ag_row${i}\" data-date=\"{$date}\" data-paciente=\"{$column->paciente_token}\" data=ts=\"{$ts}\" id=\"{$column->token}\" data-stime=\"{$startTime}\">";
+              echo "<tr data-status=\"".(($column->status == 'AGENDADO' || $column->status == 'EM CONSULTA') ? 'OK':'')."\" data-room=\"{$roomName}\" data-index=\"{$i}\" class=\"ag_row ag_row${i}\" data-date=\"{$date}\" data-paciente=\"{$column->paciente_token}\" data=ts=\"{$ts}\" id=\"{$column->token}\" data-stime=\"{$startTime}\">";
                 echo "<td data-value=\"{$date}\" data-label=\"Data: \" width=\"260px\" class=\"ag-day\"><div class=\"calendar-day\">
                 <img src=\"/assets/images/ico-calendar.svg\" height=\"32px\">
                 <div class=\"datetime-column\">

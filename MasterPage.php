@@ -665,6 +665,10 @@ function inline_files(string $type, array $files) {
         }
     }
 
+    label.week-schedule.listmedic-box-dir-time i {
+    font-size: clamp(16px, 4vw, 20px);
+}
+
     <?=file_get_contents($_SERVER['DOCUMENT_ROOT'].'/assets/css/template.min.css') ?>
     </style>
 
@@ -881,7 +885,7 @@ function inline_files(string $type, array $files) {
         echo '<script src="https://cdn.srv.whereby.com/embed/v2-embed.js" type="module"></script>';
    }
    ?> 
-
+    <script src="/assets/js/script2.js"></script>
    <script>
         $('document').ready(function(){
             $('.filter-toggle').on('click', function () {

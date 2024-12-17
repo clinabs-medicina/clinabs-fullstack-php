@@ -48,7 +48,7 @@
             $prefixo = strtoupper($item['identidade_genero']) == 'FEMININO' ? 'Dra.':'Dr.';
             echo '<tr id="'.$item['token'].'">';
 
-                echo '<td><img src="'.Modules::getUserImage($item['token']).'" width="48px" style="border-radius: 48px;display:inline-flex; vertical-align:middle; margin: -5px 5px 0 5px;"><span class="user-item" id="USER_'.$item['token'].'" data-online="'.$item['session_online'].'">'.$prefixo.' '.$item['nome_completo'].'</span></td>';
+                echo '<td><img src="'.Modules::getUserImage($item['token']).'" width="48px" style="border-radius: 48px;display:inline-flex; vertical-align:middle; margin: -5px 5px 0 5px;"><span class="user-item" id="USER_'.$item['token'].'">'.$prefixo.' '.$item['nome_completo'].'</span></td>';
 
                 echo '<td>'.ucwords(strtolower($item['esp'])).'</td>';
                 echo '<td>'.$item['tipo_conselho'].'-'.$item['uf_conselho'].'</td>';

@@ -337,52 +337,45 @@ $('document').ready(function () {
         })
     });
 
-    setInterval(async function () {
-        new Promise((resolve, reject) => {
-            $.get('/forms/session.sync.php', {
-                token: $('meta[name="user-id"]').attr('content'),
-                user: $('meta[name="user"]').attr('content') + 'S'
-            }).done(() => { }).always(function () { });
-        });
-    }, 10000);
+    if (window.location.pathname.indexOf('/agenda/') !== -1) {
+        /*
+        setInterval(async function () {
+            new Promise((resolve, reject) => {
+                $.get('/forms/session.sync.php?fetch=all').done(function (data) {
+                    $(data).each(function () {
+                        $(`#USER_${this.id
+                            }`).attr('data-online', this.session_online);
+                        $(`#session_${this.id
+                            }`).text(this.duration);
+    
+                        resolve(data);
+                    });
+                });
+            })
+        }, 10000);
+        */
 
+        setInterval(async function () {
+            new Promise((resolve, reject) => {
+                $('#tableAgendamento > tbody > tr[data-status="OK"]').each(function () {
+                    let meetName = $(this).data('room');
 
-    setInterval(async function () {
-        new Promise((resolve, reject) => {
-            $.get('/forms/session.sync.php?fetch=all').done(function (data) {
-                $(data).each(function () {
-                    $(`#USER_${this.id
-                        }`).attr('data-online', this.session_online);
-                    $(`#session_${this.id
-                        }`).text(this.duration);
+                    let roomName = meetName.replace('/', '');
+                    let roomId = $(this).attr('id');
 
-                    resolve(data);
+                    $.get('/forms/whereby.sync.php', {
+                        'roomName': roomName,
+                        'roomId': roomId
+                    }).done(function (data) {
+                        $(`#${roomId}`).find('.paciente-nome').attr('data-online', data.paciente_online);
+                        $(`#${roomId}`).find('.medico-nome').attr('data-online', data.medico_online);
+                    }).fail(function (data) { }).always(function () {
+                        resolve('ok');
+                    });
                 });
             });
-        })
-    }, 20000);
-
-
-    setInterval(async function () {
-        new Promise((resolve, reject) => {
-            $('#tableAgendamento > tbody > tr').each(function () {
-                let meetName = $(this).data('room');
-
-                let roomName = meetName.replace('/', '');
-                let roomId = $(this).attr('id');
-
-                $.get('/forms/whereby.sync.php', {
-                    'roomName': roomName,
-                    'roomId': roomId
-                }).done(function (data) {
-                    $(`#${roomId}`).find('.paciente-nome').attr('data-online', data.paciente_online);
-                    $(`#${roomId}`).find('.medico-nome').attr('data-online', data.medico_online);
-                }).fail(function (data) { }).always(function () {
-                    resolve('ok');
-                });
-            });
-        });
-    }, 30000);
+        }, 10000);
+    }
 });
 
 

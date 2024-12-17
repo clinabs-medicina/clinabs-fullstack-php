@@ -2041,6 +2041,34 @@ function addUnidade(elem = null) {
                               <select class="form-control" name="unidade_medicos" id="medicos_combobox" multiple="multiple"></select>
                           </div>
                       </div>
+
+                      <div class="row">
+                <div class="col-12 col-md-6 row-center">
+                    <div class="form-group-checkbox">
+                    <input name="modalidade[]" id="modalidade_online" type="checkbox" checked value="ONLINE">
+                    <label for="modalidade_online">ONLINE</label>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 row-center">
+                    <div class="form-group-checkbox">
+                    <input name="modalidade[]" id="modalidade_presencial" type="checkbox" checked value="PRESENCIAL">
+                    <label for="modalidade_presencial">PRESENCIAL</label>
+                </div>
+            </div>
+        </div>
+        <br>
+
+          <div class="row" id="row-unidade">
+                <div class="col-12">
+                    <div class="form-group">
+                      <label for="unidade_atendimento">Unidade de Atendimento</label>
+                      <select name="unidade_atendimento" id="unidade_atendimento">
+                        <option disabled selected>Selecione uma Opção</option>
+                      </select>
+                    </div>
+                </div>
+          </div>
                   </form>`,
         showCancelButton: false,
         showConfirmButton: true,

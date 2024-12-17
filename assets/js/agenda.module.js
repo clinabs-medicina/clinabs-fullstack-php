@@ -217,8 +217,8 @@ function configAgenda(dateStart, startTime, endTime, duration, w) {
 
         $('#unidade_atendimento').on('change', function () {
           $('label.week-time.week-schedule.listmedic-box-dir-time.active').each(function () {
-            //$(this).attr('data-endereco', $('#unidade_atendimento option:selected').val());
-            //$(this).attr('data-endereco-tipo', $('#unidade_atendimento option:selected').data('tipo'));
+            $(this).attr('data-endereco', $('#unidade_atendimento option:selected').val());
+            $(this).attr('data-endereco-tipo', $('#unidade_atendimento option:selected').data('tipo'));
           });
         });
       });
