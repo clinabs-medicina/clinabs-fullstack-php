@@ -346,7 +346,7 @@ $('document').ready(function () {
         });
     }, 10000);
 
-
+    /*
     setInterval(async function () {
         new Promise((resolve, reject) => {
             $.get('/forms/session.sync.php?fetch=all').done(function (data) {
@@ -361,11 +361,11 @@ $('document').ready(function () {
             });
         })
     }, 20000);
-
+    */
 
     setInterval(async function () {
         new Promise((resolve, reject) => {
-            $('#tableAgendamento > tbody > tr').each(function () {
+            $('#tableAgendamento > tbody > tr[data-status="OK"]').each(function () {
                 let meetName = $(this).data('room');
 
                 let roomName = meetName.replace('/', '');
