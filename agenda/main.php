@@ -165,7 +165,7 @@ foreach($rows as $row) {
     <div class="flex-container produtos-flex">
         <form class="filter-container" id="agendamento-filters">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <fieldset class="filter-field">
                         <legend>Filtrar Data de Agendamento</legend>
                         <i class="fa-solid fa-filter-circle-xmark filter-clear"></i>
@@ -191,7 +191,7 @@ foreach($rows as $row) {
                     </fieldset>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <fieldset class="filter-field">
                         <legend>Filtrar por Médico</legend>
                         <i class="fa-solid fa-filter-circle-xmark filter-clear"></i>

@@ -146,6 +146,42 @@ function inline_files(string $type, array $files) {
     
 
     <style>
+    *[data-badge]::after {
+        display: flex;
+        width: 20px;
+        height: 20px;
+        background-color: #00b196;
+        position: absolute;
+        margin-top: -33px;
+        content: attr(data-badge);
+        border-radius: 100%;
+        color: #fff;
+        vertical-align: middle;
+        margin-left: 22px;
+        padding: 0.13rem;
+        font-size: 0.80rem;
+        text-align: center;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+    }
+    .flex-container .menu-header ul li a {
+        font-size: 12px;
+    }
+
+    .menu-user-links {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 1rem 0rem;
+        overflow-y: auto;
+        font-size: 14px;
+    }
+
     .doctor-card {
         background-color: #24b39e;
         color: white;
@@ -659,6 +695,102 @@ function inline_files(string $type, array $files) {
 
     .listmedic-box-dir-time i.fa {
         font-size: 20px !important;
+    }
+
+    .filter-container .row {
+        --bs-gutter-x: 0;
+        --bs-gutter-y: 0;
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 0;
+        margin-right: 0;
+        margin-left: 0;
+        flex-direction: row;
+        align-content: center;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .filter-container .row .form-group label {
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .filter-container .row .form-group {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-content: center;
+        justify-content: center;
+        align-items: stretch;
+        text-align: center;
+        width: 100%;
+    }
+
+    .filter-container .row .form-group label {
+        width: 100%;
+        display: flex;
+        text-align: center;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+    }
+
+    fieldset.filter-field {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        padding: 0rem 8px 8px;
+        position: relative;
+    }
+
+    fieldset.filter-field legend {
+        font-size: 12px;
+        background: #eee;
+        width: 100%;
+        margin-top: 0;
+        text-align: left;
+        border: 1px solid #eee;
+        border-radius: 10px;
+    }
+
+    i.fa-solid.fa-filter-circle-xmark.filter-clear {
+        position: absolute;
+        float: right;
+        right: 0px;
+        padding: 8px;
+    }
+
+    .btns-table button > img {
+        height: 22px;
+    }
+
+    .btns-table {
+        display: flex;
+        gap: 5px;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+    }
+
+    button.btn-action img {
+        height: 22px;
+    }
+
+    table.dataTable td, table.dataTable th {
+        box-sizing: content-box;
+        vertical-align: middle;
+        flex-direction: column-reverse;
+        flex-wrap: wrap;
+        align-content: center;
+        align-items: center;
+        margin-top: 18px;
+        font-size: 11px;
     }
     </style>
 
