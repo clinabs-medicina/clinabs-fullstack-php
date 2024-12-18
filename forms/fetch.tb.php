@@ -1,5 +1,5 @@
 <?php
-
+$no_debug = true;
 require_once '../config.inc.php';
 error_reporting(1);
 ini_set('display_errors', 1);
@@ -8,12 +8,6 @@ header("pragma: no-cache");
 
 if(isset($_REQUEST['tb']) && isset($_COOKIE['sessid_clinabs'])) {
     if(isset($_REQUEST['q'])) {
-        $tab = $_REQUEST['tb'];
-	try {
-    	error_log("Valor da variável fetch.tb \$_REQUEST['tb']: $tab\r\n" . PHP_EOL);
-	} catch (PDOException $e) {
-	}
-
         if(strtolower($_REQUEST['tb']) == 'medicos') {
             $dados = $pdo->query("SELECT id,identidade_genero,".implode(', ', explode(',', $_REQUEST['key']))." AS text FROM ".strtoupper($_REQUEST['tb']).' WHERE LOWER('.$_REQUEST['key'].') LIKE "%'.strtolower($_REQUEST['q']).'%" AND status = "ATIVO" ORDER BY id ASC;');
         } else {

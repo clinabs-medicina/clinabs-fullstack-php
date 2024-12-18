@@ -97,7 +97,7 @@
                 $birthDate = new DateTime($_user->data_nascimento ?? $user->data_nascimento);
                 $currentDate = new DateTime();
                 $age = $currentDate->diff($birthDate);
-            ?>
+                ?>
                 <div class="tab-toolbar">
                     <span class="active" data-index="1" data-tab="tabControl1">Perfil</span>
                     <span data-index="2" data-tab="tabControl1">Endereços</span>
@@ -624,11 +624,14 @@
                             $stmtx1 = $pdo->prepare('SELECT * FROM `ENDERECOS` WHERE user_token = :token');
                             $stmtx1->bindValue(':token', $_user->token);
                             $stmtx1->execute();
+
+                            $street_token = null;
           
                             foreach ($stmtx1->fetchAll(PDO::FETCH_OBJ) as $item) {
                                 
                                 if($item->isDefault && $item->tipo_endereco == 'ATENDIMENTO') {
                                     $street = $item;
+                                    $street_token = $item->token;
                                 }
                                 echo '<div class="street-item'.($item->isDefault ? ' selected':'').'" id="'.$item->token.'">
                                             <div class="street-info">
@@ -895,7 +898,7 @@
                     
                                             {
                     
-                                                echo '<div class="calendar-slide'.($first ? ' active':'').'" data-index="'.$i.'">';
+                                                echo '<div data-token="'.$_user->token.'" data-id="'.$_user->id.'" class="calendar-slide'.($first ? ' active':'').'" data-index="'.$i.'">';
                     
                                                 foreach($weekDay as $item) {
                     
@@ -943,23 +946,22 @@
                                                         
                                                         $specificDate = strtotime($item['day'].' '.$h);
                                                         $currentDate = time();
+
+                                                        $uniqid = uniqid();
                                        
                                                         if ($currentDate < $specificDate) {
-                                                           
-                                            
-                                                            echo '<label data-obj="'.date('d/m/Y', strtotime($item['day'])).' '.$h.'" data-selection="'.$_id.'" data-atendimento="'.($_item['endereco']).'"  data-atendimento-name="'.($checked ? $_item['endereco_tipo'] : $street->nome).'" data-atendimento-desc="'.($checked ? $_item['desc'] : sprintf("%s,%s - %s/%s - %s", $street->logradouro,$street->numero,$street->cidade, $street->uf, $street->bairro)).'" data-online="'.($_item['online'] == 1 ? 'true' : 'false').'" data-presencial="'.($_item['presencial'] == 1 ? 'true' : 'false').'" data-date="'.$item['day'].'" data-time="'.$h.'" class="week-time week-schedule listmedic-box-dir-time'.($checked ? ' active':'').'" checked="false">
+                        
+                                                            echo '<label id="'.$uniqid.'" data-obj="'.date('d/m/Y', strtotime($item['day'])).' '.$h.'" data-selection="'.$_id.'" data-atendimento="'.($checked ? $_item['endereco'] : $street_token).'" data-online="'.($_item['online'] == 1 ? 'true' : 'false').'" data-presencial="'.($_item['presencial'] == 1 ? 'true' : 'false').'" data-date="'.$item['day'].'" data-time="'.$h.'" class="week-time week-schedule listmedic-box-dir-time'.($checked ? ' active':'').'" checked="false">
                                                                     '.$h.'H
                                                                     <i class="fa fa-home'.(!parse_bool($_item['presencial']) && $checked ? ' icon-disabled':'').'" name="presencial"></i>
                                                                     <i class="fa fa-globe'.(!parse_bool($_item['online']) && $checked ? ' icon-disabled':'').'" name="online"></i>
+                                                                    <i class="fa fa-gear" name="conf" data-id="'.$uniqid.'"></i>
                                                                 </label>';
                                                             
                                                         } else {
-                                                            echo '<label data-obj="'.date('d/m/Y', strtotime($item['day'])).' '.$item['day'].' '.$h.'" data-selection="'.$_id.'" data-atendimento="'.($_item['endereco']).'" data-atendimento-name="'.($checked ? $_item['endereco_tipo'] : $street->nome).'" data-atendimento-desc="'.($checked ? $_item['desc'] : sprintf("%s,%s - %s/%s - %s", $street->logradouro,$street->numero,$street->cidade, $street->uf, $street->bairro)).'" data-atendimento="2" data-atendimento-desc="" data-online="true" data-presencial="true" data-date="'.$item['day'].'" data-time="'.$h.'" class="week-time week-schedule week-schedule-btn-disabled listmedic-box-dir-time'.($checked ? ' active':'').'"  checked="false">
+                                                            echo '<label id="'.$uniqid.'" data-obj="'.date('d/m/Y', strtotime($item['day'])).' '.$item['day'].' '.$h.'" data-selection="'.$_id.'"  data-atendimento="'.($checked ? $_item['endereco'] : $street_token).'" data-online="true" data-presencial="true" data-date="'.$item['day'].'" data-time="'.$h.'" class="week-time week-schedule week-schedule-btn-disabled listmedic-box-dir-time'.($checked ? ' active':'').'"  checked="false">
                                                                     '.$h.'H
-                                                                    <i class="fa fa-home" name="presencial"></i>
-                                                                    <i class="fa fa-globe" name="online"></i>
                                                                 </label>';
-                                                        }
                                                     }
                     
                     
@@ -1011,7 +1013,8 @@
                             </div>
                         </section>
                     </div>
-                </section> <?php
+                </section> 
+                <?php
                     
                     } else {
                     

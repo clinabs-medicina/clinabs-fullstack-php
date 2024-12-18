@@ -33,7 +33,7 @@ $stmtx->bindValue(':token', $token);
 try {
     $stmtx->execute();
 } catch(PDOException $ex) {
-    file_put_contents('erro.wa.txt', print_r($ex, true));
+
 }
     
 $transaction = $stmtx->fetch(PDO::FETCH_OBJ);
@@ -162,9 +162,7 @@ switch($action) {
                 subject: 'Finaceiro', 
                 body:  'Seu Pagamento no valor de R$ *'.number_format($transaction->amount, 2, ',', '.').'* referente a transação *'.$token.'* foi *PAGO* com sucesso.'
             );
-            
-            
-            file_put_contents('teste.txt', print_r($transaction, true));
+
 
             if($transaction->module == 'AGENDA_MED' && $transaction->method != 'sc') {
                 

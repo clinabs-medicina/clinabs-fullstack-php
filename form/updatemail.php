@@ -138,7 +138,6 @@ if(isset($_GET['nome']) && isset($_GET['mail']) && isset($_GET['password'])) {
             $res = ['status' => 'success', 'icon' => 'success',  'text' => 'Conta de E-mail Atualizada com Sucesso'];
             $json = json_encode($res);
         } catch(Exception $ex) {
-            file_put_contents('mail-errors.txt', print_r($ex, true));
         $json = json_encode(['status' => 'error','icon' => 'info', 'text' => 'Não foi Possível Adicionar Esta Conta.']);
         }
     }

@@ -1,4 +1,5 @@
 <?php
+$no_debug = true;
 require_once('../config.inc.php');
  $curl = curl_init();
 

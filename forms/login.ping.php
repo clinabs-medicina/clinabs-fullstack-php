@@ -1,4 +1,5 @@
 <?php
+$no_debug = true;
 /*
 require_once("{$_SERVER['DOCUMENT_ROOT']}/config.inc.php");
 date_default_timezone_set($_REQUEST['tz']);

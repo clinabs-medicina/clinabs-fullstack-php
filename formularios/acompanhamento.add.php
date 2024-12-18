@@ -23,9 +23,6 @@ try {
         'result' => $_REQUEST
     ];
 }catch(PDOException $ex) {
-    
-    file_put_contents('a.acompanhamento.error.txt', print_r($ex, true));
-    
     $json = [
         'status' => 'danger',
         'icon' => 'danger',

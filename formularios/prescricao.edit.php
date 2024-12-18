@@ -1,6 +1,6 @@
 <?php
 require_once '../config.inc.php';
-file_put_contents('dados.edit..prescricao.txt', print_r($_REQUEST, true));
+
 $stmt = $pdo->prepare('UPDATE `PRESCRICOES` SET `medico_token` = :medico_token,`paciente_token` = :paciente_token, `agenda_token` = :agenda_token, `prescricao` = :prescricao, `produto_id` = :produto_id, `frascos` = :frascos WHERE id = :id');
 $stmt->bindValue(':medico_token', $_REQUEST['medico_token']);
 $stmt->bindValue(':paciente_token', $_REQUEST['user_token']);
@@ -20,8 +20,6 @@ try {
         'result' => $_REQUEST
     ];
 }catch(PDOException $ex) {
-    file_put_contents('erro.prescricao.txt', print_r($ex, true));
-    
     $json = [
         'status' => 'danger',
         'icon' => 'danger',

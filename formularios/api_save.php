@@ -16,6 +16,3 @@ if(isset($_POST['api_save'])) {
     $config['whatsapp']['number'] = $_POST['instanceNumber'];
     $config['whatsapp']['webhook_url'] = $_POST['webhook_url'];
 }
-
-
-file_put_contents($_SERVER['DOCUMENT_ROOT'].'/.auth.json', json_encode($config, JSON_PRETTY_PRINT));

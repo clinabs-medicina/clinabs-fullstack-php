@@ -2,8 +2,6 @@
 require_once '../config.inc.php';
 $data = $_REQUEST;
 
-file_put_contents('uploads.docc.txt', print_r($data, true));
-
 header('Content-Type: application/json');
 
 try {

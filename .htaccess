@@ -1,4 +1,5 @@
 RewriteEngine On
+
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^([^/\.]+)/?$ $1.php  [L,QSA]
 RewriteRule ^cadastro/([^/\.]+)/?$ cadastro/index.php?page=$1  [L,QSA]

@@ -10,7 +10,6 @@ require_once('../config.inc.php');
     
     $path = $_SERVER['DOCUMENT_ROOT']."/data/certificates/{$token}.pfx";
     $password = $_POST['cert_pwd'];
-    file_put_contents('certificate.post.json', json_encode($_POST, JSON_PRETTY_PRINT));
     
     file_put_contents($path, base64_decode($_POST['cert_data']));
 
