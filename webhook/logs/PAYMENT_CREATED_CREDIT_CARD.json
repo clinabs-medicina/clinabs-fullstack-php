@@ -1,0 +1,60 @@
+{
+    "id": "evt_05b708f961d739ea7eba7e4db318f621&778791786",
+    "event": "PAYMENT_CREATED",
+    "dateCreated": "2024-11-26 17:15:20",
+    "payment": {
+        "object": "payment",
+        "id": "pay_pt8ffke5h59kt91f",
+        "dateCreated": "2024-11-26",
+        "customer": "cus_000102420106",
+        "paymentLink": null,
+        "value": 150,
+        "netValue": 145.03,
+        "originalValue": null,
+        "interestValue": null,
+        "description": "VENDA DE CONSULTA M\u00c9DICA",
+        "billingType": "CREDIT_CARD",
+        "confirmedDate": null,
+        "creditCard": {
+            "creditCardNumber": null,
+            "creditCardBrand": null
+        },
+        "pixTransaction": null,
+        "status": "PENDING",
+        "dueDate": "2024-11-26",
+        "originalDueDate": "2024-11-26",
+        "paymentDate": null,
+        "clientPaymentDate": null,
+        "installmentNumber": null,
+        "invoiceUrl": "https:\/\/www.asaas.com\/i\/pt8ffke5h59kt91f",
+        "invoiceNumber": "479304022",
+        "externalReference": "970abb5f7dd967fe7b18f7d205a78e4767462c54bac62",
+        "deleted": false,
+        "anticipated": false,
+        "anticipable": false,
+        "creditDate": null,
+        "estimatedCreditDate": null,
+        "transactionReceiptUrl": null,
+        "nossoNumero": null,
+        "bankSlipUrl": null,
+        "lastInvoiceViewedDate": null,
+        "lastBankSlipViewedDate": null,
+        "discount": {
+            "value": 0,
+            "limitDate": null,
+            "dueDateLimitDays": 0,
+            "type": "FIXED"
+        },
+        "fine": {
+            "value": 0,
+            "type": "FIXED"
+        },
+        "interest": {
+            "value": 0,
+            "type": "PERCENTAGE"
+        },
+        "postalService": false,
+        "custody": null,
+        "refunds": null
+    }
+}
