@@ -1,6 +1,6 @@
 <?php
 require_once '../config.inc.php';
-
+$no_debug = true;
 $roomName = $_GET['roomName'];
 
 $stmt = $pdo->query("SELECT medico_online,paciente_online FROM AGENDA_MED WHERE meet LIKE '%{$roomName}%' LIMIT 1;");

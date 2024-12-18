@@ -333,14 +333,21 @@ values
 
 }
 
+$ignore = [
+	'/forms/session.sync.php'
+];
 
-if(isset($user) && isset($_REQUEST)) {
-	try {
-		$ip = getallheaders()['X-Forwarded-For'] ?? $_SERVER['REMOTE_ADDR'];	
-		$ut = $_SERVER['SCRIPT_NAME'];
-		$b64 = base64_encode(json_encode($_REQUEST, JSON_PRETTY_PRINT));
-		$pdo->query("INSERT INTO `USER_LOGS` (`nome_completo`, `tipo_usuario`, `page`, `user_id`, `data`, `ip`) VALUES ('{$user->nome_completo}', '{$user->tipo}', '{$ut}', '{$user->token}', '{$b64}', '{$ip}');");
-		} catch (PDOException $e) {
+if(isset($no_debug)) {
 	
+} else {
+	if(isset($user) && isset($_REQUEST)) {
+		try {
+			$ip = getallheaders()['X-Forwarded-For'] ?? $_SERVER['REMOTE_ADDR'];	
+			$ut = $_SERVER['SCRIPT_NAME'];
+			$b64 = base64_encode(json_encode($_REQUEST, JSON_PRETTY_PRINT));
+			$pdo->query("INSERT INTO `USER_LOGS` (`nome_completo`, `tipo_usuario`, `page`, `user_id`, `data`, `ip`) VALUES ('{$user->nome_completo}', '{$user->tipo}', '{$ut}', '{$user->token}', '{$b64}', '{$ip}');");
+			} catch (PDOException $e) {
+		
+		}
 	}
 }
