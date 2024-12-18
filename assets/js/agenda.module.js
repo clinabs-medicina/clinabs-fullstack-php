@@ -202,8 +202,8 @@ function configAgenda(dateStart, startTime, endTime, duration, w) {
       select_end.options[select_end.options.length - 1].selected = true;
 
       $.get('/forms/fetch.unidades.php', {
-        medico_id: $('#medico_id').val(),
-        medico_token: $('#medico_token').val()
+        medico_id: $('.calendar-slide').data('id'),
+        medico_token: $('.calendar-slide').data('token')
       }, function (data) {
         for (let i = 0; i < data.length; i++) {
           let unidade = data[i];
