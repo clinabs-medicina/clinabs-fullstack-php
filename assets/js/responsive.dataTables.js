@@ -1,3 +1,0 @@
-/*! DataTables styling wrapper for Responsive
- * © SpryMedia Ltd - datatables.net/license
- */ !function(e){if("function"==typeof define&&define.amd)define(["ClinabsJS","datatables.net-dt","datatables.net-responsive"],function(t){return e(t,window,document)});else if("object"==typeof exports){var t=require("ClinabsJS"),n=function(e,t){t.fn.dataTable||require("datatables.net-dt")(e,t),t.fn.dataTable.Responsive||require("datatables.net-responsive")(e,t)};"undefined"==typeof window?module.exports=function(a,o){return a||(a=window),o||(o=t(a)),n(a,o),e(o,a,a.document)}:(n(window,t),module.exports=e(t,window,window.document))}else e(ClinabsJS,window,document)}(function(e,t,n,a){return!1,e.fn.dataTable});
