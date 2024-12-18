@@ -1,5 +1,6 @@
 <?php
 global $user, $favoritos, $carrinho;
+session_start();
 
 if (isset($_COOKIE['sessid_clinabs_uid'])) {
     $sql = "SELECT
