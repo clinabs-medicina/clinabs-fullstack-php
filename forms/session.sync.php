@@ -3,7 +3,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.inc.php';
 
 if(isset($_GET['fetch'])) {
     header('Cache-Control: no-store, no-cache, must-revalidate');
-    //header('Expires: 0');
     $events = [];
 
     $tableName = $_GET['fetch'];
@@ -50,13 +49,10 @@ if(isset($_GET['fetch'])) {
     echo json_encode($rows, JSON_PRETTY_PRINT);
 } 
 else {
-    header('Cache-Control: no-store, no-cache, must-revalidate');
-    //header('Expires: 0');    
+    header('Cache-Control: no-store, no-cache, must-revalidate'); 
     $tableName = $_GET['user'];
     $token = $_GET['token'];
-    // Adicionando ao log de erros
-    error_log("Valor da variável \$tableName: $tableName\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
-        
+
     $datetime = date('Y-m-d H:i:s');
     if (($tableName != 'none') && ($tableName != 'noneS') && ($tableName != 'clinabs_homolog.nones')) {
         $pdo->query("UPDATE {$tableName} SET session_online = 1,last_ping = '{$datetime}' WHERE token = '{$token}'");

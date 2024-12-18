@@ -166,32 +166,34 @@ if(isset($data['key'])) {
     else {
         $ag = [];
 
-        $stmty = $pdo->query('SELECT calendario,medico_token FROM AGENDA_MEDICA');
+        $stmty = $pdo->query('SELECT calendario,medico_token,(SELECT `status` FROM MEDICOS WHERE token = medico_token) as `status` FROM AGENDA_MEDICA');
         $agenda = $stmty->fetchAll(PDO::FETCH_OBJ);
 
         foreach($agenda as $date) {
-            try {
-                $data = json_decode($date->calendario);
-
-                foreach($data as $k => $v) {
-                    $allowed = false;
-
-                    foreach($v as $h => $a) {
-                        $allowed = strtotime("{$k} {$h}") >= strtotime(date('Y-m-d H:i') && $allowed);
+            if($date->status == 'ATIVO') {
+                try {
+                    $data = json_decode($date->calendario);
+    
+                    foreach($data as $k => $v) {
+                        $allowed = false;
+    
+                        foreach($v as $h => $a) {
+                            $allowed = strtotime("{$k} {$h}") >= strtotime(date('Y-m-d H:i') && $allowed);
+                        }
+    
+                        $xstmt = $pdo->prepare("SELECT * FROM AGENDA_MED WHERE data_agendamento = :dt AND medico_token = :mt");
+                        $xstmt->bindValue(':dt', "{$k} {$h}");
+                        $xstmt->bindValue(':mt', $date->medico_token);
+                        $xstmt->execute();
+                        
+    
+                        if(strtotime("{$k} {$h}") >= strtotime(date('Y-m-d H:i'))  && $xstmt->rowCount() == 0){
+                            $ag[] = date('Y-m-d', strtotime($k));
+                        }
                     }
-
-                    $xstmt = $pdo->prepare("SELECT * FROM AGENDA_MED WHERE data_agendamento = :dt AND medico_token = :mt");
-                    $xstmt->bindValue(':dt', "{$k} {$h}");
-                    $xstmt->bindValue(':mt', $date->medico_token);
-                    $xstmt->execute();
-                    
-
-                    if(strtotime("{$k} {$h}") >= strtotime(date('Y-m-d H:i'))  && $xstmt->rowCount() == 0){
-                        $ag[] = date('Y-m-d', strtotime($k));
-                    }
+                }catch(Exception) {
+    
                 }
-            }catch(Exception) {
-
             }
         }
 

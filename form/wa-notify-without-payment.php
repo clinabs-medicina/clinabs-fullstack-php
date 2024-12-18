@@ -6,9 +6,6 @@ try {
     $ag = $xstmt->fetch(PDO::FETCH_OBJ);
 
     $payment = $asaas->getCobranca($ag->payment_id);
-    file_put_contents('aaaa-payment.txt', print_r($payment, true));
-
-   
 
     $info = [];
     $paciente = $pdo->query("SELECT PACIENTES.nome_completo, PACIENTES.celular, PACIENTES.email, MEDICOS.nome_completo AS medico_nome,MEDICOS.celular AS medico_celular, MEDICOS.identidade_genero AS medico_sexo, VENDAS.payment_id, AGENDA_MED.data_agendamento, AGENDA_MED.medico_token, AGENDA_MED.data_cancelamento FROM AGENDA_MED, MEDICOS, PACIENTES, VENDAS WHERE MEDICOS.token = AGENDA_MED.medico_token AND PACIENTES.token = AGENDA_MED.paciente_token AND VENDAS.reference = AGENDA_MED.token AND AGENDA_MED.token = '{$_GET['token']}';")->fetch(PDO::FETCH_OBJ);

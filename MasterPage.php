@@ -656,6 +656,10 @@ function inline_files(string $type, array $files) {
             font-size: 9px;
         }
     }
+
+    .listmedic-box-dir-time i.fa {
+        font-size: 20px !important;
+    }
     </style>
 
 </head>
@@ -870,7 +874,12 @@ function inline_files(string $type, array $files) {
    if(isset($useWb)) {
         echo '<script src="https://cdn.srv.whereby.com/embed/v2-embed.js" type="module"></script>';
    }
+   
+   if(isset($useCalendar)) {
+        echo '<script src="/assets/js/script2.js"></script>';
+   }
    ?> 
+   
 
    <script>
         $('document').ready(function(){

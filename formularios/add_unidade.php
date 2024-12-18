@@ -4,7 +4,6 @@ require_once '../config.inc.php';
 
 $data = json_decode(file_get_contents('php://input'), true);
 
-file_put_contents('a.x-dados.txt', print_r($data, true));
 $file = '/data/images/unidades/'.uniqid().'.png';
 
 if(strlen($data['unidade_image']) > 0) {

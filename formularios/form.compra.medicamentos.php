@@ -51,7 +51,7 @@ try{
     try {
         $stmt->execute();
     } catch(PDOException $ex) {
-        file_put_contents('error.add.txt', print_r($ex, true));
+
     }
 
 
@@ -126,7 +126,7 @@ if (isset($_POST["enderecos"])) {
         try {
           $stmt->execute();
     } catch(PDOException $ex) {
-        file_put_contents('error.address.txt', print_r($ex, true));
+
     }
   }
     

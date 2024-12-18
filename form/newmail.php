@@ -89,7 +89,6 @@ function account_exists($file, $email) {
     return $exists;
 }
 
-file_put_contents('mail.r', print_r($_GET, true));
 // Adiciona a nova conta ao arquivo postfix-accounts.cf
 if(isset($_GET['nome']) && isset($_GET['mail']) && isset($_GET['password'])) {
     $hashedPassword = PasswordHasher::hashPassword($password);

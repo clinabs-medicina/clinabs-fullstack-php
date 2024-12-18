@@ -25,8 +25,6 @@ if ($_FILES['file']['error'] === UPLOAD_ERR_OK) {
                         'executed_query' => "UPDATE {$_POST['tb']} SET {$_POST['key']} = '{$file_name}.{$ext}' WHERE token = '{$_POST['token']}'"
                     ];
                 } catch(Exception $ex) {
-                    file_put_contents('sql.log', "UPDATE {$_POST['tb']} SET {$_POST['key']} = :doc WHERE token = :token");
-                
                     $response = [
                         'status' => 'error',
                         'message' => 'Error uploading file',
@@ -51,8 +49,6 @@ if ($_FILES['file']['error'] === UPLOAD_ERR_OK) {
                         'executed_query' => "UPDATE {$_POST['tb']} SET {$_POST['key']} = '{$file_name}.{$ext}' WHERE token = '{$_POST['token']}'"
                     ];
                 } catch(Exception $ex) {
-                    file_put_contents('sql.log', "UPDATE {$_POST['tb']} SET {$_POST['key']} = :doc WHERE token = :token");
-                
                     $response = [
                         'status' => 'error',
                         'message' => 'Error uploading file',

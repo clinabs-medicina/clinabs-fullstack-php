@@ -6,7 +6,6 @@ error_reporting(1);
 $valor_total = (int)$_REQUEST['valor_total'] * 100;
 $stmt = $pdo->prepare('SELECT * FROM CUPONS WHERE token = :token');
 $stmt->bindValue(':token', $_REQUEST['cupom']);
-file_put_contents('teste.txt', print_r($_REQUEST, true));
 $stmt->execute();
 $desc = $stmt->fetch(PDO::FETCH_OBJ);
 

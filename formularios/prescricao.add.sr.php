@@ -1,7 +1,5 @@
 <?php
 require_once '../config.inc.php';
-file_put_contents('A.dados.prescricao.sr.txt', print_r($_REQUEST, true));
-
 
 if( $_REQUEST['frascos'] > 0){
     $stmt = $pdo->prepare('INSERT INTO `PRESCRICOES_SR` (`medico_token`,`paciente_token`, `prescricao`, `produto_id`, `frascos`) VALUES (:medico_token, :paciente_token, :prescricao, :produto_id, :frascos)');
@@ -27,8 +25,6 @@ try {
         'result' => $_REQUEST
     ];
 }catch(PDOException $ex) {
-    file_put_contents('A.erro.prescricao.sr.txt', print_r($ex, true));
-    
     $json = [
         'status' => 'danger',
         'icon' => 'danger',

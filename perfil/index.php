@@ -17,6 +17,7 @@ $page->require_login = true;
 $useDT = true;
 $useSelector = true;
 $useEditor = true;
+$useCalendar = true;
 
 $conf = new stdClass();
 
