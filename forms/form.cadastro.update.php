@@ -348,7 +348,8 @@ switch ($request["tabela"]) {
             `tempo_limite_presencial` = :tempo_limite_presencial,
             `grupo_especialidades` = :grupo_especialidades,
             `age_min` = :age_min,
-            `age_max` = :age_max
+            `age_max` = :age_max,
+            `atendimento_padrao` = :atendimento_padrao
             WHERE
 	            `token` = :token"); 
 
@@ -385,7 +386,9 @@ switch ($request["tabela"]) {
         $stmt->bindValue(":grupo_especialidades", $request['grupo_especialidades']);
         $stmt->bindValue(":age_min", preg_replace('/[^0-9]+/', '',$request['age_min']));
         $stmt->bindValue(":age_max", preg_replace('/[^0-9]+/', '',$request['age_max']));
+        $stmt->bindValue(":atendimento_padrao", str_replace("'", '"', $request['atendimento_padrao']));
 
+        file_put_contents('endereco.txt', $request['atendimento_padrao']);
         try {
             $stmt->execute();
             $json = json_encode([

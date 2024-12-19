@@ -1,3 +1,30 @@
+$('document').ready(function () {
+    if (localStorage.getItem('') !== null && $('.swal-textarea')) {
+        $('.swal-textarea').val(window.atob(localStorage.setItem('.swal-textarea')));
+    }
+
+    $('.swal-textarea').on('keyup', function () {
+        localStorage.setItem('.swal-textarea', window.btoa(this.value));
+    });
+    /*
+        setInterval(() => {
+            $('.week-time.week-schedule.listmedic-box-dir-time').each(function () {
+                const min_time = parseInt($(this).data('atendimento-min').replace(':', ''));
+                const max_time = parseInt($(this).data('atendimento-max').replace(':', ''));
+    
+                const time = parseInt($(this).data('time').replace(':', ''));
+    
+                if (time >= min_time && time <= max_time) {
+                    $(this).find('i.fa.fa-home').hide();
+                } else {
+                    $(this).find('i.fa.fa-home').show();
+                }
+            });
+        }, 500);
+    
+        */
+});
+
 function toast(
     title,
     icon = "success",
@@ -263,7 +290,7 @@ function action_btn_form(btn) {
         });
 }
 
-function action_btn_form_agendamento(btn) {
+function action_btn_form_agendamento(btn, h = null) {
     let token = $(btn).data("token");
     let action = $(btn).data("act");
     preloader();
@@ -328,7 +355,7 @@ function action_btn_form_agendamento(btn) {
                         $(`#${token}`)
                             .find('button[data-act="send-meet-link"]')
                             .before(
-                                `<button title="Editar Prescrição" class="btn-action" onclick="action_btn_form_agendamento(this)" data-token="${token}" data-act="agenda-edit"><img src="/assets/images/ico-edit.svg" height="28px"></button>`
+                                `<button title="Editar Prescrição" class="btn-action" onclick="action_btn_form_agendamento(this, true)" data-token="${token}" data-act="agenda-edit"><img src="/assets/images/ico-edit.svg" height="28px"></button>`
                             );
                         $(`#${token}`).find('button[data-act="send-meet-link"]').remove();
 
@@ -613,16 +640,32 @@ function newPrescFunc() {
 
                 $("#produto_sa").select2();
 
+                tinymce.remove();
+
                 tinymce
                     .init({
                         language: "pt_BR",
                         selector: ".tiny-mce",
                         plugins: "",
-                        autosave_restore_when_empty: true,
+                        autosave_restore_when_empty: false,
                         toolbar:
                             "undo redo | bold italic underline strikethrough | link image media table mergetags | align lineheight | checklist numlist bullist indent outdent | removeformat",
                         tinycomments_mode: "embedded",
                         tinycomments_author: "",
+                        setup: function (editor) {
+                            const savedContent = localStorage.getItem('tinymce-content-presc');
+                            if (savedContent) {
+                                editor.on('init', () => {
+                                    editor.setContent(savedContent);
+                                });
+                            }
+
+
+                            editor.on('input', () => {
+                                const content = editor.getContent();
+                                localStorage.setItem('tinymce-content-presc', content);
+                            });
+                        },
                     })
                     .then(function () {
                         $('div[role="application"]').attr(
@@ -710,9 +753,8 @@ function newPrescFunc() {
 
                                 $(".dataTables_empty").parent().remove();
                                 $("#tablePrescricao").find("tbody").append(row);
-
+                                localStorage.removeItem('tinymce-content-presc');
                                 window.location.reload();
-                                Swal.close();
                             }
                         },
                     });
@@ -956,7 +998,7 @@ function addPrescFunc2(show_acompanhamento = true, text = "Nova Observação", a
 
                         Swal.close();
 
-                        location.reload();
+                        window.location.reload();
                     }
                 },
             });
@@ -1061,7 +1103,7 @@ function addPrescFunc3(show_acompanhamento = false, text = "Novo Anexo") {
 
                 $.post('/form/user.anexo.php', data).then(function (result) {
                     Swal.fire(result).then(function (a) {
-                        location.reload();
+                        window.location.reload();
                     });
                 });
             };
@@ -1235,7 +1277,7 @@ function editPrescFunc(elem, presc = false) {
 
                         Swal.close();
 
-                        location.reload();
+                        window.location.reload();
                     }
                 },
             });
@@ -1329,6 +1371,8 @@ function newTrackItem() {
 
 function defEndPadrao(item) {
     let token = $(item).data("token");
+    let tb = $(item).data("table");
+
     let elem = $(`#${token}`);
 
     $(".street-item.selected").find(".default-street").text("");
@@ -1343,7 +1387,7 @@ function defEndPadrao(item) {
         .val()
         .replace("'isDefault': 1,", "'isDefault':0,");
 
-    $(".street-item.selected").find(".input-data").val(json_data1);
+    $("#atendimento_padrao").val(`{'token':'${token}','table':'${tb}'}`);
 
     $(".street-item.selected").removeClass("selected");
 
@@ -1663,10 +1707,14 @@ function newPrescFuncSR() {
 
                     $("#produto_sa").select2();
 
+                    const tm = new Date().getTime();
+
+                    tinymce.remove();
+
                     tinymce
                         .init({
                             language: "pt_BR",
-                            selector: ".tiny-mce",
+                            selector: `#tmce_${tm}`,
                             plugins: "",
                             autosave_restore_when_empty: true,
                             toolbar:
@@ -1797,8 +1845,8 @@ function newPrescFuncSR() {
                 }
             }
         },
-    }).then(function (result) {
-        tinymce.remove();
+    }).then(function () {
+        window.location.reload();
     });
 }
 
@@ -2976,7 +3024,7 @@ function newProductNotAssociated() {
             $.post("/form/produtos.new.php", payload)
                 .done(function (data) {
                     Swal.fire(data).then(() => {
-                        location.reload();
+                        window.location.reload();
                     });
                 })
                 .fail(function (data) {
@@ -3097,7 +3145,7 @@ function editPrescFunc(elem) {
                 success: function (response) {
                     $(".swal2-confirm").text("Salvar");
                     if (response.status === "success") {
-                        location.reload();
+                        window.location.reload();
                     }
                 },
             });
@@ -3111,6 +3159,8 @@ function editPrescFunc(elem) {
 
 
 async function start_meet(link, token) {
+    let _window = null;
+    let _current = window;
 
     const pipWindow = await documentPictureInPicture.requestWindow({
         width: 600,
@@ -3118,11 +3168,16 @@ async function start_meet(link, token) {
         disableAutoFullscreen: true,
         disableAutoPIP: true,
         disablePipScaling: true,
-        disablePipControls: false,
+        disablePipControls: true,
         disablePipAutoClose: true,
-        disablePipAutoCloseOnBlur: false,
-        disablePipAutoCloseOnEscape: false,
-        disallowReturnToOpener: true,
+        disablePipAutoCloseOnBlur: true,
+        disablePipAutoCloseOnEscape: true,
+        disallowReturnToOpener: false,
+    });
+
+    pipWindow.addEventListener('unload', () => {
+        _current.self.close();
+        _window.location = '/agenda/prescricao/' + token;
     });
 
     let frame = document.createElement("iframe");
@@ -3131,6 +3186,7 @@ async function start_meet(link, token) {
     frame.style.width = "100%";
     frame.style.height = "550px";
     pipWindow.document.body.append(frame);
+
 
     setInterval(function () {
         const element = document.querySelector('iframe');
@@ -3141,6 +3197,7 @@ async function start_meet(link, token) {
         }
     }, 1000);
 
-    window.open('/agenda/prescricao/' + token);
-    wwindow.self.close();
+    document.title = "Teleconsulta";
+
+    _window = window.open('/agenda/prescricao/' + token + '?h=1');
 }

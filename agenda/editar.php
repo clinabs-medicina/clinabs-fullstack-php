@@ -77,7 +77,8 @@ function strip_html($html) {
                                 data-file="<?= (basename($ag->file_signed)) ?>" class="prescricao"
                                 data-token="<?= ($_GET['token']) ?>" data-user="<?= ($ag->paciente_token) ?>"
                                 data-medico="<?= ($ag->medico_token) ?>"
-                                data-dl="<?= (strlen($ag->file_signed) > 0) ?>">
+                                data-dl="<?= (strlen($ag->file_signed) > 0) ?>"
+                                <?=(isset($_GET['h']) ? ' data-h="true"':'')?>>
                                 <thead>
                                     <th width="32px">ID</th>
                                     <th>Data/Hora</th>
@@ -108,8 +109,6 @@ function strip_html($html) {
                                             $medicamento = $stmt2->fetch(PDO::FETCH_OBJ);
                                             $item->produto_nome = "{$medicamento->nome} - {$medicamento->conteudo}{$medicamento->unidade_medida}";
                                         }
-
-                                        file_put_contents('presc.html', base64_decode($item->prescricao));
 
                                         $prescricao = strip_html(base64_decode($item->prescricao));
                                         $presc[] = strip_tags($prescricao);

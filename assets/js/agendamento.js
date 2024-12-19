@@ -15,7 +15,7 @@ function newAgendamento() {
         confirmButtonText: 'CONFIRMAR',
         denyButtonText: 'CANCELAR',
         html: `
-            <form id="newAgendamento" method="POST" action="/form/new.agendamento.php">
+            <form id="newAgendamento" method="POST" action="/form/agendamento.manual.php">
                 <div class="row">
                     <div class="col-12">
                         <div class="form-group">
@@ -84,14 +84,8 @@ function newAgendamento() {
                 <div class="row check-row">
                     <div class="col-4">
                         <div class="form-check-group">
-                            <label for="optAgendamento">Consulta</label>
-                            <input checked name="optAgendamento" type="radio" class="form-control" id="optAgendamento" value="CONSULTA"/>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="form-check-group">
                             <label for="optEncaixe">Encaixe</label>
-                            <input name="optAgendamento" type="radio" class="form-control" id="optEncaixe" value="ENCAIXE"/>
+                            <input checked name="optAgendamento" type="radio" class="form-control" id="optEncaixe" value="ENCAIXE"/>
                         </div>
                     </div>
                     <div class="col-4">
@@ -110,6 +104,7 @@ function newAgendamento() {
         `,
         preConfirm: () => {
             $('#newAgendamento').submit();
+            preloader('Enviando dados de agendamento...');
             return false;
         },
         didOpen: () => {
@@ -186,10 +181,12 @@ function newAgendamento() {
             $('.swal2-deny').on('click', function () {
                 Swal.close();
             });
+
+            $('select').select2();
         }
     }).then(function (evt) {
         if (evt.isConfirmed) {
-
+            window.location.reload();
         }
     });
 }

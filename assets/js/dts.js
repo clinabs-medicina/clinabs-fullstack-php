@@ -108,39 +108,68 @@ if ($("#tablePrescricao.prescricao").data("doc")) {
         icon: "download",
         hint: "Baixar Receita para Assinar",
         click: "downloadReceita",
+        id: 'tablePrescricao.prescricao.downloadReceita'
     });
 
-    addTableButton("#tablePrescricao.prescricao", {
-        icon: "upload",
-        hint: "Atualizar Receita Assinada",
-        click: "uploadReceita",
-    });
+    // Get the current URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('h') !== '1') {
+        addTableButton("#tablePrescricao.prescricao", {
+            icon: "upload",
+            hint: "Atualizar Receita Assinada",
+            click: "uploadReceita",
+            id: 'tablePrescricao.prescricao.uploadReceita'
+        });
 
-    addTableButton("#tablePrescricao.prescricao", {
-        icon: "print",
-        hint: "Imprimir Receita",
-        click: "printPrescFuncSigned",
-    });
+        addTableButton("#tablePrescricao.prescricao", {
+            icon: "print",
+            hint: "Imprimir Receita",
+            click: "printPrescFuncSigned",
+            id: 'tablePrescricao.prescricao.printReceita'
+        });
 
-    addTableButton("#tablePrescricao.prescricao", {
-        icon: "whatsapp",
-        hint: "Enviar Receita para seu WhatsApp para Assinar",
-        click: "WaSendReceita",
-    });
+        addTableButton("#tablePrescricao.prescricao", {
+            icon: "whatsapp",
+            hint: "Enviar Receita para seu WhatsApp para Assinar",
+            click: "WaSendReceita",
+            id: 'tablePrescricao.prescricao.sendReceita'
+        });
+    }
+
 } else if ($("#tablePrescricao.prescricao").data("upld")) {
 
 } else {
+
     addTableButton("#tablePrescricao.prescricao", {
         icon: "download",
         hint: "Baixar Receita para Assinar",
         click: "downloadReceita",
+        id: 'tablePrescricao.prescricao.downloadReceita'
     });
 
-    addTableButton("#tablePrescricao.prescricao", {
-        icon: "upload",
-        hint: "Enviar Receita Assinada",
-        click: "uploadReceita",
-    });
+    // Get the current URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('h') !== '1') {
+
+        addTableButton("#tablePrescricao.prescricao", {
+            icon: "upload",
+            hint: "Atualizar Receita Assinada",
+            click: "uploadReceita",
+            id: 'tablePrescricao.prescricao.uploadReceita'
+        });
+
+        addTableButton("#tablePrescricao.prescricao", {
+            icon: "file-pdf",
+            hint: "Enviar Receita,Exame e Laudo",
+            click: "addPrescFunc2(false, 'Enviar Anexo ao Prontuário')",
+        });
+
+        addTableButton("#tablePrescricaoSR.prescricao", {
+            icon: "print",
+            hint: "Imprimir Receita",
+            click: "printPrescFunc2",
+        });
+    }
 }
 
 addTableButton("#tablePrescricaoSR.prescricao", {
@@ -149,11 +178,8 @@ addTableButton("#tablePrescricaoSR.prescricao", {
     click: "newPrescFuncSR",
 });
 
-addTableButton("#tablePrescricao.prescricao", {
-    icon: "file-pdf",
-    hint: "Enviar Receita,Exame e Laudo",
-    click: "addPrescFunc2(false, 'Enviar Anexo ao Prontuário')",
-});
+
+
 
 addTableButton("#tablePrescricao.prescricao", {
     icon: "file-medical",
@@ -161,11 +187,6 @@ addTableButton("#tablePrescricao.prescricao", {
     click: "newAtestado()",
 });
 
-addTableButton("#tablePrescricaoSR.prescricao", {
-    icon: "print",
-    hint: "Imprimir Receita",
-    click: "printPrescFunc2",
-});
 
 
 
@@ -630,6 +651,14 @@ function addTableButton(elem, btnInfo) {
         }
 
         let id = $(`${elem}`).attr("id");
+
+        if ('enabled' in btnInfo) {
+            btn.disabled = !btnInfo.enabled;
+        }
+
+
+        btn.id = btnInfo.id;
+
 
         $(`#${id}_filter`).append(btn);
     }

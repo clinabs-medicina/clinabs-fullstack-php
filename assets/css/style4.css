@@ -2028,3 +2028,7 @@ input#produtoSearch {
     margin-right: 10px;
     align-items: center;
 }
+
+button.btn-table-item[disabled] {
+    filter: grayscale(1);
+}

@@ -1,10 +1,59 @@
 $(document).ready(function () {
     //$('.img-mobile').attr('src', '/data/banners/banner-home-mobile.png');
     //$('.img-desktop').attr('src', '/data/banners/banner-home.png');
+    $('.listmedic-box-dir-time').off('dblclick');
+    $('.listmedic-box-dir-time').on('dblclick', function () {
+        const time = $(this).data('time');
+        let elem = $(this);
+
+        if (!$(this).hasClass('active')) {
+            $(this).addClass('active');
+            $.get(`/forms/fetch.unidades.php?time=${time}`, {
+                medico_id: $('.calendar-slide').data('id'),
+                medico_token: $('.calendar-slide').data('token')
+            }, function (data) {
+                console.log({
+                    time: time,
+                    medico_id: $('.calendar-slide').data('id'),
+                    medico_token: $('.calendar-slide').data('token'),
+                    unidades: data.length
+                });
+
+
+                if (data.length === 0) {
+                    $(elem).find('i.fa.fa-home').addClass('icon-disabled');
+
+                    $(elem).find('i.fa.fa-home').css('pointer-events', 'none');
+                }
+            });
+
+            $(elem).find('i.fa.fa-globe').on('click', function () {
+                if (!$(this).hasClass('icon-disabled')) {
+                    $(this).removeClass('icon-disabled');
+                } else {
+                    $(this).addClass('icon-disabled');
+                }
+            });
+
+            $(elem).find('i.fa.fa-home').on('click', function () {
+                if (!$(this).hasClass('icon-disabled')) {
+                    $(this).removeClass('icon-disabled');
+                } else {
+                    $(this).addClass('icon-disabled');
+                }
+            });
+        } else {
+            $(this).removeClass('active');
+            $(elem).find('i.fa.fa-home').removeClass('icon-disabled');
+            $(elem).find('i.fa.fa-globe').removeClass('icon-disabled');
+        }
+
+    });
 
     $('.listmedic-box-dir-time i.fa.fa-gear').on('click', function () {
         let elem = $(`#${this.dataset.id}`);
         let street_id = null;
+        const time = $(this).closest('.listmedic-box-dir-time').data('time');
 
         Swal.fire({
             title: 'Editar Horário',
@@ -15,14 +64,14 @@ $(document).ready(function () {
             denyButtonText: 'CANCELAR',
             html: `
                 <div class="row">
-                    <div class="col-12 col-md-6 row-center">
+                    <div class="col-12 col-md-6 row-center mod-online">
                         <div class="form-group-checkbox">
                             <input name="modalidade[]" id="modalidade_online" type="checkbox" checked="" value="ONLINE">
                             <label for="modalidade_online">ONLINE</label>
                         </div>
                     </div>
 
-                    <div class="col-12 col-md-6 row-center">
+                    <div class="col-12 col-md-6 row-center mod-presencial">
                         <div class="form-group-checkbox">
                             <input name="modalidade[]" id="modalidade_presencial" type="checkbox" checked="" value="PRESENCIAL">
                             <label for="modalidade_presencial">PRESENCIAL</label>
@@ -39,11 +88,6 @@ $(document).ready(function () {
                             </select>
                         </div>
                     </div>
-                </div>
-
-                <div class="row-d-flex">
-                    <input type="checkbox" id="clone-items">
-                    <label>Copiar para os demais</label>
                 </div>
             `,
             preConfirm: () => {
@@ -102,7 +146,7 @@ $(document).ready(function () {
                     }
                 });
 
-                $.get('/forms/fetch.unidades.php', {
+                $.get(`/forms/fetch.unidades.php?time=${time}`, {
                     medico_id: $('.calendar-slide').data('id'),
                     medico_token: $('.calendar-slide').data('token')
                 }, function (data) {
@@ -117,8 +161,8 @@ $(document).ready(function () {
 
                     if (data.length === 0) {
                         $('#row-unidade').hide();
-                        $('#modalidade_presencial').closest('.form-group-checkbox').css('filter', 'grayscaçle(100)');
-                        $('#modalidade_presencial').closest('.form-group-checkbox').css('filter', 'pointer-events: none');
+
+                        $('.mod-presencial').hide();
                     }
 
                     $('#unidade_atendimento').val($(elem).data('atendimento'));

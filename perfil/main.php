@@ -569,13 +569,35 @@
                             $stmtx1->execute();
 
                             $street_token = null;
+
+                           try {
+                             $unidade_padrao = json_decode($_user->atendimento_padrao, true);
+                             $street_token = $unidade_padrao['token'];
+
+                            $xt = $pdo->query("SELECT inicio_expediente, fim_expediente FROM {$unidade_padrao['table']} WHERE token = '{$unidade_padrao['token']}'");
+                            $unidade_p = $xt->fetch(PDO::FETCH_OBJ);
+                            $inicio_expediente = $unidade_p->inicio_expediente;
+                            $fim_expediente = $unidade_p->fim_expediente;
+
+                           } catch(Exception $ex) {
+
+                           }
           
                             foreach ($stmtx1->fetchAll(PDO::FETCH_OBJ) as $item) {
                                 
                                 if($item->isDefault && $item->tipo_endereco == 'ATENDIMENTO') {
                                     $street = $item;
-                                    $street_token = $item->token;
+
+                                    if($street_token == null) {
+                                        $street_token = $item->token;
+                                    }
                                 }
+
+                                if($street_token == $item->token) {
+                                    $item->isDefault = true;
+                                }
+
+
                                 echo '<div class="street-item'.($item->isDefault ? ' selected':'').'" id="'.$item->token.'">
                                             <div class="street-info">
                                                 <span class="street-label">
@@ -587,13 +609,13 @@
                                             </div>
                                             <div class="street-btns">
                                                 <div class="btns-info">
-                                                <label class="default-street">'.($item->isDefault ? '(Padrão)':'').'</label>
+                                                <label class="default-street">'.($street_token == $item->token ? '(Padrão)':'').'</label>
                                                 </div>
 
                                                 <div class="btns-street">
                                                     <label data-action="editar" data-token="'.$item->token.'">Editar</label>
                                                     <label data-action="excluir" data-token="'.$item->token.'">Excluir</label>
-                                                    <label data-action="def" data-token="'.$item->token.'" onclick="defEndPadrao(this)">Deixar Padrão</label>
+                                                    <label data-action="def" data-table="ENDERECOS" data-token="'.$item->token.'" onclick="defEndPadrao(this)">Deixar Padrão</label>
                                                 </div>
                                             </div>
                                             
@@ -605,6 +627,10 @@
                             $stmtx2 = $pdo->prepare("SELECT * FROM UNIDADES WHERE medicos LIKE '%\"{$_user->id}\"%'");
                             $stmtx2->execute();
                             foreach ($stmtx2->fetchAll(PDO::FETCH_OBJ) as $item) {
+                                if($street_token == $item->token) {
+                                    $item->isDefault = true;
+                                }
+
                                 echo '<div class="street-item" id="'.$item->token.'">
                                             <div class="street-info">
                                                 <span class="street-label">
@@ -616,11 +642,11 @@
                                             </div>
                                             <div class="street-btns">
                                                 <div class="btns-info">
-                                                <label class="default-street"></label>
+                                                <label class="default-street">'.($street_token == $item->token ? '(Padrão)':'').'</label>
                                                 </div>
 
                                                 <div class="btns-street">
-                                                    
+                                                    <label data-action="def" data-table="UNIDADES" data-token="'.$item->token.'" onclick="defEndPadrao(this)">Deixar Padrão</label>
                                                 </div>
                                             </div>
                                             
@@ -906,7 +932,7 @@
                                                                 $pn = '';
                                                             }
                                                             
-                                                            echo '<label '.($pn != "" ? "title=\"Consulta no dia: {$dtf} com {$pn}\"":"").'" id="'.$uniqid.'" data-obj="'.date('d/m/Y', strtotime($item['day'])).' '.$h.'" data-selection="'.$_id.'" data-atendimento="'.($checked ? $_item['endereco'] : $street_token).'" data-online="'.($_item['online'] == 1 ? 'true' : 'false').'" data-presencial="'.($_item['presencial'] == 1 ? 'true' : 'false').'" data-date="'.$item['day'].'" data-time="'.$h.'" class="week-time week-schedule listmedic-box-dir-time'.($checked ? ' active':'').''.$disabled.'" checked="false">
+                                                            echo '<label data-atendimento-min="'.strtotime($inicio_expediente).'" data-atendimento-max="'.strtotime($fim_expediente).'" '.($pn != "" ? "title=\"Consulta no dia: {$dtf} com {$pn}\"":"").'" id="'.$uniqid.'" data-obj="'.date('d/m/Y', strtotime($item['day'])).' '.$h.'" data-selection="'.$_id.'" data-atendimento="'.($checked ? $_item['endereco'] : $street_token).'" data-online="'.($_item['online'] == 1 ? 'true' : 'false').'" data-presencial="'.($_item['presencial'] == 1 ? 'true' : 'false').'" data-date="'.$item['day'].'" data-time="'.$h.'" class="week-time week-schedule listmedic-box-dir-time'.($checked ? ' active':'').''.$disabled.'" checked="false">
                                                                     '.$h.'H
                                                                     <i '.($pn != "" ? ' style="pointer-events: none"':'').' class="fa fa-home'.(!parse_bool($_item['presencial']) && $checked ? ' icon-disabled':'').'" name="presencial"></i>
                                                                     <i '.($pn != "" ? ' style="pointer-events: none"':'').'class="fa fa-globe'.(!parse_bool($_item['online']) && $checked ? ' icon-disabled':'').'" name="online"></i>
@@ -916,8 +942,8 @@
                                                         } else {
                                                             echo '<label id="'.$uniqid.'" data-obj="'.date('d/m/Y', strtotime($item['day'])).' '.$item['day'].' '.$h.'" data-selection="'.$_id.'"  data-atendimento="'.($checked ? $_item['endereco'] : $street_token).'" data-online="true" data-presencial="true" data-date="'.$item['day'].'" data-time="'.$h.'" class="week-time week-schedule week-schedule-btn-disabled listmedic-box-dir-time'.($checked ? ' active':'').'"  checked="false">
                                                                     '.$h.'H
-                                                                    <i class="fa fa-home" name="presencial"></i>
-                                                                    <i class="fa fa-globe" name="online"></i>
+                                                                    <i class="fa fa-home icon-disabled" name="presencial"></i>
+                                                                    <i class="fa fa-globe icon-disabled" name="online"></i>
                                                                     <i class="fa fa-gear" name="conf" data-id="'.$uniqid.'"></i>
                                                                 </label>';
                                                         }
@@ -1390,6 +1416,12 @@
                     DADOS</button> <button type="submit" class="btn-button1 btn-save-form" disabled="true"
                     id="btn-save-profile">SALVAR DADOS</button>
             </div>
+
+            <?php
+                if($user->tipo == 'MEDICO' || $user->tipo == 'FUNCIONARIO') {
+                    echo '<input autocomplete="off" name="atendimento_padrao" type="hidden" id="atendimento_padrao" value="'.str_replace('"', "'", $_user->atendimento_padrao).'">';
+                }
+            ?>
         </form>
         <input autocomplete="off" disabled="true" type="hidden" name="profileImage" id="profileImage"
             value="<?=Modules::getUserImage($_user->token)?>">

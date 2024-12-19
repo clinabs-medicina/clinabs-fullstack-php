@@ -94,7 +94,13 @@ function parse_bool($value) {
       $stmt2->execute();
       $_user = $stmt2->fetch(PDO::FETCH_OBJ);
 
-      require_once $_SERVER['DOCUMENT_ROOT'].'/MasterPage.php';
+      if(isset($_GET['dump'])) {
+         header('Content-Type: application/json');
+         echo json_encode($_user, JSON_PRETTY_PRINT);
+      } else {
+         require_once $_SERVER['DOCUMENT_ROOT'].'/MasterPage.php';
+      }
+      
    }
    else{
       $tableName = $user->tipo.'S';

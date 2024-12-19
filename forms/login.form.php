@@ -117,7 +117,7 @@ if ($stmt->rowCount() > 0) {
     $pdo->query("UPDATE {$user['objeto']}S SET session_online = 1,first_ping = '{$datetime}', last_ping = '{$datetime}' WHERE token = '{$user['token']}'");
 
    setcookie($sessionName, $sessid, [
-        'expires' => time() + 3600,
+        'expires' => time() + $sessionDuration,
         'path' => '/',
         'httponly' => true,
         'secure' => true,
