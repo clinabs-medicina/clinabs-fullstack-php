@@ -95,6 +95,16 @@ function newAgendamento() {
                         </div>
                     </div>
                 </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="descricao">Observação</label>
+                        <textarea name="descricao" id="descricao" value="" required placeholder="Digite uma Observação, Ex. Dr. João Autorizou o Agendamento de Emergência para o Paciente...">
+                        </textarea>
+                    </div>
+                </div>
+            </div>
             </form>
         `,
         didOpen: () => {

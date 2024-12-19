@@ -693,6 +693,19 @@ function inline_files(string $type, array $files) {
         table.dataTable td *, table.dataTable th * {
             font-size: 9px;
         }
+
+        table.dataTable td, table.dataTable th {
+            box-sizing: content-box;
+            vertical-align: middle;
+            flex-direction: row;
+            align-content: center;
+            align-items: center;
+            margin-top: 18px;
+            font-size: 11px;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+        }
     }
 
     .listmedic-box-dir-time i.fa {
@@ -814,6 +827,13 @@ function inline_files(string $type, array $files) {
     .row-weeks .week-item input {
         display: none;
     }
+
+
+    i.fas.fa-info-circle {
+        font-size: 2.50rem;
+        color: #0d6efd;
+    }
+
     </style>
 
 </head>
@@ -982,7 +1002,7 @@ function inline_files(string $type, array $files) {
       }
     */
   ?>
-<!--
+
 <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16646948240"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
@@ -1023,7 +1043,7 @@ function inline_files(string $type, array $files) {
         f.parentNode.insertBefore(j, f);
     })(window, document, 'script', 'dataLayer', 'GTM-N7VLSJ5J');
     </script>
--->
+
    <?php
    if(isset($useWb)) {
         echo '<script src="https://cdn.srv.whereby.com/embed/v2-embed.js" type="module"></script>';
