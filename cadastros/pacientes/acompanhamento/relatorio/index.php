@@ -1,10 +1,9 @@
 <?php
-require_once '../config.inc.php';
-require_once $_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php';
-
 use Mpdf\Mpdf;
 
-$mpdf = new \Mpdf\Mpdf();
+require_once $_SERVER['DOCUMENT_ROOT'].'/config.inc.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php';
+
 $obj = base64_decode($_GET['items']);
 $obj = json_decode($obj);
 $data = [];
@@ -101,107 +100,107 @@ GROUP BY agenda_token
       @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
       html {
-        margin: 0;
-        padding: 0;
-        list-style: none;
+          margin: 0;
+          padding: 0;
+          list-style: none;
+          font-family: "Inter", sans-serif;
+          box-sizing: border-box;
+        }
+      .street, span, p, b,div {
         font-family: "Inter", sans-serif;
-        box-sizing: border-box;
-      }
-    .street, span, p, b,div {
-      font-family: "Inter", sans-serif;
-      font-size: 1rem;
-    }
-
-    .txt-top {
-      display: flex;
-      justify-content: center;
-      align-items: self-end;
-    }
-
-    p {
-
-    }
-      .titulo-h1::after {
-        content: "";
-        background-color: #03e3c1;display: block;width: 10rem;height: 0.4rem;margin: 0.4rem auto;
+        font-size: 1rem;
       }
 
-      td {
-          font-size: 16px !important;
+      .txt-top {
+        display: flex;
+        justify-content: center;
+        align-items: self-end;
       }
 
-      tr,td {
-          mergin: 0 !important;
-          padding: 0 !important;
+      p {
+
+      }
+        .titulo-h1::after {
+          content: "";
+          background-color: #03e3c1;display: block;width: 10rem;height: 0.4rem;margin: 0.4rem auto;
+        }
+
+        td {
+            font-size: 16px !important;
+        }
+
+        tr,td {
+            mergin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .box-row {
+          width: 90%;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          align-content: center;
+          justify-content: flex-start;
+          align-items: center;
+          border-top:: 1px dotted #03e3c1 !important;
+          padding: 1rem 2rem;
+          border-radius: 10px;
+          gap: 2rem;
       }
 
-      .box-row {
-        width: 90%;
+      .box-icon {
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
         align-content: center;
-        justify-content: flex-start;
+        justify-content: center;
         align-items: center;
-        border-top:: 1px dotted #03e3c1 !important;
-        padding: 1rem 2rem;
-        border-radius: 10px;
-        gap: 2rem;
+        gap: 1rem;
     }
 
-    .box-icon {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      align-content: center;
-      justify-content: center;
-      align-items: center;
-      gap: 1rem;
+    .box-description {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-content: center;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 1rem;
+    }
+
+    .titulo-h6 {
+      font-size: 1rem;
+      text-align: left;
+      width: 100%;
+      padding: 1rem 0;
+  }
+  b, strong {
+      font-weight: bolder;
   }
 
-  .box-description {
+  small, .small {
+      font-size: 0.875em;
+  }
+
+  .box-txt {
+      text-align: center;
+      flex-grow: 1;
+  }
+
+  .row.dflex-column {
       display: flex;
       flex-direction: column;
-      flex-wrap: nowrap;
-      align-content: center;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 1rem;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 1rem;
   }
 
-  .titulo-h6 {
-    font-size: 1rem;
-    text-align: left;
-    width: 100%;
-    padding: 1rem 0;
-}
-b, strong {
-    font-weight: bolder;
-}
+  .row {
+      display: flex;
+      flex-wrap: wrap;
+  }
 
-small, .small {
-    font-size: 0.875em;
-}
-
-.box-txt {
-    text-align: center;
-    flex-grow: 1;
-}
-
-.row.dflex-column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 1rem;
-}
-
-.row {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.no-break {
+  .no-break {
         page-break-inside: avoid;
     }
     </style>
@@ -302,9 +301,17 @@ small, .small {
         }
     $html .= "</div>";
 
-$mpdf->WriteHTML($html);
-
-$mpdf->Output();
-echo "<pre>";
-print_r($data);
-echo "</pre>";
+    $fileName = $_SERVER['DOCUMENT_ROOT'].'/tmp/RELATORIO_'.uniqid().'.pdf';
+    $mpdf = new \Mpdf\Mpdf();
+    $mpdf->setFooter("<small style=\"float: left\">Impresso em {DATE d/m/Y H:i} por ".$user->nome_completo."</small> - Página {nb} de {nbpg}");
+    $mpdf->WriteHTML($html);
+    $mpdf->Output($fileName, 'F');
+    
+    $fsn = basename($fileName);
+    
+    header('Content-Type: application/pdf');
+    header('Content-Disposition: attachment; filename="'.$fsn.'"');
+    header('Content-Length: ' . filesize($fileName));
+    
+    readfile($fileName);
+    exit;

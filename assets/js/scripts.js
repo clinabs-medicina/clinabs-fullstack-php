@@ -1385,7 +1385,9 @@ $(document).ready(function () {
                         }),
                       };
 
-                      fetch("/forms/schedule.calendar.php", requestOptions);
+                      fetch("/forms/schedule.calendar.php", requestOptions).then(() => {
+
+                      });
                     }
                   }
 
@@ -1399,10 +1401,14 @@ $(document).ready(function () {
                       token: $("#user_token").val(),
                     })
                       .done(function (resp) {
-                        window.location = window.location;
+
                       })
-                      .fail(function () { });
+                      .always(function () {
+                        window.location.reload();
+                      });
                   });
+
+
                 } else {
                   Swal.fire({
                     title: "Atenção",

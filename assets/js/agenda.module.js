@@ -67,91 +67,6 @@ function configAgenda(dateStart, startTime, endTime, duration, w) {
     title: 'Configuração de Agenda',
     allowOutsideClick: false,
     html: `
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <div class="form-group">
-              <label for="start_date">Data de Início</label>
-              <input name="start_date" id="start_date" type="date" value="${dateStart}">
-            </div>
-          </div>
-
-          <div class="col-12 col-md-6">
-            <div class="form-group">
-              <label for="end_date">Data de Fim</label>
-              <input name="end_date" id="end_date" type="date" value="${dateStart}">
-            </div>
-          </div>
-        </div>
-        <br>
-         <div class="row">
-          <div class="col-12 col-md-6">
-            <div class="form-group">
-              <label for="start_time">Hora de Início</label>
-              <select name="start_time" id="start_time" type="time" value="${startTime}"></select>
-            </div>
-          </div>
-
-          <div class="col-12 col-md-6">
-            <div class="form-group">
-              <label for="end_time">Hora de Fim</label>
-              <select name="end_time" id="end_time" type="time" value="${endTime}"></select>
-            </div>
-          </div>
-        </div>
-        <br>
-        <div class="row-title">Repetir em:</div>
-        <br>
-        <div class="row-weeks">
-            <div class="week-item${w == 1 ? ' active' : ''}">
-              <label for="dayofWeek_1">SEG</label>
-              <input name="dayofWeek[]" id="dayofWeek_1" type="hidden" value="MO">
-            </div>
-
-            <div class="week-item${w == 2 ? ' active' : ''}">
-              <label for="dayofWeek_2">TER</label>
-              <input name="dayofWeek[]" id="dayofWeek_2" type="hidden" value="TU">
-            </div>
-
-            <div class="week-item${w == 3 ? ' active' : ''}">
-              <label for="dayofWeek_3">QUA</label>
-              <input name="dayofWeek[]" id="dayofWeek_3" type="hidden" value="WE">
-            </div>
-
-            <div class="week-item${w == 4 ? ' active' : ''}">
-              <label for="dayofWeek_4">QUI</label>
-              <input name="dayofWeek[]" id="dayofWeek_4" type="hidden" value="TH">
-            </div>
-
-            <div class="week-item${w == 5 ? ' active' : ''}">
-              <label for="dayofWeek_5">SEX</label>
-              <input name="dayofWeek[]" id="dayofWeek_5" type="hidden" value="FR">
-            </div>
-
-            <div class="week-item${w == 6 ? ' active' : ''}">
-              <label for="dayofWeek_6">SAB</label>
-              <input name="dayofWeek[]" id="dayofWeek_6" type="hidden" value="SA">
-            </div>
-          </div>
-
-          <br>
-
-           <div class="row">
-                <div class="col-12 col-md-6 row-center">
-                    <div class="form-group-checkbox">
-                    <input name="modalidade[]" id="modalidade_online" type="checkbox" checked value="ONLINE">
-                    <label for="modalidade_online">ONLINE</label>
-                    </div>
-                </div>
-
-                <div class="col-12 col-md-6 row-center">
-                    <div class="form-group-checkbox">
-                    <input name="modalidade[]" id="modalidade_presencial" type="checkbox" checked value="PRESENCIAL">
-                    <label for="modalidade_presencial">PRESENCIAL</label>
-                </div>
-            </div>
-        </div>
-        <br>
-
           <div class="row" id="row-unidade">
                 <div class="col-12">
                     <div class="form-group">
@@ -162,8 +77,93 @@ function configAgenda(dateStart, startTime, endTime, duration, w) {
                     </div>
                 </div>
           </div>
+      <div class="row row-config-agenda hide">
+         <br>
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label for="start_date">Data de Início</label>
+              <input disabled name="start_date" id="start_date" type="date" value="${dateStart}">
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label for="end_date">Data de Fim</label>
+              <input disabled name="end_date" id="end_date" type="date" value="${dateStart}">
+            </div>
+          </div>
+        </div>
+        <br>
+         <div class="row">
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label for="start_time">Hora de Início</label>
+              <select disabled name="start_time" id="start_time" type="time" value="${startTime}"></select>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label for="end_time">Hora de Fim</label>
+              <select disabled name="end_time" id="end_time" type="time" value="${endTime}"></select>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row-title">Repetir em:</div>
+        <br>
+        <div class="row-weeks">
+            <div class="week-item${w == 1 ? ' active' : ''}">
+              <label for="dayofWeek_1">SEG</label>
+              <input disabled name="dayofWeek[]" id="dayofWeek_1" type="hidden" value="MO">
+            </div>
+
+            <div class="week-item${w == 2 ? ' active' : ''}">
+              <label for="dayofWeek_2">TER</label>
+              <input disabled name="dayofWeek[]" id="dayofWeek_2" type="hidden" value="TU">
+            </div>
+
+            <div class="week-item${w == 3 ? ' active' : ''}">
+              <label for="dayofWeek_3">QUA</label>
+              <input disabled name="dayofWeek[]" id="dayofWeek_3" type="hidden" value="WE">
+            </div>
+
+            <div class="week-item${w == 4 ? ' active' : ''}">
+              <label for="dayofWeek_4">QUI</label>
+              <input disabled name="dayofWeek[]" id="dayofWeek_4" type="hidden" value="TH">
+            </div>
+
+            <div class="week-item${w == 5 ? ' active' : ''}">
+              <label for="dayofWeek_5">SEX</label>
+              <input disabled name="dayofWeek[]" id="dayofWeek_5" type="hidden" value="FR">
+            </div>
+
+            <div class="week-item${w == 6 ? ' active' : ''}">
+              <label for="dayofWeek_6">SAB</label>
+              <input disabled name="dayofWeek[]" id="dayofWeek_6" type="hidden" value="SA">
+            </div>
+          </div>
 
           <br>
+
+           <div class="row">
+                <div class="col-12 col-md-6 row-center">
+                    <div class="form-group-checkbox">
+                    <input disabled name="modalidade[]" id="modalidade_online" type="checkbox" checked value="ONLINE">
+                    <label for="modalidade_online">ONLINE</label>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 row-center">
+                    <div class="form-group-checkbox">
+                    <input disabled name="modalidade[]" id="modalidade_presencial" type="checkbox" checked value="PRESENCIAL">
+                    <label for="modalidade_presencial">PRESENCIAL</label>
+                </div>
+            </div>
+        </div>
+          <br>
+        </div>
       `,
     showCancelButton: true,
     confirmButtonText: 'Confirmar',
@@ -181,25 +181,6 @@ function configAgenda(dateStart, startTime, endTime, duration, w) {
         }
       });
 
-      let times = getTimeSlots(startTime, endTime, duration);
-      let select_start = document.getElementById('start_time');
-      let select_end = document.getElementById('end_time');
-      for (let i = 0; i < times.length; i++) {
-        let option1 = document.createElement('option');
-        option1.value = times[i];
-        option1.text = times[i];
-        select_start.appendChild(option1);
-
-
-        let option2 = document.createElement('option');
-        option2.value = times[i];
-        option2.text = times[i];
-        select_end.appendChild(option2);
-      }
-
-
-      select_start.options[0].selected = true;
-      select_end.options[select_end.options.length - 1].selected = true;
 
       $.get('/forms/fetch.unidades.php', {
         medico_id: $('.calendar-slide').data('id'),
@@ -208,10 +189,41 @@ function configAgenda(dateStart, startTime, endTime, duration, w) {
         for (let i = 0; i < data.length; i++) {
           let unidade = data[i];
           let option = document.createElement('option');
-          option.value = `${unidade.nome}, ${unidade.logradouro}, ${unidade.numero} | ${unidade.bairro} | ${unidade.cidade}/${unidade.uf}`;
+          option.value = unidade.token;
           option.textContent = `${unidade.nome}`;
+          option.dataset.inicio = unidade.inicio_expediente;
+          option.dataset.fim = unidade.fim_expediente;
           document.getElementById('unidade_atendimento').appendChild(option);
         }
+
+        $('#unidade_atendimento').on('change', function () {
+
+          let selected_item = $('#unidade_atendimento option:selected');
+
+          let times = getTimeSlots($(selected_item).data('inicio'), $(selected_item).data('fim'), duration);
+          let select_start = document.getElementById('start_time');
+          let select_end = document.getElementById('end_time');
+          for (let i = 0; i < times.length; i++) {
+            let option1 = document.createElement('option');
+            option1.value = times[i];
+            option1.text = times[i];
+            select_start.appendChild(option1);
+
+
+            let option2 = document.createElement('option');
+            option2.value = times[i];
+            option2.text = times[i];
+            select_end.appendChild(option2);
+          }
+
+
+          select_start.options[0].selected = true;
+          select_end.options[select_end.options.length - 1].selected = true;
+
+
+          $('.row.row-config-agenda').find('[disabled]').removeAttr('disabled');
+          $('.row.row-config-agenda').css('display', 'flex');
+        });
       });
     },
     preConfirm: () => {

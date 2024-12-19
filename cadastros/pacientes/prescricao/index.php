@@ -5,6 +5,10 @@ $page->content = 'cadastros/pacientes/prescricao/main.php';
 $page->bc = true;
 $page->name = 'link_paciente';
 $page->require_login = true;
+$useSelector = true;
+$useDT = true;
+$useEditor = true;
+
 
 require_once $_SERVER['DOCUMENT_ROOT'].'/session.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/config.inc.php';

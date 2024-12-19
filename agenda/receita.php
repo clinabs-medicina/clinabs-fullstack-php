@@ -3,7 +3,6 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/config.inc.php');
 
 $paciente = $agenda->get($_REQUEST['token']);
 
-
 $html = '<!DOCTYPE html>
 <html>
 <head>

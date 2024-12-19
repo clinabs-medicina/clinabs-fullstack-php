@@ -93,7 +93,9 @@ function inline_files(string $type, array $files) {
             --light: #f8f9fa;
             --dark: #212529;
         }
-
+        .form-grid.row-4 {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
     </style>
     <?php
 
@@ -791,6 +793,26 @@ function inline_files(string $type, array $files) {
         align-items: center;
         margin-top: 18px;
         font-size: 11px;
+    }
+
+
+    label.week-time.week-schedule.listmedic-box-dir-time.active.disabled-wt {
+        background-color: #f9052a;
+        border-color: #f9052a;
+    }
+
+    .row.row-config-agenda {
+        display: none;
+        flex-direction: column;
+    }
+
+    .week-item label {
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .row-weeks .week-item input {
+        display: none;
     }
     </style>
 

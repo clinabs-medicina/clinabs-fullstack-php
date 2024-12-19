@@ -12,6 +12,8 @@
         "psr/http-message": "^2.0",
         "psr/log": "^3.0",
         "setasign/fpdi": "^2.6",
-        "mpdf/mpdf": "^8.2"
+        "mpdf/mpdf": "^8.2",
+        "ext-gd": "*",
+        "mpdf/psr-log-aware-trait": "^3.0"
     }
 }

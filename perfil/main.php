@@ -873,9 +873,12 @@
                                                     }
                                                     
                     
-                    
-                                                   
-                                                    
+                                                    $agendamentos_stmt = $pdo->query("SELECT (SELECT nome_completo FROM PACIENTES WHERE token = paciente_token) AS paciente_nome,data_agendamento FROM AGENDA_MED WHERE medico_token = '{$_GET['token']}'");
+                                                    $agendamentos = [];
+
+                                                    foreach($agendamentos_stmt->fetchAll(PDO::FETCH_OBJ) as $it) {
+                                                        $agendamentos[$it->data_agendamento] = $it->paciente_nome;
+                                                    }
                                                     
                                                     $calendar = json_decode($dados->calendario, true);
                                                     
@@ -893,12 +896,21 @@
                                                         $uniqid = uniqid();
                                        
                                                         if ($currentDate < $specificDate) {
-                        
-                                                            echo '<label id="'.$uniqid.'" data-obj="'.date('d/m/Y', strtotime($item['day'])).' '.$h.'" data-selection="'.$_id.'" data-atendimento="'.($checked ? $_item['endereco'] : $street_token).'" data-online="'.($_item['online'] == 1 ? 'true' : 'false').'" data-presencial="'.($_item['presencial'] == 1 ? 'true' : 'false').'" data-date="'.$item['day'].'" data-time="'.$h.'" class="week-time week-schedule listmedic-box-dir-time'.($checked ? ' active':'').'" checked="false">
+                                                            $dt = date('Y-m-d', strtotime($item['day']));
+                                                            if(isset($agendamentos[date('Y-m-d', strtotime($item['day'])).' '.$h.':00'])) {
+                                                                $disabled = ' disabled-wt';
+                                                                $dtf = date('d/m/Y H:i', strtotime(date('Y-m-d', strtotime($item['day'])).' '.$h.':00'));
+                                                                $pn = $agendamentos[date('Y-m-d', strtotime($item['day'])).' '.$h.':00'];
+                                                            } else {
+                                                                $disabled = '';
+                                                                $pn = '';
+                                                            }
+                                                            
+                                                            echo '<label '.($pn != "" ? "title=\"Consulta no dia: {$dtf} com {$pn}\"":"").'" id="'.$uniqid.'" data-obj="'.date('d/m/Y', strtotime($item['day'])).' '.$h.'" data-selection="'.$_id.'" data-atendimento="'.($checked ? $_item['endereco'] : $street_token).'" data-online="'.($_item['online'] == 1 ? 'true' : 'false').'" data-presencial="'.($_item['presencial'] == 1 ? 'true' : 'false').'" data-date="'.$item['day'].'" data-time="'.$h.'" class="week-time week-schedule listmedic-box-dir-time'.($checked ? ' active':'').''.$disabled.'" checked="false">
                                                                     '.$h.'H
-                                                                    <i class="fa fa-home'.(!parse_bool($_item['presencial']) && $checked ? ' icon-disabled':'').'" name="presencial"></i>
-                                                                    <i class="fa fa-globe'.(!parse_bool($_item['online']) && $checked ? ' icon-disabled':'').'" name="online"></i>
-                                                                    <i class="fa fa-gear" name="conf" data-id="'.$uniqid.'"></i>
+                                                                    <i '.($pn != "" ? ' style="pointer-events: none"':'').' class="fa fa-home'.(!parse_bool($_item['presencial']) && $checked ? ' icon-disabled':'').'" name="presencial"></i>
+                                                                    <i '.($pn != "" ? ' style="pointer-events: none"':'').'class="fa fa-globe'.(!parse_bool($_item['online']) && $checked ? ' icon-disabled':'').'" name="online"></i>
+                                                                    <i '.($pn != "" ? ' style="pointer-events: none"':'').'class="fa fa-gear" name="conf" data-id="'.$uniqid.'"></i>
                                                                 </label>';
                                                             
                                                         } else {

@@ -1937,82 +1937,155 @@ function editPrescFuncSR(elem, presc = false) {
 
 function addUnidade(elem = null) {
     Swal.fire({
-        title: "Nova Unidade",
+        title: elem == null ? "Nova Unidade" : "Editar Unidade",
         width: "75%",
-        html: `<form id="unidadeItem" style="width: 100%;padding: 0">
-                      <section class="form-grid area5">
-                          <section class="form-group"> 
-                              <label for="unidade_nome">Nome da Unidade</label>
-                              <input autocomplete="off" type="text" id="unidade_nome" class="form-control" name="unidade_nome" placeholder="Digite o nome Da Unidade.">
-                          </section>
-                          
-                          <section class="form-group"> 
-                              <label for="unidade_nome">Contato</label>
-                              <input autocomplete="off" type="text" id="unidade_contato" class="form-control" name="unidade_contato" placeholder="Digite o Telefone Da Unidade.">
-                          </section>
-                          
-                          <section class="form-group"> 
-                              <label for="unidade_image">Imagem</label>
-                              <input autocomplete="off" type="file" id="unidade_image" class="form-control" name="unidade_image" accept="image/*">
-                          </section>
-                      </section>
-                      
-                      <section class="form-grid area13">
-                          <section class="form-group"><label for="unidade_cep">CEP</label> <input autocomplete="off" value="" type="text" id="unidade_cep" name="unidade_cep" class="form-control" placeholder="__.____-___" maxlength="10" required="required" /></section>
-                          <section class="form-group"><label for="unidade_endereco">Endereo</label> <input autocomplete="off" value="" type="text" id="unidade_endereco" name="unidade_endereco" class="form-control" placeholder="Digite seu Endereo" required="required" /></section>
-                          <section class="form-group"><label for="unidade_numero">Número</label> <input autocomplete="off" value="" type="text" id="unidade_numero" name="unidade_numero" class="form-control" placeholder="N" required="required" /></section>
-                          <section class="form-group"><label for="unidade_complemento">Complemento</label> <input autocomplete="off" type="text" id="unidade_complemento" name="unidade_complemento" class="form-control" placeholder="Apto 13" value="" /></section>
-                      </section>
-  
-                      <section class="form-grid area5">
-                          <section class="form-group">
-                          <label for="unidade_cidade">Cidade</label> 
-                            <input autocomplete="off" value="" type="text" id="unidade_cidade" name="unidade_cidade" class="form-control" placeholder="Digite sua Cidade" required="required" /></section>
-                          <section class="form-group">
-                              <label for="unidade_bairro">Bairro</label> 
-                            <input autocomplete="off" value="" type="text" id="unidade_bairro" name="unidade_bairro" class="form-control" placeholder="Digite seu Bairro" required="required" /></section>
-                          <section class="form-group">
-                              <label for="unidade_uf">UF</label>
-                              <select class="form-select form-control" id="unidade_uf" name="unidade_uf">
-                                  <option value="AC">Acre</option>
-                                  <option value="AL">Alagoas</option>
-                                  <option value="AP">Amap</option>
-                                  <option value="AM">Amazonas</option>
-                                  <option value="BA">Bahia</option>
-                                  <option value="CE">Cear</option>
-                                  <option value="DF">Distrito Federal</option>
-                                  <option value="ES">Esprito Santo</option>
-                                  <option value="GO">Gois</option>
-                                  <option value="MA">Maranho</option>
-                                  <option value="MT">Mato Grosso</option>
-                                  <option value="MS">Mato Grosso do Sul</option>
-                                  <option value="MG">Minas Gerais</option>
-                                  <option value="PA">Par</option>
-                                  <option value="PB">Paraba</option>
-                                  <option value="PR">Paran</option>
-                                  <option value="PE">Pernambuco</option>
-                                  <option value="PI">Piau</option>
-                                  <option value="RJ">Rio de Janeiro</option>
-                                  <option value="RN">Rio Grande do Norte</option>
-                                  <option value="RS">Rio Grande do Sul</option>
-                                  <option value="RO">Rondnia</option>
-                                  <option value="RR">Roraima</option>
-                                  <option value="SC">Santa Catarina</option>
-                                  <option value="SP">So Paulo</option>
-                                  <option value="SE">Sergipe</option>
-                                  <option value="TO">Tocantins</option>
-                              </select>
-                             
-                          </section>
-                      </section>
-                      
-                      <section class="form-grid area-full">
-                          <section class="form-group">
-                              <label for="medicos_combobox">Médicos</label>
-                              <select class="form-control" name="unidade_medicos" id="medicos_combobox" multiple="multiple"></select>
-                          </div>
-                      </div>
-                  </form>`,
+        html: `<form id="unidadeItem" style="width: 100%; padding: 0;">
+                    <section class="form-grid area5">
+                        <section class="form-group">
+                            <label for="unidade_nome">Nome da Unidade</label>
+                            <input autocomplete="off" type="text" id="unidade_nome" class="form-control" name="unidade_nome" placeholder="Digite o nome Da Unidade." />
+                        </section>
+
+                        <section class="form-group">
+                            <label for="unidade_nome">Contato</label>
+                            <input autocomplete="off" type="text" id="unidade_contato" class="form-control" name="unidade_contato" placeholder="Digite o Telefone Da Unidade." />
+                        </section>
+
+                        <section class="form-group">
+                            <label for="unidade_image">Imagem</label>
+                            <input autocomplete="off" type="file" id="unidade_image" class="form-control" name="unidade_image" accept="image/*" />
+                        </section>
+                    </section>
+
+                    <section class="form-grid area13">
+                        <section class="form-group">
+                            <label for="unidade_cep">CEP</label> <input autocomplete="off" value="" type="text" id="unidade_cep" name="unidade_cep" class="form-control" placeholder="__.____-___" maxlength="10" required="required" />
+                        </section>
+                        <section class="form-group">
+                            <label for="unidade_endereco">Endereo</label> <input autocomplete="off" value="" type="text" id="unidade_endereco" name="unidade_endereco" class="form-control" placeholder="Digite seu Endereo" required="required" />
+                        </section>
+                        <section class="form-group"><label for="unidade_numero">Número</label> <input autocomplete="off" value="" type="text" id="unidade_numero" name="unidade_numero" class="form-control" placeholder="N" required="required" /></section>
+                        <section class="form-group">
+                            <label for="unidade_complemento">Complemento</label> <input autocomplete="off" type="text" id="unidade_complemento" name="unidade_complemento" class="form-control" placeholder="Apto 13" value="" />
+                        </section>
+                    </section>
+
+                    <section class="form-grid area5">
+                        <section class="form-group">
+                            <label for="unidade_cidade">Cidade</label>
+                            <input autocomplete="off" value="" type="text" id="unidade_cidade" name="unidade_cidade" class="form-control" placeholder="Digite sua Cidade" required="required" />
+                        </section>
+                        <section class="form-group">
+                            <label for="unidade_bairro">Bairro</label>
+                            <input autocomplete="off" value="" type="text" id="unidade_bairro" name="unidade_bairro" class="form-control" placeholder="Digite seu Bairro" required="required" />
+                        </section>
+                        <section class="form-group">
+                            <label for="unidade_uf">UF</label>
+                            <select class="form-select form-control" id="unidade_uf" name="unidade_uf">
+                                <option value="AC">Acre</option>
+                                <option value="AL">Alagoas</option>
+                                <option value="AP">Amapá</option>
+                                <option value="AM">Amazonas</option>
+                                <option value="BA">Bahia</option>
+                                <option value="CE">Ceará</option>
+                                <option value="DF">Distrito Federal</option>
+                                <option value="ES">Esprito Santo</option>
+                                <option value="GO">Goiás</option>
+                                <option value="MA">Maranhão</option>
+                                <option value="MT">Mato Grosso</option>
+                                <option value="MS">Mato Grosso do Sul</option>
+                                <option value="MG">Minas Gerais</option>
+                                <option value="PA">Pará</option>
+                                <option value="PB">Paraíba</option>
+                                <option value="PR">Paraná</option>
+                                <option value="PE">Pernambuco</option>
+                                <option value="PI">Piauí</option>
+                                <option value="RJ">Rio de Janeiro</option>
+                                <option value="RN">Rio Grande do Norte</option>
+                                <option value="RS">Rio Grande do Sul</option>
+                                <option value="RO">Rondônia</option>
+                                <option value="RR">Roraima</option>
+                                <option value="SC">Santa Catarina</option>
+                                <option value="SP">São Paulo</option>
+                                <option value="SE">Sergipe</option>
+                                <option value="TO">Tocantins</option>
+                            </select>
+                        </section>
+                    </section>
+
+                    <section class="form-grid row-4">
+                        <div class="form-group">
+                            <label for="inicio_expediente">Inicio Atendimento</label>
+                            <input autocomplete="off" type="time" name="inicio_expediente" id="inicio_expediente" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fim_expediente">Fim Atendimento</label>
+                            <input autocomplete="off" type="time" name="fim_expediente" id="fim_expediente" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tipo_atendimento">Tipo de Atendimento</label>
+                            <select class="form-select form-control" id="tipo_atendimento" name="tipo_atendimento">
+                                <option value="ONLINE">ONLINE</option>
+                                <option value="PRESENCIAL">PRESENCIAL</option>
+                                <option value="TODOS">TODOS</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="unidade_status">Status</label>
+                            <select class="form-select form-control" id="unidade_status" name="unidade_status">
+                                <option value="ATIVO">ATIVO</option>
+                                <option value="INATIVO">INATIVO</option>
+                            </select>
+                        </div>
+                    </section>
+
+                    <section class="form-grid area-full">
+                        <section class="form-group">
+                            <label for="medicos_combobox">Médicos</label>
+                            <select class="form-control" name="unidade_medicos" id="medicos_combobox" multiple="multiple"></select>
+                        </section>
+                    </section>
+
+                    <section class="form-grid area-full">
+                        <label for="dias_semana">Selecione os dias da Semnana</label>
+                    </section>
+
+                    <div class="row-weeks">
+                        <div class="week-item active">
+                            <label for="dayofWeek_1">SEG</label>
+                            <input name="dayofWeek[]" id="dayofWeek_1" type="checkbox" value="MO" checked="checked">
+                        </div>
+
+                        <div class="week-item active">
+                            <label for="dayofWeek_2">TER</label>
+                            <input name="dayofWeek[]" id="dayofWeek_2" type="checkbox" value="TU" checked="checked">
+                        </div>
+
+                        <div class="week-item active">
+                            <label for="dayofWeek_3">QUA</label>
+                            <input name="dayofWeek[]" id="dayofWeek_3" type="checkbox" value="WE" checked="checked">
+                        </div>
+
+                        <div class="week-item active">
+                            <label for="dayofWeek_4">QUI</label>
+                            <input name="dayofWeek[]" id="dayofWeek_4" type="checkbox" value="TH" checked="checked">
+                        </div>
+
+                        <div class="week-item active">
+                            <label for="dayofWeek_5">SEX</label>
+                            <input name="dayofWeek[]" id="dayofWeek_5" type="checkbox" value="FR" checked="checked">
+                        </div>
+
+                        <div class="week-item">
+                            <label for="dayofWeek_6">SAB</label>
+                            <input name="dayofWeek[]" id="dayofWeek_6" type="checkbox" value="SA" checked="checked">
+                        </div>
+                    </div>
+                </form>
+                `,
         showCancelButton: false,
         showConfirmButton: true,
         showDenyButton: true,
@@ -2021,6 +2094,13 @@ function addUnidade(elem = null) {
         denyButtonText: "Cancelar",
         padding: "1rem",
         didOpen: function () {
+            $('.row-weeks .week-item input').on('click', function () {
+                if ($(this).is(':checked')) {
+                    $(this).closest('.week-item').addClass('active');
+                } else {
+                    $(this).closest('.week-item').removeClass('active');
+                }
+            })
             $.get(
                 "/forms/fetch.tb.php?tb=MEDICOS&key=nome_completo",
                 function (medicos) {
@@ -2061,6 +2141,11 @@ function addUnidade(elem = null) {
                 $("#unidade_cidade").val(data.cidade);
                 $("#unidade_bairro").val(data.bairro);
                 $("#unidade_uf").val(data.uf);
+
+                $('#inicio_expediente').val(data.inicio_expediente);
+                $('#fim_expediente').val(data.fim_expediente);
+                $('#tipo_atendimento').val(data.tipo_atendimento);
+                $('#unidade_status').val(data.unidade_status);
             }
 
             $("#unidade_contato").mask("(00) 0000-0000", {

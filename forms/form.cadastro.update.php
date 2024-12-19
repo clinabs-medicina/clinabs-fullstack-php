@@ -38,6 +38,10 @@ if (isset($request["enderecos"])) {
 	 `user_token`, 
      `tipo_endereco`,                                 
 	 `isDefault`,
+     `inicio_expediente`,
+     `fim_expediente`,
+     `tipo_atendimento`,
+     `unidade_status`,
 	 `token`)
     VALUES
 	(
@@ -52,19 +56,27 @@ if (isset($request["enderecos"])) {
 	:user_token, 
 	:tipo_endereco,
 	:isDefault,
+    :inicio_expediente,
+    :fim_expediente,
+    :tipo_atendimento,
+    :unidade_status,
 	:token
 	) ON DUPLICATE KEY 
 	UPDATE
-	 nome = :nome, 
-     cep = :cep,
-     logradouro = :logradouro,
-	 numero = :numero, 
-	 complemento = :complemento, 
-	 cidade = :cidade, 
-	 bairro = :bairro, 
-	 uf = :uf, 
-	 tipo_endereco = :tipo_endereco,
-	 isDefault = :isDefault");
+	nome = :nome, 
+    cep = :cep,
+    logradouro = :logradouro,
+	numero = :numero, 
+	complemento = :complemento, 
+	cidade = :cidade, 
+	bairro = :bairro, 
+	uf = :uf, 
+	tipo_endereco = :tipo_endereco,
+    inicio_expediente = :inicio_expediente,
+    fim_expediente = :fim_expediente,
+    tipo_atendimento = :tipo_atendimento,
+    unidade_status = :unidade_status,
+	isDefault = :isDefault");
 	
 	$stmt->bindValue(':nome', $endereco->nome); 
     $stmt->bindValue(':cep', $endereco->cep);
@@ -77,6 +89,11 @@ if (isset($request["enderecos"])) {
     $stmt->bindValue(':user_token', $user_token);
     $stmt->bindValue(':tipo_endereco', $endereco->tipo_endereco);
     $stmt->bindValue(':isDefault', (!empty($endereco->isDefault) && $endereco->isDefault == true) ? 1 : 0);
+    $stmt->bindValue(':tipo_endereco', $endereco->tipo_endereco);
+    $stmt->bindValue(':inicio_expediente', $endereco->inicio_expediente);
+    $stmt->bindValue(':fim_expediente', $endereco->fim_expediente);
+    $stmt->bindValue(':tipo_atendimento', $endereco->tipo_atendimento);
+    $stmt->bindValue(':unidade_status', $endereco->unidade_status);
     $stmt->bindValue(':token', $token);
     
         try {
