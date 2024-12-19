@@ -10,8 +10,8 @@ function newAgendamento() {
         allowOutsideClick: false,
         width: window.innerWidth > 1024 ? 700 : '90%',
         showCancelButton: false,
-        showConfirmButton: false,
-        showDenyButton: false,
+        showConfirmButton: true,
+        showDenyButton: true,
         confirmButtonText: 'CONFIRMAR',
         denyButtonText: 'CANCELAR',
         html: `
@@ -96,17 +96,17 @@ function newAgendamento() {
                     </div>
                 </div>
 
-                <div class="row-evenly">
-                    <button type="submit" class="swal2-confirm swal2-styled" aria-label="" style="display: inline-block;">CONFIRMAR</button>
-                    <button type="button" class="swal2-deny swal2-styled" aria-label="" style="display: inline-block;">CANCELAR</button>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="descricao">Observação</label>
+                        <textarea name="descricao" id="descricao" value="" required placeholder="Digite uma Observação, Ex. Dr. João Autorizou o Agendamento de Emergência para o Paciente...">
+                        </textarea>
+                    </div>
                 </div>
+            </div>
             </form>
         `,
-        preConfirm: () => {
-            $('#newAgendamento').submit();
-            preloader('Enviando dados de agendamento...');
-            return false;
-        },
         didOpen: () => {
             $.get('/forms/fetch.tb.php?tb=pacientes&key=token,nome_completo').done(function (data) {
                 for (let i in data.results) {
@@ -182,11 +182,25 @@ function newAgendamento() {
                 Swal.close();
             });
 
-            $('select').select2();
+            $('select[name]').select2();
         }
     }).then(function (evt) {
         if (evt.isConfirmed) {
-            window.location.reload();
+            const data = $('#newAgendamento').serializeArray();
+
+            preloader('Enviando dados de agendamento...');
+
+            $.post('/form/agendamento.manual.php', data).done(function (resp) {
+                Swal.fire(resp).then(function () {
+                    window.location.reload();
+                });
+            }).fail(function () {
+                Swal.fire({
+                    title: "Atenção",
+                    text: "Erro ao Enviar a Solicita\xe7\xe3o, tente novamente",
+                    icon: "error"
+                });
+            });
         }
     });
 }

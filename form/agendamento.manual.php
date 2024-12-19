@@ -56,6 +56,7 @@ $ag->data_agendamento = date('Y-m-d H:i:s', strtotime($_REQUEST["dataAgendamento
 $ag->duracao_agendamento = $medico->duracao_atendimento;
 $ag->valor = $_REQUEST["valorConsulta"];
 $ag->meet = json_encode($room);
+$ag->descricao = $_REQUEST["descricao"];
 $ag->payment_method = $_REQUEST["formaPgto"];
 
 if($_REQUEST['formaPgto'] == 'ABONAR') {
@@ -65,10 +66,11 @@ if($_REQUEST['formaPgto'] == 'ABONAR') {
 }
 
 
-$sql = "INSERT INTO `AGENDA_MED` (`valor`,`paciente_token`, `medico_token`, `modalidade`, `anamnese`, `data_agendamento`, `duracao_agendamento`, `meet`, `token`, `payment_method`, `status`) 
-VALUES (:valor, :paciente_token, :medico_token, :modalidade, :anamnese, :data_agendamento, :duracao_agendamento, :meet, :token, :payment_method, :sts);";
+$sql = "INSERT INTO `AGENDA_MED` (`descricao`, `valor`,`paciente_token`, `medico_token`, `modalidade`, `anamnese`, `data_agendamento`, `duracao_agendamento`, `meet`, `token`, `payment_method`, `status`) 
+VALUES (:descricao, :valor, :paciente_token, :medico_token, :modalidade, :anamnese, :data_agendamento, :duracao_agendamento, :meet, :token, :payment_method, :sts);";
 
 $stmt = $pdo->prepare($sql);
+$stmt->bindValue(":descricao", $ag->descricao);
 $stmt->bindValue(":valor", $ag->valor);
 $stmt->bindValue(":paciente_token", $ag->paciente_token);
 $stmt->bindValue(":medico_token", $ag->medico_token);
