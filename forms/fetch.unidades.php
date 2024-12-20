@@ -21,6 +21,13 @@ if(isset($_GET['time'])) {
     }
 
     echo json_encode($results, JSON_PRETTY_PRINT);
-} else {
+} 
+else if(isset($_GET['all'])) {
+    $stmt = $pdo->query("SELECT nome,logradouro,numero,cidade,uf,bairro,token,inicio_expediente,fim_expediente FROM `ENDERECOS` WHERE tipo_endereco = 'ATENDIMENTO' AND user_token = '{$token}' UNION SELECT nome,logradouro,numero,cidade,uf,bairro,token,inicio_expediente,fim_expediente FROM `UNIDADES` WHERE status = 'ATIVO'");
+    $unidades = $stmt->fetchAll(PDO::FETCH_OBJ);
+    
+    echo json_encode($unidades, JSON_PRETTY_PRINT);
+}
+else {
     echo json_encode($unidades, JSON_PRETTY_PRINT);
 }

@@ -2032,3 +2032,32 @@ input#produtoSearch {
 button.btn-table-item[disabled] {
     filter: grayscale(1);
 }
+
+
+.listmedic-box-dir-time {
+    display: flex;
+    border: 2px solid #03E3C1;
+    border-radius: .4rem;
+    align-items: center;
+    padding: 4px 6px !important;
+    text-align: center;
+    width: fit-content;
+    gap: 7px;
+    transition-duration: .2s;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.listmedic-box-dir-time:hover {
+    display: flex;
+    border: 2px solid #03E3C1;
+    border-radius: .4rem;
+    align-items: center;
+    padding: 4px 6px !important;
+    text-align: center;
+    width: fit-content;
+    gap: 7px;
+    transition-duration: .2s;
+    justify-content: center;
+    flex-direction: row;
+}

@@ -9,7 +9,7 @@ $("document").ready(function () {
             <p><small><b>Unidade: </b> ${$(t).attr("data-street-name").toUpperCase()}</small></p>
             <p><small><b>Endere\xe7o: </b> ${$(t).attr("data-street")}</small></p>
             <p><small><b>Dura\xe7\xe3o: </b> ${a} Minutos</small></p>
-            <p><small><b>Dr(a): </b> ${$(t).closest(".box-mediclist").find(".listmedic-box-dir-user").find("h3").text()}</small></p>
+            <p><small><b>Dr(a): </b> ${$(t).closest(".box-mediclist").find(".listmedic-box-dir-user").find("h4").text()}</small></p>
             <p><small><b>CRM: </b> ${$(t).closest(".box-mediclist").find(".listmedic-box-dir-user").find(".crm-bg").text().replace("CRM ", "")}</small></p>
             <p><small><b>Especialidade: </b> ${$(t).closest(".box-mediclist").find(".listmedic-box-dir-subtitle").text()}</small></p>
             <p><small><b>Valor: </b> ${$(t).closest(".box-mediclist").find(".btn-modalidade:checked").data("value").toLocaleString("pt-br", { style: "currency", currency: "BRL" })}</small></p>
