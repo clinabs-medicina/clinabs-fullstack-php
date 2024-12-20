@@ -9,3 +9,4 @@ deploy.json
 *.inc.php
 *.txt
 forms/*.txt
+*.htaccess
