@@ -832,7 +832,7 @@
                     }
                     
                     echo "<div class=\"calendar-box-container\">";
-                    echo "<button class=\"btn-button1 ag-config\" type=\"button\" data-date=\"".date('Y-m-d')."\" data-timestart=\"".date('H:i', strtotime($_user->inicio_ag))."\" data-timeend=\"".date('H:i', strtotime($_user->fim_ag))."\" data-duration=\"".$_user->duracao_atendimento."\" data-week=\"".date('w')."\"><i class=\"fas fa-gear fa-lg\"></i> Configuar Agendamento</button>";
+                    echo "<button class=\"btn-button1 ag-config\" type=\"button\" data-date=\"".date('Y-m-d')."\" data-timestart=\"".date('H:i', strtotime($_user->inicio_ag))."\" data-timeend=\"".date('H:i', strtotime($_user->fim_ag))."\" data-duration=\"".$_user->duracao_atendimento."\" data-week=\"".date('w')."\"><i class=\"fas fa-gear fa-lg\"></i> Configurar Agendamento</button>";
                     echo "<button class=\"btn-button1\" type=\"button\" onclick=\"clearAgenda()\"><i class=\"fas fa-broom fa-lg\"></i> Limpar Agenda</button>";
                     echo "<button class=\"btn-button1\" type=\"button\" onclick=\"syncAgenda()\"><i class=\"fas fa-calendar fa-lg\"></i> Sincronizar Agenda</button>";
                     echo "</div>";

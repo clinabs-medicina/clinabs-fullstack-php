@@ -1,3 +1,59 @@
+<?php
+
+
+function getUnidades(PDO $pdo) {
+    $agendamentos_unidades = [];
+
+    $today = date('Y-m-d');
+
+    $unidades = [];
+
+    $_unidades = $pdo->query("SELECT nome, token FROM UNIDADES")->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach($_unidades as $unidade) {
+        $unidades[$unidade['token']] = $unidade['nome'];
+    }
+
+    $stmt = $pdo->prepare("SELECT data_agendamento,unidade_atendimento FROM `AGENDA_MED` WHERE `data_agendamento` LIKE :dt AND `unidade_atendimento` LIKE '%UNIDADES%'");
+    $stmt->bindValue(':dt', "{$today}%");
+    $stmt->execute();
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $array = [];
+
+        $dados = json_decode($row['unidade_atendimento'], true);
+
+        $array['nome'] = $unidades[$dados['token']];
+
+        if(isset($row['unidade_atendimento'])) {
+            $item = $row;
+
+            $un = $pdo->query('SELECT * FROM UNIDADES WHERE token = "'.$dados['token'].'"')->fetch(PDO::FETCH_ASSOC);
+
+            $agendamentos_unidades[$dados['token']][$item['data_agendamento']] = $un;
+        }
+    }
+
+    return $agendamentos_unidades;
+}
+
+function get_enderecos($pdo) {
+    $stmt = $pdo->query("SELECT nome, logradouro, numero, cidade, bairro, cep, uf, token FROM `UNIDADES` UNION SELECT nome, logradouro, numero, cidade, bairro, cep, uf, token FROM `ENDERECOS`");
+
+    $enderecos = [];
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $enderecos[$row['token']] = $row;
+    }           
+
+    return $enderecos;
+}
+
+
+$_agendamentos_unidades = getUnidades($pdo);
+
+$_enderecos = get_enderecos($pdo);
+?>
 <section class="main">
     <section>
         <h1 class="titulo-h1">Agendamento</h1>
@@ -39,7 +95,8 @@
                         	calendario LIKE '%\"{$DATE}\"%' 
                         	AND TB1.medico_token = TB2.token 
                         	AND TB2.`status` = 'ATIVO'";
-                 } else {
+                 }
+                  else {
                      if(isset($_GET['filter_ag']) && $_GET['filter_ag'] == 'medicos') {
                          $sql = "SELECT DISTINCT
                         	TB1.medico_token,
@@ -139,6 +196,14 @@
 
                         	    $agendamentos = json_decode($item->calendario, true)[$DATE];
 
+                                try {
+                                    $unidade_token = json_decode($item->calendario, true)['token'];
+                                    $unidade_tipo = json_decode($item->calendario, true)['table'];
+                                } catch (Exception $e) {
+                                    $unidade_token = null;
+                                    $unidade_tipo = null;
+                                }
+
                                 $prefixo = strtoupper($item->identidade_genero) == 'FEMININO' ? 'Dra.':'Dr.';
 
 
@@ -206,6 +271,8 @@
                                 foreach($agendamentos as $ag) {
                                     $online = $ag['online'];
                                     $presencial = $ag['presencial'];
+
+                                    $unidade_token = $ag['token'];
                                     
          
                                       if(!in_array(date('Y-m-d H:i', strtotime($_GET['data'].' '.$ag['time'])), $hrs) && strtotime($_GET['data'].' '.$ag['time']) > strtotime(date('Y-m-d H:i')))
@@ -283,30 +350,35 @@
                                                       if(!in_array(date('Y-m-d H:i', strtotime($_GET['data'].' '.$ag['time'])), $hrs) && strtotime($_GET['data'].' '.$ag['time']) > strtotime(date('Y-m-d H:i')))
                                                         {
                                                             $xx = $pdo->query("SELECT data_agendamento FROM AGENDA_MED WHERE data_agendamento = '{$_GET["data"]} {$ag["time"]}' AND medico_token = '{$item->medico_token}'");
-                                                            if($xx->rowCount() == 0){
+                                                            
+                                                            $data_agendamento = "{$_GET['data']} {$ag['time']}:00";
+
+                                                            if($xx->rowCount() == 0 && !isset($_agendamentos_unidades[$ag['endereco']][$data_agendamento])) {
                                                                 $online  = $online ? 'SIM':'NÃO';
                                                                 $presencial = $presencial ? 'SIM':'NÃO';
                                                                 $title = '';
                                                                 $time_left = (strtotime($ag['date'].' '.$ag['time']) - time());
                                                                 $time_limit = ($item->tempo_limite_online * 60);
+
+                                                                
                                                                 
                                                                 if($time_left >= $time_limit && $ag['online'] && $ag['presencial'] && (strtotime(date('H:i'))) >= strtotime($horario_funcionamento['inicio']) && (strtotime(date('H:i'))) < strtotime($horario_funcionamento['fim'])) {
                                                                     $xy++;
-                                                                    echo '<div data-date="'.date('d/m/Y', strtotime($_GET['data'])).'" title="'.$title.'" class="ag-item-time-btn" data-street-name="'.$ag['endereco_nome'].'" data-street="'.$ag['desc'].'" data-online="'.($ag['online']).'" data-presencial="'.($ag['presencial']).'">
+                                                                    echo '<div data-street="'."{$_enderecos[$ag['endereco']]['logradouro']}, {$_enderecos[$ag['endereco']]['numero']} | {$_enderecos[$ag['endereco']]['cidade']}/{$_enderecos[$ag['endereco']]['uf']} | {$_enderecos[$ag['endereco']]['bairro']} | {$_enderecos[$ag['endereco']]['cep']}".'" data-street-name="'.$_enderecos[$ag['endereco']]['nome'].'" data-unidade="'.$ag['endereco'].'" data-date="'.date('d/m/Y', strtotime($_GET['data'])).'" title="'.$title.'" class="ag-item-time-btn" data-online="'.($ag['online']).'" data-presencial="'.($ag['presencial']).'">
                                                                         <img src="/assets/images/ico-agenda-clock.svg" height="25px">'.$ag['time'].'
                                                                     </div>';
                                                                 } else {
                                                                     if($ag['presencial']) {
                                                                         if($time_left >= $time_limit) {
                                                                             $xy++;
-                                                                            echo '<div data-date="'.date('d/m/Y', strtotime($_GET['data'])).'" title="'.$title.'" class="ag-item-time-btn" data-street-name="'.$ag['endereco_nome'].'" data-street="'.$ag['desc'].'" data-online="'.($ag['online']).'" data-presencial="'.($ag['presencial']).'">
+                                                                            echo '<div data-street="'."{$_enderecos[$ag['endereco']]['logradouro']}, {$_enderecos[$ag['endereco']]['numero']} | {$_enderecos[$ag['endereco']]['cidade']}/{$_enderecos[$ag['endereco']]['uf']} | {$_enderecos[$ag['endereco']]['bairro']} | {$_enderecos[$ag['endereco']]['cep']}".'" data-street-name="'.$_enderecos[$ag['endereco']]['nome'].'"  data-unidade="'.$ag['endereco'].'" data-date="'.date('d/m/Y', strtotime($_GET['data'])).'" title="'.$title.'" class="ag-item-time-btn" data-online="'.($ag['online']).'" data-presencial="'.($ag['presencial']).'">
                                                                                 <img src="/assets/images/ico-agenda-clock.svg" height="25px">'.$ag['time'].'
                                                                             </div>';
                                                                         }
                                                                     } else {
                                                                         if($time_left >= $time_limit) {
                                                                             $xy++;
-                                                                            echo '<div data-date="'.date('d/m/Y', strtotime($_GET['data'])).'" title="'.$title.'" class="ag-item-time-btn" data-street-name="'.$ag['endereco_nome'].'" data-street="'.$ag['desc'].'" data-online="'.($ag['online']).'" data-presencial="'.($ag['presencial']).'">
+                                                                            echo '<div data-street="'."{$_enderecos[$ag['endereco']]['logradouro']}, {$_enderecos[$ag['endereco']]['numero']} | {$_enderecos[$ag['endereco']]['cidade']}/{$_enderecos[$ag['endereco']]['uf']} | {$_enderecos[$ag['endereco']]['bairro']} | {$_enderecos[$ag['endereco']]['cep']}".'" data-street-name="'.$_enderecos[$ag['endereco']]['nome'].'"  data-unidade="'.$ag['endereco'].'" data-date="'.date('d/m/Y', strtotime($_GET['data'])).'" title="'.$title.'" class="ag-item-time-btn" data-online="'.($ag['online']).'" data-presencial="'.($ag['presencial']).'">
                                                                                 <img src="/assets/images/ico-agenda-clock.svg" height="25px">'.$ag['time'].'
                                                                             </div>';
                                                                         }
