@@ -4,7 +4,7 @@ RewriteEngine On
 # Permitir acesso ao próprio arquivo manutencao.php
 RewriteCond %{REQUEST_URI} !^/manutencao\.php$
 
-# Permitir acesso a arquivos específicos (como imagens, CSS, ou JavaScript)
+# Permitir acesso a arquivos específicos
 RewriteCond %{REQUEST_URI} !\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|otf|eot)$ [NC]
 
 # Redirecionar todas as outras requisições para manutencao.php
