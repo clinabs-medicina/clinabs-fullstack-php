@@ -77,9 +77,11 @@ if((strtotime($date) - time()) > $tempo_limite) {
         $ag->meet = json_encode($room);
         $ag->payment_method = $_REQUEST["payment_mode"];
         $ag->cupom = $_REQUEST["cupom"];
+        $ag->unidade_atendimento = '{"token": "'.$_REQUEST["endereco"].'", "table": "'.$_REQUEST["tipo_endereco"].'"}';
 
-        $sql = "INSERT INTO `AGENDA_MED` (`cupom`,`valor`,`paciente_token`, `medico_token`, `modalidade`, `anamnese`, `data_agendamento`, `duracao_agendamento`, `descricao`, `meet`, `token`, `payment_method`) 
-        VALUES (:cupom, :valor, :paciente_token, :medico_token, :modalidade, :anamnese, :data_agendamento, :duracao_agendamento, :descricao, :meet, :token, :payment_method);";
+
+        $sql = "INSERT INTO `AGENDA_MED` (`cupom`,`valor`,`paciente_token`, `medico_token`, `modalidade`, `anamnese`, `data_agendamento`, `duracao_agendamento`, `descricao`, `meet`, `token`, `payment_method`, `unidade_atendimento`) 
+        VALUES (:cupom, :valor, :paciente_token, :medico_token, :modalidade, :anamnese, :data_agendamento, :duracao_agendamento, :descricao, :meet, :token, :payment_method, :unidade_atendimento);";
 
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(":cupom", $ag->cupom);
@@ -94,6 +96,7 @@ if((strtotime($date) - time()) > $tempo_limite) {
         $stmt->bindValue(":meet", $ag->meet);
         $stmt->bindValue(":token", $ag->token);
         $stmt->bindValue(":payment_method", $ag->payment_method);
+        $stmt->bindValue(":unidade_atendimento", $ag->unidade_atendimento);
 
         try {
             if ($_REQUEST["add_new"] != $_REQUEST["cpf"]) {
@@ -540,7 +543,7 @@ if((strtotime($date) - time()) > $tempo_limite) {
                             $json = [
                                 "status" => "error",
                                 "text" => "Erro ao Agendar Consulta, Verifique os dados digitados",
-                                "data" => $link->errors
+                                "data" => $ex->getMessage()
                             ];
                         }
                 } 
@@ -568,7 +571,6 @@ if((strtotime($date) - time()) > $tempo_limite) {
                 "status" => "warning",
                 "icon" => "error",
                 "text" => "Ocorreu um Erro ao Agendar a Consulta",
-                "data" => []
             ];
         }
     } else {
@@ -576,8 +578,7 @@ if((strtotime($date) - time()) > $tempo_limite) {
             "status" => "warning",
             "redirect" => "/agendamento",
             "icon" => "warning",
-            "text" => "Descupe-nos, mas este horário não está mais disponível no momento.",
-            "data" => []
+            "text" => "Descupe-nos, mas este horário não está mais disponível no momento."
         ];
     }
 } else {
@@ -585,8 +586,7 @@ if((strtotime($date) - time()) > $tempo_limite) {
         "status" => "warning",
         "redirect" => "/agendamento",
         "icon" => "warning",
-        "text" =>  "Descupe-nos, mas este horário não está mais disponível no momento.",
-        "data" => []
+        "text" =>  "Descupe-nos, mas este horário não está mais disponível no momento."
     ];
 }
 

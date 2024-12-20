@@ -204,6 +204,8 @@ $valor_consulta = strtolower($_GET['atendimento']) == 'online' ? $_GET['valor_co
             </div>
 
             <div class="form-footer">
+                <input type="hidden" name="endereco" value="<?=($_GET['endereco'])?>">
+                <input type="hidden" name="tipo_endereco" value="<?=($_GET['tipo_endereco'])?>">
                 <input type="hidden" name="fid" value="<?=($user->tipo == 'FUNCIONARIO' ? $user->token : '')?>">
                 <input type="hidden" name="pid" id="pid" value="">
                 <input type="hidden" name="atendimento" value="<?=($_GET['atendimento'])?>">

@@ -1,10 +1,8 @@
 <?php
-
-
 function getUnidades(PDO $pdo) {
     $agendamentos_unidades = [];
 
-    $today = date('Y-m-d');
+    $today = $_GET['data'];
 
     $unidades = [];
 
@@ -14,7 +12,7 @@ function getUnidades(PDO $pdo) {
         $unidades[$unidade['token']] = $unidade['nome'];
     }
 
-    $stmt = $pdo->prepare("SELECT data_agendamento,unidade_atendimento FROM `AGENDA_MED` WHERE `data_agendamento` LIKE :dt AND `unidade_atendimento` LIKE '%UNIDADES%'");
+    $stmt = $pdo->prepare("SELECT data_agendamento,unidade_atendimento,modalidade FROM `AGENDA_MED` WHERE `data_agendamento` LIKE :dt AND `unidade_atendimento` LIKE '%UNIDADES%'");
     $stmt->bindValue(':dt', "{$today}%");
     $stmt->execute();
 
@@ -29,6 +27,7 @@ function getUnidades(PDO $pdo) {
             $item = $row;
 
             $un = $pdo->query('SELECT * FROM UNIDADES WHERE token = "'.$dados['token'].'"')->fetch(PDO::FETCH_ASSOC);
+            $un['modalidade'] = $row['modalidade'];
 
             $agendamentos_unidades[$dados['token']][$item['data_agendamento']] = $un;
         }
@@ -50,9 +49,23 @@ function get_enderecos($pdo) {
 }
 
 
+function getU($pdo, $token) {
+    try {
+        $stmt = $pdo->prepare("SELECT nome,token,'UNIDADES' AS tipo FROM `UNIDADES` WHERE `token` = :token UNION SELECT nome,token,'ENDERECOS' AS tipo FROM `ENDERECOS` WHERE `token` = :token");
+        $stmt->bindValue(':token', $token);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        return null;
+    }
+}
+
 $_agendamentos_unidades = getUnidades($pdo);
 
 $_enderecos = get_enderecos($pdo);
+
+file_put_contents('agendamentos_unidade.txt', json_encode($_agendamentos_unidades, JSON_PRETTY_PRINT));
 ?>
 <section class="main">
     <section>
@@ -278,6 +291,10 @@ $_enderecos = get_enderecos($pdo);
                                       if(!in_array(date('Y-m-d H:i', strtotime($_GET['data'].' '.$ag['time'])), $hrs) && strtotime($_GET['data'].' '.$ag['time']) > strtotime(date('Y-m-d H:i')))
                                         {
                                             $xx = $pdo->query("SELECT data_agendamento FROM AGENDA_MED WHERE data_agendamento = '{$_GET["data"]} {$ag["time"]}' AND medico_token = '{$item->medico_token}'");
+                                            
+                                            $data_agendamento = "{$_GET['data']} {$ag['time']}:00";
+                                    
+
                                             if($xx->rowCount() == 0){
                                                 $online  = $online ? 'SIM':'NÃO';
                                                 $presencial = $presencial ? 'SIM':'NÃO';
@@ -288,7 +305,7 @@ $_enderecos = get_enderecos($pdo);
                                                 if($time_left >= $time_limit && $ag['online'] && $ag['presencial']) {
                                                     $include = true;
                                                 } else {
-                                                    if($ag['presencial']) {
+                                                    if($ag['presencial']  && !isset($_agendamentos_unidades[$ag['endereco']][$data_agendamento])) {
                                                         if($time_left >= $time_limit) {
                                                             $include = true;
                                                         }
@@ -301,6 +318,8 @@ $_enderecos = get_enderecos($pdo);
                                             }
                                       }
                                 }
+
+                                
 
                                 if($include) {
                         	    echo '<form class="box-mediclist" method="GET" action="/agenda/consulta" id="form_'.$id.'">
@@ -353,7 +372,7 @@ $_enderecos = get_enderecos($pdo);
                                                             
                                                             $data_agendamento = "{$_GET['data']} {$ag['time']}:00";
 
-                                                            if($xx->rowCount() == 0 && !isset($_agendamentos_unidades[$ag['endereco']][$data_agendamento])) {
+                                                          
                                                                 $online  = $online ? 'SIM':'NÃO';
                                                                 $presencial = $presencial ? 'SIM':'NÃO';
                                                                 $title = '';
@@ -361,30 +380,37 @@ $_enderecos = get_enderecos($pdo);
                                                                 $time_limit = ($item->tempo_limite_online * 60);
 
                                                                 
+                                                                if($_agendamentos_unidades[$ag['endereco']][$data_agendamento]['modalidade'] == 'PRESENCIAL') {
+                                                                    $ag['presencial'] = false;
+                                                                }
+
+                                                                if($_agendamentos_unidades[$ag['endereco']][$data_agendamento]['modalidade'] == 'ONLINE') {
+                                                                    $ag['online'] = false;
+                                                                }
                                                                 
                                                                 if($time_left >= $time_limit && $ag['online'] && $ag['presencial'] && (strtotime(date('H:i'))) >= strtotime($horario_funcionamento['inicio']) && (strtotime(date('H:i'))) < strtotime($horario_funcionamento['fim'])) {
                                                                     $xy++;
-                                                                    echo '<div data-street="'."{$_enderecos[$ag['endereco']]['logradouro']}, {$_enderecos[$ag['endereco']]['numero']} | {$_enderecos[$ag['endereco']]['cidade']}/{$_enderecos[$ag['endereco']]['uf']} | {$_enderecos[$ag['endereco']]['bairro']} | {$_enderecos[$ag['endereco']]['cep']}".'" data-street-name="'.$_enderecos[$ag['endereco']]['nome'].'" data-unidade="'.$ag['endereco'].'" data-date="'.date('d/m/Y', strtotime($_GET['data'])).'" title="'.$title.'" class="ag-item-time-btn" data-online="'.($ag['online']).'" data-presencial="'.($ag['presencial']).'">
+                                                                    echo '<div data-endereco-tipo="'.(getU($pdo, $ag['endereco'])['tipo'] ?? null).'" data-street="'."{$_enderecos[$ag['endereco']]['logradouro']}, {$_enderecos[$ag['endereco']]['numero']} | {$_enderecos[$ag['endereco']]['cidade']}/{$_enderecos[$ag['endereco']]['uf']} | {$_enderecos[$ag['endereco']]['bairro']} | {$_enderecos[$ag['endereco']]['cep']}".'" data-street-name="'.$_enderecos[$ag['endereco']]['nome'].'" data-unidade="'.$ag['endereco'].'" data-date="'.date('d/m/Y', strtotime($_GET['data'])).'" title="'.$title.'" class="ag-item-time-btn" data-online="'.($ag['online']).'" data-presencial="'.($ag['presencial']).'">
                                                                         <img src="/assets/images/ico-agenda-clock.svg" height="25px">'.$ag['time'].'
                                                                     </div>';
                                                                 } else {
-                                                                    if($ag['presencial']) {
+                                                                    if($ag['presencial'] && !isset($_agendamentos_unidades[$ag['endereco']][$data_agendamento])) {
                                                                         if($time_left >= $time_limit) {
                                                                             $xy++;
-                                                                            echo '<div data-street="'."{$_enderecos[$ag['endereco']]['logradouro']}, {$_enderecos[$ag['endereco']]['numero']} | {$_enderecos[$ag['endereco']]['cidade']}/{$_enderecos[$ag['endereco']]['uf']} | {$_enderecos[$ag['endereco']]['bairro']} | {$_enderecos[$ag['endereco']]['cep']}".'" data-street-name="'.$_enderecos[$ag['endereco']]['nome'].'"  data-unidade="'.$ag['endereco'].'" data-date="'.date('d/m/Y', strtotime($_GET['data'])).'" title="'.$title.'" class="ag-item-time-btn" data-online="'.($ag['online']).'" data-presencial="'.($ag['presencial']).'">
+                                                                            echo '<div data-endereco-tipo="'.(getU($pdo, $ag['endereco'])['tipo'] ?? null).'" data-street="'."{$_enderecos[$ag['endereco']]['logradouro']}, {$_enderecos[$ag['endereco']]['numero']} | {$_enderecos[$ag['endereco']]['cidade']}/{$_enderecos[$ag['endereco']]['uf']} | {$_enderecos[$ag['endereco']]['bairro']} | {$_enderecos[$ag['endereco']]['cep']}".'" data-street-name="'.$_enderecos[$ag['endereco']]['nome'].'"  data-unidade="'.$ag['endereco'].'" data-date="'.date('d/m/Y', strtotime($_GET['data'])).'" title="'.$title.'" class="ag-item-time-btn" data-online="'.($ag['online']).'" data-presencial="'.($ag['presencial']).'">
                                                                                 <img src="/assets/images/ico-agenda-clock.svg" height="25px">'.$ag['time'].'
                                                                             </div>';
                                                                         }
                                                                     } else {
                                                                         if($time_left >= $time_limit) {
                                                                             $xy++;
-                                                                            echo '<div data-street="'."{$_enderecos[$ag['endereco']]['logradouro']}, {$_enderecos[$ag['endereco']]['numero']} | {$_enderecos[$ag['endereco']]['cidade']}/{$_enderecos[$ag['endereco']]['uf']} | {$_enderecos[$ag['endereco']]['bairro']} | {$_enderecos[$ag['endereco']]['cep']}".'" data-street-name="'.$_enderecos[$ag['endereco']]['nome'].'"  data-unidade="'.$ag['endereco'].'" data-date="'.date('d/m/Y', strtotime($_GET['data'])).'" title="'.$title.'" class="ag-item-time-btn" data-online="'.($ag['online']).'" data-presencial="'.($ag['presencial']).'">
+                                                                            echo '<div data-endereco-tipo="'.(getU($pdo, $ag['endereco'])['tipo'] ?? null).'" data-street="'."{$_enderecos[$ag['endereco']]['logradouro']}, {$_enderecos[$ag['endereco']]['numero']} | {$_enderecos[$ag['endereco']]['cidade']}/{$_enderecos[$ag['endereco']]['uf']} | {$_enderecos[$ag['endereco']]['bairro']} | {$_enderecos[$ag['endereco']]['cep']}".'" data-street-name="'.$_enderecos[$ag['endereco']]['nome'].'"  data-unidade="'.$ag['endereco'].'" data-date="'.date('d/m/Y', strtotime($_GET['data'])).'" title="'.$title.'" class="ag-item-time-btn" data-online="'.($ag['online']).'" data-presencial="'.($ag['presencial']).'">
                                                                                 <img src="/assets/images/ico-agenda-clock.svg" height="25px">'.$ag['time'].'
                                                                             </div>';
                                                                         }
                                                                     }
                                                                 }
-                                                            }
+                                                            
                                                       }
                                                 }
                   
@@ -394,7 +420,8 @@ $_enderecos = get_enderecos($pdo);
                                         </div>
                                         <input type="hidden" name="redirect" value="/agenda/consulta">
                                         <input type="hidden" name="medico_token" value="'.trim($item->medico_token).'">
-                                        <input type="hidden" name="endereco" value="'.trim($ag['endereco']).'">
+                                        <input type="hidden" name="endereco" value="">
+                                        <input type="hidden" name="tipo_endereco" value="">
                                         
                                         <input type="hidden" name="valor_consulta_presencial" value="'.trim($item->valor_presencial).'">
                                         <input type="hidden" name="valor_consulta_online" value="'.trim($item->valor_online).'">
