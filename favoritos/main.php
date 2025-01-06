@@ -1,12 +1,5 @@
 <?php
-$produtos_favoritos = $favoritos->getAll($user->cpf);
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-if(isset($_SESSION['userObj'])) {
-    $user = (object) $_SESSION['userObj'];
-}
-
+$produtos_favoritos = $favoritos->getAll($user->cpf)
 ?>
 <section class="main">
     <section class="flex-container">

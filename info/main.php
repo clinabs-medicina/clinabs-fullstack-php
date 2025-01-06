@@ -1,11 +1,4 @@
 <?php
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
-    if(isset($_SESSION['userObj'])) {
-	    $user = (object) $_SESSION['userObj'];
-    }
-
     $token = $_GET['token'];
     $ag = $pdo->query("SELECT *,(SELECT nome_completo FROM MEDICOS WHERE token = medico_token) AS medico_nome FROM `AGENDA_MED` WHERE token = '{$token}';");
     $agx = $ag->fetch(PDO::FETCH_OBJ);

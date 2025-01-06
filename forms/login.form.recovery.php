@@ -1,12 +1,7 @@
 <?php
 global $pdo, $mailer;
 
-if (session_status() === PHP_SESSION_NONE) {
-	session_start();
-}
-if(isset($_SESSION['userObj'])) {
-	$user = (object) $_SESSION['userObj'];
-}
+session_start();
 // Regenera o ID da sessão para segurança (após o session_start)
 session_regenerate_id(true);
 
@@ -231,7 +226,7 @@ error_reporting(1);
 
 							$sessid = md5($user->token);
 							$time = time() + (3600 * 24) * 365;
-//							setcookie('sessid_clinabs', $sessid, $time, '/', $hostname, true, true, 'samesite' => 'None');
+							setcookie('sessid_clinabs', $sessid, $time, '/', hostname, true);
 						} else {
 							$json = json_encode([
 								'status' => 'warning',
@@ -358,7 +353,7 @@ error_reporting(1);
 
 						$sessid = md5($user->token);
 						$time = time() + (3600 * 24) * 365;
-//						setcookie('sessid_clinabs', $sessid, $time, '/', $hostname, true, true, 'samesite' => 'None');
+						setcookie('sessid_clinabs', $sessid, $time, '/', hostname, true);
 					}else {
 						$json = json_encode([
 							'status' => 'warning',

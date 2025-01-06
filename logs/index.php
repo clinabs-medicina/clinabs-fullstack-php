@@ -2,12 +2,6 @@
 header('Content-Type: text/html; charset=utf-8');
 require_once $_SERVER['DOCUMENT_ROOT'].'/config.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/session.php';
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-// if(isset($_SESSION['userObj'])) {
-//     $user = (object) $_SESSION['userObj'];
-// }
 
 
 $page = new stdClass();

@@ -23,7 +23,7 @@ if (isset($request["enderecos"])) {
         try {
           $stmt->execute();
         } catch(PDOException $ex) {
-
+           
         }
     }else {
         $stmt = $pdo->prepare("INSERT INTO `ENDERECOS` ( 
@@ -99,7 +99,7 @@ if (isset($request["enderecos"])) {
         try {
           $stmt->execute();
         } catch(PDOException $ex) {
-
+            file_put_contents('teste.end.txt', print_r($ex->getMessage(), true));
         }
     }
   }

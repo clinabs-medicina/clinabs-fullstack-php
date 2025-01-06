@@ -25,7 +25,7 @@ $dados = $stmt->fetch(PDO::FETCH_ASSOC);
                   echo '<div class="blog-post" id="'.$_GET['token'].'" data-post-id="'.$token.'">
                   <div class="blog-header">
                     <div class="blog-header-user">
-                      <img src="doutor.jpg" height="32px" alt="" >
+                      <img src="doutor.jpg" height="32px">
                       <div class="blog-user-info">
                         <strong>DR(a). '.$item['nome_completo'].'</strong>
                         <small>'.$item['especialidade'].'</small>
@@ -48,7 +48,7 @@ $dados = $stmt->fetch(PDO::FETCH_ASSOC);
                  foreach($comments as $comment) {
                     echo '<div class="blog-comment">
                           <div class="blog-header-user">
-                                  <img src="doutor.jpg" alt="" height="32px">
+                                  <img src="doutor.jpg" height="32px">
                                   <div class="blog-user-info">
                                     <strong>DR(a). '.$comment['nome_completo'].'</strong>
                                     <small>'.$comment['especialidade'].'</small>
@@ -66,7 +66,7 @@ $dados = $stmt->fetch(PDO::FETCH_ASSOC);
                  foreach($questions as $question) {
                     echo '<div class="blog-comment">
                           <div class="blog-header-user">
-                                  <img src="doutor.jpg" alt="" height="32px">
+                                  <img src="doutor.jpg" height="32px">
                                   <div class="blog-user-info">
                                     <strong>DR(a). '.$question['nome_completo'].'</strong>
                                     <small>'.$question['especialidade'].'</small>

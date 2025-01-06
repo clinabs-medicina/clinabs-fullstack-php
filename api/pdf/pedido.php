@@ -4,13 +4,6 @@ require_once $_SERVER['DOCUMENT_ROOT']. '/vendor/autoload.php';
 require_once $_SERVER['DOCUMENT_ROOT']. '/libs/Modules.php';
 require_once $_SERVER['DOCUMENT_ROOT']. '/api/vendor/autoload.php';
 
-if (session_status() === PHP_SESSION_NONE) {
-  session_start();
-}
-if(isset($_SESSION['userObj'])) {
-$user = (object) $_SESSION['userObj'];
-}
-
 
 ini_set('diusplay_errors', 1);
 error_reporting(1);
@@ -60,7 +53,7 @@ $html = '<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=5">
+  <meta name="viewport" content="width=device-width">
   <title>replit</title>
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");

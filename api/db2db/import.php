@@ -1,6 +1,6 @@
 <?php
 $servername = '68.183.159.246'; //'68.183.159.246';
-$database = 'clinabs_homolog'; //'clinabs_app';
+$database = 'clinabs_app'; //'clinabs_app';
 $username = 'clinabs_admin';
 $password = 'GenP+s+J6Cisa^vB7visr@%3c0nCaOz#3Bb7jaGJ6pyOqC*C';
 

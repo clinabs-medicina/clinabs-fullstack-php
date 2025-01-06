@@ -1,14 +1,8 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-// if(isset($_SESSION['userObj'])) {
-//     $user = (object) $_SESSION['userObj'];
-// }
+global $user, $favoritos, $carrinho;
+session_start();
 
-global $favoritos, $carrinho;
-
-if (isset($_SESSION['token'])) {
+if (isset($_COOKIE['sessid_clinabs_uid'])) {
     $sql = "SELECT
       objeto AS tipo
    FROM
@@ -32,13 +26,9 @@ if (isset($_SESSION['token'])) {
       WHERE 
       F.token = :token
       )";
-try{
-    //error_log("Valor da variável header \$sql: $sql \r\n" . PHP_EOL);
-} catch (PDOException $e) {
-}
 
     $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':token', isset($_SESSION['token']) ? $_SESSION['token'] : $user->token);
+    $stmt->bindValue(':token', isset($_COOKIE['sessid_clinabs_uid']) ? $_COOKIE['sessid_clinabs_uid'] : $user->token);
     $stmt->execute();
     $obj = $stmt->fetch(PDO::FETCH_OBJ);
 
@@ -46,7 +36,7 @@ try{
 
     if ($tableName !== 'S') {
         $stmt2 = $pdo->prepare("SELECT * FROM $tableName WHERE token = :token");
-        $stmt2->bindValue(':token', isset($_SESSION['token']) ? $_SESSION['token'] : $user->token);
+        $stmt2->bindValue(':token', isset($_COOKIE['sessid_clinabs_uid']) ? $_COOKIE['sessid_clinabs_uid'] : $user->token);
 
         $stmt2->execute();
         $_user = $stmt2->fetch(PDO::FETCH_OBJ);
@@ -54,12 +44,7 @@ try{
         $_user = false;
     }
 } else {
-    try {
-    $tok = $_SESSION['token'];
-    error_log("Token não carregado: header \$tok: $tok \r\n" . PHP_EOL);
-    } catch (PDOException $e) {
-    }
-
+    
 }
 ?>
 <!-- BREADCRUMBS -->
@@ -117,16 +102,16 @@ try{
 
                 <?= $user->perms->link_notificacao && !$is_nabscare ? '<li data-badge="0"><a href="#"><img class="ico-hover" src="/assets/images/ico-notifica.svg" alt=""></a></li>' : '' ?>
 
-                <?php if (isset($_SESSION['token'])) { ?>
+                <?php if (isset($user->nome_completo)) { ?>
                 <div class="user-default" id="user-link-menu">
-                    <img class="ico-hover user" src="<?= Modules::getUserImage($_SESSION['token'] ?? $_SESSION['token']) ?>"
+                    <img class="ico-hover user" src="<?= Modules::getUserImage($_user->token ?? $user->token) ?>"
                         alt="Usuário">
                     <div class="user-link">
                         <p class="m-0">Olá, <a
                                 href="/perfil"><?=  trim($_user->nome_preferencia ?? trim(explode(' ', $user->nome_completo)[0])) ?></a>
                         </p>
                         <p class="m-0"><a href="/perfil">MINHA CONTA</a> | <a
-                                href="/logout.php<?= isset($_SESSION['token']) || isset($_SESSION['token']) ? '?session=user' : '' ?>">SAIR</a>
+                                href="/logout<?= isset($_COOKIE['sessid_clinabs_uid']) || isset($_COOKIE['sessid_clinabs_uid']) ? '?session=user' : '' ?>">SAIR</a>
                         </p>
                     </div>
 
@@ -162,7 +147,7 @@ try{
                             </div>
                             <div class="menu-user-logout">
                                 <hr>
-                                <p><a href="/logout.php">Sair</a></p>
+                                <p><a href="/logout">Sair</a></p>
                             </div>
 
                         </div>
@@ -175,7 +160,7 @@ try{
                 <div class="user-default">
                     <img class="ico-hover user" src="/assets/images/user-deafualt.svg" alt="Usuário">
                     <div class="user-link">
-                        <p class="m-0">Fazer <a href="/login.php">LOGIN</a> ou</p>
+                        <p class="m-0">Fazer <a href="/login">LOGIN</a> ou</p>
                         <p class="m-0">crie sua <a href="/cadastro">CONTA</a></p>
                     </div>
                 </div>

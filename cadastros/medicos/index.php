@@ -1,16 +1,4 @@
 <?php
-
-          if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-          }
-          if(isset($_SESSION['userObj'])) {
-            try {
-                $user = (object) $_SESSION['userObj'];
-            } catch (PDOException $e) {
-        
-            }
-          }
-
 $page = new stdClass();
 $page->title = 'Médicos';
 $page->content = 'cadastros/medicos/main.php';

@@ -8,7 +8,7 @@ try {
 
     $paciente = $pdo->query("SELECT PACIENTES.nome_completo, PACIENTES.celular, PACIENTES.email, MEDICOS.nome_completo AS medico_nome,MEDICOS.identidade_genero AS medico_sexo, VENDAS.payment_id, AGENDA_MED.data_agendamento, AGENDA_MED.medico_token FROM AGENDA_MED, MEDICOS, PACIENTES, VENDAS WHERE MEDICOS.token = AGENDA_MED.medico_token AND PACIENTES.token = AGENDA_MED.paciente_token AND VENDAS.reference = AGENDA_MED.token AND AGENDA_MED.token = '{$payment->externalReference}'")->fetch(PDO::FETCH_OBJ);
     
-    file_put_contents('paciente.json', json_encode($_REQUEST, JSON_PRETTY_PRINT));
+    
     $prefixo = strtolower($paciente->medico_sexo) == 'feminino' ? 'Dra.':'Dr.';
 
     if(strtotime($paciente->data_agendamento) > time()) {
@@ -39,19 +39,20 @@ try {
         }
 
 
+        $wa->sendTextMessage(
+            phoneNumber: $paciente->celular,
+            text: $msg
+        );
+    
         if($payment->billingType == 'PIX') {
             $pix = $asaas->getPixInfo($payment->id);
             $pix_msg = $pix->payload;
+    
+            $wa->sendTextMessage(
+                phoneNumber: $paciente->celular,
+                text: $pix->payload
+            );
         }
-
-        $wa->sendLinkMessage(
-            phoneNumber: $paciente->celular, 
-            text: $msg, 
-            linkUrl: 'https://clinabs.com/', 
-            linkTitle: 'Lembrete de Cobrança', 
-            linkDescription: 'Agendamento de Consulta',
-            linkImage: "https://$hostname/assets/images/logo.png"
-        );
 
         $json = json_encode([
             'status' => 'success',
@@ -64,8 +65,8 @@ try {
         $text .=  "".PHP_EOL;
         $text .= "Segue o comprovante de Pagamento da Fatura *{$payment->id}*";
         $invoice = end(explode('/', $payment->transactionReceiptUrl));
-        $link = "https://".($_SERVER['DOCUMENMT_ROOT'] === 'clinabs.com' || $_SERVER['DOCUMENMT_ROOT'] === 'www.clinabs.comn' ? 'www.asaas.com':'sandbox.asaas.com')."/transactionReceipt/pdf/{$invoice}}";
-        $wa->sendDocumentLink($paciente->celular,'Comprovante de Pagamento', $link, $text);
+        $link = "https://www.asaas.com/transactionReceipt/pdf/{$invoice}}";
+        $wa->sendDocumentLink('5541995927699','Comprovante de Pagamento', $link, $text);
 
         $json = json_encode([
             'status' => 'success',

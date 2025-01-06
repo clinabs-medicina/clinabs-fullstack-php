@@ -6,16 +6,12 @@ if(isset($_GET['token'])) {
 } else {
   $medico = "";
 }
-try {
-error_log("Valor da variável \$medico: $medico\r\n" . PHP_EOL);
-} catch (PDOException $e) {
-}
 
 date_default_timezone_set('America/Sao_Paulo');
 $headers = ['Authorization' => 'all'];
 
 $servername = '68.183.159.246';
-$database = 'clinabs_homolog';
+$database = 'clinabs_app';
 $username = 'clinabs_admin';
 $password = 'GenP+s+J6Cisa^vB7visr@%3c0nCaOz#3Bb7jaGJ6pyOqC*C';
 

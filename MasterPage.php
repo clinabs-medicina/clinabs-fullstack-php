@@ -1,15 +1,5 @@
 <?php
 define('ROOT', $_SERVER['DOCUMENT_ROOT']); 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-// if(isset($_SESSION['userObj'])) {
-//    try {
-//       $user = (object) $_SESSION['userObj'];
-//   } catch (PDOException $e) {
-
-//   }
-// }
 function inline_files(string $type, array $files) {
     echo "<{$type}>";
     

@@ -1,11 +1,5 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config.inc.php';
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-if(isset($_SESSION['userObj'])) {
-    $user = (object) $_SESSION['userObj'];
-}
 
 error_reporting(1);
 ini_set('display_errors', 1);
@@ -17,7 +11,7 @@ $data = json_decode(
 $event = $data->id;
 
 try {
-    $pdo->query('UPDATE VENDAS SET `asaas_payload` = "'.json_encode($data->payment).'" WHERE payment_id = "'.$data->payment->id.'"');
+    $pdo->query('UPDATE VENDAS SET `asaas_payload` = "'.base64_encode(json_encode($data->payment)).'" WHERE payment_id = "'.$data->payment->id.'"');
 } catch(Exception $ex) {
     file_put_contents('erro.log', $ex->getMessage());
 }

@@ -81,11 +81,7 @@ $_enderecos = get_enderecos($pdo);
              
              if(isset($_GET['data'])) {
                  $DATE = $_GET['data'];
-                try {
-                 error_log("Valor da variável \$DATE: $DATE\r\n" . PHP_EOL);
-                } catch (PDOException $e) {
-                }
-            
+                 
                  if(!isset($_GET['filter_ag'])) {
                      $sql = "SELECT DISTINCT
                         	TB1.medico_token,
@@ -389,22 +385,22 @@ $_enderecos = get_enderecos($pdo);
                                                          
                                                                 if($time_left >= $time_limit && $ag['online'] && $ag['presencial'] && (strtotime(date('H:i'))) >= strtotime($horario_funcionamento['inicio']) && (strtotime(date('H:i'))) < strtotime($horario_funcionamento['fim'])) {
                                                                     $xy++;
-                                                                    echo '<div data-date="'.date('d/m/Y', strtotime($_GET['data'])).'" title="'.$title.'" class="ag-item-time-btn" data-street-name="'.$ag['endereco_nome'].'" data-street="'.$ag['desc'].'" data-online="'.($ag['online']).'" data-presencial="'.($ag['presencial']).'">
-                                                                        <img src="/assets/images/ico-agenda-clock.svg" alt="" height="25px">'.$ag['time'].'
+                                                                    echo '<div data-endereco-tipo="'.(getU($pdo, $ag['endereco'])['tipo'] ?? null).'" data-street="'."{$_enderecos[$ag['endereco']]['logradouro']}, {$_enderecos[$ag['endereco']]['numero']} | {$_enderecos[$ag['endereco']]['cidade']}/{$_enderecos[$ag['endereco']]['uf']} | {$_enderecos[$ag['endereco']]['bairro']} | {$_enderecos[$ag['endereco']]['cep']}".'" data-street-name="'.$_enderecos[$ag['endereco']]['nome'].'" data-unidade="'.$ag['endereco'].'" data-date="'.date('d/m/Y', strtotime($_GET['data'])).'" title="'.$title.'" class="ag-item-time-btn" data-online="'.($ag['online']).'" data-presencial="'.($ag['presencial']).'">
+                                                                        <img src="/assets/images/ico-agenda-clock.svg" height="25px">'.$ag['time'].'
                                                                     </div>';
                                                                 } else {
                                                                     if($ag['presencial'] && !isset($_agendamentos_unidades[$ag['endereco']][$data_agendamento])) {
                                                                         if($time_left >= $time_limit) {
                                                                             $xy++;
-                                                                            echo '<div data-date="'.date('d/m/Y', strtotime($_GET['data'])).'" title="'.$title.'" class="ag-item-time-btn" data-street-name="'.$ag['endereco_nome'].'" data-street="'.$ag['desc'].'" data-online="'.($ag['online']).'" data-presencial="'.($ag['presencial']).'">
-                                                                                <img src="/assets/images/ico-agenda-clock.svg" alt="" height="25px">'.$ag['time'].'
+                                                                            echo '<div data-endereco-tipo="'.(getU($pdo, $ag['endereco'])['tipo'] ?? null).'" data-street="'."{$_enderecos[$ag['endereco']]['logradouro']}, {$_enderecos[$ag['endereco']]['numero']} | {$_enderecos[$ag['endereco']]['cidade']}/{$_enderecos[$ag['endereco']]['uf']} | {$_enderecos[$ag['endereco']]['bairro']} | {$_enderecos[$ag['endereco']]['cep']}".'" data-street-name="'.$_enderecos[$ag['endereco']]['nome'].'"  data-unidade="'.$ag['endereco'].'" data-date="'.date('d/m/Y', strtotime($_GET['data'])).'" title="'.$title.'" class="ag-item-time-btn" data-online="'.($ag['online']).'" data-presencial="'.($ag['presencial']).'">
+                                                                                <img src="/assets/images/ico-agenda-clock.svg" height="25px">'.$ag['time'].'
                                                                             </div>';
                                                                         }
                                                                     } else {
                                                                         if($time_left >= $time_limit) {
                                                                             $xy++;
-                                                                            echo '<div data-date="'.date('d/m/Y', strtotime($_GET['data'])).'" title="'.$title.'" class="ag-item-time-btn" data-street-name="'.$ag['endereco_nome'].'" data-street="'.$ag['desc'].'" data-online="'.($ag['online']).'" data-presencial="'.($ag['presencial']).'">
-                                                                                <img src="/assets/images/ico-agenda-clock.svg" alt="" height="25px">'.$ag['time'].'
+                                                                            echo '<div data-endereco-tipo="'.(getU($pdo, $ag['endereco'])['tipo'] ?? null).'" data-street="'."{$_enderecos[$ag['endereco']]['logradouro']}, {$_enderecos[$ag['endereco']]['numero']} | {$_enderecos[$ag['endereco']]['cidade']}/{$_enderecos[$ag['endereco']]['uf']} | {$_enderecos[$ag['endereco']]['bairro']} | {$_enderecos[$ag['endereco']]['cep']}".'" data-street-name="'.$_enderecos[$ag['endereco']]['nome'].'"  data-unidade="'.$ag['endereco'].'" data-date="'.date('d/m/Y', strtotime($_GET['data'])).'" title="'.$title.'" class="ag-item-time-btn" data-online="'.($ag['online']).'" data-presencial="'.($ag['presencial']).'">
+                                                                                <img src="/assets/images/ico-agenda-clock.svg" height="25px">'.$ag['time'].'
                                                                             </div>';
                                                                         }
                                                                     }

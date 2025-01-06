@@ -191,7 +191,7 @@ class Modules {
         }
     }
 
-    public static function getProductImage($docName) {
+    public static function getProductImage($token) {
         if(file_exists($_SERVER['DOCUMENT_ROOT'].'/data/images/produtos/'.$docName)) {
             return sprintf("data:image/jpeg;base64,%s", base64_encode(file_get_contents($_SERVER['DOCUMENT_ROOT'].'/data/images/produtos/'.$docName)));
         }else{

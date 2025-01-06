@@ -2,12 +2,6 @@
 ini_set('display_errors', true);
 error_reporting(E_ALL);
 require_once '../config.inc.php';
-if (session_status() === PHP_SESSION_NONE) {
-	session_start();
-}
-if(isset($_SESSION['userObj'])) {
-	$user = (object) $_SESSION['userObj'];
-}
 
 
 if(isset($_REQUEST['usuario']))

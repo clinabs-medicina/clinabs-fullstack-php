@@ -7,10 +7,10 @@ ini_set('display_errors', 1);
 error_reporting(1);
   
 $result = [];
-$result['user_id'] = $_SESSION['token'];
+$result['user_id'] = $_COOKIE['sessid_clinabs_uid'];
 
 $stmt = $pdo->prepare('SELECT *,(SELECT marca FROM PRODUTOS WHERE id= product_id) AS marca,(SELECT image FROM PRODUTOS WHERE id= product_id) AS image, (SELECT codigo FROM PRODUTOS WHERE id= product_id) AS sku,(SELECT valor FROM PRODUTOS WHERE id= product_id) AS valor,(SELECT valor_frete_venda FROM PRODUTOS WHERE id=product_id) AS frete_valor FROM `CARRINHO` WHERE user_ref = :user_token;');
-$stmt->bindValue(':user_token', $_SESSION['token']);
+$stmt->bindValue(':user_token', $_COOKIE['sessid_clinabs_uid']);
 
 try {
   $stmt->execute();

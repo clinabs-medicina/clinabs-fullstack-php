@@ -4,13 +4,6 @@ require_once '../config.inc.php';
 $action = $_GET['action'];
 $token = $_GET['token'];
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-if(isset($_SESSION['userObj'])) {
-    $user = (object) $_SESSION['userObj'];
-}
-
 switch($action) {
     case 'delete_payment': {
         try {

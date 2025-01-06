@@ -1,13 +1,10 @@
 <?php
 
 require_once '../config.inc.php';
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 
 
 if(isset($_REQUEST['token'])) {
-    $_SESSION['token'] = $_REQUEST['token'];
+
     $dados = $pacientes->getPacienteByToken($_REQUEST['token']);
     $dados['data_nascimento'] = date('d/m/Y', strtotime($dados['data_nascimento']));
 
@@ -31,7 +28,6 @@ if(isset($_REQUEST['token'])) {
 
     if($_GET['autologin']) {
         setcookie('sessid_clinabs_uid', $sessid, time() + 3600, '/', hostname, true);
-        $_SESSION['token'] = $dados['token'];
     }
     
     header('Content-Type: application/json');

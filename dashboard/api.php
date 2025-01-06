@@ -1,11 +1,5 @@
 <?php
 require_once('../config.inc.php');
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-if(isset($_SESSION['userObj'])) {
-//    $user = (object) $_SESSION['userObj'];
-}
 
 
 $stmt_agendamento = $pdo->query("SELECT id,token,( SELECT nome_completo FROM PACIENTES WHERE token = paciente_token ) AS paciente_nome, ( SELECT nome_completo FROM MEDICOS WHERE token = medico_token ) AS medico_nome, data_agendamento, paciente_token, modalidade, ( SELECT payment_id FROM VENDAS WHERE reference = token ) AS payment_id, status FROM AGENDA_MED WHERE STATUS IN( 'AGENDADO', 'AGUARDANDO PAGAMENTO', 'PAGAMENTO PENDENTE' ) ORDER BY data_agendamento,paciente_nome ASC");
@@ -103,23 +97,23 @@ echo json_encode([
     'clientes' => $clientes,
     'perms' => [
         'agendamentos' => [
-            'dashboard_new_agendamentos_editar' => isset($user->perms) ? $user->perms->dashboard_new_agendamentos_editar : 1,
-            'dashboard_new_agendamentos_alterar' => isset($user->perms) ? $user->perms->dashboard_new_agendamentos_alterar : 1,
-            'dashboard_new_agendamentos_cancelar' => isset($user->perms) ? $user->perms->dashboard_new_agendamentos_cancelar : 1,
-            'dashboard_new_agendamentos_enviar_whatsapp' => isset($user->perms) ? $user->perms->dashboard_new_agendamentos_enviar_whatsapp : 1,
+            'dashboard_new_agendamentos_editar' => $user->perms->dashboard_new_agendamentos_editar,
+            'dashboard_new_agendamentos_alterar' => $user->perms->dashboard_new_agendamentos_alterar,
+            'dashboard_new_agendamentos_cancelar' => $user->perms->dashboard_new_agendamentos_cancelar,
+            'dashboard_new_agendamentos_enviar_whatsapp' => $user->perms->dashboard_new_agendamentos_enviar_whatsapp,
         ],
         'pacientes' => [
-            'dashboard_new_pacientes_carrinho' => isset($user->perms) ? $user->perms->dashboard_new_pacientes_carrinho : 0,
-            'dashboard_new_pacientes_ag_consulta' => isset($user->perms) ? $user->perms->dashboard_new_pacientes_ag_consulta : 0,
-            'dashboard_new_pacientes_perfil' => isset($user->perms) ? $user->perms->dashboard_new_pacientes_perfil : 0,
-            'dashboard_new_pacientes_msg_wa' => isset($user->perms) ? $user->perms->dashboard_new_pacientes_msg_wa : 0,
-            'dashboard_new_pacientes_prontuario' => isset($user->perms) ? $user->perms->dashboard_new_pacientes_prontuario : 0
+            'dashboard_new_pacientes_carrinho' => $user->perms->dashboard_new_pacientes_carrinho,
+            'dashboard_new_pacientes_ag_consulta' => $user->perms->dashboard_new_pacientes_ag_consulta,
+            'dashboard_new_pacientes_perfil' => $user->perms->dashboard_new_pacientes_perfil,
+            'dashboard_new_pacientes_msg_wa' => $user->perms->dashboard_new_pacientes_msg_wa,
+            'dashboard_new_pacientes_prontuario' => $user->perms->dashboard_new_pacientes_prontuario
         ],
         'acompanhamento' => [
-            'dashboard_proximos_acompanhamentos_prontuario' => isset($user->perms) ? $user->perms->dashboard_proximos_acompanhamentos_prontuario : 0
+            'dashboard_proximos_acompanhamentos_prontuario' => $user->perms->dashboard_proximos_acompanhamentos_prontuario
         ],
         'medicos' => [
-            'dashboard_new_medicos_perfil' => isset($user->perms) ? $user->perms->dashboard_new_medicos_perfil : 0
+            'dashboard_new_medicos_perfil' => $user->perms->dashboard_new_medicos_perfil
         ]
     ]
 ], JSON_PRETTY_PRINT);

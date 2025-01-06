@@ -937,7 +937,7 @@ $(document).ready(function () {
 
   $("#user-link").on("click", function () {
     if (confirm("Deseja Encerrar a Sessão Atual?")) {
-      window.location = "/logout.php";
+      window.location = "/logout";
     }
   });
 
@@ -1593,12 +1593,8 @@ $(document).ready(function () {
               if (result.status === "error") {
                 xhtml = "";
 
-                try {
-                  for (let i = 0; i < result.data.length; i++) {
-                    xhtml += `<p><strong style="color: red">${result.data[i].description}</strong></p>`;
-                  }
-                } catch (e) {
-                  console.log(e);
+                for (let i = 0; i < result.data.length; i++) {
+                  xhtml += `<p><strong style="color: red">${result.data[i].description}</strong></p>`;
                 }
 
                 Swal.fire({

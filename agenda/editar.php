@@ -1,16 +1,6 @@
 <?php
 $useWb = true;
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-if(isset($_SESSION['userObj'])) {
-    try {
-       $user = (object) $_SESSION['userObj'];
-   } catch (PDOException $e) {
- 
-   }
-}
-$ag = $agenda->get($_SESSION['token']);
+$ag = $agenda->get($_GET['token']);
 
 $stmt2 = $pdo->prepare("SELECT *,(SELECT nome FROM ANAMNESE WHERE id = queixa_principal) AS queixa,(SELECT nome_completo FROM MEDICOS WHERE token = medico_token) AS medico,FLOOR(DATEDIFF(CURDATE(), data_nascimento) / 365.25) AS age FROM PACIENTES WHERE token = :token");
 $stmt2->bindValue(':token', $ag->paciente_token);
