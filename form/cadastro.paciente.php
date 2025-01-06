@@ -1,6 +1,12 @@
 <?php
 require_once '../config.inc.php';
 require_once '../libs/sendMail.php';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if(isset($_SESSION['userObj'])) {
+    $user = (object) $_SESSION['userObj'];
+}
 
 $data = $_REQUEST;
 

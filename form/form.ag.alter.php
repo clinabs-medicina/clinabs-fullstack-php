@@ -2,6 +2,12 @@
 require_once '../config.inc.php';
 error_reporting(1);
 ini_set('display_errors', 1);
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if(isset($_SESSION['userObj'])) {
+    $user = (object) $_SESSION['userObj'];
+}
 
 $data = $_REQUEST;
 $dt1 = $data['data_agendamento'];

@@ -1,5 +1,11 @@
 <?php
 ini_set('display_errors', 1);
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if(isset($_SESSION['userObj'])) {
+    $user = (object) $_SESSION['userObj'];
+}
 
 require_once $_SERVER['DOCUMENT_ROOT'].'/config.inc.php';
 $page = new stdClass();
@@ -7,14 +13,7 @@ $page->title = 'Agenda do Médico';
 $page->content = isset($_GET['page']) ? 'agenda/'.$_GET['page'].'.php':'agenda/main.php';
 $page->bc = true;
 $page->name = 'link_agenda';
-$useDT = true;
-$useSelector = true;
-$useEditor = true;
-
-if(!isset($_COOKIE['sessid_clinabs_uid']) && !isset($_COOKIE['sessid_clinabs']) && !isset($_GET['page'])) {
-    $page->require_login = true;
-}
-
+$page->require_login = false;
 $page->includePlugins = true;
 
 if($user->tipo == 'FUNCIONARIO' && isset($_COOKIE['sessid_clinabs_uid'])) {

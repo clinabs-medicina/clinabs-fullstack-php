@@ -1,11 +1,16 @@
 <?php
 global $carrinho, $_user;
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+// if(isset($_SESSION['token'])) 
+// $user = (object) $_SESSION['userObj'];
 
 $result = [];
-$result['user_id'] = $_COOKIE['sessid_clinabs_uid'];
+$result['user_id'] = $_SESSION['token'];
 
 $stmty = $pdo->prepare('SELECT *,(SELECT id FROM PRODUTOS WHERE id= product_id) AS prod_id,(SELECT nome FROM PRODUTOS WHERE id= product_id) AS nome,(SELECT nome FROM MARCAS WHERE id=(SELECT id FROM PRODUTOS WHERE id= product_id)) AS marca,(SELECT image FROM PRODUTOS WHERE id= product_id) AS image, (SELECT codigo FROM PRODUTOS WHERE id= product_id) AS sku,(SELECT valor FROM PRODUTOS WHERE id= product_id) AS valor,(SELECT valor_frete_venda FROM PRODUTOS WHERE id=product_id) AS frete_valor FROM `CARRINHO` WHERE user_ref = :user_token;');
-$stmty->bindValue(':user_token', $_COOKIE['sessid_clinabs_uid']);
+$stmty->bindValue(':user_token', $_SESSION['token']);
 
 try {
   $stmty->execute();
@@ -69,11 +74,11 @@ try {
         </section>
 
         <?php
-        if(isset($_COOKIE['sessid_clinabs_uid']) && $_user !== false){
+        if(isset($_SESSION['token']) && $_user !== false){
             ?>
         <section class="carrinho-header user-profile">
             <div class="profile-details">
-            <img src="<?=Modules::getUserImage($_COOKIE['sessid_clinabs_uid']) ?>">
+            <img src="<?=Modules::getUserImage($_SESSION['token']) ?>">
             <div class="details">
             <h2><?=$_user->nome_completo?></h2>
             <h4><?=$_user->email?></h4>

@@ -1,3 +1,12 @@
+<?php
+  if (session_status() === PHP_SESSION_NONE) {
+      session_start();
+  }
+  if(isset($_SESSION['userObj'])) {
+    $user = (object) $_SESSION['userObj'];
+  }
+
+?>
 <section class="main">
     <section>
         <h1 class="titulo-h1"><?=($user->tipo == 'FUNCIONARIO' ? 'Pedidos':'Meus Pedidos')?></h1>
@@ -18,8 +27,8 @@
          </thead>
         <tbody>
           <?php
-          if(isset($_COOKIE['sessid_clinabs_uid']) || $user->tipo == 'PACIENTE') {
-            if(isset($_COOKIE['sessid_clinabs_uid'])) {
+          if(isset($_SESSION['token']) || $user->tipo == 'PACIENTE') {
+            if(isset($_SESSION['token'])) {
                 $query = "SELECT
                     FARMACIA.produtos, 
                     FARMACIA.valor_total, 
@@ -34,7 +43,7 @@
                     (SELECT MEDICOS.nome_completo FROM MEDICOS WHERE MEDICOS.token = FARMACIA.medico_token) AS medico_nome
                   FROM
                     FARMACIA
-                  WHERE paciente_token = '".($_COOKIE['sessid_clinabs_uid'])."'";
+                  WHERE paciente_token = '".($_SESSION['token'])."'";
             }else {
                 $query = "SELECT
                     FARMACIA.produtos, 

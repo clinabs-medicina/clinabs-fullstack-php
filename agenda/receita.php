@@ -1,13 +1,27 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'].'/config.inc.php');
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+if(isset($_SESSION['userObj'])) {
+  try {
+     $user = (object) $_SESSION['userObj'];
+ } catch (PDOException $e) {
 
-$paciente = $agenda->get($_REQUEST['token']);
+ }
+}
+try {
+  error_log("Valor da variável receita.php \$user: $user->tipo\r\n" . PHP_EOL);
+} catch (PDOException $e) {
+}
+
+$paciente = $agenda->get($_SESSION['token']);
 
 $html = '<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=5">
   <title>replit</title>
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
@@ -46,7 +60,7 @@ $html = '<!DOCTYPE html>
     <table width="100%">
       <tr>
         <td>
-          <img src="logo-clinabs-pdf.svg" height="80px" style="margin-right: 32px">
+          <img src="logo-clinabs-pdf.svg" alt="" height="80px" style="margin-right: 32px">
         </td>
         <td class="street">
           <p style="font-size: 12px"><b style="font-size: 12px">Dr(a).</b> '.$paciente->medico_nome.'</p>
