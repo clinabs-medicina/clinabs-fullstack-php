@@ -403,7 +403,7 @@ foreach($rows as $row) {
                           }
                           $allow_tc = false;
 
-                          echo "<button class=\"btn-action\"><img onclick=\"wa_notify_payment_ag('{$column->payment_id}', '{$column->paciente_nome}', 0)\" title=\"Enviar Lembrete de Cobrança via WhatsApp\" src=\"/assets/images/icon-whatsapp.svg\" height=\"22px\"></button>";
+                          echo "<button class=\"btn-action\"><img onclick=\"wa_notify('{$column->payment_id}', '{$column->paciente_nome}', 0)\" title=\"Enviar Lembrete de Cobrança via WhatsApp\" src=\"/assets/images/icon-whatsapp.svg\" height=\"22px\"></button>";
                                           
                           
                           break;

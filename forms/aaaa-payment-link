@@ -1,12 +1,12 @@
 stdClass Object
 (
     [object] => payment
-    [id] => pay_rvkdh97fst19phde
-    [dateCreated] => 2024-12-20
+    [id] => pay_4hi0i01gbfur7z48
+    [dateCreated] => 2025-01-06
     [customer] => cus_000006177276
     [paymentLink] => 
-    [value] => 800
-    [netValue] => 775.59
+    [value] => 20
+    [netValue] => 18.92
     [originalValue] => 
     [interestValue] => 
     [description] => VENDA DE CONSULTA MÉDICA
@@ -15,14 +15,14 @@ stdClass Object
     [creditCard] => 
     [pixTransaction] => 
     [status] => PENDING
-    [dueDate] => 2024-12-21
-    [originalDueDate] => 2024-12-21
+    [dueDate] => 2025-01-06
+    [originalDueDate] => 2025-01-06
     [paymentDate] => 
     [clientPaymentDate] => 
     [installmentNumber] => 
-    [invoiceUrl] => https://sandbox.asaas.com/i/rvkdh97fst19phde
-    [invoiceNumber] => 07250199
-    [externalReference] => 2003b3ec32c6c38e70e7176add6e717c6765baa71101a
+    [invoiceUrl] => https://sandbox.asaas.com/i/4hi0i01gbfur7z48
+    [invoiceNumber] => 07345160
+    [externalReference] => 2003b3ec32c6c38e70e7176add6e717c677bcc4664595
     [deleted] => 
     [anticipated] => 
     [anticipable] => 
