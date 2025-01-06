@@ -10,7 +10,7 @@
                     <img src="">
                     </svg>
                     R$
-                    <?=number_format($saldo, 2, '.', ',')?>
+                    <?=number_format($balance, 2, '.', ',')?>
                 </h3>
             </div>
 
@@ -19,13 +19,12 @@
                 <h3>
                     <img src="">
                     R$
-                    <?=number_format($balance->value, 2, '.', ',')?>
+                    <?=number_format($paymentsBalance->value, 2, '.', ',')?>
                 </h3>
             </div>
         </section>
 
         <?php
-        
         $badges = [
             'REFUNDED' => 'dark',
             'CONFIRMED' => 'info',
@@ -36,60 +35,11 @@
             'OVERDUE' => 'danger',
             'PAYMENT_RECEIVED' => 'success',
             'PAYMENT_FEE' => 'danger',
-            'TRANSFER' => 'dark'
+            'TRANSFER' => 'dark',
         ];
 
-
-        if(isset($_GET['extrato'])) {
-            ?>
-        <table class="display" id="faturamento-lf">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Data</th>
-                    <th>Descrição</th>
-                    <th>Tipo</th>
-                    <th>Valor</th>
-                    <th>Saldo</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <?php
-                    $extratos = $asaas->extrato();
-
-                    $dados = [];
-                    foreach($extratos->data as $d) {
-                        $dados[$d->id] = $d;
-                    }
-
-                    ksort($dados);
-
-                    foreach($dados as $id => $extrato) {
-                        $date = date('d/m/Y', strtotime($extrato->date));
-                        $tipo = $asaas->get_status($extrato->type);
-                        $valor = number_format($extrato->value, 2 , ',', '.');
-                        $saldo = number_format($extrato->balance, 2 , ',', '.');
-                        $tpr = $badges[$extrato->type];
-
-                        echo "<tr>
-                            <td>{$extrato->id}</td>
-                            <td>{$date}</td>
-                            <td>{$extrato->description}</td>
-                            <td><span class=\"badge badge-{$tpr}\">{$tipo}</span></td>
-                            <td>R$ {$valor}</td>
-                            <td>R$ {$saldo}</td>
-                        </tr>";
-                    }
-                ?>
-            </tbody>
-        </table>
-
-        <?php
-        } else {
-            ?>
-
-        <table class="display" id="faturamento-lf">
+        ?>
+        <table class="display table" id="faturamento-tb">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -100,82 +50,65 @@
                     <th>Vencimento</th>
                     <th>Tipo</th>
                     <th>Status</th>
-                    <th>Açoes</th>
+                    <th width="150px">Açoes</th>
                 </tr>
             </thead>
-
-            <tdoby>
+            <tbody>
                 <?php
-                $item = [];
+                    $payloads = $pdo->query("SELECT id,reference,(SELECT nome_completo FROM PACIENTES WHERE payment_id = customer LIMIT 1) AS customer,asaas_payload FROM VENDAS WHERE asaas_payload LIKE '%pay_%' ORDER BY `id` DESC;");
+                    $payments = $payloads->fetchAll(PDO::FETCH_OBJ);
 
-                foreach($cobrancas as $cobranca) {
-                    if(!$cobranca->deleted) {
-                        $pid = $evts[$cobranca->id];
+                    foreach($payments as $payment) {
+                        if($payment->customer != null && $payment->customer != '') {
+                          $payload = json_decode($payment->asaas_payload);
+                        $sts = $asaas->get_status($payload->status);
+                        $psts = $badges[$payload->status];
 
-                        $data = date('d/m/Y', strtotime($cobranca->dateCreated));
-                        $valor = number_format($cobranca->value, 2, ',', '.');
-                        $tipo = $asaas->get_status($cobranca->billingType);
-                        $status = $asaas->get_status($cobranca->status);
-                        $cliente = $asaas->getCliente($cobranca->customer);
+                        $ptype = $asaas->get_status($payload->billingType);
 
-                        $sts = strtr($cobranca->status, $badges);
-
-                        if($status == 'RECEBIMENTO EXTERNO') {
-                            $pay_btn = "data-id=\"{$pay_id}\" onclick=\"get_payment_info(this)\"";
+                        if($payload->status === 'CONFIRMED' || $payload->status == 'RECEIVED' || $payload->status == 'RECEIVED_IN_CASH') {
+                            $link = "<a href=\"{$payload->invoiceUrl}\" target=\"asaas_{$payload->invoiceNumber}\">{$payload->invoiceNumber}</a>";
                         } else {
-                            $pay_id  = '';
+                            $link = "<a href=\"{$payload->transactionReceiptUrl}\" target=\"asaas_{$payload->invoiceNumber}\">{$payload->invoiceNumber}</a>";
                         }
 
-                        $status = "<span class=\"badge badge-{$sts}\">{$status}</span>";
-
-                        if($cobranca->transactionReceiptUrl != null) {
-                            $uri = $cobranca->transactionReceiptUrl;
-                        } else {
-                            $uri = $cobranca->invoiceUrl;
-                        }
-
-                        $vencimento = date('d/m/Y', strtotime($cobranca->dueDate));
-
-                    
                         echo "<tr>";
-                            echo "<td><a href=\"/faturamento/view/{$cobranca->id}\">{$cobranca->id}</td>";
-                            echo "<td>{$data}</td>";
-                            echo "<td>{$cobranca->description}</td>";
-                            echo "<td>{$cliente->name}</td>";
-                            echo "<td>R$ {$valor}</td>";
-                            echo "<td>{$vencimento}</td>";
-                            echo "<td>{$tipo}</td>";
-                            echo "<td {$pay_btn}>{$status}</td>";
-                            echo "<td>";
-                                echo "<div class=\"btn-actions\">";
-                                echo "<a target=\"_blank\" href=\"{$uri}\"><img title=\"Ver Fatura\" src=\"/assets/images/ico-cart-btn.svg\" height=\"22px\"></a>";
-                                    if($cobranca->status == 'CONFIRMED' || $cobranca->status == 'RECEIVED') {
-                                        echo "<img onclick=\"wa_notify('{$cobranca->id}', '{$cliente->name}', 1)\" title=\"Enviar 2º via de Comprovante via WhatsApp\" src=\"/assets/images/wa.svg\" height=\"22px\">";
-                                    }else {
-                                        echo "<img onclick=\"wa_notify('{$cobranca->id}', '{$cliente->name}', 0)\" title=\"Enviar Lembrete de Cobrança via WhatsApp\" src=\"/assets/images/wa.svg\" height=\"22px\">";
-                                        
-                                        if($cobranca->status == 'RECEIVED_IN_CASH') {
-                                            echo "<img onclick=\"payment_by_money('{$cobranca->id}', '{$cliente->name}', true)\" title=\"Desfazer Recebimento por Dinheiro\" src=\"/assets/images/ico-money.svg\" height=\"22px\">";
-                                        } else {
-                                            echo "<img onclick=\"caixa_recebimento_exec('{$cobranca->id}', ($cobranca->value * 100), '{$cliente->name}')\" title=\"Confirmar Recebimnento em Dinheiro\" src=\"/assets/images/ico-money.svg\" height=\"22px\">";
-                                        }
+                        echo "<td>{$link}</td>";
+                        echo "<td>".date('d/m/Y', strtotime($payload->dateCreated))."</td>";
+                        echo "<td>{$payload->description}</td>";
+                        echo "<td>{$payment->customer}</td>";
+                        echo "<td>R\$ ".number_format($payload->value, 2, ',', '.')."</td>";
+                        echo "<td>".date('d/m/Y', strtotime($payload->dueDate))."</td>";
+                        echo "<td>{$ptype}</td>";
+                        echo "<td><span class=\"badge badge-{$psts}\">{$sts}</span></td>";
+                        echo "<td>";
+                        echo "<div  class=\"td-dflex\">";
 
+                        if($payload->status == 'RECEIVED_IN_CASH') {
+                            echo '<img onclick="payment_by_money(\''.$payload->id.'\', \''.$payment->customer.'\', true)" title="Desfazer Recebimnento em Dinheiro" src="/assets/images/ico-money-cancel.svg" height="22px">';
+                        } else if($payload->status == 'PENDING') {
+                            echo '<img onclick="caixa_recebimento_exec(\''.$payload->id.'\', ('.$payload->value.' * 100), \''.$payment->customer.'\')" title="Confirmar Recebimnento em Dinheiro" src="/assets/images/ico-money.svg" height="22px">';
+                        }
+                        
+                        
+                        if($payload->status === 'CONFIRMED' || $payload->status == 'RECEIVED') {
+                            echo '<img onclick="wa_notify(\''.$payload->id.'\', \''.$payment->customer.'\', 1)" title="Enviar Comprovante via WhatsApp" src="/assets/images/wa.svg" height="22px">';
 
-                                        if($user->perms->deletar_item == 1 && ($cobranca->status == 'PENDING' || $cobranca->status == 'OVERDUE')) {
-                                            echo "<img title=\"Deletar Pagamento\" class=\"btn-action\" onclick=\"action_btn_form_payment(this)\" data-token=\"{$cobranca->id}\" data-act=\"delete_payment\" src=\"/assets/images/ico-trash.svg\" height=\"22px\">";
-                                        }
-                                    }
-                                echo "</div>";
-                            echo "</td>";
+                            echo '<img title="Estornar Pagamento" class="btn-action" onclick="refund_payment(\''.$payload->id.'\',\''.$payload->value.'\')" src="/assets/images/ico-trash.svg" height="22px">';
+                            
+                        } else if($payload->status === 'PENDING') {
+                            echo '<img onclick="wa_notify(\''.$payload->id.'\', \''.$payment->customer.'\', 0)" title="Enviar Lembrete de Cobrança via WhatsApp" src="/assets/images/wa.svg" height="22px">';
+                            echo '<img title="Cancelar Pagamento" class="btn-action" onclick="action_btn_form_payment(this)" data-token="'.$payload->id.'" data-act="delete_payment" src="/assets/images/ico-trash.svg" height="22px">';
+                        }
+
+                       
+                        echo "</div>";
+                         echo "</td>";
                         echo "</tr>";
+                        }
                     }
-                }
-
                 ?>
-                </tbody>
+            </tbody>
         </table>
-        <?php
-        }
-        ?>
     </div>
 </section>
