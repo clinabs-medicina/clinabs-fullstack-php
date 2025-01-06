@@ -55,9 +55,8 @@
             </thead>
             <tbody>
                 <?php
-                    $payloads = $pdo->query("SELECT reference,(SELECT nome_completo FROM PACIENTES WHERE payment_id = customer) AS customer,asaas_payload FROM VENDAS WHERE asaas_payload != ''");
+                    $payloads = $pdo->query("SELECT reference,(SELECT nome_completo FROM PACIENTES WHERE payment_id = customer) AS customer,asaas_payload FROM VENDAS WHERE payment_id LIKE 'pay_%';");
                     $payments = $payloads->fetchAll(PDO::FETCH_OBJ);
-
 
                     foreach($payments as $payment) {
                         $payload = json_decode(base64_decode($payment->asaas_payload));

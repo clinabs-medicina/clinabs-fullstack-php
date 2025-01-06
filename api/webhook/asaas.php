@@ -11,7 +11,7 @@ $data = json_decode(
 $event = $data->id;
 
 try {
-    $pdo->query('UPDATE VENDAS SET `asaas_payload` = "'.base64_encode(json_encode($data->payment)).'" WHERE payment_id = "'.$data->payment->id.'"');
+    $pdo->query('UPDATE VENDAS SET `asaas_payload` = "'.json_encode($data->payment).'" WHERE payment_id = "'.$data->payment->id.'"');
 } catch(Exception $ex) {
     file_put_contents('erro.log', $ex->getMessage());
 }
