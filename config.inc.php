@@ -1,21 +1,14 @@
 <?php
 
 declare(strict_types=1);
-ini_set('display_errors', 0);
-error_reporting(0);
-
-
+ini_set('display_errors', 1);
+error_reporting(1);
 @ini_set('upload_max_size', '64M');
 @ini_set('post_max_size', '64M');
 @ini_set('max_execution_time', '120');
-session_set_cookie_params([
-    'secure' => true,  // Só envia o cookie por HTTPS
-    'httponly' => true,  // Impede acesso via JavaScript
-    'samesite' => 'Strict'  // Previne envio em requisições de outros sites
-]);
-if (session_status() === PHP_SESSION_NONE) {
-	session_start();
-}
+session_set_cookie_params(0);
+session_start();
+
 
 $YOUTUBE_LINK = 'https://www.youtube.com/@Clinabs';
 $FACEBOOK_LINK = 'https://www.facebook.com/share/U8N9ob4r3pvJJ1FT/?mibextid=qi2Omg';
@@ -50,16 +43,10 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 $sandbox = true;
 
-$servername = '68.183.159.246';
+$servername = 'localhost';
 $database = 'clinabs_homolog';
 $username = 'clinabs_dev';
 $password = '&?7z?Yw$0]62N!gbn=l_@bbA0O{TRg:s';
-/*
-$servername = 'DEV-18\MSSQLSERVER19';
-$database = 'clinabs_homolog';
-$username = 'desenv';
-$password = 'efgr10is';
-*/
 
 
 $tz = (new DateTime('now', new DateTimeZone('America/Sao_Paulo')))->format('P');
@@ -67,9 +54,6 @@ $tz = (new DateTime('now', new DateTimeZone('America/Sao_Paulo')))->format('P');
 // Banco de Dados
 try {
 	$pdo = new PDO("mysql:host=$servername;dbname=$database;charset=utf8mb4", $username, $password);
-// 	$pdo = new PDO("sqlsrv:Server=$servername;Database=$database;", $username, $password);
-//  $pdo = new PDO('odbc:Driver={SQL Server};Server="DEV-18\MSSQLSERVER19";Database="clinabs_homolog"; Uid=desenv;Pwd=efgr10is');
-
 	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
 	echo "Connection Failed: " . $e->getMessage();
