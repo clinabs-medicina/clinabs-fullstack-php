@@ -1593,8 +1593,12 @@ $(document).ready(function () {
               if (result.status === "error") {
                 xhtml = "";
 
-                for (let i = 0; i < result.data.length; i++) {
-                  xhtml += `<p><strong style="color: red">${result.data[i].description}</strong></p>`;
+                try {
+                  for (let i = 0; i < result.data.length; i++) {
+                    xhtml += `<p><strong style="color: red">${result.data[i].description}</strong></p>`;
+                  }
+                } catch (e) {
+                  console.log(e);
                 }
 
                 Swal.fire({
