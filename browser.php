@@ -84,7 +84,7 @@ if($ua['name'] == 'Apple Safari' && explode('.', $ua['version'])[0] < 13) {
   <html lang="pt-BR">
   <head>
       <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5">
       <title>Navegador Não Suportado</title>
       <style>
           body {

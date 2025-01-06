@@ -1,5 +1,12 @@
 <?php
-global $carrinho, $user;
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if(isset($_SESSION['userObj'])) {
+	    $user = (object) $_SESSION['userObj'];
+    }
+
+global $carrinho;
 require_once '../config.inc.php';
 
 ini_set('display_errors', 1);

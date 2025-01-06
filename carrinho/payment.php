@@ -1,3 +1,11 @@
+<?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if(isset($_SESSION['userObj'])) {
+	    $user = (object) $_SESSION['userObj'];
+    }
+?>
 <section class="main">
     <div class="flex-container">
         <form id="cadastroCompraMedicamento" action="/formularios/form.compra.medicamentos.php" method="GET" class="wizard-form">
