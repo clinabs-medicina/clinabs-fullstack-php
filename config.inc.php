@@ -9,7 +9,6 @@ error_reporting(1);
 session_set_cookie_params(0);
 session_start();
 
-
 $YOUTUBE_LINK = 'https://www.youtube.com/@Clinabs';
 $FACEBOOK_LINK = 'https://www.facebook.com/share/U8N9ob4r3pvJJ1FT/?mibextid=qi2Omg';
 $INSTAGEM_LINK = 'https://www.instagram.com/clinabsmedicinaintegrativa/';
