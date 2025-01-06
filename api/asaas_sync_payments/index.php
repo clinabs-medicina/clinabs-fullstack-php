@@ -2,6 +2,8 @@
 require_once($_SERVER["DOCUMENT_ROOT"] . "/config.inc.php");
 
 
+
+
 $ss = $pdo->query("SELECT payment_id FROM `VENDAS` WHERE payment_id LIKE 'pay_%';");
 $payments = $ss->fetchAll(PDO::FETCH_OBJ);
 
