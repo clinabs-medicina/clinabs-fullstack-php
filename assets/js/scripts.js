@@ -1591,18 +1591,27 @@ $(document).ready(function () {
           $.post(`${$(this).attr("action")}?${data}`)
             .done(function (result, textStatus, jqXHR) {
               if (result.status === "error") {
-                xhtml = "";
+                try {
+                  xhtml = "";
 
-                for (let i = 0; i < result.data.length; i++) {
-                  xhtml += `<p><strong style="color: red">${result.data[i].description}</strong></p>`;
+                  for (let i = 0; i < result.data.length; i++) {
+                    xhtml += `<p><strong style="color: red">${result.data[i].description}</strong></p>`;
+                  }
+
+                  Swal.fire({
+                    title: "Atenção",
+                    icon: "error",
+                    html: xhtml,
+                    allowOutSideClick: false,
+                  });
+                } catch (error) {
+                  Swal.fire({
+                    title: "Atenção",
+                    icon: "error",
+                    text: result.text,
+                    allowOutSideClick: false,
+                  });
                 }
-
-                Swal.fire({
-                  title: "Atenção",
-                  icon: "error",
-                  html: xhtml,
-                  allowOutSideClick: false,
-                });
               } else if (result.status === "warning") {
                 Swal.fire(result);
               } else {

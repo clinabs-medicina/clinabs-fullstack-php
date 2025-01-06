@@ -130,8 +130,8 @@ $valor_consulta = strtolower($_GET['atendimento']) == 'online' ? $_GET['valor_co
                     <section class="form-group payment-method">
                         
                         <div class="payment-button credit-card" style="filter: grayscale(1); point-events: none">
-                                    <label for="payment_credit">
-                                        <input id="payment_credit" type="radio" id="payment_pix" name="payment_mode" value="PIX" required> PIX
+                                    <label for="payment_pix">
+                                        <input id="payment_pix" type="radio" id="payment_pix" name="payment_mode" value="PIX" required> PIX
                                     </label>
                                     <span class="payment_pix">R$ <?=number_format($valor_consulta,2, ',','.')?></span>
                                 </div>
@@ -141,7 +141,7 @@ $valor_consulta = strtolower($_GET['atendimento']) == 'online' ? $_GET['valor_co
                                     <label for="payment_credit">
                                         <input id="payment_credit" type="radio" id="payment_pix" name="payment_mode" value="CREDIT_CARD" required> CARTÃO DE CRÉDITO ou DÉBITO
                                     </label>
-                                    <span class="payment_pix">R$ <?=number_format($valor_consulta,2, ',','.')?></span>
+                                    <span class="payment_credit">R$ <?=number_format($valor_consulta,2, ',','.')?></span>
                                 </div>
                                
                         <?php
