@@ -1,10 +1,12 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 global $pdo;
 ini_set('display_errors', true);
 error_reporting(E_ALL);
 
-session_start();
-session_regenerate_id(true);
 
 require_once '../config.inc.php';
 
@@ -14,11 +16,19 @@ $usr = $_REQUEST['usuario'];
 $sql = "
         SELECT
     nome_completo,
+    nome_preferencia,
+    data_nascimento,
+    0 as disponibilizar_agenda,
     cpf,
     celular,
     email,
     token,
-    objeto
+    objeto,
+    perm,
+    '[]' AS marcas,
+	'' AS prescricao_sem_receita,
+	'' AS inicio_ag,
+	'' AS fim_ag
 FROM
     `FUNCIONARIOS`
 WHERE
@@ -27,11 +37,19 @@ WHERE
 UNION
 SELECT
     nome_completo,
+    nome_preferencia,
+    data_nascimento,
+    0 as disponibilizar_agenda,
     cpf,
     celular,
     email,
     token,
-    objeto
+    objeto,
+    perm,
+    '[]' AS marcas,
+	'' AS prescricao_sem_receita,
+	'' AS inicio_ag,
+	'' AS fim_ag
 FROM
     `PACIENTES`
 WHERE
@@ -40,11 +58,19 @@ WHERE
 UNION
 SELECT
     nome_completo,
+    nome_preferencia,
+    data_nascimento,
+    disponibilizar_agenda,
     cpf,
     celular,
     email,
     token,
-    objeto
+    objeto,
+    perm,
+    '[]' AS marcas,
+	prescricao_sem_receita,
+	inicio_ag,
+	fim_ag
 FROM
     `MEDICOS`
 WHERE
@@ -53,11 +79,19 @@ WHERE
 UNION
 SELECT
     nome_completo,
+    nome_preferencia,
+    data_nascimento,
+    0 as disponibilizar_agenda,
     cpf,
     celular,
     email,
     token,
-    objeto
+    objeto,
+    perm,
+    marcas,
+	'' AS prescricao_sem_receita,
+	'' AS inicio_ag,
+	'' AS fim_ag
 FROM
     `USUARIOS`
 WHERE
@@ -115,14 +149,41 @@ if ($stmt->rowCount() > 0) {
     $datetime = date('Y-m-d H:i:s');
 
     $pdo->query("UPDATE {$user['objeto']}S SET session_online = 1,first_ping = '{$datetime}', last_ping = '{$datetime}' WHERE token = '{$user['token']}'");
+   // setcookie('sessid_clinabs', $sessid, $time, '/', $hostname, true, false);
 
-   setcookie($sessionName, $sessid, [
-        'expires' => time() + $sessionDuration,
+   setcookie('sessid_clinabs', $sessid, [
+        'expires' => time() + 3600,
         'path' => '/',
         'httponly' => true,
         'secure' => true,
         'domain' => $hostname
     ]);
+
+    if (isset($user)) {
+        $_SESSION['token'] = $user['token'];
+        $_SESSION['usuario'] = $user['nome_completo'];
+        $_SESSION['apelido'] = $user['nome_preferencia'];
+        $_SESSION['cpf'] = $user['cpf'];
+        $_SESSION['celular'] = $user['celular'];
+        $_SESSION['email'] = $user['email'];
+        $_SESSION['nascimento'] = $user['data_nascimento'];
+        $_SESSION['objeto'] = $user['objeto'];
+        $_SESSION['tipo'] = $user['objeto'];
+        $_SESSION['perms_id'] = $user['perm'];
+        $_SESSION['marcas'] = $user['marcas'];
+        $_SESSION['prescricao_sem_receita'] = $user['prescricao_sem_receita'];
+        $_SESSION['inicio_ag'] = $user['inicio_ag'];
+        $_SESSION['fim_ag'] = $user['fim_ag'];
+        $_SESSION['disponibilizar_agenda'] = $user['disponibilizar_agenda'];
+        if (isset($user) && is_array($user)) {        
+          $_SESSION['userObj'] = $user;
+        }
+    } else {
+        try {
+            error_log("Token não carregado login.form \r\n" . PHP_EOL);
+            } catch (PDOException $e) {
+            }
+    }
 
 } else {
     $json = json_encode([

@@ -1,3 +1,11 @@
+<?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if(isset($_SESSION['userObj'])) {
+	    $user = (object) $_SESSION['userObj'];
+    }
+?>
 <section>
     <h1 class="titulo-h1">Produtos</h1>
 
@@ -37,7 +45,7 @@
                     </div>
                     '.($user->perms->produtos_ver_preco ? '<div class="product-home-content-money" data-currency="'.$product->moeda.'"><p>'.($product->moeda == 'BRL' ? 'R$ '.number_format(intVal($product->valor_venda), 2, ',','.'):'$'.number_format(intVal($product->valor_venda) / 100, 2, ',','.')).'</p></div>':'').'
                     <div class="product-home-content-div">
-                        '.($user->perms->add_produto_carrinho ? '<button class="medico-icone-button product-add-cart" data-id="'.uniqid().'" data-add="'.(isset($_COOKIE['sessid_clinabs_uid'])).'" data-product="'.$id.'" data-ref="'.(isset($_COOKIE['sessid_clinabs_uid']) ? $_COOKIE['sessid_clinabs_uid'] : $user->token).'">ADICIONAR NO CARRINHO</button>':'').'
+                        '.($user->perms->add_produto_carrinho ? '<button class="medico-icone-button product-add-cart" data-id="'.uniqid().'" data-add="'.(isset($_SESSION['token'])).'" data-product="'.$id.'" data-ref="'.(isset($_SESSION['token']) ? $_SESSION['token'] : $user->token).'">ADICIONAR NO CARRINHO</button>':'').'
                         '.($user->perms->produtos_editar ? '<button class="medico-icone-button" data-link="/produtos/editar/'.$product->token.'">EDITAR</button>':'').'
                         '.(file_exists("../data/catalogs/products/{$product->catalog_file}") && strlen($product->catalog_file) > 5 && $user->perms->produtos_catalog ? '<a type="button" href="/data/catalogs/products/'.$product->catalog_file.'" class="medico-icone-button" data-link="/produtos/editar/'.$product->token.'">SAIBA MAIS</a>':'').'
                     </div>
@@ -59,7 +67,7 @@
                                   </div>
                                   '.($user->perms->produtos_ver_preco ? '<div class="product-home-content-money" data-currency="'.$product->moeda.'"><p>'.($product->moeda == 'BRL' ? 'R$ ':'$').''.($product->moeda == 'BRL' ? number_format($product->valor_venda, 2, ',','.') : number_format(preg_replace("/[^0-9]/", "", $product->valor_venda) * $dollar / 100, 2, ',','.')).'</p></div>':'').'
                                   <div class="product-home-content-div">
-                                      '.($user->perms->add_produto_carrinho ? '<button class="medico-icone-button product-add-cart" data-id="'.uniqid().'" data-add="'.(isset($_COOKIE['sessid_clinabs_uid'])).'" data-product="'.$id.'" data-ref="'.(isset($_COOKIE['sessid_clinabs_uid']) ? $_COOKIE['sessid_clinabs_uid'] : $user->token).'">ADICIONAR NO CARRINHO</button>':'').'
+                                      '.($user->perms->add_produto_carrinho ? '<button class="medico-icone-button product-add-cart" data-id="'.uniqid().'" data-add="'.(isset($_SESSION['token'])).'" data-product="'.$id.'" data-ref="'.(isset($_SESSION['token']) ? $_SESSION['token'] : $user->token).'">ADICIONAR NO CARRINHO</button>':'').'
                                       '.($user->perms->produtos_editar ? '<button class="medico-icone-button" data-link="/produtos/editar/'.$product->token.'">EDITAR</button>':'').'
                                       '.(
                                         file_exists("../data/catalogs/products/{$product->catalog_file}") && strlen($product->catalog_file) > 5 && $user->perms->produtos_catalog ? '<a type="button" href="/data/catalogs/products/'.$product->catalog_file.'" class="medico-icone-button" data-link="/produtos/editar/'.$product->token.'">SAIBA MAIS</a>':'').'

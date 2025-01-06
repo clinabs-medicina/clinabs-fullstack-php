@@ -1,3 +1,11 @@
+<?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if(isset($_SESSION['userObj'])) {
+	    $user = (object) $_SESSION['userObj'];
+    }
+?>
     <section class="page">
         <div class="page-flex">
             <div class=" titulo-h1">

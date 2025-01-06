@@ -1,4 +1,11 @@
 <?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if(isset($_SESSION['userObj'])) {
+	    $user = (object) $_SESSION['userObj'];
+    }
+
  $stmt2 = $pdo->prepare("SELECT *,(SELECT nome FROM ANAMNESE WHERE id = queixa_principal) AS queixa,(SELECT nome_completo FROM MEDICOS WHERE token = medico_token) AS medico,FLOOR(DATEDIFF(CURDATE(), data_nascimento) / 365.25) AS age FROM PACIENTES WHERE token = :token");
  $stmt2->bindValue(':token', $_GET['token']);
 

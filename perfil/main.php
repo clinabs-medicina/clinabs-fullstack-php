@@ -1,6 +1,19 @@
+<?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if(isset($_SESSION['userObj'])) {
+    $user = (object) $_SESSION['userObj'];
+    try{    
+        $tp = $user->tipo ?? "vazio";
+        error_log("valor main.php user->tipo $tp\r\n" . PHP_EOL);
+    } catch (PDOException $e) {
+    }
+    }
+?>
 <section class="main" id="user-main">
     <div class="flex-container">
-        <form id="formUpdateCadastro" action="/form/form.cadastro.update.<?=strtolower($_user->tipo)?>.php"
+        <form id="formUpdateCadastro" action="/forms/form.cadastro.update<?=strtolower((isset($_SESSION['tipo']) && ($_SESSION['tipo'] == 'FUNCIONARIO')) ? '.' . $_SESSION['tipo'] : '')?>.php"
             method="POST" class="form-paciente">
             <h3 class="form-title titulo-h1">Meu Perfil</h3>
 
@@ -8,13 +21,13 @@
                 <div class="container-profile">
                     <section class="user-profile">
                         <div class="profile-image"
-                            style='background-image: url("<?=Modules::getUserImage($_user->token) ?>")'> <label
+                            style='background-image: '> <label
                                 class="profile-image-changer" for="image-file-input">Alterar</label> <input
                                 autocomplete="off" disabled="true" type="file" accept="image/*" id="image-file-input"
                                 style="display: none"> </div>
                         <div class="profile-info">
-                            <h2><?=($_user->nome_completo)?></h2>
-                            <p><?=($_user->esp)?></p>
+                            <h2><?=($_SESSION['usuario'])?></h2>
+                            <p><?=($_SESSION['apelido'])?></p>
                             <p><a href="#" class="btn-edit-form btn-edit">Editar Perfil</a></p>
                             <?php
                         function calculateAge($birthdate) {
@@ -24,7 +37,7 @@
                             return $age;
                         }
 
-                        if($_user->objeto == 'PACIENTE' && calculateAge($birthdate) < 18 && $_user->responsavel_nome == '' || $_user->responsavel_cpf == '' || $_user->responsavel_email == '' || $_user->responsavel_celular == '') {
+                        if($_SESSION['objeto'] == 'PACIENTE' && calculateAge($birthdate) < 18 && $_SESSION['usuario'] == '' || $_SESSION['cpf'] == '' || $_SESSION['email'] == '' || $_SESSION['celular'] == '') {
                             $warningMsg = "Atenção, é necessário preencher os campos do Responsável para poder agendar uma consulta.";
                         } else {
                             $warningMsg = false;
@@ -37,34 +50,30 @@
                 </div>
 
                 <?php
-                $birthDate = new DateTime($_user->data_nascimento ?? $user->data_nascimento);
+                $birthDate = new DateTime($_SESSION['data_nascimento'] ?? $_SESSION['data_nascimento']);
                 $currentDate = new DateTime();
                 $age = $currentDate->diff($birthDate);
             ?>
                 <div class="tab-toolbar">
                     <span class="active" data-index="1" data-tab="tabControl1">Perfil</span>
                     <span data-index="2" data-tab="tabControl1">Endereços</span>
-                    <?=($_user->objeto == 'PACIENTE' && ($age->y < 18) ? "<span data-index=\"8\" data-tab=\"tabControl1\" style=\"{$borderTab}\">Responsável</span>":'')?>
+                    <?=($_SESSION['objeto'] == 'PACIENTE' && ($age->y < 18) ? "<span data-index=\"8\" data-tab=\"tabControl1\">Responsável</span>":'')?>
                     <span data-index="3" data-tab="tabControl1">Documentação</span>
-                    <?=(($_user->objeto == 'MEDICO' && $_user->disponibilizar_agenda == 1) ? '<span data-index="4" data-tab="tabControl1">Calendário</span><span data-index="5" data-tab="tabControl1">Certificado</span>':'' )?>
-                    <?=($user->tipo == 'FUNCIONARIO' && $user->perms->aba_api == 1  ? '<span data-index="6" data-tab="tabControl1">Servidor</span>':'' )?>
-                    <?=($user->tipo == 'PACIENTE' && $user->perms->user_docs == 1  ? '<span data-index="9" data-tab="tabControl1">Anexos</span>':'' )?>
+                    <?=(($_SESSION['objeto'] == 'MEDICO' && $_SESSION['disponibilizar_agenda'] == 1) ? '<span data-index="4" data-tab="tabControl1">Calendário</span><span data-index="5" data-tab="tabControl1">Certificado</span>':'' )?>
+                    <?=($_SESSION['tipo'] == 'FUNCIONARIO' && $user->perms->aba_api == 1  ? '<span data-index="6" data-tab="tabControl1">Servidor</span>':'' )?>
+                    <?=($_SESSION['tipo'] == 'PACIENTE' && $user->perms->user_docs == 1  ? '<span data-index="9" data-tab="tabControl1">Anexos</span>':'' )?>
                 </div>
                 <div class="tab tab-disabled active" data-index="1" data-tab="tabControl1">
                     <section class="form-grid area3">
                         <section class="form-group"> <label for="nome_completo">Nome Completo</label> <input
-                                autocomplete="off" data-required disabled="true" value="<?=($_user->nome_completo)?>"
+                                autocomplete="off" data-required disabled="true" value="<?=($_SESSION['nome_completo'])?>"
                                 type="text" id="nome_completo" class="form-control" name="nome_completo"
                                 placeholder="Digite seu nome completo"> </section>
                         <section class="form-group"> <label for="nacionalidade">Nacionalidade</label> <select
                                 data-search="true" name="nacionalidade" id="nacionalidade" disabled
-                                style="background-image: url('https://static.significados.com.br/flags/<?=strtolower($_user->nacionalidade)?>.svg')">
-                                <option disabled="" <?=$_user->nacionalidade == '' ? ' selected':''?>>Selecione uma
-                                    Opção</option> <?php
-                                        foreach(SQL::fetchTable(connector: $pdo, tableName: 'PAISES', Extraquery: " WHERE status = 'ATIVADO'") as $pais) {
-                                            echo '<option id="'.$pais->sigla.'" value="'.$pais->sigla.'"'.($_user->nacionalidade == $pais->sigla ? ' selected="selected"':'').'>'.$pais->nome_pais.'</option>';
-                                        }
-                                        ?>
+                                style="background-image: url('https://static.significados.com.br/flags/<?=strtolower($_SESSION['nacionalidade'])?>.svg')">
+                                <option disabled="" <?=$_SESSION['nacionalidade'] == '' ? ' selected':''?>>Selecione uma
+                                    Opção</option> 
                             </select> </section>
                     </section>
                     <section class="form-grid area1">
@@ -563,7 +572,7 @@
                     </div>
                     <section class="street-container"> <?php
                             $street = null;
-                            
+/*
                             $stmtx1 = $pdo->prepare('SELECT * FROM `ENDERECOS` WHERE user_token = :token');
                             $stmtx1->bindValue(':token', $_user->token);
                             $stmtx1->execute();
@@ -623,7 +632,10 @@
                                         </div>';
                         
                             }
-                            
+} catch(Exception $ex) {
+}
+*/
+                                      
                             $stmtx2 = $pdo->prepare("SELECT * FROM UNIDADES WHERE medicos LIKE '%\"{$_user->id}\"%'");
                             $stmtx2->execute();
                             foreach ($stmtx2->fetchAll(PDO::FETCH_OBJ) as $item) {

@@ -1,6 +1,12 @@
 <?php
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if(isset($_SESSION['userObj'])) {
+    $user = (object) $_SESSION['userObj'];
+}
+
 // Regenera o ID da sessão para segurança (após o session_start)
 session_regenerate_id(true);
 require_once '../config.inc.php';
@@ -32,13 +38,13 @@ function SumVal($items) {
 
 if(isset($_REQUEST['product_id'])) {
     header('Content-Type: application/json');
-    echo json_encode($carrinho->add($_REQUEST['product_id'],isset($_REQUEST['pid']) ? $_REQUEST['pid'] : uniqid(), $user->cpf, $_COOKIE['sessid_clinabs_uid']));
+    echo json_encode($carrinho->add($_REQUEST['product_id'],isset($_REQUEST['pid']) ? $_REQUEST['pid'] : uniqid(), $user->cpf, $_SESSION['token']));
 } else if(isset($_REQUEST['remove']) && isset($_REQUEST['pid'])) {
     header('Content-Type: application/json');
-    echo json_encode($carrinho->removeItem($_REQUEST['pid'], $_COOKIE['sessid_clinabs_uid']) > 0 ? ['status' => 'success'] : ['status' => 'danger', 'exception' => $carrinho->lastException->getMessage()]);
+    echo json_encode($carrinho->removeItem($_REQUEST['pid'], $_SESSION['token']) > 0 ? ['status' => 'success'] : ['status' => 'danger', 'exception' => $carrinho->lastException->getMessage()]);
 }
 else{
-    $items['objs'] = $carrinho->getAll($_COOKIE['sessid_clinabs_uid']);
+    $items['objs'] = $carrinho->getAll($_SESSION['token']);
     $items['details'] = [
         'sum' => SumQtde($items['objs']),
         'valorTotal' => (SumVal($items['objs'])),

@@ -3,7 +3,7 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/config.inc.php';
 
 
 $stmty = $pdo->prepare('SELECT *,(SELECT id FROM PRODUTOS WHERE id= product_id) AS prod_id,(SELECT nome FROM PRODUTOS WHERE id= product_id) AS nome,(SELECT nome FROM MARCAS WHERE id=(SELECT id FROM PRODUTOS WHERE id= product_id)) AS marca,(SELECT image FROM PRODUTOS WHERE id= product_id) AS image, (SELECT codigo FROM PRODUTOS WHERE id= product_id) AS sku,(SELECT valor FROM PRODUTOS WHERE id= product_id) AS valor,(SELECT valor_frete_venda FROM PRODUTOS WHERE id=product_id) AS frete_valor FROM `CARRINHO` WHERE user_ref = :user_token;');
-$stmty->bindValue(':user_token', $_COOKIE['sessid_clinabs_uid']);
+$stmty->bindValue(':user_token', $_SESSION['token']);
 
 try {
   $stmty->execute();

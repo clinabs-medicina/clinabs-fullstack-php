@@ -8,6 +8,10 @@ require_once '../config.inc.php';
 function get_ref_status($sts,$btn, $pdo, $paciente, $wap, $token) {
     $result = $sts;
     $action = $btn;
+    try {
+    error_log("Valor da variável agenda \$action: $action\r\n" . PHP_EOL);
+    } catch (PDOException $e) {
+    }
 
     switch($btn) {
         case 'agenda-accept': {
@@ -52,7 +56,11 @@ function get_ref_status($sts,$btn, $pdo, $paciente, $wap, $token) {
 
                     $date = date('d/m/Y', strtotime($item->data_agendamento));
                     $time = date('H:i', strtotime($item->data_agendamento));
-                    $valor = $payment->amount;
+                    if(isset($payment)) {
+                        $valor = $payment->amount;
+                    } else {
+                        $valor = 0;
+                    }
                     $medico_nome = $item->medico_nome;
                     $paciente_nome = $item->paciente_nome;
                     $celular = $item->celular;

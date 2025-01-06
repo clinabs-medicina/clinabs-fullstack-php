@@ -1,6 +1,12 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT']. '/config.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT']. '/libs/Modules.php';
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+if(isset($_SESSION['userObj'])) {
+$user = (object) $_SESSION['userObj'];
+}
 
 $cid = $_GET['cid'] ?? '';
 
@@ -18,7 +24,7 @@ $receita = $agenda->getByToken($_GET['token']);
   <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=5">
     <title>RECEITUÁRIO - CLINABS</title>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");

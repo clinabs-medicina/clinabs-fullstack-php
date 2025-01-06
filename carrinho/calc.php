@@ -5,6 +5,11 @@ require_once '../config.inc.php';
 
 ini_set('display_errors', 1);
 error_reporting(1);
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+// if(isset($_SESSION['token'])) 
+// $user = (object) $_SESSION['userObj'];
 
 $result = [];
 
@@ -15,7 +20,7 @@ if(isset($_REQUEST['qtde']) && isset($_REQUEST['pid'])) {
   $carrinho->update($pid, $qtde);
   
   $stmty = $pdo->prepare('SELECT *,(SELECT nome FROM PRODUTOS WHERE id= product_id) AS nome,(SELECT nome FROM MARCAS WHERE id=(SELECT id FROM PRODUTOS WHERE id= product_id)) AS marca,(SELECT image FROM PRODUTOS WHERE id= product_id) AS image, (SELECT codigo FROM PRODUTOS WHERE id= product_id) AS sku,(SELECT valor FROM PRODUTOS WHERE id= product_id) AS valor,(SELECT valor_frete_venda FROM PRODUTOS WHERE id=product_id) AS frete_valor FROM `CARRINHO` WHERE user_ref = :user_token;');
-  $stmty->bindValue(':user_token', $_COOKIE['sessid_clinabs_uid']);
+  $stmty->bindValue(':user_token', $_SESSION['token']);
 
   try {
     $stmty->execute();
