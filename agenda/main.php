@@ -131,6 +131,7 @@ else {
   (SELECT MEDICOS.id FROM MEDICOS WHERE MEDICOS.token = AGENDA_MED.medico_token LIMIT 1) AS medico_id, 
   (SELECT VENDAS.status FROM VENDAS WHERE VENDAS.reference = AGENDA_MED.token LIMIT 1) AS payment_status,
   (SELECT PACIENTES.id FROM PACIENTES WHERE PACIENTES.token = AGENDA_MED.paciente_token) AS paciente_id,
+  (SELECT VENDAS.payment_id FROM VENDAS WHERE VENDAS.reference = AGENDA_MED.token) AS payment_id,
   (SELECT MEDICOS.id FROM MEDICOS WHERE MEDICOS.token = AGENDA_MED.medico_token) AS medico_id,
   anamnese as anamnese_id
 FROM
@@ -403,7 +404,7 @@ foreach($rows as $row) {
                           }
                           $allow_tc = false;
 
-                          echo "<button class=\"btn-action\"><img onclick=\"wa_notify_payment_ag('{$column->payment_id}', '{$column->paciente_nome}', 0)\" title=\"Enviar Lembrete de Cobrança via WhatsApp\" src=\"/assets/images/icon-whatsapp.svg\" height=\"22px\"></button>";
+                          echo "<button class=\"btn-action\"><img onclick=\"wa_notify('{$column->payment_id}', '{$column->paciente_nome}', 0)\" title=\"Enviar Lembrete de Cobrança via WhatsApp\" src=\"/assets/images/icon-whatsapp.svg\" height=\"22px\"></button>";
                                           
                           
                           break;
