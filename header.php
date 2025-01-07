@@ -108,7 +108,7 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
                         alt="Usuário">
                     <div class="user-link">
                         <p class="m-0">Olá, <a
-                                href="/perfil"><?=  trim($_user->nome_preferencia ?? trim(explode(' ', $user->nome_completo)[0])) ?></a>
+                                href="/perfil"><?=  trim($_SESSION['apelido'] ?? trim(explode(' ', $_SESSION['usuario'])[0])) ?></a>
                         </p>
                         <p class="m-0"><a href="/perfil">MINHA CONTA</a> | <a
                                 href="/logout<?= isset($_COOKIE['sessid_clinabs_uid']) || isset($_COOKIE['sessid_clinabs_uid']) ? '?session=user' : '' ?>">SAIR</a>

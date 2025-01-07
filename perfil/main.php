@@ -1,8 +1,36 @@
+<?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if(isset($_SESSION['userObjEditPerfil'])) {
+        $usr = (object) $_SESSION['userObjEditPerfil'];
+        $tipo = '.update.funcionario';
+        $nome = $usr->nome_completo ?? "sem info..";
+        error_log("main \$_user->nome_completo: $nome \r\n" . PHP_EOL);    
+        error_log("user sel ok\r\n" . PHP_EOL);
+        $tp = $usr->tipo ?? "";
+        $usr->objeto = 'FUNCIONARIO';
+        $usr->tipo = 'FUNCIONARIO';
+        $_user = $usr;
+    } else {
+    if(isset($_SESSION['userObj'])) {
+        $user = (object) $_SESSION['userObj'];
+        $_user = $user;
+        $tp = $_user->tipo ?? "";
+//        $tipo = (isset($tp)) ? '.' . $tp : ((isset($_SESSION['tipo'])) ? '.' . $_SESSION['tipo'] : 'update');
+//        $tipo = '.update.funcionario';
+    }
+    }
+    $tipo = strtolower($tipo);
+    error_log("main \$tipo: $tipo \r\n" . PHP_EOL);    
+
+//(isset($_SESSION['tipo']) && ($_SESSION['tipo'] == 'FUNCIONARIO')) ? '.' . $_SESSION['tipo'] : ''
+?>
 <section class="main" id="user-main">
     <div class="flex-container">
         <form id="formUpdateCadastro" action="/form/form.cadastro.update.<?=strtolower($_user->tipo)?>.php"
             method="POST" class="form-paciente">
-            <h3 class="form-title titulo-h1">Meu Perfil</h3>
+            <h3 class="form-title titulo-h1"><?= (trim($_user->nome_completo) == trim($_SESSION['usuario'])) ? 'Meu Perfil' : 'Perfil' ?></h3>
 
             <section id="tabControl1" class="tabControl locked">
                 <div class="container-profile">
@@ -24,7 +52,7 @@
                             return $age;
                         }
 
-                        if($_user->objeto == 'PACIENTE' && calculateAge($birthdate) < 18 && $_user->responsavel_nome == '' || $_user->responsavel_cpf == '' || $_user->responsavel_email == '' || $_user->responsavel_celular == '') {
+                        if($_user->objeto == 'PACIENTE' && calculateAge($birthdate) < 18 && $_user->nome_completo == '' || $_user->cpf == '' || $_user->email == '' || $_user->celular == '') {
                             $warningMsg = "Atenção, é necessário preencher os campos do Responsável para poder agendar uma consulta.";
                         } else {
                             $warningMsg = false;
@@ -37,18 +65,18 @@
                 </div>
 
                 <?php
-                $birthDate = new DateTime($_user->data_nascimento ?? $user->data_nascimento);
+                $birthDate = new DateTime($_user->data_nascimento ?? $_SESSION['data_nascimento']);
                 $currentDate = new DateTime();
                 $age = $currentDate->diff($birthDate);
             ?>
                 <div class="tab-toolbar">
                     <span class="active" data-index="1" data-tab="tabControl1">Perfil</span>
                     <span data-index="2" data-tab="tabControl1">Endereços</span>
-                    <?=($_user->objeto == 'PACIENTE' && ($age->y < 18) ? "<span data-index=\"8\" data-tab=\"tabControl1\" style=\"{$borderTab}\">Responsável</span>":'')?>
+                    <?=($_user->objeto == 'PACIENTE' && ($age->y < 18) ? "<span data-index=\"8\" data-tab=\"tabControl1\">Responsável</span>":'')?>
                     <span data-index="3" data-tab="tabControl1">Documentação</span>
                     <?=(($_user->objeto == 'MEDICO' && $_user->disponibilizar_agenda == 1) ? '<span data-index="4" data-tab="tabControl1">Calendário</span><span data-index="5" data-tab="tabControl1">Certificado</span>':'' )?>
-                    <?=($user->tipo == 'FUNCIONARIO' && $user->perms->aba_api == 1  ? '<span data-index="6" data-tab="tabControl1">Servidor</span>':'' )?>
-                    <?=($user->tipo == 'PACIENTE' && $user->perms->user_docs == 1  ? '<span data-index="9" data-tab="tabControl1">Anexos</span>':'' )?>
+                    <?=($_user->objeto == 'FUNCIONARIO' && $user->perms->aba_api == 1  ? '<span data-index="6" data-tab="tabControl1">Servidor</span>':'' )?>
+                    <?=($_user->objeto == 'PACIENTE' && $user->perms->user_docs == 1  ? '<span data-index="9" data-tab="tabControl1">Anexos</span>':'' )?>
                 </div>
                 <div class="tab tab-disabled active" data-index="1" data-tab="tabControl1">
                     <section class="form-grid area3">
@@ -60,11 +88,7 @@
                                 data-search="true" name="nacionalidade" id="nacionalidade" disabled
                                 style="background-image: url('https://static.significados.com.br/flags/<?=strtolower($_user->nacionalidade)?>.svg')">
                                 <option disabled="" <?=$_user->nacionalidade == '' ? ' selected':''?>>Selecione uma
-                                    Opção</option> <?php
-                                        foreach(SQL::fetchTable(connector: $pdo, tableName: 'PAISES', Extraquery: " WHERE status = 'ATIVADO'") as $pais) {
-                                            echo '<option id="'.$pais->sigla.'" value="'.$pais->sigla.'"'.($_user->nacionalidade == $pais->sigla ? ' selected="selected"':'').'>'.$pais->nome_pais.'</option>';
-                                        }
-                                        ?>
+                                    Opção</option> 
                             </select> </section>
                     </section>
                     <section class="form-grid area1">
@@ -1180,7 +1204,7 @@
                                 <div class="grid-item">
                                     <span>Memória</span>
                                     <h3 class="dashboard-conter-ram" data-value="0">
-                                        <?=round(($ram_used * 100) / $ram_total)?>%
+                                        <?=round(($ram_used * 100) / ((($ram_total ?? 0) > 0) ? $ram_total : 1))?>%
                                     </h3>
                                 </div>
 
@@ -1420,6 +1444,7 @@
             <?php
                 if($user->tipo == 'MEDICO' || $user->tipo == 'FUNCIONARIO') {
                     echo '<input autocomplete="off" name="atendimento_padrao" type="hidden" id="atendimento_padrao" value="'.str_replace('"', "'", $_user->atendimento_padrao).'">';
+                    $_SESSION['userObjEditPerfil'] = null;                
                 }
             ?>
         </form>
@@ -1428,6 +1453,7 @@
         <?php
             if($user->tipo == 'MEDICO' || $user->tipo == 'FUNCIONARIO') {
                 echo '<input autocomplete="off" name="agenda_dados" type="hidden" id="agenda_dados" value="'.str_replace('"', "'", $dados->calendario).'">';
+                $_SESSION['userObjEditPerfil'] = null;                
             }
         ?>
     </div>
