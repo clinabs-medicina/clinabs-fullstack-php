@@ -1,5 +1,9 @@
 <?php
-if(!isset($_COOKIE['sessid_clinabs']) && $page->require_login == true)
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+if(!isset($_SESSION['token']))
 {
     header('Location: /login?redirect='.$_SERVER['REQUEST_URI']);
 }

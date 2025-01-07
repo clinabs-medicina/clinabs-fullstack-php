@@ -1,14 +1,17 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
+if (session_status() === PHP_SESSION_NONE) {
+   session_start();
+}
 
-if(!isset($_COOKIE['sessid_clinabs'])) {
+if(!isset($_SESSION['token'])) {
    header('Location: /login');
 }
 require_once $_SERVER['DOCUMENT_ROOT'].'/config.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/session.php';
 
 $page = new stdClass();
-$page->title = 'Meu Perfil';
+$page->title = 'Perfil';
 $page->content = 'perfil/main.php';
 $page->bc = true;
 $page->name = 'link_perfil';

@@ -8,10 +8,13 @@ $page->useDT = false;
 $page->useSelector = false;
 //require_once $_SERVER['DOCUMENT_ROOT'].'/session.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/config.inc.php';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 try {
     $pg = $_SERVER['REQUEST_URI'];
-    if(isset($_COOKIE['sessid_clinabs'])) {
+    if(isset($_SESSION['token'])) {
         $usr = $_user || $user;
     } else {
         $usr = '';
