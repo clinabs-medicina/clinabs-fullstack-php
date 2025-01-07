@@ -834,6 +834,10 @@ function inline_files(string $type, array $files) {
         color: #0d6efd;
     }
 
+
+    section#tabControl1 {
+        width: 100%;
+    }
     </style>
 
 </head>

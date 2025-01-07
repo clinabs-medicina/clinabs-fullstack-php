@@ -39,76 +39,153 @@
         ];
 
         ?>
-        <table class="display table" id="faturamento-tb">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Data</th>
-                    <th>Descrição</th>
-                    <th>Paciente</th>
-                    <th>Valor</th>
-                    <th>Vencimento</th>
-                    <th>Tipo</th>
-                    <th>Status</th>
-                    <th width="150px">Açoes</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                    $payloads = $pdo->query("SELECT id,reference,(SELECT nome_completo FROM PACIENTES WHERE payment_id = customer LIMIT 1) AS customer,asaas_payload FROM VENDAS WHERE asaas_payload LIKE '%pay_%' ORDER BY `id` DESC;");
-                    $payments = $payloads->fetchAll(PDO::FETCH_OBJ);
 
-                    foreach($payments as $payment) {
-                        if($payment->customer != null && $payment->customer != '') {
-                          $payload = json_decode($payment->asaas_payload);
-                        $sts = $asaas->get_status($payload->status);
-                        $psts = $badges[$payload->status];
+        <section id="tabControl1" class="tabControl fw" data-lock="false">
+            <div class="tab-toolbar">
+                <span class="active" data-index="1" data-tab="tabControl1">Consultas</span>
+                <span data-index="2" data-tab="tabControl1">Medicamentos</span>
+            </div>
 
-                        $ptype = $asaas->get_status($payload->billingType);
+            <div class="tab active" data-index="1" data-tab="tabControl1">
+                <section class="form-grid area-full">
+                    <section class="form-group">
+                    <table class="display table" id="faturamento-tb-consultas">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Data</th>
+                                <th>Descrição</th>
+                                <th>Paciente</th>
+                                <th>Valor</th>
+                                <th>Vencimento</th>
+                                <th>Tipo</th>
+                                <th>Status</th>
+                                <th width="150px">Açoes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                                $payloads = $pdo->query("SELECT `id`, (SELECT nome_completo FROM PACIENTES WHERE payment_id = VENDAS.customer) AS paciente_nome, (SELECT data_agendamento FROM AGENDA_MED WHERE AGENDA_MED.token = VENDAS.reference) AS data_agendamento, `nome`, `dueTime`, `code`, `payment_id`, `amount`, `customer`, `status`, `created_at`, `updated_at`, `payment_method`, `asaas_payload` FROM `VENDAS` WHERE module = 'AGENDA_MED' AND asaas_payload != '[]' ORDER BY `created_at` DESC;");
+                                $payments = $payloads->fetchAll(PDO::FETCH_OBJ);
 
-                        if($payload->status === 'CONFIRMED' || $payload->status == 'RECEIVED' || $payload->status == 'RECEIVED_IN_CASH') {
-                            $link = "<a href=\"{$payload->invoiceUrl}\" target=\"asaas_{$payload->invoiceNumber}\">{$payload->invoiceNumber}</a>";
-                        } else {
-                            $link = "<a href=\"{$payload->transactionReceiptUrl}\" target=\"asaas_{$payload->invoiceNumber}\">{$payload->invoiceNumber}</a>";
-                        }
+                                foreach($payments as $payment) {
+                                    if($payment->customer != null && $payment->customer != '') {
+                                    $payload = json_decode($payment->asaas_payload);
+                                        $sts = $asaas->get_status($payload->status);
+                                        $psts = $badges[$payload->status];
 
-                        echo "<tr>";
-                        echo "<td>{$link}</td>";
-                        echo "<td>".date('d/m/Y', strtotime($payload->dateCreated))."</td>";
-                        echo "<td>{$payload->description}</td>";
-                        echo "<td>{$payment->customer}</td>";
-                        echo "<td>R\$ ".number_format($payload->value, 2, ',', '.')."</td>";
-                        echo "<td>".date('d/m/Y', strtotime($payload->dueDate))."</td>";
-                        echo "<td>{$ptype}</td>";
-                        echo "<td><span class=\"badge badge-{$psts}\">{$sts}</span></td>";
-                        echo "<td>";
-                        echo "<div  class=\"td-dflex\">";
+                                        $ptype = $asaas->get_status($payload->billingType);
 
-                        if($payload->status == 'RECEIVED_IN_CASH') {
-                            echo '<img onclick="payment_by_money(\''.$payload->id.'\', \''.$payment->customer.'\', true)" title="Desfazer Recebimnento em Dinheiro" src="/assets/images/ico-money-cancel.svg" height="22px">';
-                        } else if($payload->status == 'PENDING') {
-                            echo '<img onclick="caixa_recebimento_exec(\''.$payload->id.'\', ('.$payload->value.' * 100), \''.$payment->customer.'\')" title="Confirmar Recebimnento em Dinheiro" src="/assets/images/ico-money.svg" height="22px">';
-                        }
-                        
-                        
-                        if($payload->status === 'CONFIRMED' || $payload->status == 'RECEIVED') {
-                            echo '<img onclick="wa_notify(\''.$payload->id.'\', \''.$payment->customer.'\', 1)" title="Enviar Comprovante via WhatsApp" src="/assets/images/wa.svg" height="22px">';
+                                        if($payload->status === 'CONFIRMED' || $payload->status == 'RECEIVED' || $payload->status == 'RECEIVED_IN_CASH') {
+                                            $link = "<a href=\"{$payload->invoiceUrl}\" target=\"asaas_{$payload->invoiceNumber}\">{$payload->invoiceNumber}</a>";
+                                        } else {
+                                            $link = "<a href=\"{$payload->transactionReceiptUrl}\" target=\"asaas_{$payload->invoiceNumber}\">{$payload->invoiceNumber}</a>";
+                                        }
 
-                            echo '<img title="Estornar Pagamento" class="btn-action" onclick="refund_payment(\''.$payload->id.'\',\''.$payload->value.'\')" src="/assets/images/ico-trash.svg" height="22px">';
+                                        if(strlen($link)) {
+                                            $link = $payment->id;
+                                        }
+
+                                        echo "<tr>";
+                                        echo "<td>{$link}</td>";
+                                        echo "<td>".date('d/m/Y', strtotime($payload->dateCreated ?? $payment->created_at))."</td>";
+                                        echo "<td>{$payload->description}</td>";
+                                        echo "<td>{$payment->paciente_nome}</td>";
+                                        echo "<td>R\$ ".number_format($payload->value, 2, ',', '.')."</td>";
+                                        echo "<td>".date('d/m/Y', strtotime($payload->dueDate))."</td>";
+                                        echo "<td>{$ptype}</td>";
+                                        echo "<td><span class=\"badge badge-{$psts}\">{$sts}</span></td>";
+                                        echo "<td>";
+                                        echo "<div  class=\"td-dflex\">";
+
+                                        if($payload->status == 'RECEIVED_IN_CASH') {
+                                            echo '<img onclick="payment_by_money(\''.$payload->id.'\', \''.$payment->customer.'\', true)" title="Desfazer Recebimnento em Dinheiro" src="/assets/images/ico-money-cancel.svg" height="22px">';
+                                        } else if($payload->status == 'PENDING') {
+                                            echo '<img onclick="caixa_recebimento_exec(\''.$payload->id.'\', ('.$payload->value.' * 100), \''.$payment->customer.'\')" title="Confirmar Recebimnento em Dinheiro" src="/assets/images/ico-money.svg" height="22px">';
+                                        }
+                                        
+                                        
+                                        if($payload->status === 'CONFIRMED' || $payload->status == 'RECEIVED') {
+                                            echo '<img onclick="wa_notify(\''.$payload->id.'\', \''.$payment->customer.'\', 1)" title="Enviar Comprovante via WhatsApp" src="/assets/images/wa.svg" height="22px">';
+
+                                            echo '<img title="Estornar Pagamento" class="btn-action" onclick="refund_payment(\''.$payload->id.'\',\''.$payload->value.'\')" src="/assets/images/ico-trash.svg" height="22px">';
+                                            
+                                        } else if($payload->status === 'PENDING') {
+                                            echo '<img onclick="wa_notify(\''.$payload->id.'\', \''.$payment->customer.'\', 0)" title="Enviar Lembrete de Cobrança via WhatsApp" src="/assets/images/wa.svg" height="22px">';
+                                            echo '<img title="Cancelar Pagamento" class="btn-action" onclick="action_btn_form_payment(this)" data-token="'.$payload->id.'" data-act="delete_payment" src="/assets/images/ico-trash.svg" height="22px">';
+                                        }
+
+                                    
+                                        echo "</div>";
+                                        echo "</td>";
+                                        echo "</tr>";
+                                    }
+                                }
+                            ?>
+                        </tbody>
+                    </table>
                             
-                        } else if($payload->status === 'PENDING') {
-                            echo '<img onclick="wa_notify(\''.$payload->id.'\', \''.$payment->customer.'\', 0)" title="Enviar Lembrete de Cobrança via WhatsApp" src="/assets/images/wa.svg" height="22px">';
-                            echo '<img title="Cancelar Pagamento" class="btn-action" onclick="action_btn_form_payment(this)" data-token="'.$payload->id.'" data-act="delete_payment" src="/assets/images/ico-trash.svg" height="22px">';
-                        }
+                    </section>
+                </section>
+            </div>
 
-                       
-                        echo "</div>";
-                         echo "</td>";
-                        echo "</tr>";
-                        }
-                    }
-                ?>
-            </tbody>
-        </table>
+            <div class="tab" data-index="2" data-tab="tabControl1">
+                <section class="form-grid area-full">
+                    <section class="form-group">
+                    <table class="display table" id="faturamento-tb-medicamentos">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Data</th>
+                                <th>Descrição</th>
+                                <th>Paciente</th>
+                                <th>Valor</th>
+                                <th>Status</th>
+                                <th width="150px">Açoes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                                $payloads = $pdo->query("SELECT `id`, (SELECT nome_completo FROM PACIENTES WHERE token = VENDAS.customer) AS paciente_nome, (SELECT data_agendamento FROM AGENDA_MED WHERE AGENDA_MED.token = VENDAS.reference) AS data_agendamento, `nome`, `dueTime`, `code`, `payment_id`, `amount`, `customer`, `status`, `created_at`, `updated_at`, `payment_method`, `asaas_payload` FROM `VENDAS` WHERE module = 'FARMACIA' ORDER BY `created_at` DESC;");
+                                $payments = $payloads->fetchAll(PDO::FETCH_OBJ);
+
+                                foreach($payments as $payment) {
+
+                                        echo "<tr>";
+                                        echo "<td>{$payment->id}</td>";
+                                        echo "<td>".date('d/m/Y', strtotime($payment->created_at))."</td>";
+                                        echo "<td>{$payment->nome}</td>";
+                                        echo "<td>{$payment->paciente_nome}</td>";
+                                        echo "<td>R\$ ".number_format($payment->amount, 2, ',', '.')."</td>";
+                                        echo "<td><span>{$payment->status}</span></td>";
+                                        echo "<td>";
+                                        echo "<div  class=\"td-dflex\">";
+                                        
+                                        if($payment->status == 'AGUARDANDO PAGAMENTO') {
+                                            echo '<img title="Confirmar Pagamento" class="btn-action" data-action="confirm" onclick="manual_payment(this)" data-id="'.$payment->id.'" src="/assets/images/ico-money.svg" height="22px">';
+                                            echo '<img title="Cancelar Pagamento" class="btn-action" data-action="delete" onclick="manual_payment(this)" data-id="'.$payment->id.'" src="/assets/images/ico-trash.svg" height="22px">';
+                                        } else if($payment->status == 'PAGO') {
+                                            echo '<img title="Cancelar Pagamento" class="btn-action" data-action="delete" onclick="manual_payment(this)" data-id="'.$payment->id.'" src="/assets/images/ico-trash.svg" height="22px">';
+                                        }
+                                        
+                                        else {
+                                            if($payment->status == 'CANCELADO') {
+                                                echo '<img title="Confirmar Pagamento" class="btn-action" data-action="confirm" onclick="manual_payment(this)" data-id="'.$payment->id.'" src="/assets/images/ico-money.svg" height="22px">';
+                                            }
+                                            echo '<img title="Deletar Pagamento" class="btn-action" data-action="delete" onclick="manual_payment(this)" data-id="'.$payment->id.'" src="/assets/images/ico-trash.svg" height="22px">';
+                                        }
+                                        echo "</div>";
+                                        echo "</td>";
+                                        echo "</tr>";
+                                }
+                            ?>
+                        </tbody>
+                    </table>
+                            
+                    </section>
+                </section>
+            </div>
+        </div>
+
     </div>
 </section>
