@@ -1,4 +1,8 @@
 <?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
 global $agenda;
 $request = json_decode(file_get_contents('php://input'), true);
 
@@ -430,7 +434,7 @@ if($continue) {
                                     "icon" => "success",
                                     "text" => "Consulta Agendada com Sucesso!",
                                     "link" => $link->invoiceUrl,
-                                    'linkUrl' => $added && !isset($_COOKIE['sessid_clinabs']) ? 'https://'.$_SERVER['HTTP_HOST'].'/login?action=newPassword&token='.$ag->paciente_token : '',
+                                    'linkUrl' => $added && !isset($_SESSION['token']) ? 'https://'.$_SERVER['HTTP_HOST'].'/login?action=newPassword&token='.$ag->paciente_token : '',
                                     "paymentLink" => true,
                                     "createPwd" => $added
                                 ];
@@ -712,7 +716,7 @@ if($continue) {
                                         "icon" => "success",
                                         "text" => "Consulta Agendada com Sucesso!",
                                         "link" => $link->invoiceUrl,
-                                        'linkUrl' => $added && !isset($_COOKIE['sessid_clinabs']) ? 'https://'.$_SERVER['HTTP_HOST'].'/login?action=newPassword&token='.$ag->paciente_token : '',
+                                        'linkUrl' => $added && !isset($_SESSION['token']) ? 'https://'.$_SERVER['HTTP_HOST'].'/login?action=newPassword&token='.$ag->paciente_token : '',
                                         "paymentLink" => true,
                                         "createPwd" => $added
                                     ];

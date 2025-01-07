@@ -4,8 +4,8 @@ $no_debug = true;
 require_once("{$_SERVER['DOCUMENT_ROOT']}/config.inc.php");
 date_default_timezone_set($_REQUEST['tz']);
 
-if(isset($_COOKIE['sessid_clinabs'])) {
-  $session_id = $_COOKIE['sessid_clinabs'];
+if(isset($_SESSION['token'])) {
+  $session_id = $_SESSION['token'];
 
   $stmt0 = $pdo->prepare('UPDATE `SESSIONS` SET `ip` = :ip,`last_ping` = :lp WHERE session_id = :session_id');
   $stmt0->bindValue(':session_id', $session_id);

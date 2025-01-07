@@ -1,8 +1,10 @@
 <?php
 global $user, $favoritos, $carrinho;
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-if (isset($_COOKIE['sessid_clinabs_uid'])) {
+if (isset($_SESSION['token'])) {
     $sql = "SELECT
       objeto AS tipo
    FROM
@@ -28,7 +30,7 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
       )";
 
     $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':token', isset($_COOKIE['sessid_clinabs_uid']) ? $_COOKIE['sessid_clinabs_uid'] : $user->token);
+    $stmt->bindValue(':token', isset($_SESSION['token']) ? $_SESSION['token'] : $user->token);
     $stmt->execute();
     $obj = $stmt->fetch(PDO::FETCH_OBJ);
 
@@ -36,7 +38,7 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
 
     if ($tableName !== 'S') {
         $stmt2 = $pdo->prepare("SELECT * FROM $tableName WHERE token = :token");
-        $stmt2->bindValue(':token', isset($_COOKIE['sessid_clinabs_uid']) ? $_COOKIE['sessid_clinabs_uid'] : $user->token);
+        $stmt2->bindValue(':token', isset($_SESSION['token']) ? $_SESSION['token'] : $user->token);
 
         $stmt2->execute();
         $_user = $stmt2->fetch(PDO::FETCH_OBJ);
@@ -71,7 +73,7 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
             <ul class="m-0">
                 <li class="<?= $page->name == 'link_home' ? 'active' : ''?>" data-ref="/"><a href="/" alt=""
                         title="">INÍCIO</a></li>
-                <?php if (isset($_COOKIE['sessid_clinabs']) && $_COOKIE['sessid_clinabs'] != null) { ?>
+                <?php if (isset($_SESSION['token']) && $_SESSION['token'] != null) { ?>
                 <?= !$is_nabscare && $user->perms->link_agendar_consulta ? '<li class="consult-li-link data-ref="consulta"><a href="/agendamento" alt="Agendar Consulta" title="">AGENDAR CONSULTA</a></li>' : '' ?>
                 <?= $user->perms->link_medicos && !$is_nabscare ? '<li data-ref="medicos"><a href="/medicos" alt="Nossos Médicos" title="">MÉDICOS</a></li>' : '' ?>
                 <?= $user->perms->link_produtos == 1 ? '<li data-ref="produtos"><a href="/produtos" alt="Nossos produtos" title="">PRODUTOS</a></li>' : '' ?>
@@ -102,7 +104,7 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
 
                 <?= $user->perms->link_notificacao && !$is_nabscare ? '<li data-badge="0"><a href="#"><img class="ico-hover" src="/assets/images/ico-notifica.svg" alt=""></a></li>' : '' ?>
 
-                <?php if (isset($user->nome_completo)) { ?>
+                <?php if (isset($_SESSION['usuario'])) { ?>
                 <div class="user-default" id="user-link-menu">
                     <img class="ico-hover user" src="<?= Modules::getUserImage($_user->token ?? $user->token) ?>"
                         alt="Usuário">
@@ -111,7 +113,7 @@ if (isset($_COOKIE['sessid_clinabs_uid'])) {
                                 href="/perfil"><?=  trim($_SESSION['apelido'] ?? trim(explode(' ', $_SESSION['usuario'])[0])) ?></a>
                         </p>
                         <p class="m-0"><a href="/perfil">MINHA CONTA</a> | <a
-                                href="/logout<?= isset($_COOKIE['sessid_clinabs_uid']) || isset($_COOKIE['sessid_clinabs_uid']) ? '?session=user' : '' ?>">SAIR</a>
+                                href="/logout<?= isset($_SESSION['token']) || isset($_SESSION['token']) ? '?session=user' : '' ?>">SAIR</a>
                         </p>
                     </div>
 

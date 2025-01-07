@@ -2,6 +2,9 @@
 global $agenda;
 require_once $_SERVER["DOCUMENT_ROOT"] . "/config.inc.php";
 $added = false;
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 error_reporting(1);
 ini_set("display_erros", 1);
 $date = trim($_REQUEST["data_agendamento"]);
@@ -296,7 +299,7 @@ if((strtotime($date) - time()) > $tempo_limite) {
                                     "icon" => "success",
                                     "text" => "Consulta Agendada com Sucesso!",
                                     "link" => $link->invoiceUrl,
-                                    'linkUrl' => $added && !isset($_COOKIE['sessid_clinabs']) ? 'https://'.$hostname.'/login?action=newPassword&token='.$ag->paciente_token : '',
+                                    'linkUrl' => $added && !isset($_SESSION['token']) ? 'https://'.$hostname.'/login?action=newPassword&token='.$ag->paciente_token : '',
                                     "paymentLink" => true,
                                     "createPwd" => $added
                                 ];

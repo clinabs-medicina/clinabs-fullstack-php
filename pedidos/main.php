@@ -18,8 +18,12 @@
          </thead>
         <tbody>
           <?php
-          if(isset($_COOKIE['sessid_clinabs_uid']) || $user->tipo == 'PACIENTE') {
-            if(isset($_COOKIE['sessid_clinabs_uid'])) {
+
+          if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+          }
+          if(isset($_SESSION['token']) || $user->tipo == 'PACIENTE') {
+            if(isset($_SESSION['token'])) {
                 $query = "SELECT
                     FARMACIA.produtos, 
                     FARMACIA.valor_total, 
@@ -34,7 +38,7 @@
                     (SELECT MEDICOS.nome_completo FROM MEDICOS WHERE MEDICOS.token = FARMACIA.medico_token) AS medico_nome
                   FROM
                     FARMACIA
-                  WHERE paciente_token = '".($_COOKIE['sessid_clinabs_uid'])."'";
+                  WHERE paciente_token = '".($_SESSION['token'])."'";
             }else {
                 $query = "SELECT
                     FARMACIA.produtos, 

@@ -210,7 +210,7 @@ function generateBreadcrumb($path): string
         if($segment != 'index.php' && strlen(trim($segment)) > 3) {
 			if(!str_contains($segment, '?')) {
 			if(strtolower($prev) == 'perfil'){
-				$breadcrumb[] = '<li><a href="' . $linkPath . '">Meu Perfil</a></li>';
+				$breadcrumb[] = '<li><a href="' . $linkPath . '">Perfil</a></li>';
 			} else if($segment == 'editar') {
                 $array = explode('/', $path);
                 $breadcrumb[] = '<li><a href="' . $linkPath.'/'.end($array) . '">Editar</a></li>';

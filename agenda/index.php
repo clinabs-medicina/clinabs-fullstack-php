@@ -1,5 +1,8 @@
 <?php
 ini_set('display_errors', 1);
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 require_once $_SERVER['DOCUMENT_ROOT'].'/config.inc.php';
 $page = new stdClass();
@@ -11,15 +14,15 @@ $useDT = true;
 $useSelector = true;
 $useEditor = true;
 
-if(!isset($_COOKIE['sessid_clinabs_uid']) && !isset($_COOKIE['sessid_clinabs']) && !isset($_GET['page'])) {
+if(!isset($_SESSION['token']) && !isset($_GET['page'])) {
     $page->require_login = true;
 }
 
 $page->includePlugins = true;
 
-if($user->tipo == 'FUNCIONARIO' && isset($_COOKIE['sessid_clinabs_uid'])) {
+if($user->tipo == 'FUNCIONARIO' && isset($_SESSION['token'])) {
     $stmt2 = $pdo->prepare("SELECT * FROM PACIENTES WHERE MD5(token) = :token");
-    $stmt2->bindValue(':token', $_COOKIE['sessid_clinabs_uid']);
+    $stmt2->bindValue(':token', $_SESSION['token']);
 
     $stmt2->execute();
     $_user = $stmt2->fetch(PDO::FETCH_OBJ);
@@ -30,7 +33,7 @@ if($user->tipo == 'FUNCIONARIO' && isset($_COOKIE['sessid_clinabs_uid'])) {
     
 
    try {
-       $stmt2->bindValue(':token', $_COOKIE['sessid_clinabs']);
+       $stmt2->bindValue(':token', $_SESSION['token']);
         $stmt2->execute();
         $_user = $stmt2->fetch(PDO::FETCH_OBJ);
    }catch(PDOException $ex) {

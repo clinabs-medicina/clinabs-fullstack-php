@@ -1,6 +1,10 @@
 <?php
 require_once '../config.inc.php';
-$produtos_carrinho = $carrinho->getAll($_COOKIE['sessid_clinabs_uid']);
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$produtos_carrinho = $carrinho->getAll($_SESSION['token']);
 
 header('Content-Type: application/json');
 
