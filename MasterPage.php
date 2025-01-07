@@ -15,7 +15,6 @@ if(isset($_SESSION['userObj'])) {
     $_user = $user;
     $tp = $_user->tipo ?? "";
     error_log("valor MasterPage user->tipo $tp\r\n" . PHP_EOL);
-
 }
 */
 function inline_files(string $type, array $files) {
