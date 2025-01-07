@@ -180,7 +180,7 @@ foreach($rows as $row) {
                                     <label for="date_start">Data de Inicio</label>
                                     <input name="data_agendamento" type="date" id="date_start"
                                         class="form-control filter-element" data-value="data_agendamento"
-                                        onchange="filter_ag_req(this)">
+                                        onchange="filter_ag_req(this)" data-trigger="get_date">
                                 </div>
                             </div>
 

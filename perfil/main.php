@@ -1,4 +1,5 @@
 <?php
+
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
@@ -24,7 +25,8 @@
     $tipo = strtolower($tipo);
     error_log("main \$tipo: $tipo \r\n" . PHP_EOL);    
 
-//(isset($_SESSION['tipo']) && ($_SESSION['tipo'] == 'FUNCIONARIO')) ? '.' . $_SESSION['tipo'] : ''
+
+    file_put_contents('user.json', json_encode($_user, JSON_PRETTY_PRINT));
 ?>
 <section class="main" id="user-main">
     <div class="flex-container">

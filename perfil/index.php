@@ -83,6 +83,7 @@ function parse_bool($value) {
       WHERE 
       F.token = :token
       )";
+      
       $tk = $_GET['token'];
       error_log("sql: perfil index \$tk: $tk \r\n" . PHP_EOL);
       error_log("sql: perfil index \$sql: $sql \r\n" . PHP_EOL);
