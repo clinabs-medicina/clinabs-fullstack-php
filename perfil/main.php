@@ -30,7 +30,7 @@
     <div class="flex-container">
         <form id="formUpdateCadastro" action="/form/form.cadastro.update.<?=strtolower($_user->tipo)?>.php"
             method="POST" class="form-paciente">
-            <h3 class="form-title titulo-h1">Meu Perfil</h3>
+            <h3 class="form-title titulo-h1"><?= (trim($_user->nome_completo) == trim($_SESSION['usuario'])) ? 'Meu Perfil' : 'Perfil' ?></h3>
 
             <section id="tabControl1" class="tabControl locked">
                 <div class="container-profile">
