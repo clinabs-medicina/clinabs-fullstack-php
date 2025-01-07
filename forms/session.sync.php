@@ -21,7 +21,7 @@ if(isset($_SESSION['token'])) {
 
     try{    
         $nome = $user->nome_completo;
-        error_log("Valor da variável session.sync \$user: $nome \r\n" . PHP_EOL);
+        //error_log("Valor da variável session.sync \$user: $nome \r\n" . PHP_EOL);
     } catch (PDOException $e) {
     }
 

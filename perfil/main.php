@@ -2,18 +2,33 @@
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
+    if(isset($_SESSION['userObjEditPerfil'])) {
+        $usr = (object) $_SESSION['userObjEditPerfil'];
+        $tipo = '.update.funcionario';
+        $nome = $usr->nome_completo ?? "sem info..";
+        error_log("main \$_user->nome_completo: $nome \r\n" . PHP_EOL);    
+        error_log("user sel ok\r\n" . PHP_EOL);
+        $tp = $usr->tipo ?? "";
+        $usr->objeto = 'FUNCIONARIO';
+        $usr->tipo = 'FUNCIONARIO';
+        $_user = $usr;
+    } else {
     if(isset($_SESSION['userObj'])) {
-    $user = (object) $_SESSION['userObj'];
-    try{    
-        $tp = $user->tipo ?? "vazio";
-        error_log("valor main.php user->tipo $tp\r\n" . PHP_EOL);
-    } catch (PDOException $e) {
+        $user = (object) $_SESSION['userObj'];
+        $_user = $user;
+        $tp = $_user->tipo ?? "";
+//        $tipo = (isset($tp)) ? '.' . $tp : ((isset($_SESSION['tipo'])) ? '.' . $_SESSION['tipo'] : 'update');
+//        $tipo = '.update.funcionario';
     }
     }
+    $tipo = strtolower($tipo);
+    error_log("main \$tipo: $tipo \r\n" . PHP_EOL);    
+
+//(isset($_SESSION['tipo']) && ($_SESSION['tipo'] == 'FUNCIONARIO')) ? '.' . $_SESSION['tipo'] : ''
 ?>
 <section class="main" id="user-main">
     <div class="flex-container">
-        <form id="formUpdateCadastro" action="/forms/form.cadastro.update<?=strtolower((isset($_SESSION['tipo']) && ($_SESSION['tipo'] == 'FUNCIONARIO')) ? '.' . $_SESSION['tipo'] : '')?>.php"
+        <form id="formUpdateCadastro" action="/forms/form.cadastro.update.php"
             method="POST" class="form-paciente">
             <h3 class="form-title titulo-h1">Meu Perfil</h3>
 
@@ -26,8 +41,8 @@
                                 autocomplete="off" disabled="true" type="file" accept="image/*" id="image-file-input"
                                 style="display: none"> </div>
                         <div class="profile-info">
-                            <h2><?=($_SESSION['usuario'])?></h2>
-                            <p><?=($_SESSION['apelido'])?></p>
+                            <h2><?=($_user->nome_completo)?></h2>
+                            <p><?=($_user->nome_preferencia)?></p>
                             <p><a href="#" class="btn-edit-form btn-edit">Editar Perfil</a></p>
                             <?php
                         function calculateAge($birthdate) {
@@ -37,7 +52,7 @@
                             return $age;
                         }
 
-                        if($_SESSION['objeto'] == 'PACIENTE' && calculateAge($birthdate) < 18 && $_SESSION['usuario'] == '' || $_SESSION['cpf'] == '' || $_SESSION['email'] == '' || $_SESSION['celular'] == '') {
+                        if($_user->objeto == 'PACIENTE' && calculateAge($birthdate) < 18 && $_user->nome_completo == '' || $_user->cpf == '' || $_user->email == '' || $_user->celular == '') {
                             $warningMsg = "Atenção, é necessário preencher os campos do Responsável para poder agendar uma consulta.";
                         } else {
                             $warningMsg = false;
@@ -50,29 +65,29 @@
                 </div>
 
                 <?php
-                $birthDate = new DateTime($_SESSION['data_nascimento'] ?? $_SESSION['data_nascimento']);
+                $birthDate = new DateTime($_user->data_nascimento ?? $_SESSION['data_nascimento']);
                 $currentDate = new DateTime();
                 $age = $currentDate->diff($birthDate);
             ?>
                 <div class="tab-toolbar">
                     <span class="active" data-index="1" data-tab="tabControl1">Perfil</span>
                     <span data-index="2" data-tab="tabControl1">Endereços</span>
-                    <?=($_SESSION['objeto'] == 'PACIENTE' && ($age->y < 18) ? "<span data-index=\"8\" data-tab=\"tabControl1\">Responsável</span>":'')?>
+                    <?=($_user->objeto == 'PACIENTE' && ($age->y < 18) ? "<span data-index=\"8\" data-tab=\"tabControl1\">Responsável</span>":'')?>
                     <span data-index="3" data-tab="tabControl1">Documentação</span>
-                    <?=(($_SESSION['objeto'] == 'MEDICO' && $_SESSION['disponibilizar_agenda'] == 1) ? '<span data-index="4" data-tab="tabControl1">Calendário</span><span data-index="5" data-tab="tabControl1">Certificado</span>':'' )?>
-                    <?=($_SESSION['tipo'] == 'FUNCIONARIO' && $user->perms->aba_api == 1  ? '<span data-index="6" data-tab="tabControl1">Servidor</span>':'' )?>
-                    <?=($_SESSION['tipo'] == 'PACIENTE' && $user->perms->user_docs == 1  ? '<span data-index="9" data-tab="tabControl1">Anexos</span>':'' )?>
+                    <?=(($_user->objeto == 'MEDICO' && $_user->disponibilizar_agenda == 1) ? '<span data-index="4" data-tab="tabControl1">Calendário</span><span data-index="5" data-tab="tabControl1">Certificado</span>':'' )?>
+                    <?=($_user->objeto == 'FUNCIONARIO' && $user->perms->aba_api == 1  ? '<span data-index="6" data-tab="tabControl1">Servidor</span>':'' )?>
+                    <?=($_user->objeto == 'PACIENTE' && $user->perms->user_docs == 1  ? '<span data-index="9" data-tab="tabControl1">Anexos</span>':'' )?>
                 </div>
                 <div class="tab tab-disabled active" data-index="1" data-tab="tabControl1">
                     <section class="form-grid area3">
                         <section class="form-group"> <label for="nome_completo">Nome Completo</label> <input
-                                autocomplete="off" data-required disabled="true" value="<?=($_SESSION['nome_completo'])?>"
+                                autocomplete="off" data-required disabled="true" value="<?=($_user->nome_completo)?>"
                                 type="text" id="nome_completo" class="form-control" name="nome_completo"
                                 placeholder="Digite seu nome completo"> </section>
                         <section class="form-group"> <label for="nacionalidade">Nacionalidade</label> <select
                                 data-search="true" name="nacionalidade" id="nacionalidade" disabled
-                                style="background-image: url('https://static.significados.com.br/flags/<?=strtolower($_SESSION['nacionalidade'])?>.svg')">
-                                <option disabled="" <?=$_SESSION['nacionalidade'] == '' ? ' selected':''?>>Selecione uma
+                                style="background-image: url('https://static.significados.com.br/flags/<?=strtolower($_user->nacionalidade)?>.svg')">
+                                <option disabled="" <?=$_user->nacionalidade == '' ? ' selected':''?>>Selecione uma
                                     Opção</option> 
                             </select> </section>
                     </section>
@@ -1432,6 +1447,7 @@
             <?php
                 if($user->tipo == 'MEDICO' || $user->tipo == 'FUNCIONARIO') {
                     echo '<input autocomplete="off" name="atendimento_padrao" type="hidden" id="atendimento_padrao" value="'.str_replace('"', "'", $_user->atendimento_padrao).'">';
+                    $_SESSION['userObjEditPerfil'] = null;                
                 }
             ?>
         </form>
@@ -1440,6 +1456,7 @@
         <?php
             if($user->tipo == 'MEDICO' || $user->tipo == 'FUNCIONARIO') {
                 echo '<input autocomplete="off" name="agenda_dados" type="hidden" id="agenda_dados" value="'.str_replace('"', "'", $dados->calendario).'">';
+                $_SESSION['userObjEditPerfil'] = null;                
             }
         ?>
     </div>
