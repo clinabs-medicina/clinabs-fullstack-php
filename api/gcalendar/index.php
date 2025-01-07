@@ -10,7 +10,7 @@ $username = 'clinabs_admin';
 $password = 'GenP+s+J6Cisa^vB7visr@%3c0nCaOz#3Bb7jaGJ6pyOqC*C';
 
 date_default_timezone_set('America/Sao_Paulo');
-file_put_contents('/home/clinabs/web/clinabs.com/public_html/api/gcalendar/logs.txt',($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1').' '. date('Y-m-d H:i:s')."\n");
+file_put_contents('./logs.txt',($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1').' '. date('Y-m-d H:i:s')."\n");
 
 
 // Banco de Dados

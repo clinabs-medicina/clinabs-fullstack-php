@@ -1,7 +1,5 @@
 // scripts.js
 const calendar = document.getElementById('calendar');
-let monthSelect = 0;
-let _year = new Date().getFullYear();
 
 const renderCalendar = (date, events = {}) => {
     document.getElementById('calendar').dataset.year = _year;
@@ -16,11 +14,11 @@ const renderCalendar = (date, events = {}) => {
     const element = document.querySelector('#calendar-info');
 
     if (element)
-        element.textContent = `${months[monthSelect]}, ${date.getFullYear()}`;
-
+        element.textContent = `${months[monthSelect]}, ${dt.getFullYear()}`;
 
     // Set to the first day of the month
     date.setDate(1);
+
     const firstDayIndex = date.getDay();
     let selectedYear = date.getFullYear();
 
@@ -47,11 +45,6 @@ const renderCalendar = (date, events = {}) => {
 
         const dayElement = document.createElement('div');
         dayElement.classList.add('day-header');
-
-
-        if (i === week && selectedMonth === date.getMonth()) {
-            //dayElement.classList.add('day-today');
-        }
 
         dayElement.textContent = day;
         calendar.appendChild(dayElement);
@@ -159,7 +152,8 @@ const renderCalendar = (date, events = {}) => {
     if (elementClk)
         $(elementClk).off('click');
     elementClk.addEventListener('click', () => {
-        let nextMonth = selectedMonth + 1;
+        date.setMonth(selectedMonth + 1);
+        let nextMonth = date.getMonth();
 
         if (nextMonth > 11) {
             nextMonth = 0;
@@ -279,6 +273,7 @@ function queryStringToJSON(queryString) {
 
 document.addEventListener('DOMContentLoaded', function () {
     //$('#filter_ag_anamnese,#filter_ag_medicos,#filter_ag_especialidades').off('change');
+    let date = new Date();
 
     let selectedYear = new Date().getFullYear();
 

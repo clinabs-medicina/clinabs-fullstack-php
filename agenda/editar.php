@@ -207,7 +207,7 @@ function strip_html($html) {
                                             </div>
                                             <div class="box-description">
                                                 <h6 class="titulo-h6">' . ($prontuario->tipo == 'PRESCRICAO' ? 'RECEITUÁRIO' : $prontuario->doc_tipo) . '</h6>
-                                                <strong>Data: ' . date('d/m/Y', strtotime($prontuario->timestamp)) . '</strong>
+                                                <strong>Data: ' . date('d/m/Y H:i', strtotime($prontuario->timestamp)) . '</strong>
                                                 <small>' . ($prontuario->tipo == 'PRESCRICAO' ? 'DR(a): ' . $prontuario->usuario_nome : 'Acompanhante: ' . $prontuario->usuario_nome) . '</small>
                                                 <span class="page-box-txt">' . ($prontuario->tipo == 'PRESCRICAO' ? 'Prescrição de Medicamento' : 'Acompanhamento de Tratamento') . '</span>
                                             </div>
