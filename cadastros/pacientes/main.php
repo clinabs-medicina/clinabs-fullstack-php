@@ -139,7 +139,7 @@
             }
 
             echo '<tr style="background-color: '.$trColor.'">';
-                echo '<td data-label="Paciente: "><img src="'.Modules::getUserImage($item['token']).'" width="64px" style="border-radius: 64px;display:inline-flex; vertical-align:middle; margin: -5px 5px 0 5px;"><span class="user-item '.$item['token'].'" data-online="'.$item['session_online'].'">'.$prefixo.' '.$item['nome_completo'].'</span></td>';
+                echo '<td data-label="Paciente: "><img src="'.Modules::getUserImage($item['token']).'" width="64px" style="border-radius: 64px;display:inline-flex; vertical-align:middle; margin: -5px 5px 0 5px;"><span class="user-item '.$item['token'].'">'.$prefixo.' '.$item['nome_completo'].'</span></td>';
                 echo "<td data-label=\"Idade: \">{$item['age']} ano(s)</td>";
                 echo '<td data-label="Médico: "><img src="/assets/images/ico-medicoblack.svg" width="20px" style="display:inline-flex; vertical-align:middle; margin: -5px 5px 0 5px;"><span class="paciente-nome">'.($item['medico_nome'] ?? 'Nenhum Profissional Selecionado.').'</span></td>';
                 echo '<td data-label="Celular: ">'.$item['celular'].'</td>';

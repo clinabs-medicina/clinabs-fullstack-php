@@ -122,7 +122,7 @@ WHERE
                         </div>
                         <div class="box-description">
                             <h6 class="titulo-h6">'.($prontuario->tipo == 'PRESCRICAO' ? 'RECEITUÁRIO':$prontuario->tipo).'</h6>
-                            <strong>Data: '.date('d/m/Y', strtotime($prontuario->timestamp)).'</strong>
+                            <strong>Data: '.date('d/m/Y H:i', strtotime($prontuario->timestamp)).'</strong>
                             <small>'.($prontuario->tipo == 'PRESCRICAO' ? 'DR(a): '.$prontuario->usuario_nome:'Acompanhante: '.$prontuario->usuario_nome). ' (<b>'.$esp.'</b>)</small>
                             <span class="page-box-txt">'.($prontuario->tipo == 'PRESCRICAO' ? 'Prescrição de Medicamento' : 'Acompanhamento de Tratamento').'</span>
                         </div>

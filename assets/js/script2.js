@@ -1,6 +1,8 @@
 $(document).ready(function () {
     //$('.img-mobile').attr('src', '/data/banners/banner-home-mobile.png');
     //$('.img-desktop').attr('src', '/data/banners/banner-home.png');
+
+
     $('.listmedic-box-dir-time').off('dblclick');
     $('.listmedic-box-dir-time').on('dblclick', function () {
         const time = $(this).data('time');

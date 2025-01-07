@@ -252,9 +252,9 @@ small, .small {
         <tr>
           <td width="65%">
             <p style="font-size: 12px;height: 48px"><b style="font-size: 12px">Paciente:</b> '.$paciente->nome_completo.'</p>
-            <p style="font-size: 12px;height: 48px"><b style="font-size: 12px">Idade:</b> '.$paciente->age.' ano(a)</p>
+            <p style="font-size: 12px;height: 48px"><b style="font-size: 12px">Idade:</b> '.$paciente->age.' ano(s)</p>
             <p style="font-size: 12px;height: 48px"><b style="font-size: 12px">Sexo:</b> '.$paciente->identidade_genero.'</p>
-            <p style="font-size: 12px;height: 48px"><b style="font-size: 12px">Contato:</b> '.sprintf('(%s) *****-%s', substr($paciente->celular, 2, 2), substr($paciente->celular, 3, 4)).'</p>
+            <p style="font-size: 12px;height: 48px"><b style="font-size: 12px">Contato:</b> '.preg_replace('/(\d{2})(\d{2})(\d{1})(\d{4})(\d{4})/', '+$1 ($2) $3 $4-$5', $paciente->celular).'</p>
             <p style="font-size: 12px;height: 48px"><b style="font-size: 12px">E-mail:</b> '.$paciente->email.'</p>
             </td>
 

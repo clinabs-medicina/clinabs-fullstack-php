@@ -717,3 +717,89 @@ function relatorioAcompanhamento(classItem, patientToken) {
 
     window.open("/cadastros/pacientes/relatorio/?paciente_token=" + patientToken + "&items=" + btoa(JSON.stringify(items)), "_relatorio_acompanhamento", "width=800,height=600");
 }
+
+
+
+async function manual_payment(elem) {
+    let id = $(elem).data('id');
+    let action = $(elem).data('action');
+
+    console.log({ action: 'cancel', id: id });
+
+    if (action == 'cancel') {
+        await Swal.fire({
+            title: "Atenção",
+            text: "Deseja Cancelar este Pagamento?",
+            icon: "question",
+            allowOutsideClick: false,
+            showCancelButton: false,
+            showConfirmButton: true,
+            showDenyButton: true,
+            confirmButtonText: "SIM",
+            denyButtonText: "Não"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                preloader('Processando...');
+                $.post('/forms/payment.medicamentos.php', { action: 'cancel', id: id }, function (r) {
+                    if (r.status == 'success') {
+                        Swal.fire({ title: "Aten\xE7\xE3o", text: r.message, icon: "success" }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({ title: "Aten\xE7\xE3o", text: r.message, icon: "error" });
+                    }
+                }, 'json');
+            }
+        });
+    } else if (action == 'confirm') {
+        await Swal.fire({
+            title: "Aten\xE7\xE3o",
+            text: "Deseja Confirmar este Pagamento?",
+            icon: "question",
+            allowOutsideClick: false,
+            showCancelButton: false,
+            showConfirmButton: true,
+            showDenyButton: true,
+            confirmButtonText: "SIM",
+            denyButtonText: "Não"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                preloader('Processando...');
+                $.post('/forms/payment.medicamentos.php', { action: 'confirm', id: id }, function (r) {
+                    if (r.status == 'success') {
+                        Swal.fire({ title: "Aten\xE7\xE3o", text: r.message, icon: "success" }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({ title: "Aten\xE7\xE3o", text: r.message, icon: "error" });
+                    }
+                }, 'json');
+            }
+        });
+    } else if (action == 'delete') {
+        await Swal.fire({
+            title: "Aten\xE7\xE3o",
+            text: "Deseja Excluir este Pagamento?",
+            icon: "question",
+            allowOutsideClick: false,
+            showCancelButton: false,
+            showConfirmButton: true,
+            showDenyButton: true,
+            confirmButtonText: "SIM",
+            denyButtonText: "Não"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                preloader('Processando...');
+                $.post('/forms/payment.medicamentos.php', { action: 'delete', id: id }, function (r) {
+                    if (r.status == 'success') {
+                        Swal.fire({ title: "Aten\xE7\xE3o", text: r.message, icon: "success" }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({ title: "Aten\xE7\xE3o", text: r.message, icon: "error" });
+                    }
+                }, 'json');
+            }
+        });
+    }
+}

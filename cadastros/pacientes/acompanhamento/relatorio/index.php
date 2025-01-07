@@ -238,9 +238,9 @@ GROUP BY agenda_token
         <tr>
           <td width="65%">
             <p style="font-size: 12px;height: 48px"><b style="font-size: 12px">Paciente:</b> '.$paciente->nome_completo.'</p>
-            <p style="font-size: 12px;height: 48px"><b style="font-size: 12px">Idade:</b> '.$paciente->age.' ano(a)</p>
+            <p style="font-size: 12px;height: 48px"><b style="font-size: 12px">Idade:</b> '.$paciente->age.' ano(s)</p>
             <p style="font-size: 12px;height: 48px"><b style="font-size: 12px">Sexo:</b> '.$paciente->identidade_genero.'</p>
-            <p style="font-size: 12px;height: 48px"><b style="font-size: 12px">Contato:</b> '.sprintf('(%s) *****-%s', substr($paciente->celular, 2, 2), substr($paciente->celular, 3, 4)).'</p>
+            <p style="font-size: 12px;height: 48px"><b style="font-size: 12px">Contato:</b> '.$paciente->celular.'</p>
             <p style="font-size: 12px;height: 48px"><b style="font-size: 12px">E-mail:</b> '.$paciente->email.'</p>
             </td>
 
@@ -299,12 +299,14 @@ GROUP BY agenda_token
                     <div class="box-txt">'.($prontuario->tipo == 'PRESCRICAO' ? "$medicamentos" : "<p><b>".($prontuario->semana > 0 && $prontuario->periodo > 0 ? "{$prontuario->periodo}ª Acompanhamento, {$prontuario->semana}ª Semana":"")."</b></p> $txt").'</div>
                     </div><br>';
         }
+
     $html .= "</div>";
 
     $fileName = $_SERVER['DOCUMENT_ROOT'].'/tmp/RELATORIO_'.uniqid().'.pdf';
     $mpdf = new \Mpdf\Mpdf();
     $mpdf->setFooter("<small style=\"float: left\">Impresso em {DATE d/m/Y H:i} por ".$user->nome_completo."</small> - Página {nb} de {nbpg}");
     $mpdf->WriteHTML($html);
+
     $mpdf->Output($fileName, 'F');
     
     $fsn = basename($fileName);
@@ -314,4 +316,6 @@ GROUP BY agenda_token
     header('Content-Length: ' . filesize($fileName));
     
     readfile($fileName);
+  
     exit;
+  
