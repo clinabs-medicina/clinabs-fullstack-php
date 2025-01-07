@@ -88,7 +88,7 @@
                                 placeholder="Digite seu nome completo"> </section>
                         <section class="form-group"> <label for="nacionalidade">Nacionalidade</label> <select
                                 data-search="true" name="nacionalidade" id="nacionalidade" disabled
-                                style="background-image: url('https://static.significados.com.br/flags/<?=strtolower($_user->nacionalidade)?>.svg')">
+                                style="background-image: url('https://static.significados.com.br/flags/<?=strtolower($_user->nacionalidade ?? 'BR')?>.svg')">
                                 <option disabled="" <?=$_user->nacionalidade == '' ? ' selected':''?>>Selecione uma
                                     Opção</option> 
                             </select> </section>
@@ -146,7 +146,7 @@
                                 autocomplete="off" type="password" disabled="true" name="confirm_senha"
                                 id="confirm_senha" class="form-control pwd-alter" placeholder="Confirme sua nova Senha">
                         </section>
-                        <section class="form-group"> <label for="situacao">Situação Cadastral</label> <?php
+                        <section class="form-group"> <legend for="situacao">Situação Cadastral</legend> <?php
                                      if($user->perms->perfil_situacao_cadastral == 1) {
                                          ?> <select class="form-control" name="situacao">
                                 <option value="ATIVO" <?=($_user->status == 'ATIVO' ? ' selected':'')?>>REGULAR</option>
@@ -481,13 +481,13 @@
                     <section class="form-grid area-full">
                         <section class="form-group"> <label for="anamnese">Queixa Principal</label>
                             <select data-search="true" multiple
-                                data-selected="<?=implode(',', json_decode($_user->anamnese))?>" disabled id="anamnese"
+                                data-selected="<?=implode(',', json_decode($_user->anamnese ?? ""))?>" disabled id="anamnese"
                                 name="anamnese[]" class="form-control select-tags" data-required>
                                 <option disabled>Selecione uma Opção</option> <?php
                                                             $sql = "SELECT * FROM ANAMNESE";
                                                             $stmtx = $pdo->prepare($sql);
                                                             $stmtx->execute();
-                                                            $anamneses = json_decode($_user->anamnese, true);
+                                                            $anamneses = json_decode($_user->anamnese ?? "", true);
                                                             
                                                             foreach($stmtx->fetchAll(PDO::FETCH_ASSOC) as $queixa) {
                                                                 echo '<option '.($queixa['nome'] == '').' value="'.trim($queixa['id']).'">'.$queixa['nome'].'</option>';

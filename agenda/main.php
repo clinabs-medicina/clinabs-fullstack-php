@@ -203,15 +203,13 @@ foreach($rows as $row) {
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="filtro_medico">Selecione um Médico</label>
-
-
+                                    <legend for="filtro_medico">Selecione um Médico</legend>
                                     <div class="select-container">
-                                        <div class="custom-select" id="filtro_medico" data-value="medico_nome">
+                                        <div class="custom-select" data-value="medico_nome">
                                             <div class="select-selected">Selecione uma Opção</div>
                                             <div class="select-arrow"></div>
                                             <div class="select-items">
-                                                <input type="text" class="search-input" placeholder="Pesquisar...">
+                                                <input type="text" name="filtro_medico" class="search-input" placeholder="Pesquisar...">
                                                 <ul class="options-list">
                                                     <?php
                             foreach(array_unique($medicos) as $id => $medico) {
@@ -223,9 +221,7 @@ foreach($rows as $row) {
                                         </div>
                                     </div>
 
-
-
-                                </div>
+                                  </div>
                             </div>
                         </div>
                     </fieldset>
@@ -238,13 +234,13 @@ foreach($rows as $row) {
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="filtro_paciente">Selecione um Paciente</label>
+                                    <legend for="filtro_paciente">Selecione um Paciente</legend>
                                     <div class="select-container">
                                         <div class="custom-select" id="filtro_paciente" data-value="paciente_nome">
                                             <div class="select-selected">Selecione uma Opção</div>
                                             <div class="select-arrow"></div>
                                             <div class="select-items">
-                                                <input type="text" class="search-input" placeholder="Pesquisar..."
+                                                <input type="text" name="filtro_paciente" class="search-input" placeholder="Pesquisar..."
                                                     data-value="paciente_nome">
                                                 <ul class="options-list">
                                                     <?php
@@ -269,13 +265,13 @@ foreach($rows as $row) {
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="filtro_status">Selecione um Status</label>
+                                    <legend for="filtro_status">Selecione um Status</legend>
                                     <div class="select-container">
                                         <div class="custom-select" id="filtro_status" data-value="status">
                                             <div class="select-selected">Selecione uma Opção</div>
                                             <div class="select-arrow"></div>
                                             <div class="select-items">
-                                                <input type="text" class="search-input" placeholder="Pesquisar...">
+                                                <input type="text" name="filtro_status" class="search-input" placeholder="Pesquisar...">
                                                 <ul class="options-list">
                                                     <?php
                             foreach(array_unique($status) as $sts) {
@@ -299,13 +295,13 @@ foreach($rows as $row) {
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="filtro_modalidade">Selecione uma Modalidade</label>
+                                    <legend for="filtro_modalidade">Selecione uma Modalidade</legend>
                                     <div class="select-container">
                                         <div class="custom-select" id="filtro_modalidade" data-value="modalidade">
                                             <div class="select-selected">Selecione uma Opção</div>
                                             <div class="select-arrow"></div>
                                             <div class="select-items">
-                                                <input type="text" class="search-input" placeholder="Pesquisar...">
+                                                <input type="text" name="filtro_modalidade" class="search-input" placeholder="Pesquisar...">
                                                 <ul class="options-list">
                                                     <li data-value="ONLINE">ONLINE</li>
                                                     <li data-value="PRESENCIAL">PRESENCIAL</li>

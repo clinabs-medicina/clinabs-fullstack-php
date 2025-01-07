@@ -5,7 +5,7 @@
 
 <section class="product-home">
     <div class="toolbar-rtl" data-user="<?=($_GET['token'] ?? '')?>">
-        <input type="search" class="form-control" placeholder="Pesquisar" data-search=".product-home-flex">
+        <input type="search" name="prodPesq" class="form-control" placeholder="Pesquisar" data-search=".product-home-flex">
     </div>
     <?php
         if (session_status() === PHP_SESSION_NONE) {
