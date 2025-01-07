@@ -108,8 +108,7 @@ function parse_bool($value) {
          echo json_encode($_user, JSON_PRETTY_PRINT);
       } else {
          $_SESSION['userObjEditPerfil'] = $_user;
-         error_log("perfil index MasterPage.php \r\n" . PHP_EOL);
-
+         error_log("perfil index MasterPage.php seted user \r\n" . PHP_EOL);
          require_once $_SERVER['DOCUMENT_ROOT'].'/MasterPage.php';
       }
       

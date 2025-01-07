@@ -4,7 +4,7 @@
     }
     if(isset($_SESSION['userObjEditPerfil'])) {
         $usr = (object) $_SESSION['userObjEditPerfil'];
-        $tipo = '.update.funcionario';
+        $tipo = $_user->tipo ?? "";//'.update.funcionario';
         $nome = $usr->nome_completo ?? "sem info..";
         error_log("main \$_user->nome_completo: $nome \r\n" . PHP_EOL);    
         error_log("user sel ok\r\n" . PHP_EOL);
@@ -17,7 +17,7 @@
         $user = (object) $_SESSION['userObj'];
         $_user = $user;
         $tp = $_user->tipo ?? "";
-//        $tipo = (isset($tp)) ? '.' . $tp : ((isset($_SESSION['tipo'])) ? '.' . $_SESSION['tipo'] : 'update');
+        $tipo = (isset($tp)) ? '.' . $tp : ((isset($_SESSION['tipo'])) ? '.' . $_SESSION['tipo'] : 'update');
 //        $tipo = '.update.funcionario';
     }
     }
@@ -30,7 +30,7 @@
     <div class="flex-container">
         <form id="formUpdateCadastro" action="/form/form.cadastro.update.<?=strtolower($_user->tipo)?>.php"
             method="POST" class="form-paciente">
-            <h3 class="form-title titulo-h1"><?= (trim($_user->nome_completo) == trim($_SESSION['usuario'])) ? 'Meu Perfil' : 'Perfil' ?></h3>
+            <h3 class="form-title titulo-h1"><?= (trim($_user->nome_completo) === trim($_SESSION['usuario'])) ? 'Meu Perfil' : 'Perfil' ?></h3>
 
             <section id="tabControl1" class="tabControl locked">
                 <div class="container-profile">
