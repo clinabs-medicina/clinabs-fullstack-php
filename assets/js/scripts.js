@@ -1,4 +1,15 @@
 $(document).ready(function () {
+  if (document.getElementById('date_start')) {
+    const dateInput = document.getElementById('date_start');
+
+    const today = new Date();
+    const formattedDate = today.toISOString().split('T')[0];
+
+    dateInput.value = formattedDate;
+
+    dateInput.dispatchEvent(new Event('change'));
+  }
+
   $("img.ico-hover.user").on("click", function (e) {
     e.preventDefault();
   });
