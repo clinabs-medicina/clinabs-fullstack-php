@@ -106,8 +106,6 @@ $stmt = $pdo->query($sql);
 
 if ($stmt->rowCount() > 0) {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-
     $json = json_encode([
         'type' => 'application/json',
         'status' => 'success',
@@ -152,10 +150,6 @@ if ($stmt->rowCount() > 0) {
 
     $pdo->query("UPDATE {$user['objeto']}S SET session_online = 1,first_ping = '{$datetime}', last_ping = '{$datetime}' WHERE token = '{$user['token']}'");
    // setcookie('sessid_clinabs', $sessid, $time, '/', $hostname, true, false);
-
-   session_start();
-   
-   $_SESSION['token'] = $sessid;
 /*
    setcookie('sessid_clinabs', $sessid, [
         'expires' => time() + 3600,
@@ -164,9 +158,10 @@ if ($stmt->rowCount() > 0) {
         'secure' => true,
         'domain' => $hostname
     ]);
-
+*/   
     if (isset($user)) {
         $_SESSION['token'] = $user['token'];
+        $_SESSION['token'] = $sessid;
         $_SESSION['usuario'] = $user['nome_completo'];
         $_SESSION['apelido'] = $user['nome_preferencia'];
         $_SESSION['cpf'] = $user['cpf'];
@@ -191,7 +186,7 @@ if ($stmt->rowCount() > 0) {
             } catch (PDOException $e) {
             }
     }
-*/
+
 } else {
     $json = json_encode([
         'status' => 'danger',
