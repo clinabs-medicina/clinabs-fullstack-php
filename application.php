@@ -3,11 +3,13 @@ if(isset(getallheaders()['X-Forwarded-For'])) {
 	$ips = explode(',', getallheaders()['X-Forwarded-For']);
 }
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 $user = [];
 
-if(isset($_SESSION[$sessionName]))
+if(isset($_SESSION['token']))
 {
     $sql = "
  SELECT
@@ -86,12 +88,18 @@ FROM
 	)";
 
 	$stmt = $pdo->prepare($sql);
-	$stmt->bindValue(':token', $_SESSION[$sessionName]);
+	$stmt->bindValue(':token', $_SESSION['token']);
 	$stmt->execute();
 	$user = $stmt->fetch(PDO::FETCH_OBJ);
 
 	$perms = $pdo->query("SELECT * FROM PERMISSOES WHERE id = '{$user->perms}'");
+
+	$sql = "SELECT * FROM PERMISSOES WHERE id = :id";
+    $perms = $pdo->prepare($sql);
+    $perms->bindValue(':id', $user->perms);
+    $perms->execute();
 	$user->perms = $perms->fetch(PDO::FETCH_OBJ);
+
 }
 
 
