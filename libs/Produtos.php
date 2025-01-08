@@ -1,24 +1,28 @@
 <?php
-class Produtos {
+class Produtos
+{
   private $pdo;
   public $lastException;
 
-  public function __construct($pdo) {
+  public function __construct($pdo)
+  {
     $this->lastException = null;
 
     $this->pdo = $pdo;
   }
 
-  public function getAll() {
-    $sql = "SELECT * FROM PRODUTOS";
+  public function getAll()
+  {
+    $sql = 'SELECT * FROM PRODUTOS';
     $stmt = $this->pdo->prepare($sql);
     $stmt->execute();
 
     return $stmt->fetchAll(PDO::FETCH_OBJ);
   }
 
-  public function getById($id) {
-    $sql = "SELECT * FROM PRODUTOS WHERE id = :id";
+  public function getById($id)
+  {
+    $sql = 'SELECT * FROM PRODUTOS WHERE id = :id';
     $stmt = $this->pdo->prepare($sql);
     $stmt->bindValue(':id', $id);
     $stmt->execute();
@@ -26,9 +30,9 @@ class Produtos {
     return $produto;
   }
 
-  
-  public function getByToken($token) {
-    $sql = "SELECT * FROM PRODUTOS WHERE token = :token";
+  public function getByToken($token)
+  {
+    $sql = 'SELECT * FROM PRODUTOS WHERE token = :token';
     $stmt = $this->pdo->prepare($sql);
     $stmt->bindValue(':token', $token);
     $stmt->execute();
@@ -36,8 +40,9 @@ class Produtos {
     return $produto;
   }
 
-  public function Add($produto) {
-    $sql = "INSERT INTO PRODUTOS (nome, descricao, codigo, image, nacionalidade, valor_compra, valor_venda, valor, valor_frete_compra, unidade_medida, capacidade, fornecedor, nfe_ordem, lote, moeda, data_validade, marca, prazo_entrega, valor_frete_venda, numero_frascos, token, objeto, catalog_file) VALUES (:nome, :descricao, :codigo, :image, :nacionalidade, :valor_compra, :valor_venda, :valor, :valor_frete_compra, :unidade_medida, :capacidade, :fornecedor, :nfe_ordem, :lote, :moeda, :data_validade, :marca, :prazo_entrega, :valor_frete_venda, :numero_frascos, :token, :obj, :catalog_file)";
+  public function Add($produto)
+  {
+    $sql = 'INSERT INTO PRODUTOS (nome, descricao, codigo, image, nacionalidade, valor_compra, valor_venda, valor, valor_frete_compra, unidade_medida, capacidade, fornecedor, nfe_ordem, lote, moeda, data_validade, marca, prazo_entrega, valor_frete_venda, numero_frascos, token, objeto, catalog_file) VALUES (:nome, :descricao, :codigo, :image, :nacionalidade, :valor_compra, :valor_venda, :valor, :valor_frete_compra, :unidade_medida, :capacidade, :fornecedor, :nfe_ordem, :lote, :moeda, :data_validade, :marca, :prazo_entrega, :valor_frete_venda, :numero_frascos, :token, :obj, :catalog_file)';
     $stmt = $this->pdo->prepare($sql);
     $stmt->bindValue(':nome', $produto->nome);
     $stmt->bindValue(':descricao', $produto->descricao);
@@ -63,18 +68,18 @@ class Produtos {
     $stmt->bindValue(':obj', 'PRODUTO');
     $stmt->bindValue(':catalog_file', $produto->catalog_file);
 
-    try{
+    try {
       $stmt->execute();
       return true;
-   }catch(PDOException $error){
-     $this->lastException = $error;
-     file_put_contents('product_CAD_error.txt', print_r($error, true));
-     return false;
-   }
+    } catch (PDOException $error) {
+      $this->lastException = $error;
+      return false;
+    }
   }
 
-  public function Update($produto) {
-    $sql = "UPDATE PRODUTOS SET 
+  public function Update($produto)
+  {
+    $sql = 'UPDATE PRODUTOS SET 
     nome = :nome,
     valor = :valor, 
     descricao = :descricao, 
@@ -99,7 +104,7 @@ class Produtos {
     image = :image,
     status = :status,
     excluido = :excluir
-    WHERE token = :token";
+    WHERE token = :token';
     $stmt = $this->pdo->prepare($sql);
     $stmt->bindValue(':nome', $produto->nome);
     $stmt->bindValue(':valor', $produto->valor);
@@ -127,12 +132,12 @@ class Produtos {
     $stmt->bindValue(':status', $produto->status);
     $stmt->bindValue(':excluir', $produto->excluir);
 
-    try{
+    try {
       $stmt->execute();
       return true;
-   }catch(PDOException $error){
-     $this->lastException = $error;
-     return false;
-   }
+    } catch (PDOException $error) {
+      $this->lastException = $error;
+      return false;
+    }
   }
 }

@@ -133,7 +133,6 @@ line-height: 0;
                     try {
                       $stmt->execute();
                       $medico = $stmt->fetch(PDO::FETCH_OBJ);
-                      file_put_contents('medico.json', json_encode($medico, JSON_PRETTY_PRINT));
                     } catch(Exception $error) {
 
                     }

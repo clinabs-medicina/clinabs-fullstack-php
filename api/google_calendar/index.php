@@ -94,15 +94,11 @@ function isTimeInRange($checkTime, $startTime, $endTime) {
                     'icon' => 'danger',
                     'exception' => $ex->getMessage()
                 ];
-
-                file_put_contents('./errors_sync.txt', $ex->getMessage().PHP_EOL, FILE_APPEND);
             }
 
             $results[] = $agendamentos;
         }
     }
-
-file_put_contents('last_sync.txt', date('Y-m-d H:i:s'));
 
 //header('Content-Type: application/json');
 //echo json_encode($events, JSON_PRETTY_PRINT);

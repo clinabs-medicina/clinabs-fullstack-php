@@ -113,5 +113,3 @@ else {
     $_SESSION['user'] = $_user;
     require_once $_SERVER['DOCUMENT_ROOT'] . '/MasterPage.php';
 }
-
-file_put_contents('user.txt', print_r($page->user, true));

@@ -1,11 +1,16 @@
 <?php
 $_user = $_SESSION['_user'];
 $user = $_SESSION['user'];
+
+if(!isset($_user->nome_completo)) {
+    $_user = $user;
+}
+
 ?>
 
 <section class="main" id="user-main">
     <div class="flex-container">
-        <form id="formUpdateCadastro" action="/form/form.cadastro.update.<?=strtolower($_user->tipo)?>.php"
+        <form id="formUpdateCadastro" action="/form/form.cadastro.update.<?=strtolower($_user->objeto)?>.php"
             method="POST" class="form-paciente">
             <h3 class="form-title titulo-h1">Meu Perfil</h3>
 
@@ -42,10 +47,10 @@ $user = $_SESSION['user'];
                 </div>
 
                 <?php
-                $birthDate = new DateTime($_user->data_nascimento ?? $_SESSION['data_nascimento']);
-                $currentDate = new DateTime();
-                $age = $currentDate->diff($birthDate);
-            ?>
+                    $birthDate = new DateTime($_user->data_nascimento ?? $_SESSION['data_nascimento']);
+                    $currentDate = new DateTime();
+                    $age = $currentDate->diff($birthDate);
+                ?>
                 <div class="tab-toolbar">
                     <span class="active" data-index="1" data-tab="tabControl1">Perfil</span>
                     <span data-index="2" data-tab="tabControl1">Endereços</span>
@@ -290,21 +295,21 @@ $user = $_SESSION['user'];
                         <section class="form-group">
                             <label for="tipo_conselho">Tipo de conselho* </label> <select data-search="true" disabled
                                 data-required class="form-select form-control" id="tipo_conselho" name="tipo_conselho"
-                                value="<?=($_user->tipo_conselho)?>">
+                                value="<?=($_user->objeto_conselho)?>">
                                 <option disabled selected>Selecione uma Opção</option>
-                                <option value="CRM" <?=($_user->tipo_conselho == 'CRM' ? ' selected':'')?>>CRM</option>
-                                <option value="CRO" <?=($_user->tipo_conselho == 'CRO' ? ' selected':'')?>>CRO</option>
-                                <option value="CREFITO" <?=($_user->tipo_conselho == 'CREFITO' ? ' selected':'')?>>
+                                <option value="CRM" <?=($_user->objeto_conselho == 'CRM' ? ' selected':'')?>>CRM</option>
+                                <option value="CRO" <?=($_user->objeto_conselho == 'CRO' ? ' selected':'')?>>CRO</option>
+                                <option value="CREFITO" <?=($_user->objeto_conselho == 'CREFITO' ? ' selected':'')?>>
                                     CREFITO</option>
-                                <option value="CRBM" <?=($_user->tipo_conselho == 'CRBM' ? ' selected':'')?>>CRBM
+                                <option value="CRBM" <?=($_user->objeto_conselho == 'CRBM' ? ' selected':'')?>>CRBM
                                 </option>
-                                <option value="CRMV" <?=($_user->tipo_conselho == 'CRMV' ? ' selected':'')?>>CRMV
+                                <option value="CRMV" <?=($_user->objeto_conselho == 'CRMV' ? ' selected':'')?>>CRMV
                                 </option>
-                                <option value="COFITTO" <?=($_user->tipo_conselho == 'COFITTO' ? ' selected':'')?>>
+                                <option value="COFITTO" <?=($_user->objeto_conselho == 'COFITTO' ? ' selected':'')?>>
                                     COFITTO</option>
-                                <option value="CRN" <?=($_user->tipo_conselho == 'CRN' ? ' selected':'')?>>CRN</option>
-                                <option value="CRP" <?=($_user->tipo_conselho == 'CRP' ? ' selected':'')?>>CRP</option>
-                                <option value="OUTRO" <?=($_user->tipo_conselho == 'OUTRO' ? ' selected':'')?>>OUTRO
+                                <option value="CRN" <?=($_user->objeto_conselho == 'CRN' ? ' selected':'')?>>CRN</option>
+                                <option value="CRP" <?=($_user->objeto_conselho == 'CRP' ? ' selected':'')?>>CRP</option>
+                                <option value="OUTRO" <?=($_user->objeto_conselho == 'OUTRO' ? ' selected':'')?>>OUTRO
                                 </option>
                             </select>
                         </section>
@@ -836,7 +841,7 @@ $user = $_SESSION['user'];
                     echo '<div class="tab" data-index="4" data-tab="tabControl1">';
                     echo "<h2 class=\"titulo-h2\">Calendário de Agendamentos</h2>";
                
-                    if($_user->tipo == 'MEDICO' || $user->tipo == 'FUNCIONARIO') {
+                    if($_user->objeto == 'MEDICO' || $user->objeto == 'FUNCIONARIO') {
                         echo '<input autocomplete="off" name="medico_id" type="hidden" id="medico_id" value="'.$_user->id.'">';
                         echo '<input autocomplete="off" name="medico_token" type="hidden" id="medico_token" value="'.$_user->token.'">';
                     }
@@ -856,7 +861,7 @@ $user = $_SESSION['user'];
                     
                     $weekCalendar = new WeeklyCalendar($calendario);
 
-                    if($user->tipo == 'MEDICO' || $user->tipo == 'FUNCIONARIO') {
+                    if($user->objeto == 'MEDICO' || $user->objeto == 'FUNCIONARIO') {
                     ?> <section class="main">
 
                     <div class="flex-container">
@@ -1047,7 +1052,7 @@ $user = $_SESSION['user'];
                    
                 }
 
-                if($user->tipo == 'FUNCIONARIO' && $user->perms->aba_api == 1){
+                if($user->objeto == 'FUNCIONARIO' && $user->perms->aba_api == 1){
                     
                         $curl = curl_init();
 
@@ -1385,7 +1390,7 @@ $user = $_SESSION['user'];
                 </div>
 
                 <?php
-                    if($user->tipo == 'PACIENTE' && $user->perms->user_docs == 1) {
+                    if($user->objeto == 'PACIENTE' && $user->perms->user_docs == 1) {
                         echo '<div class="tab" data-index="9" data-tab="tabControl1">';
 
                        $user_docs = $pdo->query("SELECT * FROM `ANEXOS_PACIENTES` WHERE paciente_token = '{$user->token}'")->fetchAll(PDO::FETCH_OBJ);
@@ -1420,7 +1425,7 @@ $user = $_SESSION['user'];
             </section>
             <div class="form-footer">
                 <input autocomplete="off" disabled="true" type="hidden" name="tabela"
-                    value="<?=isset($_GET['token']) ? $_user->objeto : $user->tipo ?>S">
+                    value="<?=isset($_GET['token']) ? $_user->objeto : $user->objeto ?>S">
                 <input autocomplete="off" disabled="true" id="user_token" type="hidden" name="token"
                     value="<?=$_user->token ?>"><button type="button" class="btn-button1 btn-edit-form">EDITAR
                     DADOS</button> <button type="submit" class="btn-button1 btn-save-form" disabled="true"
@@ -1428,18 +1433,16 @@ $user = $_SESSION['user'];
             </div>
 
             <?php
-                if($user->tipo == 'MEDICO' || $user->tipo == 'FUNCIONARIO') {
-                    echo '<input autocomplete="off" name="atendimento_padrao" type="hidden" id="atendimento_padrao" value="'.str_replace('"', "'", $_user->atendimento_padrao).'">';
-                    $_SESSION['userObjEditPerfil'] = null;                
+                if($user->objeto == 'MEDICO' || $user->objeto == 'FUNCIONARIO') {
+                    echo '<input autocomplete="off" name="atendimento_padrao" type="hidden" id="atendimento_padrao" value="'.str_replace('"', "'", $_user->atendimento_padrao).'">';             
                 }
             ?>
         </form>
         <input autocomplete="off" disabled="true" type="hidden" name="profileImage" id="profileImage"
             value="<?=Modules::getUserImage($_user->token)?>">
         <?php
-            if($user->tipo == 'MEDICO' || $user->tipo == 'FUNCIONARIO') {
-                echo '<input autocomplete="off" name="agenda_dados" type="hidden" id="agenda_dados" value="'.str_replace('"', "'", $dados->calendario).'">';
-                $_SESSION['userObjEditPerfil'] = null;                
+            if($user->objeto == 'MEDICO' || $user->objeto == 'FUNCIONARIO') {
+                echo '<input autocomplete="off" name="agenda_dados" type="hidden" id="agenda_dados" value="'.str_replace('"', "'", $dados->calendario).'">';               
             }
         ?>
     </div>

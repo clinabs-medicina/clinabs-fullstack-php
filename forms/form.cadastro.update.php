@@ -99,7 +99,7 @@ if (isset($request["enderecos"])) {
         try {
           $stmt->execute();
         } catch(PDOException $ex) {
-            file_put_contents('teste.end.txt', print_r($ex->getMessage(), true));
+           
         }
     }
   }
@@ -388,7 +388,6 @@ switch ($request["tabela"]) {
         $stmt->bindValue(":age_max", preg_replace('/[^0-9]+/', '',$request['age_max']));
         $stmt->bindValue(":atendimento_padrao", str_replace("'", '"', $request['atendimento_padrao']));
 
-        file_put_contents('endereco.txt', $request['atendimento_padrao']);
         try {
             $stmt->execute();
             $json = json_encode([

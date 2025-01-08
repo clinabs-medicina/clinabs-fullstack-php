@@ -4,7 +4,7 @@ ini_set('display_error', 0);
 
 $token = 'Bearer 9fiaz0uanaa7gmhmtrlg4zfbr2hqi7wh';
 
-$realm = 'Área Restrita';
+$realm = 'Ãrea Restrita';
 
 
 function strip_str(string $str, string $sep) {

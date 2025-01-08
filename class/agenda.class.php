@@ -19,12 +19,9 @@ class AgendaGoogle {
           'dtstamp' => date('Y-m-d H:i:s', strtotime(str_replace('T', ' ', (string)$event->DTSTAMP))),
           'location' => (string)$event->LOCATION
         ];
-
-        file_put_contents('events.txt', print_r($dt, true), FILE_APPEND);
   
           if(!empty($event->RRULE)) {
             $rule = $this->parse_rule($evt['rule'], $evt['dtstart'], $evt['dtend']);
-            file_put_contents('test2.txt', print_r($rule, true));
             $this->parse_ag(
               days: explode(',', $rule['rule']['BYDAY']),
               ag: [],

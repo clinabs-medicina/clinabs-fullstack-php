@@ -225,6 +225,8 @@ if((strtotime($date) - time()) > $tempo_limite) {
                         );
                     } catch(Exception $ex) {
                         $pac = null;
+
+                        
                     }
                 }
 
@@ -322,7 +324,7 @@ if((strtotime($date) - time()) > $tempo_limite) {
                                         $wa->sendTextMessage($phoneNumber, $text);
 
                                     } catch(Exception $e) {
-
+                                        
                                     }
                                 }
 
@@ -527,6 +529,7 @@ if((strtotime($date) - time()) > $tempo_limite) {
         
                             } 
                             catch (Exception $ex) {
+                                
                                 $json = [
                                     "status" => "error",
                                     "text" => "Erro ao Agendar Consulta",
@@ -543,6 +546,7 @@ if((strtotime($date) - time()) > $tempo_limite) {
                         } 
                         
                     catch(Exception $ex) {
+                        
                             $json = [
                                 "status" => "error",
                                 "text" => "Erro ao Agendar Consulta, Verifique os dados digitados",
@@ -561,6 +565,7 @@ if((strtotime($date) - time()) > $tempo_limite) {
                 }
             } 
             catch (Exception $error) {
+                
                 $json = [
                     "status" => "warning",
                     "icon" => "error",
@@ -570,6 +575,7 @@ if((strtotime($date) - time()) > $tempo_limite) {
             }
 
         } catch (Exception $error) {
+            
             $json = [
                 "status" => "warning",
                 "icon" => "error",

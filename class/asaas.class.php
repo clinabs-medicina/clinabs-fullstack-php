@@ -346,8 +346,6 @@ class ASAAS {
             ];
   
      $response = $this->request('POST', 'payments', $data);
-
-     file_put_contents('aaaa-payment-link', print_r($response, true));
   
     if($tipo == 'PIX') {
        $response->pixPayload = $this->getPixInfo($response->id);
@@ -486,8 +484,6 @@ class ASAAS {
     }
     
     $response = curl_exec($ch);
-
-    file_put_contents('aaa-last-request.txt', $response);
 
     if (curl_errno($ch)) {
         return curl_error($ch);

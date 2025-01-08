@@ -13,7 +13,7 @@ $event = $data->id;
 try {
     $pdo->query('UPDATE VENDAS SET `asaas_payload` = "'.base64_encode(json_encode($data->payment)).'" WHERE payment_id = "'.$data->payment->id.'"');
 } catch(Exception $ex) {
-    file_put_contents('erro.log', $ex->getMessage());
+
 }
 
 $payment_status = [
