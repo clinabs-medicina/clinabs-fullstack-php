@@ -106,7 +106,7 @@ if (isset($_GET['profile'])) {
     }
 } else {
     if (isset($_SESSION['userObj'])) {
-        $_user = (object) $_SESSION['userObj'];
+        $user = (object) $_SESSION['userObj'];
     }
     $tableName = $user->tipo . 'S';
     $stmt2 = $pdo->prepare("SELECT * FROM $tableName WHERE token = :token");
@@ -114,6 +114,6 @@ if (isset($_GET['profile'])) {
 
     $stmt2->execute();
     $_user = $stmt2->fetch(PDO::FETCH_OBJ);
-    $_SESSION['_user'] = $_user;
+//    $_SESSION['_user'] = $_user;
     require_once $_SERVER['DOCUMENT_ROOT'] . '/MasterPage.php';
 }

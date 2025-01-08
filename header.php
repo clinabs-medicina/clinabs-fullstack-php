@@ -1,25 +1,27 @@
 <?php
 global $user, $favoritos, $carrinho;
-$user = $_SESSION['user'];
-$_user = $_SESSION['_user'];
+if (isset($_SESSION['user']))
+    $user = $_SESSION['user'];
+if (isset($_SESSION['_user']))
+    $_user = $_SESSION['_user'];
 
-if (isset($_SESSION['token']) && (isset($_SESSION['user']) || isset($_SESSION['_user']))) {
+if (isset($_SESSION['token'])) {
     if (isset($_SESSION['_user'])) {
-        if (!empty($_SESSION['_user']->nome_preferencia)) {
-            $user_nome = $_SESSION['_user']->nome_preferencia;
+        if (!empty($_user->nome_preferencia)) {
+            $user_nome = $_user->nome_preferencia;
         } else {
-            $user_nome = explode(' ', $_SESSION['_user']->nome_completo)[0];
+            $user_nome = explode(' ', $_user->nome_completo)[0];
         }
 
-        $user_token = $_SESSION['_user']->token;
+        $user_token = $_user->token;
     } else {
-        if (!empty($_SESSION['user']->nome_preferencia)) {
-            $user_nome = $_SESSION['user']->nome_preferencia;
+        if (!empty($_user->nome_preferencia)) {
+            $user_nome = $_user->nome_preferencia;
         } else {
-            $user_nome = explode(' ', $_SESSION['user']->nome_completo)[0];
+            $user_nome = explode(' ', $_user->nome_completo)[0];
         }
 
-        $user_token = $_SESSION['user']->token;
+        $user_token = $_user->token;
     }
 }
 
