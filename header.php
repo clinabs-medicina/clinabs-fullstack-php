@@ -1,7 +1,31 @@
 <?php
 global $user, $favoritos, $carrinho;
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+$user = $_SESSION['user'];
+$_user = $_SESSION['_user'];
+
+if (isset($_SESSION['token']) && (isset($_SESSION['user']) || isset($_SESSION['_user']))) {
+    if (isset($_SESSION['_user'])) {
+        if (!empty($_SESSION['_user']->nome_preferencia)) {
+            $user_nome = $_SESSION['_user']->nome_preferencia;
+        } else {
+            $user_nome = explode(' ', $_SESSION['_user']->nome_completo)[0];
+        }
+
+        $user_token = $_SESSION['_user']->token;
+    } else {
+        if (!empty($_SESSION['user']->nome_preferencia)) {
+            $user_nome = $_SESSION['user']->nome_preferencia;
+        } else {
+            $user_nome = explode(' ', $_SESSION['user']->nome_completo)[0];
+        }
+
+        $user_token = $_SESSION['user']->token;
+    }
+}
+
+if (!isset($_user->nome_completo)) {
+    $_user = $_SESSION['user'];
+    $user_nome = explode(' ', $_user->nome_completo)[0];
 }
 ?>
 <!-- BREADCRUMBS -->
@@ -65,9 +89,9 @@ if (session_status() === PHP_SESSION_NONE) {
                         alt="Usuário">
                     <div class="user-link">
                         <p class="m-0">Olá, <a
-                                href="/perfil"><?= $user->nome_completo ?></a>
+                                href="/perfil"><?= $user_nome ?></a>
                         </p>
-                        <p class="m-0"><a href="/perfil">MINHA CONTA</a> | <a
+                        <p class="m-0"><a href="/perfil/<?= $user_token ?>">MINHA CONTA</a> | <a
                                 href="/logout<?= isset($_SESSION['token']) || isset($_SESSION['token']) ? '?session=user' : '' ?>">SAIR</a>
                         </p>
                     </div>
@@ -78,7 +102,7 @@ if (session_status() === PHP_SESSION_NONE) {
                             <div class="menu-user-title p-0">
                                 <div><img src="<?= Modules::getUserImage($user->token) ?>" alt="Usuário"></div>
                                 <div>
-                                    <p class="menu-user-title-name m-0"><?= $user->nome_completo ?></p>
+                                    <p class="menu-user-title-name m-0"><?= explode(' ', $user->nome_completo)[0] ?></p>
                                     <p class="menu-user-title-crm m-0"><?= $user->tipo ?></p>
                                     <p class="menu-user-title-crm">
                                         <small><?= isset($user->setor) ? $user->setor : '' ?></small>
