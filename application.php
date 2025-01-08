@@ -81,7 +81,8 @@ if (isset($_SESSION[$sessionName])) {
 	token,
 	'' AS prescricao_sem_receita,
 	'' AS inicio_ag,
-	'' AS fim_ag
+	'' AS fim_ag,
+	'' AS anamnese
 FROM
 	USUARIOS AS U 
 	WHERE 
@@ -99,7 +100,8 @@ FROM
 	token,
 	prescricao_sem_receita,
 	inicio_ag,
-	fim_ag
+	fim_ag,
+	anamnese
 FROM
 	MEDICOS AS M 
 	WHERE 
@@ -118,7 +120,8 @@ FROM
 	token,
 	'' AS prescricao_sem_receita,
 	'' AS inicio_ag,
-	'' AS fim_ag
+	'' AS fim_ag,
+	anamnese
 	FROM
 		PACIENTES AS P
 		WHERE 
@@ -137,7 +140,8 @@ FROM
 	token,
 	'' AS prescricao_sem_receita,
 	'' AS inicio_ag,
-	'' AS fim_ag
+	'' AS fim_ag,
+	'' AS anamnese
 	FROM
 	FUNCIONARIOS AS F
 	WHERE 
@@ -157,7 +161,7 @@ FROM
 	$perms->execute();
 	$user->perms = $perms->fetch(PDO::FETCH_OBJ);
 
-	$_SESSION['user'] = $user;
+	$_SESSION['userObj'] = $user;
 }
 
 function generateBreadcrumb($path): string

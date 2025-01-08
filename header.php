@@ -65,7 +65,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         alt="Usuário">
                     <div class="user-link">
                         <p class="m-0">Olá, <a
-                                href="/perfil"><?= $user->nome_completo ?></a>
+                                href="/perfil"><?= (isset($_SESSION['apelido']) && $_SESSION['apelido'] !== "") ? $_SESSION['apelido'] : $_SESSION['usuario'] ?></a>
                         </p>
                         <p class="m-0"><a href="/perfil">MINHA CONTA</a> | <a
                                 href="/logout<?= isset($_SESSION['token']) || isset($_SESSION['token']) ? '?session=user' : '' ?>">SAIR</a>

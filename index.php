@@ -6,10 +6,13 @@ $page->bc = true;
 $page->name = 'link_home';
 $page->useDT = false;
 $page->useSelector = false;
-
-$user = $_SESSION['user'];
-
-if (!isset($_user)) {
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (isset($_SESSION['userObj'])) {
+    $user = $_SESSION['userObj'];
+}
+if ((!isset($_user)) && isset($user)) {
     $_user = $user;
 }
 // require_once $_SERVER['DOCUMENT_ROOT'].'/session.php';

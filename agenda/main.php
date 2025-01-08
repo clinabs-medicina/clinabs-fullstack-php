@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
 
-$user = $_SESSION['user'];
+$user = $_SESSION['userObj'];
 $_user = $_SESSION['_user'];
 
 
