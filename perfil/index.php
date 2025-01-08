@@ -105,6 +105,7 @@ function parse_bool($value) {
          header('Content-Type: application/json');
          echo json_encode($_user, JSON_PRETTY_PRINT);
       } else {
+         $_SESSION['userObjEditPerfil'] = $_user;
          require_once $_SERVER['DOCUMENT_ROOT'].'/MasterPage.php';
       }
       
