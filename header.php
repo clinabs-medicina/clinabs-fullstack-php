@@ -93,7 +93,7 @@ if (count(explode(' ', $_user->nome_completo)) >= 2) {
                         alt="Usuário">
                     <div class="user-link">
                         <p class="m-0">Olá, <a
-                                href="/perfil"><?= $user_nome ?></a>
+                            href="/perfil"><?=  trim($_SESSION['apelido'] ?? trim(explode(' ', $_SESSION['usuario'])[0])) ?></a>
                         </p>
                         <p class="m-0"><a href="/perfil/<?= $user_token ?>">MINHA CONTA</a> | <a
                                 href="/logout<?= isset($_SESSION['token']) || isset($_SESSION['token']) ? '?session=user' : '' ?>">SAIR</a>
