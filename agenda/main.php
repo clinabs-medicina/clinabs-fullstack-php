@@ -481,8 +481,6 @@ foreach ($rows as $row) {
                   echo ($column->modalidade == 'ONLINE' && $column->status == 'EM CONSULTA' && strtotime($data_agendamento) > strtotime(date('Y-m-d H:i:s')) - 3600) ? "<td data-value=\"{$meet_url}\"><button title=\"Acessar Telemedicina\" class=\"btn-action hide-mb\" onclick=\"action_btn_form_agendamento(this)\" data-user=\"FUNCIONARIO\" data-token=\"{$column->token}\" data-room=\"{$meet_url}\" data-act=\"agenda-meet\" data-status=\"{$column->status}\"><img src=\"/assets/images/ico-live.svg\" height=\"28px\" class=\"hide-mb\"><img src=\"/assets/images/ico-live-mb.svg\" height=\"28px\" class=\"show-mb\"><span data-end=\"{$data_agendamento}\" class=\"timer-rem\"></span></button></td>" : "<td data-value=\"{$meet_url}\"><button disabled title=\"Acessar Telemedicina\" class=\"btn-action\"><img src=\"/assets/images/ico-live.svg\" height=\"28px\"><span class=\"timer-rem\"></span></button></td>";
                   echo '</tr>';
 
-                  file_put_contents('log.txt', print_r($column, true) . PHP_EOL);
-
                   $i++;
                 }
 

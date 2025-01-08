@@ -1087,5 +1087,9 @@ if (isset($useCalendar)) {
         });
    </script>
 </body>
-
+<?php
+if (isset($_SESSION['_user'])) {
+    $_SESSION['_user'] = $_SESSION['user'];
+}
+?>
 </html>

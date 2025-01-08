@@ -27,6 +27,10 @@ if (!isset($_user->nome_completo)) {
     $_user = $_SESSION['user'];
     $user_nome = explode(' ', $_user->nome_completo)[0];
 }
+
+if (count(explode(' ', $_user->nome_completo)) >= 2) {
+    $user_nome = explode(' ', $_user->nome_completo)[0] . ' ' . explode(' ', $_user->nome_completo)[1];
+}
 ?>
 <!-- BREADCRUMBS -->
 <?php if (count(explode('/', $_SERVER['REQUEST_URI'])) >= 3 && $page->bc != false) { ?>
