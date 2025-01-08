@@ -1,23 +1,6 @@
 <?php
 define('ROOT', $_SERVER['DOCUMENT_ROOT']); 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 
-/*
-if(isset($_SESSION['userObjEditPerfil']) && ($_SESSION['userObjEditPerfil'] !== null)) {
-    $_user = (object) $_SESSION['userObjEditPerfil'];
-    error_log("user sel ok\r\n" . PHP_EOL);
-    $tp = $_user->tipo ?? "";
-    error_log("valor MasterPage user->tipo $tp\r\n" . PHP_EOL);
-} else
-if(isset($_SESSION['userObj'])) {
-    $user = (object) $_SESSION['userObj'];
-    $_user = $user;
-    $tp = $_user->tipo ?? "";
-    error_log("valor MasterPage user->tipo $tp\r\n" . PHP_EOL);
-}
-*/
 function inline_files(string $type, array $files) {
     echo "<{$type}>";
     
@@ -855,6 +838,11 @@ function inline_files(string $type, array $files) {
 
     section#tabControl1 {
         width: 100%;
+    }
+
+    select#nacionalidade[onchange="change_flag(this)"] {
+        background-position-x: 5px;
+        text-indent: 38px;
     }
     </style>
 

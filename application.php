@@ -92,6 +92,8 @@ FROM
 
 	$perms = $pdo->query("SELECT * FROM PERMISSOES WHERE id = '{$user->perms}'");
 	$user->perms = $perms->fetch(PDO::FETCH_OBJ);
+
+	$_SESSION['user'] = $user;
 }
 
 

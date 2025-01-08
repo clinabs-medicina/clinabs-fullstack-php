@@ -3,7 +3,11 @@ if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
 
-if(isset($_SESSION['token']) && $user->tipo == 'FUNCIONARIO') {
+$user = $_SESSION['user'];
+$_user = $_SESSION['_user'];
+
+
+if($user->tipo == 'FUNCIONARIO') {
   $query = "SELECT
   AGENDA_MED.data_agendamento, 
   AGENDA_MED.paciente_token, 
@@ -34,8 +38,7 @@ if(isset($_SESSION['token']) && $user->tipo == 'FUNCIONARIO') {
   (SELECT MEDICOS.id FROM MEDICOS WHERE MEDICOS.token = AGENDA_MED.medico_token) AS medico_id,
   anamnese as anamnese_id
 FROM
-  AGENDA_MED
-  WHERE paciente_token = '".$_SESSION['token']."';";
+  AGENDA_MED";
 }
 else if($user->tipo == 'PACIENTE') {
 $query = "SELECT

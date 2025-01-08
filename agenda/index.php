@@ -20,22 +20,24 @@ if(!isset($_SESSION['token']) && !isset($_GET['page'])) {
 
 $page->includePlugins = true;
 
-if($user->tipo == 'FUNCIONARIO' && isset($_SESSION['token'])) {
+if($user->tipo == 'FUNCIONARIO') {
     $stmt2 = $pdo->prepare("SELECT * FROM PACIENTES WHERE MD5(token) = :token");
     $stmt2->bindValue(':token', $_SESSION['token']);
 
     $stmt2->execute();
     $_user = $stmt2->fetch(PDO::FETCH_OBJ);
+
+    $_SESSION['_user'] = $_user;
     
 }else {
     
     $stmt2 = $pdo->prepare("SELECT * FROM PACIENTES WHERE MD5(token) = :token");
     
-
    try {
        $stmt2->bindValue(':token', $_SESSION['token']);
         $stmt2->execute();
         $_user = $stmt2->fetch(PDO::FETCH_OBJ);
+        $_SESSION['_user'] = $_user;
    }catch(PDOException $ex) {
        
    }

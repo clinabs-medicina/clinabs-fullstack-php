@@ -1,5 +1,6 @@
 <?php
-file_put_contents('logs.txt', print_r($_user, true));
+$_user = $_SESSION['_user'];
+$user = $_SESSION['user'];
 ?>
 
 <section class="main" id="user-main">
@@ -60,12 +61,21 @@ file_put_contents('logs.txt', print_r($_user, true));
                                 autocomplete="off" data-required disabled="true" value="<?=($_user->nome_completo)?>"
                                 type="text" id="nome_completo" class="form-control" name="nome_completo"
                                 placeholder="Digite seu nome completo"> </section>
-                        <section class="form-group"> <label for="nacionalidade">Nacionalidade</label> <select
+                        <section class="form-group"> 
+                            <label for="nacionalidade">Nacionalidade</label> 
+                            <select
                                 data-search="true" name="nacionalidade" id="nacionalidade" disabled
+                                onchange="change_flag(this)"
                                 style="background-image: url('https://static.significados.com.br/flags/<?=strtolower($_user->nacionalidade ?? 'BR')?>.svg')">
-                                <option disabled="" <?=$_user->nacionalidade == '' ? ' selected':''?>>Selecione uma
-                                    Opção</option> 
-                            </select> </section>
+                                <option disabled="" <?=$_user->nacionalidade == '' ? ' selected':''?>>Selecione umaOpção</option>
+                                <?php
+                                $nacionalidades = $pdo->query("SELECT * FROM `PAISES` WHERE status = 'ATIVADO'")->fetchAll(PDO::FETCH_OBJ);
+                                foreach ($nacionalidades as $nacionalidade) {
+                                    echo '<option value="'.$nacionalidade->sigla.'"'.($_user->nacionalidade == $nacionalidade->sigla ? ' selected="selected"':'').'>'.$nacionalidade->nome_pais.'</option>';
+                                }
+                                ?>
+                            </select> 
+                        </section>
                     </section>
                     <section class="form-grid area1">
                         <section class="form-group"> <label for="nome_preferencia">Nome de Preferência</label> <input

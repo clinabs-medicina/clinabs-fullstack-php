@@ -1,15 +1,8 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
-if (session_status() === PHP_SESSION_NONE) {
-   session_start();
-}
 
-if(!isset($_SESSION['token'])) {
-   header('Location: /login');
-}
-
-require_once $_SERVER['DOCUMENT_ROOT'].'/config.inc.php';
-require_once $_SERVER['DOCUMENT_ROOT'].'/session.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/config.inc.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/session.php';
 
 $page = new stdClass();
 $page->title = 'Perfil';
@@ -25,35 +18,35 @@ $useCalendar = true;
 
 $conf = new stdClass();
 
-function parse_bool($value) {
-   if(gettype($value) == 'string') {
-      $value = strtolower($value);
-      if($value == 'true') {
-         return true;
-      }
-      else {
-         return false;
-      }
-   } else if (gettype($value) == 'boolean') {
-      return $value;
-   } else if (gettype($value) == 'integer') {
-      if($value == 1) {
-         return true;
-      }
-      else {
-         return false;
-      }
-   } else {
-      return false;
-   }
+function parse_bool($value)
+{
+    if (gettype($value) == 'string') {
+        $value = strtolower($value);
+        if ($value == 'true') {
+            return true;
+        } else {
+            return false;
+        }
+    } elseif (gettype($value) == 'boolean') {
+        return $value;
+    } elseif (gettype($value) == 'integer') {
+        if ($value == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
-   if(isset($_GET['profile'])) {
-         header('Content-Type: application/json');
-         echo json_encode($user, JSON_PRETTY_PRINT);
-   }
-   else if(isset($_GET['token'])) {
-      $sql = "
+if (isset($_GET['profile'])) {
+    header('Content-Type: application/json');
+    echo json_encode($user, JSON_PRETTY_PRINT);
+} 
+
+elseif (isset($_GET['token'])) {
+    $sql = "
      SELECT
       objeto AS tipo
    FROM
@@ -84,37 +77,41 @@ function parse_bool($value) {
       WHERE 
       F.token = :token
       )";
-      
-      $tk = $_GET['token'];
 
-      $stmt = $pdo->prepare($sql);
-      $stmt->bindValue(':token', $tk);
-      $stmt->execute();
-      $obj = $stmt->fetch(PDO::FETCH_OBJ);
-      
-      $tableName = $obj->tipo.'S';
-      $sq = "SELECT * FROM $tableName WHERE token = '$tk'";
+    $tk = $_GET['token'];
 
-      $stmt2 = $pdo->prepare("SELECT * FROM $tableName WHERE token = :token");
-      $stmt2->bindValue(':token', $tk);
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':token', $tk);
+    $stmt->execute();
+    $obj = $stmt->fetch(PDO::FETCH_OBJ);
 
-      $stmt2->execute();
-      $_user = $stmt2->fetch(PDO::FETCH_OBJ);
+    $tableName = $obj->tipo . 'S';
+    $sq = "SELECT * FROM $tableName WHERE token = '$tk'";
 
-      if(isset($_GET['dump'])) {
-         header('Content-Type: application/json');
-         echo json_encode($_user, JSON_PRETTY_PRINT);
-      } else {
-         require_once $_SERVER['DOCUMENT_ROOT'].'/MasterPage.php';
-      }
-      
-   }
-   else{
-      $tableName = $user->tipo.'S';
-      $stmt2 = $pdo->prepare("SELECT * FROM $tableName WHERE token = :token");
-      $stmt2->bindValue(':token', $user->token);
+    $stmt2 = $pdo->prepare("SELECT * FROM $tableName WHERE token = :token");
+    $stmt2->bindValue(':token', $tk);
 
-      $stmt2->execute();
-      $_user = $stmt2->fetch(PDO::FETCH_OBJ);
-      require_once $_SERVER['DOCUMENT_ROOT'].'/MasterPage.php';
-   }
+    $stmt2->execute();
+    $_user = $stmt2->fetch(PDO::FETCH_OBJ);
+    $_SESSION['_user'] = $_user;
+
+    if (isset($_GET['dump'])) {
+        header('Content-Type: application/json');
+        echo json_encode($_user, JSON_PRETTY_PRINT);
+    } else {
+        require_once $_SERVER['DOCUMENT_ROOT'] . '/MasterPage.php';
+    }
+} 
+
+else {
+    $tableName = $user->tipo . 'S';
+    $stmt2 = $pdo->prepare("SELECT * FROM $tableName WHERE token = :token");
+    $stmt2->bindValue(':token', $user->token);
+
+    $stmt2->execute();
+    $_user = $stmt2->fetch(PDO::FETCH_OBJ);
+    $_SESSION['user'] = $_user;
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/MasterPage.php';
+}
+
+file_put_contents('user.txt', print_r($page->user, true));

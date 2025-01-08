@@ -2,7 +2,7 @@
 const calendar = document.getElementById('calendar');
 
 const renderCalendar = (date, events = {}) => {
-    document.getElementById('calendar').dataset.year = _year;
+    document.getElementById('calendar').dataset.year = date.getFullYear();
 
     $('.calendar-prev-btn').off('click');
     $('.calendar-next-btn').off('click');
@@ -14,11 +14,11 @@ const renderCalendar = (date, events = {}) => {
     const element = document.querySelector('#calendar-info');
 
     if (element)
-        element.textContent = `${months[monthSelect]}, ${dt.getFullYear()}`;
+        element.textContent = `${months[monthSelect]}, ${date.getFullYear()}`;
+
 
     // Set to the first day of the month
     date.setDate(1);
-
     const firstDayIndex = date.getDay();
     let selectedYear = date.getFullYear();
 
@@ -45,6 +45,11 @@ const renderCalendar = (date, events = {}) => {
 
         const dayElement = document.createElement('div');
         dayElement.classList.add('day-header');
+
+
+        if (i === week && selectedMonth === date.getMonth()) {
+            //dayElement.classList.add('day-today');
+        }
 
         dayElement.textContent = day;
         calendar.appendChild(dayElement);
@@ -152,8 +157,7 @@ const renderCalendar = (date, events = {}) => {
     if (elementClk)
         $(elementClk).off('click');
     elementClk.addEventListener('click', () => {
-        date.setMonth(selectedMonth + 1);
-        let nextMonth = date.getMonth();
+        let nextMonth = selectedMonth + 1;
 
         if (nextMonth > 11) {
             nextMonth = 0;
@@ -271,10 +275,13 @@ function queryStringToJSON(queryString) {
     return result;
 }
 
+
+
+
+
+
 document.addEventListener('DOMContentLoaded', function () {
     //$('#filter_ag_anamnese,#filter_ag_medicos,#filter_ag_especialidades').off('change');
-    let date = new Date();
-
     let selectedYear = new Date().getFullYear();
 
     document.getElementById('calendar').dataset.year = selectedYear;
