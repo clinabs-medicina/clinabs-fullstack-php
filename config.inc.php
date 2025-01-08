@@ -1,8 +1,14 @@
-<?php
-session_start();
+<?php declare(strict_types=1);
 
 ini_set('display_errors', 1);
 error_reporting(1);
+@ini_set('memory_limit', '4096M');
+@ini_set('max_execution_time', 0);
+@ini_set('max_input_time', 0);
+@ini_set('max_input_vars', 10000);
+@ini_set('post_max_size', '100M');
+@ini_set('upload_max_filesize', '100M');
+@ini_set('max_file_uploads', 1);
 
 $YOUTUBE_LINK = 'https://www.youtube.com/@Clinabs';
 $FACEBOOK_LINK = 'https://www.facebook.com/share/U8N9ob4r3pvJJ1FT/?mibextid=qi2Omg';
