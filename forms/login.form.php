@@ -106,10 +106,6 @@ $stmt = $pdo->query($sql);
 
 if ($stmt->rowCount() > 0) {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    
-   
-
     $json = json_encode([
         'type' => 'application/json',
         'status' => 'success',

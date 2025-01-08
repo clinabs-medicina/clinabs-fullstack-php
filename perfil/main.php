@@ -9,9 +9,6 @@
         $nome = $usr->nome_completo ?? "sem info..";
         error_log("main \$_user->nome_completo: $nome \r\n" . PHP_EOL);    
         error_log("user sel ok\r\n" . PHP_EOL);
-        $tp = $usr->tipo ?? "";
-        $usr->objeto = 'FUNCIONARIO';
-        $usr->tipo = 'FUNCIONARIO';
         $_user = $usr;
     } else {
     if(isset($_SESSION['userObj'])) {
@@ -19,7 +16,6 @@
         $_user = $user;
         $tp = $_user->tipo ?? "";
         $tipo = (isset($tp)) ? '.' . $tp : ((isset($_SESSION['tipo'])) ? '.' . $_SESSION['tipo'] : 'update');
-//        $tipo = '.update.funcionario';
     }
     }
     $tipo = strtolower($tipo);
