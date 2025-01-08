@@ -1,20 +1,11 @@
 <?php declare(strict_types=1);
 
 ini_set('display_errors', 1);
-error_reporting(1);
-@ini_set('memory_limit', '4096M');
-@ini_set('max_execution_time', 0);
-@ini_set('max_input_time', 0);
-@ini_set('max_input_vars', 10000);
-@ini_set('post_max_size', '100M');
-@ini_set('upload_max_filesize', '100M');
-@ini_set('max_file_uploads', 1);
+error_reporting(E_ALL);
 
 $YOUTUBE_LINK = 'https://www.youtube.com/@Clinabs';
 $FACEBOOK_LINK = 'https://www.facebook.com/share/U8N9ob4r3pvJJ1FT/?mibextid=qi2Omg';
 $INSTAGEM_LINK = 'https://www.instagram.com/clinabsmedicinaintegrativa/';
-
-$is_nabscare = false;
 
 $frete = 225;
 $_frete = 225;
@@ -37,7 +28,7 @@ set_error_handler(function ($errno, $errstr, $errfile, $errline) {
 		'line' => $errline,
 	];
 
-	file_put_contents($errorLogFile, "{$date_time} - " . json_encode($errorLogEntry) . PHP_EOL, FILE_APPEND);
+	file_put_contents($errorLogFile, "{$date_time} - " . json_encode($errorLogEntry) . PHP_EOL);
 });
 
 set_exception_handler(function ($exception) {
@@ -56,7 +47,7 @@ set_exception_handler(function ($exception) {
 		'line' => $exception->getLine(),
 	];
 
-	file_put_contents($errorLogFile, "{$date_time} - " . json_encode($errorLogEntry) . PHP_EOL, FILE_APPEND);
+	file_put_contents($exceptionLogFile, "{$date_time} - " . json_encode($errorLogEntry) . PHP_EOL);
 });
 
 register_shutdown_function(function () {
@@ -77,7 +68,7 @@ register_shutdown_function(function () {
 			'line' => $last_error['line'],
 		];
 
-		file_put_contents($exceptionLogFile, "{$date_time} - " . json_encode($errorLogEntry) . PHP_EOL, FILE_APPEND);
+		file_put_contents($exceptionLogFile, "{$date_time} - " . json_encode($errorLogEntry) . PHP_EOL);
 	}
 });
 

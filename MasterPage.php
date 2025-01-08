@@ -864,7 +864,7 @@ inline_files('style', $fws);
     <!-- FIM TOPO HEADER SITE -->
 
     <!-- SLIDER -->
-    <?= (count(explode('/', $_SERVER['REQUEST_URI'])) < 3 && !$is_nabscare) ? '' : '<!--' ?>
+    <?= (count(explode('/', $_SERVER['REQUEST_URI'])) < 3) ? '' : '<!--' ?>
 
     <section class="slider" id="slider1">
         <div class="slider-content">
