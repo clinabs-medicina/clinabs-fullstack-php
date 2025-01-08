@@ -1,14 +1,8 @@
 <?php
-// declare(strict_types=1);
+session_start();
+
 ini_set('display_errors', 1);
 error_reporting(1);
-@ini_set('upload_max_size', '64M');
-@ini_set('post_max_size', '64M');
-@ini_set('max_execution_time', '120');
-@ini_set('session.auto_start', 1);
-@ini_set('session.use_cookies', 1);
-@ini_set('session.cookie_secure', 0);
-@ini_set('session.cookie_httponly', 1);
 
 $YOUTUBE_LINK = 'https://www.youtube.com/@Clinabs';
 $FACEBOOK_LINK = 'https://www.facebook.com/share/U8N9ob4r3pvJJ1FT/?mibextid=qi2Omg';
@@ -21,7 +15,65 @@ $_frete = 225;
 
 date_default_timezone_set('America/Sao_Paulo');
 
-ini_set('error_log', $_SERVER['DOCUMENT_ROOT'] . '/errors.log');
+set_error_handler(function ($errno, $errstr, $errfile, $errline) {
+	$date_time = date('Y-m-d H:i:s');
+	$errorLogFile = $_SERVER['DOCUMENT_ROOT'] . '/data/logs/php_errors.log';
+
+	if (!file_exists($errorLogFile)) {
+		mkdir($_SERVER['DOCUMENT_ROOT'] . '/data/logs', 0777, true);
+	}
+
+	$errorLogEntry = [
+		'timestamp' => date('Y-m-d H:i:s'),
+		'error_code' => $errno,
+		'error_message' => $errstr,
+		'file' => $errfile,
+		'line' => $errline,
+	];
+
+	file_put_contents($errorLogFile, "{$date_time} - " . json_encode($errorLogEntry) . PHP_EOL, FILE_APPEND);
+});
+
+set_exception_handler(function ($exception) {
+	$date_time = date('Y-m-d H:i:s');
+	$exceptionLogFile = $_SERVER['DOCUMENT_ROOT'] . '/data/logs/exceptions_errors.log';
+
+	if (!file_exists($exceptionLogFile)) {
+		mkdir($_SERVER['DOCUMENT_ROOT'] . '/data/logs', 0777, true);
+	}
+
+	$errorLogEntry = [
+		'timestamp' => date('Y-m-d H:i:s'),
+		'error_code' => $exception->getCode(),
+		'error_message' => $exception->getMessage(),
+		'file' => $exception->getFile(),
+		'line' => $exception->getLine(),
+	];
+
+	file_put_contents($errorLogFile, "{$date_time} - " . json_encode($errorLogEntry) . PHP_EOL, FILE_APPEND);
+});
+
+register_shutdown_function(function () {
+	$last_error = error_get_last();
+	if ($last_error !== null) {
+		$date_time = date('Y-m-d H:i:s');
+		$exceptionLogFile = $_SERVER['DOCUMENT_ROOT'] . '/data/logs/fatal_errors.log';
+
+		if (!file_exists($exceptionLogFile)) {
+			mkdir($_SERVER['DOCUMENT_ROOT'] . '/data/logs', 0777, true);
+		}
+
+		$errorLogEntry = [
+			'timestamp' => date('Y-m-d H:i:s'),
+			'error_code' => $last_error['type'],
+			'error_message' => $last_error['message'],
+			'file' => $last_error['file'],
+			'line' => $last_error['line'],
+		];
+
+		file_put_contents($exceptionLogFile, "{$date_time} - " . json_encode($errorLogEntry) . PHP_EOL, FILE_APPEND);
+	}
+});
 
 $hostname = $_SERVER['HTTP_HOST'];
 $sessionName = 'token';

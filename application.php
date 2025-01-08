@@ -3,7 +3,7 @@ if(isset(getallheaders()['X-Forwarded-For'])) {
 	$ips = explode(',', getallheaders()['X-Forwarded-For']);
 }
 
-session_start();
+// session_start();
 
 $user = [];
 
