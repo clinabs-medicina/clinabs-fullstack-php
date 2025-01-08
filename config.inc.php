@@ -1,13 +1,15 @@
 <?php
 
-declare(strict_types=1);
+//declare(strict_types=1);
 ini_set('display_errors', 1);
 error_reporting(1);
 @ini_set('upload_max_size', '64M');
 @ini_set('post_max_size', '64M');
 @ini_set('max_execution_time', '120');
-session_set_cookie_params(0);
-session_start();
+@ini_set('session.auto_start', 1);
+@ini_set('session.use_cookies', 1);
+@ini_set('session.cookie_secure', 0);
+@ini_set('session.cookie_httponly', 1);
 
 $YOUTUBE_LINK = 'https://www.youtube.com/@Clinabs';
 $FACEBOOK_LINK = 'https://www.facebook.com/share/U8N9ob4r3pvJJ1FT/?mibextid=qi2Omg';
@@ -23,7 +25,7 @@ date_default_timezone_set('America/Sao_Paulo');
 ini_set('error_log', $_SERVER['DOCUMENT_ROOT'] . '/errors.log');
 
 $hostname = $_SERVER['HTTP_HOST'];
-$sessionName = 'sessid_clinabs';
+$sessionName = 'token';
 
 $notificacoes_receitas = ['4133000780', '41995927699', '41992319253'];
 $notificacoes_consultas = ['4133000780', '41995927699', '41992319253'];

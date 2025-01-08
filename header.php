@@ -104,13 +104,13 @@ if (isset($_SESSION['token'])) {
 
                 <?= $user->perms->link_notificacao && !$is_nabscare ? '<li data-badge="0"><a href="#"><img class="ico-hover" src="/assets/images/ico-notifica.svg" alt=""></a></li>' : '' ?>
 
-                <?php if (isset($_SESSION['usuario'])) { ?>
+                <?php if (isset($_SESSION['token'])) { ?>
                 <div class="user-default" id="user-link-menu">
                     <img class="ico-hover user" src="<?= Modules::getUserImage($_user->token ?? $user->token) ?>"
                         alt="Usuário">
                     <div class="user-link">
                         <p class="m-0">Olá, <a
-                                href="/perfil"><?=  trim($_SESSION['apelido'] ?? trim(explode(' ', $_SESSION['usuario'])[0])) ?></a>
+                                href="/perfil"><?= $user->nome_completo ?></a>
                         </p>
                         <p class="m-0"><a href="/perfil">MINHA CONTA</a> | <a
                                 href="/logout<?= isset($_SESSION['token']) || isset($_SESSION['token']) ? '?session=user' : '' ?>">SAIR</a>

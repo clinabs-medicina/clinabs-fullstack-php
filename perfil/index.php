@@ -7,6 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
 if(!isset($_SESSION['token'])) {
    header('Location: /login');
 }
+
 require_once $_SERVER['DOCUMENT_ROOT'].'/config.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/session.php';
 
@@ -85,34 +86,25 @@ function parse_bool($value) {
       )";
       
       $tk = $_GET['token'];
-      error_log("sql: perfil index \$tk: $tk \r\n" . PHP_EOL);
-      error_log("sql: perfil index \$sql: $sql \r\n" . PHP_EOL);
+
       $stmt = $pdo->prepare($sql);
       $stmt->bindValue(':token', $tk);
       $stmt->execute();
       $obj = $stmt->fetch(PDO::FETCH_OBJ);
-
+      
       $tableName = $obj->tipo.'S';
-      error_log("perfil index \$tableName: $tableName \r\n" . PHP_EOL);
       $sq = "SELECT * FROM $tableName WHERE token = '$tk'";
-      error_log("perfil index \$tableName: $sq \r\n" . PHP_EOL);
 
       $stmt2 = $pdo->prepare("SELECT * FROM $tableName WHERE token = :token");
       $stmt2->bindValue(':token', $tk);
 
       $stmt2->execute();
       $_user = $stmt2->fetch(PDO::FETCH_OBJ);
-      $_user->tipo = $obj->tipo;      
-      $_user->objeto = $obj->tipo;      
-      error_log("perfil index \$_user->nome_completo: $_user->nome_completo \r\n" . PHP_EOL);
-      if(isset($_GET['dump'])) {
-         error_log("perfil index json encode \r\n" . PHP_EOL);
 
+      if(isset($_GET['dump'])) {
          header('Content-Type: application/json');
          echo json_encode($_user, JSON_PRETTY_PRINT);
       } else {
-         $_SESSION['userObjEditPerfil'] = $_user;
-         error_log("perfil index MasterPage.php seted user \r\n" . PHP_EOL);
          require_once $_SERVER['DOCUMENT_ROOT'].'/MasterPage.php';
       }
       

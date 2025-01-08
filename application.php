@@ -3,11 +3,11 @@ if(isset(getallheaders()['X-Forwarded-For'])) {
 	$ips = explode(',', getallheaders()['X-Forwarded-For']);
 }
 
-
+session_start();
 
 $user = [];
 
-if(isset($_COOKIE[$sessionName]))
+if(isset($_SESSION[$sessionName]))
 {
     $sql = "
  SELECT
@@ -85,113 +85,13 @@ FROM
 	MD5(F.token) = :token
 	)";
 
-
-  if(isset($_COOKIE[$sessionName]))
-  {
 	$stmt = $pdo->prepare($sql);
+	$stmt->bindValue(':token', $_SESSION[$sessionName]);
+	$stmt->execute();
+	$user = $stmt->fetch(PDO::FETCH_OBJ);
 
-    $stmt->bindValue(':token', $_COOKIE[$sessionName]);
-    $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_OBJ);
-
-	$sql = "SELECT * FROM PERMISSOES WHERE id = :id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':id', $user->perms);
-    $stmt->execute();
-
-	$sqlx = "
- SELECT
-	id,
-	nome_completo,
-	cpf,
-	celular,
-	objeto AS tipo,
-	objeto AS setor,
-	perm as perms,
-    marcas,
-	token,
-	'' AS prescricao_sem_receita,
-	'' AS inicio_ag,
-	'' AS fim_ag,
-	'' AS perms_adicional,
-	objeto AS esp
-FROM
-	USUARIOS AS U 
-	WHERE 
-	MD5(U.token) = '{$_COOKIE[$sessionName]}'
- UNION ALL
- SELECT
-	id,
-	nome_completo,
-	cpf,
-	celular,
-	objeto AS tipo,
-	objeto AS setor,
-	perm as perms,
-    '[]' AS marcas,
-	token,
-	prescricao_sem_receita,
-	inicio_ag,
-	fim_ag,
-	'' AS perms_adicional,
-	(SELECT nome FROM ESPECIALIDADES WHERE id = especialidade) AS esp
-FROM
-	MEDICOS AS M 
-	WHERE 
-	MD5(M.token) = '{$_COOKIE[$sessionName]}'
-	UNION ALL
-	(
-	SELECT
-	id,
-	nome_completo,
-	cpf,
-	celular,
-	objeto AS tipo,
-	objeto AS setor,
-	perm as perms,
-    '[]' AS marcas,
-	token,
-	'' AS prescricao_sem_receita,
-	'' AS inicio_ag,
-	'' AS fim_ag,
-	'' AS perms_adicional,
-	esp
-	FROM
-		PACIENTES AS P
-		WHERE 
-		MD5(P.token) = '{$_COOKIE[$sessionName]}'
-	) UNION ALL
-	(
-	SELECT
-	id,
-	nome_completo,
-	cpf,
-	celular,
-	objeto AS tipo,
-	setor,
-	perm as perms,
-    '[]' AS marcas,
-	token,
-	'' AS prescricao_sem_receita,
-	'' AS inicio_ag,
-	'' AS fim_ag,
-	perms_adicional,
-	objeto AS esp
-	FROM
-	FUNCIONARIOS AS F
-	WHERE 
-	MD5(F.token) = '{$_COOKIE[$sessionName]}'
-	)";
-    
-
-	if($stmt->rowCount() > 0){
-		$user->perms = $stmt->fetch(PDO::FETCH_OBJ);
-    
-		if(isset($user->marcas)) {
-			$user->marcas = json_decode($user->marcas, true);
-		}
-	}
-  }
+	$perms = $pdo->query("SELECT * FROM PERMISSOES WHERE id = '{$user->perms}'");
+	$user->perms = $perms->fetch(PDO::FETCH_OBJ);
 }
 
 

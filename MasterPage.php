@@ -3,6 +3,7 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']);
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
 /*
 if(isset($_SESSION['userObjEditPerfil']) && ($_SESSION['userObjEditPerfil'] !== null)) {
     $_user = (object) $_SESSION['userObjEditPerfil'];
@@ -924,8 +925,8 @@ function inline_files(string $type, array $files) {
 
     <!-- CONTEUDO PRINCIPAL -->
     <?php
-  require_once $page->content;
-  ?>
+        require_once $page->content;
+    ?>
     <!-- FIM CONTEUDO PRINCIPAL -->
 
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/footer.php'; ?>
