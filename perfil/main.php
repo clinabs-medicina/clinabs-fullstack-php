@@ -830,7 +830,7 @@ if ($_user->objeto == 'PACIENTE') {
                     echo '<div class="tab" data-index="4" data-tab="tabControl1">';
                     echo '<h2 class="titulo-h2">Calendário de Agendamentos</h2>';
 
-                    if ($_user->objeto == 'MEDICO' || $user->objeto == 'FUNCIONARIO') {
+                    if ($_user->objeto == 'MEDICO' || $user->tipo == 'FUNCIONARIO') {
                         echo '<input autocomplete="off" name="medico_id" type="hidden" id="medico_id" value="' . $_user->id . '">';
                         echo '<input autocomplete="off" name="medico_token" type="hidden" id="medico_token" value="' . $_user->token . '">';
                     }
@@ -849,7 +849,7 @@ if ($_user->objeto == 'PACIENTE') {
 
                     $weekCalendar = new WeeklyCalendar($calendario);
 
-                    if ($user->objeto == 'MEDICO' || $user->objeto == 'FUNCIONARIO') {
+                    if ($user->tipo == 'MEDICO' || $user->tipo == 'FUNCIONARIO') {
                         ?> <section class="main">
 
                     <div class="flex-container">
@@ -1019,7 +1019,7 @@ if ($_user->objeto == 'PACIENTE') {
                 <?php
                 }
 
-                if ($user->objeto == 'FUNCIONARIO' && $user->perms->aba_api == 1) {
+                if ($user->tipo == 'FUNCIONARIO' && $user->perms->aba_api == 1) {
                     $curl = curl_init();
 
                     curl_setopt_array($curl, array(
@@ -1351,7 +1351,7 @@ if ($_user->objeto == 'PACIENTE') {
                 </div>
 
                 <?php
-                if ($user->objeto == 'PACIENTE' && $user->perms->user_docs == 1) {
+                if ($user->tipo == 'PACIENTE' && $user->perms->user_docs == 1) {
                     echo '<div class="tab" data-index="9" data-tab="tabControl1">';
 
                     $user_docs = $pdo->query("SELECT * FROM `ANEXOS_PACIENTES` WHERE paciente_token = '{$user->token}'")->fetchAll(PDO::FETCH_OBJ);
@@ -1386,7 +1386,7 @@ if ($_user->objeto == 'PACIENTE') {
             </section>
             <div class="form-footer">
                 <input autocomplete="off" disabled="true" type="hidden" name="tabela"
-                    value="<?= isset($_GET['token']) ? $_user->objeto : $user->objeto ?>S">
+                    value="<?= isset($_GET['token']) ? $_user->objeto : $user->tipo ?>S">
                 <input autocomplete="off" disabled="true" id="user_token" type="hidden" name="token"
                     value="<?= $_user->token ?>"><button type="button" class="btn-button1 btn-edit-form">EDITAR
                     DADOS</button> <button type="submit" class="btn-button1 btn-save-form" disabled="true"
@@ -1394,7 +1394,7 @@ if ($_user->objeto == 'PACIENTE') {
             </div>
 
             <?php
-            if ($user->objeto == 'MEDICO' || $user->objeto == 'FUNCIONARIO') {
+            if ($user->tipo == 'MEDICO' || $user->tipo == 'FUNCIONARIO') {
                 echo '<input autocomplete="off" name="atendimento_padrao" type="hidden" id="atendimento_padrao" value="' . str_replace('"', "'", $_user->atendimento_padrao) . '">';
             }
             ?>
@@ -1402,7 +1402,7 @@ if ($_user->objeto == 'PACIENTE') {
         <input autocomplete="off" disabled="true" type="hidden" name="profileImage" id="profileImage"
             value="<?= Modules::getUserImage($_user->token) ?>">
         <?php
-        if ($user->objeto == 'MEDICO' || $user->objeto == 'FUNCIONARIO') {
+        if ($user->tipo == 'MEDICO' || $user->tipo == 'FUNCIONARIO') {
             echo '<input autocomplete="off" name="agenda_dados" type="hidden" id="agenda_dados" value="' . str_replace('"', "'", $dados->calendario) . '">';
         }
         ?>

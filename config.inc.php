@@ -1,7 +1,9 @@
 <?php declare(strict_types=1);
 
+session_start();
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+@ini_set('session.auto_start', 1);
 
 $YOUTUBE_LINK = 'https://www.youtube.com/@Clinabs';
 $FACEBOOK_LINK = 'https://www.facebook.com/share/U8N9ob4r3pvJJ1FT/?mibextid=qi2Omg';
