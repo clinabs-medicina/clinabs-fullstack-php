@@ -28,7 +28,8 @@ $sql = "
     '[]' AS marcas,
 	'' AS prescricao_sem_receita,
 	'' AS inicio_ag,
-	'' AS fim_ag
+	'' AS fim_ag,
+    '' AS anamnese
 FROM
     `FUNCIONARIOS`
 WHERE
@@ -49,7 +50,8 @@ SELECT
     '[]' AS marcas,
 	'' AS prescricao_sem_receita,
 	'' AS inicio_ag,
-	'' AS fim_ag
+	'' AS fim_ag,
+    anamnese
 FROM
     `PACIENTES`
 WHERE
@@ -70,7 +72,8 @@ SELECT
     '[]' AS marcas,
 	prescricao_sem_receita,
 	inicio_ag,
-	fim_ag
+	fim_ag,
+    anamnese
 FROM
     `MEDICOS`
 WHERE
@@ -91,7 +94,8 @@ SELECT
     marcas,
 	'' AS prescricao_sem_receita,
 	'' AS inicio_ag,
-	'' AS fim_ag
+	'' AS fim_ag,
+    '' AS anamnese
 FROM
     `USUARIOS`
 WHERE
@@ -177,6 +181,7 @@ if ($stmt->rowCount() > 0) {
         $_SESSION['inicio_ag'] = $user['inicio_ag'];
         $_SESSION['fim_ag'] = $user['fim_ag'];
         $_SESSION['disponibilizar_agenda'] = $user['disponibilizar_agenda'];
+        $_SESSION['anamnese'] = $user['anamnese'];
         if (isset($user) && is_array($user)) {        
           $_SESSION['userObj'] = $user;
         }
