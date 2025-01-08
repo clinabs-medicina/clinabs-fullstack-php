@@ -3,6 +3,9 @@ header('Content-Type: text/html; charset=utf-8');
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/session.php';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 $page = new stdClass();
 $page->title = 'Perfil';
@@ -91,21 +94,26 @@ if (isset($_GET['profile'])) {
 
     $stmt2->execute();
     $_user = $stmt2->fetch(PDO::FETCH_OBJ);
-    $_SESSION['_user'] = $_user;
 
     if (isset($_GET['dump'])) {
         header('Content-Type: application/json');
         echo json_encode($_user, JSON_PRETTY_PRINT);
     } else {
+        if (isset($_user)) {
+            $_SESSION['_user'] = $_user;
+        } 
         require_once $_SERVER['DOCUMENT_ROOT'] . '/MasterPage.php';
     }
 } else {
+    if (isset($_SESSION['userObj'])) {
+        $user = (object) $_SESSION['userObj'];
+    }
     $tableName = $user->tipo . 'S';
     $stmt2 = $pdo->prepare("SELECT * FROM $tableName WHERE token = :token");
     $stmt2->bindValue(':token', $user->token);
 
     $stmt2->execute();
     $_user = $stmt2->fetch(PDO::FETCH_OBJ);
-    $_SESSION['_user'] = $_user;
+//    $_SESSION['_user'] = $_user;
     require_once $_SERVER['DOCUMENT_ROOT'] . '/MasterPage.php';
 }

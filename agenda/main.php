@@ -1,6 +1,6 @@
 <?php
 
-$user = $_SESSION['user'];
+$user = $_SESSION['userObj'];
 $_user = $_SESSION['_user'];
 
 if ($user->tipo == 'FUNCIONARIO') {

@@ -1,25 +1,27 @@
 <?php
 global $user, $favoritos, $carrinho;
-$user = $_SESSION['user'];
-$_user = $_SESSION['_user'];
+if (isset($_SESSION['user']))
+    $user = $_SESSION['user'];
+if (isset($_SESSION['_user']))
+    $_user = $_SESSION['_user'];
 
-if (isset($_SESSION['token']) && (isset($_SESSION['user']) || isset($_SESSION['_user']))) {
+if (isset($_SESSION['token'])) {
     if (isset($_SESSION['_user'])) {
-        if (!empty($_SESSION['_user']->nome_preferencia)) {
-            $user_nome = $_SESSION['_user']->nome_preferencia;
+        if (!empty($_user->nome_preferencia)) {
+            $user_nome = $_user->nome_preferencia;
         } else {
-            $user_nome = explode(' ', $_SESSION['_user']->nome_completo)[0];
+            $user_nome = explode(' ', $_user->nome_completo)[0];
         }
 
-        $user_token = $_SESSION['_user']->token;
+        $user_token = $_user->token;
     } else {
-        if (!empty($_SESSION['user']->nome_preferencia)) {
-            $user_nome = $_SESSION['user']->nome_preferencia;
+        if (!empty($_user->nome_preferencia)) {
+            $user_nome = $_user->nome_preferencia;
         } else {
-            $user_nome = explode(' ', $_SESSION['user']->nome_completo)[0];
+            $user_nome = explode(' ', $_user->nome_completo)[0];
         }
 
-        $user_token = $_SESSION['user']->token;
+        $user_token = $_user->token;
     }
 }
 
@@ -93,7 +95,7 @@ if (count(explode(' ', $_user->nome_completo)) >= 2) {
                         alt="Usuário">
                     <div class="user-link">
                         <p class="m-0">Olá, <a
-                                href="/perfil"><?= $user_nome ?></a>
+                            href="/perfil"><?=  trim($_SESSION['apelido'] ?? trim(explode(' ', $_SESSION['usuario'])[0])) ?></a>
                         </p>
                         <p class="m-0"><a href="/perfil/<?= $user_token ?>">MINHA CONTA</a> | <a
                                 href="/logout<?= isset($_SESSION['token']) || isset($_SESSION['token']) ? '?session=user' : '' ?>">SAIR</a>
