@@ -15,6 +15,6 @@ foreach($payments as $payment) {
             $xpay->bindValue(':id', $payment->payment_id);
             $xpay->execute();
     } catch(Exception $ex) {
-        file_put_contents('erro.log', $ex->getMessage());
+
         }
     }

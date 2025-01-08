@@ -6,10 +6,10 @@
         <table name="paciente" id="tablePacientes" class="display dataTable">
         <thead>
              <tr>
-             <th width="128px">Código</th>
+             <th width="128px">CÃ³digo</th>
               <th>Nome</th>
               <th width="128px">Valor</th>
-              <th width="64px">Ações</th>
+              <th width="64px">AÃ§Ãµes</th>
              </tr>
         </thead>
 

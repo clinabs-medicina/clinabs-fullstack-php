@@ -1,5 +1,6 @@
 <?php
-setcookie('sessid_clinabs', '', time() - 6307200000000 * 300000, '/', hostname, true);
-setcookie('sessid_clinabs_uid', '', time() - 630720000000 * 30000, '/', hostname, true);
+foreach($_SESSION as $key => $value) {
+    unset($_SESSION[$key]);
+}
 
 header('Location: /login');

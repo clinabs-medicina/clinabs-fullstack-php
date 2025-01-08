@@ -257,9 +257,6 @@ GROUP BY agenda_token
         </table>';
         $html .= "<div class=\"row dflex-column\">";
 
-        file_put_contents('prontuario.json', json_encode($dados, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
-        
-
         foreach($dados as $prontuario) {
               
           $txt = implode('<br>', array_map(function($key){

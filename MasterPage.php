@@ -1,28 +1,13 @@
 <?php
-define('ROOT', $_SERVER['DOCUMENT_ROOT']); 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/browser.php');
+define('ROOT', $_SERVER['DOCUMENT_ROOT']);
 
-/*
-if(isset($_SESSION['userObjEditPerfil']) && ($_SESSION['userObjEditPerfil'] !== null)) {
-    $_user = (object) $_SESSION['userObjEditPerfil'];
-    error_log("user sel ok\r\n" . PHP_EOL);
-    $tp = $_user->tipo ?? "";
-    error_log("valor MasterPage user->tipo $tp\r\n" . PHP_EOL);
-} else
-if(isset($_SESSION['userObj'])) {
-    $user = (object) $_SESSION['userObj'];
-    $_user = $user;
-    $tp = $_user->tipo ?? "";
-    error_log("valor MasterPage user->tipo $tp\r\n" . PHP_EOL);
-}
-*/
-function inline_files(string $type, array $files) {
+function inline_files(string $type, array $files)
+{
     echo "<{$type}>";
-    
-    foreach($files as $f) {
-        echo file_get_contents($_SERVER['DOCUMENT_ROOT']."/{$f}");
+
+    foreach ($files as $f) {
+        echo file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/{$f}");
     }
 
     echo "</{$type}>";
@@ -48,8 +33,8 @@ function inline_files(string $type, array $files) {
     <title><?= $page->title == 'Home' ? 'Início' : $page->title ?> - Clinabs - O tratamento natural para seus problemas
         de saúde.</title>
     <?php if (isset($_REQUEST['pedido_code'])) {
-    echo '<meta name="track_id" content="' . $_REQUEST["pedido_code"] . '">';
-  } ?>
+        echo '<meta name="track_id" content="' . $_REQUEST['pedido_code'] . '">';
+    } ?>
 <style>
 * {
     box-sizing: border-box;
@@ -58,20 +43,20 @@ function inline_files(string $type, array $files) {
 }
 </style>
 <?php
-    
-    $fws = [
-        "/assets/font-awesome/css/all.min.css",
-        //"/assets/font-awesome/css/fws.min.css",
-       // "/assets/font-awesome/css/fws2.min.css",
-        //"/assets/font-awesome/css/fws3.min.css",
-        //"/assets/font-awesome/css/fws4.min.css",
-        //"/assets/font-awesome/css/fws5.min.css",
-        //"/assets/css/calendar.css",
-        //"/assets/css/select2.css"
-    ];
 
-    inline_files('style', $fws);
-    ?>
+$fws = [
+    '/assets/font-awesome/css/all.min.css',
+    // "/assets/font-awesome/css/fws.min.css",
+    // "/assets/font-awesome/css/fws2.min.css",
+    // "/assets/font-awesome/css/fws3.min.css",
+    // "/assets/font-awesome/css/fws4.min.css",
+    // "/assets/font-awesome/css/fws5.min.css",
+    // "/assets/css/calendar.css",
+    // "/assets/css/select2.css"
+];
+
+inline_files('style', $fws);
+?>
     <meta name="description"
         content="Agende sua consulta online hoje mesmo e comece a aproveitar os benefícios do CBD. Nossos médicos especialistas em canabinoides estão aqui para ajudá-lo a melhorar sua vida com o uso de CBD.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -117,51 +102,51 @@ function inline_files(string $type, array $files) {
     </style>
     <?php
 
-    if(isset($useDT)) {
+    if (isset($useDT)) {
         echo '<link href="/assets/css/datatable.css" rel="stylesheet" type="text/css" crossorigin="sameorign" />';
         echo '<link href="/assets/css/responsive.dataTables.css" rel="stylesheet" type="text/css" crossorigin="sameorign" />';
         echo '<link href="/assets/css/buttons.dataTables.css" rel="stylesheet" type="text/css" crossorigin="sameorign" />';
     }
-    
+
     $bootstrap = [
-        "/assets/bootstrap/css/bootstrap.css",
-        "/assets/bootstrap/css/bootstrap2.css",
-        "/assets/bootstrap/css/bootstrap3.css",
-        "/assets/bootstrap/css/bootstrap4.css",
-        "/assets/bootstrap/css/bootstrap5.css",
-        "/assets/css/sweetalert.css",
-        "/assets/css/croppie.css"
+        '/assets/bootstrap/css/bootstrap.css',
+        '/assets/bootstrap/css/bootstrap2.css',
+        '/assets/bootstrap/css/bootstrap3.css',
+        '/assets/bootstrap/css/bootstrap4.css',
+        '/assets/bootstrap/css/bootstrap5.css',
+        '/assets/css/sweetalert.css',
+        '/assets/css/croppie.css'
     ];
 
     inline_files('style', $bootstrap);
 
     $templates = [
-        "/assets/css/style.css",
-        "/assets/css/style2.css",
-        "/assets/css/style3.css",
-        "/assets/css/style4.css"
+        '/assets/css/style.css',
+        '/assets/css/style2.css',
+        '/assets/css/style3.css',
+        '/assets/css/style4.css'
     ];
 
     inline_files('style', $templates);
     ?>
     <?php
 
-    if(isset($page->useDT) && $page->useDT == true) {
-    echo '<link rel="preload" rel="stylesheet" href="/assets/css/datatable.css" crossorigin="anonymsameorignous">
+    if (isset($page->useDT) && $page->useDT == true) {
+        echo '<link rel="preload" rel="stylesheet" href="/assets/css/datatable.css" crossorigin="anonymsameorignous">
     <link rel="preload" rel="stylesheet" href="/assets/css/responsive.dataTables.css" crossorigin="sameorign">
     <link rel="preload" rel="stylesheet" href="/assets/css/buttons.dataTables.css" crossorigin="sameorign">';
     }
 
     $templates = [
-        "/assets/css/theme3.css",
-        "/assets/css/template1.css",
-        "/assets/css/template2.css",
-        "/assets/css/template3.css",
-        "/assets/css//clinabs.plugins.css",
-        "/assets/css/quill.snow.css"
+        '/assets/css/theme3.css',
+        '/assets/css/template1.css',
+        '/assets/css/template2.css',
+        '/assets/css/template3.css',
+        '/assets/css//clinabs.plugins.css',
+        '/assets/css/quill.snow.css'
     ];
 
-        inline_files('style', $templates);
+    inline_files('style', $templates);
     ?>
     
 
@@ -856,6 +841,11 @@ function inline_files(string $type, array $files) {
     section#tabControl1 {
         width: 100%;
     }
+
+    select#nacionalidade[onchange="change_flag(this)"] {
+        background-position-x: 5px;
+        text-indent: 38px;
+    }
     </style>
 
 </head>
@@ -874,7 +864,7 @@ function inline_files(string $type, array $files) {
     <!-- FIM TOPO HEADER SITE -->
 
     <!-- SLIDER -->
-    <?= (count(explode('/', $_SERVER['REQUEST_URI'])) < 3 && !$is_nabscare) ? '' : '<!--' ?>
+    <?= (count(explode('/', $_SERVER['REQUEST_URI'])) < 3) ? '' : '<!--' ?>
 
     <section class="slider" id="slider1">
         <div class="slider-content">
@@ -925,7 +915,7 @@ function inline_files(string $type, array $files) {
 
     <!-- CONTEUDO PRINCIPAL -->
     <?php
-        require_once $page->content;
+    require_once $page->content;
     ?>
     <!-- FIM CONTEUDO PRINCIPAL -->
 
@@ -969,7 +959,7 @@ function inline_files(string $type, array $files) {
     <script type="text/javascript" src="/assets/js/agendamento.js"></script>
     
     <?php
-    if(isset($useDT)) {
+    if (isset($useDT)) {
         echo '<script type="text/javascript" src="/assets/js/datatable.js"></script>
                 <script type="text/javascript" src="/assets/js/buttons.colVis.js"></script>
                 <script type="text/javascript" src="/assets/js/dataTables.buttons.js"></script>
@@ -982,7 +972,7 @@ function inline_files(string $type, array $files) {
     <!--<script src="https://cdn.tiny.cloud/1/o69uuqv853g4pxc40ctycrnc5e3imuz426yspmq9l28bvv0v/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>-->
     
     <?php
-    if(isset($useEditor)) {
+    if (isset($useEditor)) {
         echo '<script src="/assets/js/plugins/tinymce/tinymce.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>';
     }
@@ -996,10 +986,10 @@ function inline_files(string $type, array $files) {
     <script type="text/javascript" src="/assets/js/services.upload.js"></script>
 
     <?php
-        if($page->name == 'link_agendar_consulta') {
-            echo '<script type="text/javascript" src="/assets/js/calendar.js"></script>';
-            echo '<script type="text/javascript" src="/assets/js/plugins.calendar.js"></script>';
-        }
+    if ($page->name == 'link_agendar_consulta') {
+        echo '<script type="text/javascript" src="/assets/js/calendar.js"></script>';
+        echo '<script type="text/javascript" src="/assets/js/plugins.calendar.js"></script>';
+    }
     ?>
 
     <script type="text/javascript" src="/assets/js/script-doctor.js"></script>
@@ -1010,20 +1000,21 @@ function inline_files(string $type, array $files) {
     <script type="text/javascript" src="/assets/js/agenda.module.js"></script>
    
     <?php
+
     /*
-      if($warningMsg !== false && $warningMsg !== null) {
-        echo '<script type="text/javascript" id="swal2-script">
-                Swal.fire({
-                  icon: "warning",
-                  title: "Atenção",
-                  text: "'.$warningMsg.'"
-                }).then(() => {
-                  $("#swal2-script").remove();
-                });
-              </script>';
-      }
-    */
-  ?>
+     * if($warningMsg !== false && $warningMsg !== null) {
+     *   echo '<script type="text/javascript" id="swal2-script">
+     *           Swal.fire({
+     *             icon: "warning",
+     *             title: "Atenção",
+     *             text: "'.$warningMsg.'"
+     *           }).then(() => {
+     *             $("#swal2-script").remove();
+     *           });
+     *         </script>';
+     * }
+     */
+    ?>
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16646948240"></script>
     <script>
@@ -1067,14 +1058,14 @@ function inline_files(string $type, array $files) {
     </script>
 
    <?php
-   if(isset($useWb)) {
-        echo '<script src="https://cdn.srv.whereby.com/embed/v2-embed.js" type="module"></script>';
-   }
-   
-   if(isset($useCalendar)) {
-        echo '<script src="/assets/js/script2.js"></script>';
-   }
-   ?> 
+if (isset($useWb)) {
+    echo '<script src="https://cdn.srv.whereby.com/embed/v2-embed.js" type="module"></script>';
+}
+
+if (isset($useCalendar)) {
+    echo '<script src="/assets/js/script2.js"></script>';
+}
+?> 
    
 
    <script>

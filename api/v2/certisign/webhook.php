@@ -65,7 +65,7 @@ if($data->action == 'SIGNATURE-DIGITAL') {
             try {
                 $receitas[] = json_decode($xstmt->historico_receitas, true);
             } catch(Exception $ex) {
-                file_put_contents('ag-error.txt', print_r($ex));
+                
             }
         }
 

@@ -384,3 +384,10 @@ function syncAgenda() {
         window.location.reload();
     });
 }
+
+
+function change_flag(elem) {
+    const contry = elem.value.toLowerCase();
+
+    $(elem).attr('style', `background-image: url('https://static.significados.com.br/flags/${contry}.svg')`);
+}

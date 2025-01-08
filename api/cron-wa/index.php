@@ -18,5 +18,3 @@ foreach($jobs as $job) {
 
     }
 }
-
-file_put_contents('/home/clinabs.com/app/api/cron-wa/last-cron.log', date('Y-m-d H:i:s'));

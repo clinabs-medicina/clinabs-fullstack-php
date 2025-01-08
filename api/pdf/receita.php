@@ -117,9 +117,6 @@ $receita = $agenda->getByToken($_GET['token']);
       <div class="document-title" style="font-size: 1rem;font-weight: bold;color: #fff;text-align: center;padding: 0.50rem;background-color: #1da56c;">PRESCRIÇÃO DE MEDICAMENTOS</div>
        <table width="100%">
           <tbody>';
-
-      file_put_contents('receita.html', $html);
-
       $i = 1;
 
 

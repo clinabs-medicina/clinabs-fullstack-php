@@ -1,18 +1,21 @@
 <?php
-class Medicos {
+class Medicos
+{
   private $pdo;
   public $lastException;
 
-  public function __construct($pdo) {
+  public function __construct($pdo)
+  {
     $this->lastException = null;
 
     $this->pdo = $pdo;
   }
 
-  public function Add($medico):bool {
-    $sql = "INSERT INTO MEDICOS (tipo_conselho, uf_conselho, num_conselho, nome_completo, nacionalidade, nome_preferencia, identidade_genero, cpf, rg, data_nascimento, telefone, celular, email, senha, termos, receber_emails, doc_rg_frente, doc_rg_verso, doc_cpf_frente, doc_cpf_verso, doc_comp_residencia, token, perm) 
-    VALUES (:tipo_conselho, :uf_conselho, :num_conselho, :nome_completo, :nacionalidade, :nome_preferencia, :identidade_genero, :cpf, :rg, :data_nascimento, :telefone, :celular, :email, :senha, :termos, :receber_emails, :doc_rg_frente, :doc_rg_verso, :doc_cpf_frente, :doc_cpf_verso, :doc_comp_residencia, :token, :perm)";
-    
+  public function Add($medico): bool
+  {
+    $sql = 'INSERT INTO MEDICOS (tipo_conselho, uf_conselho, num_conselho, nome_completo, nacionalidade, nome_preferencia, identidade_genero, cpf, rg, data_nascimento, telefone, celular, email, senha, termos, receber_emails, doc_rg_frente, doc_rg_verso, doc_cpf_frente, doc_cpf_verso, doc_comp_residencia, token, perm) 
+    VALUES (:tipo_conselho, :uf_conselho, :num_conselho, :nome_completo, :nacionalidade, :nome_preferencia, :identidade_genero, :cpf, :rg, :data_nascimento, :telefone, :celular, :email, :senha, :termos, :receber_emails, :doc_rg_frente, :doc_rg_verso, :doc_cpf_frente, :doc_cpf_verso, :doc_comp_residencia, :token, :perm)';
+
     $stmt = $this->pdo->prepare($sql);
 
     $stmt->bindValue(':tipo_conselho', $medico->tipo_conselho);
@@ -39,17 +42,18 @@ class Medicos {
     $stmt->bindValue(':token', $medico->token);
     $stmt->bindValue(':perm', 3);
 
-    try{
-       $stmt->execute();
-       return true;
-    }catch(PDOException $error){
+    try {
+      $stmt->execute();
+      return true;
+    } catch (PDOException $error) {
       $this->lastException = $error;
       return false;
     }
   }
 
-  public function Update($medico):bool {
-    $sql = "UPDATE MEDICOS SET nome_completo = :nome_completo, nacionalidade = :nacionalidade, nome_preferencia = :nome_preferencia, identidade_genero = :identidade_genero, cpf = :cpf, rg = :rg, data_nascimento = :data_nascimento, telefone = :telefone, cep = :cep, numero = :numero, endereco = :endereco, complemento = :complemento, cidade = :cidade, bairro = :bairro, uf = :uf, celular = :celular, email = :email WHERE token = :token";
+  public function Update($medico): bool
+  {
+    $sql = 'UPDATE MEDICOS SET nome_completo = :nome_completo, nacionalidade = :nacionalidade, nome_preferencia = :nome_preferencia, identidade_genero = :identidade_genero, cpf = :cpf, rg = :rg, data_nascimento = :data_nascimento, telefone = :telefone, cep = :cep, numero = :numero, endereco = :endereco, complemento = :complemento, cidade = :cidade, bairro = :bairro, uf = :uf, celular = :celular, email = :email WHERE token = :token';
 
     $stmt = $this->pdo->prepare($sql);
 
@@ -70,30 +74,31 @@ class Medicos {
     $stmt->bindValue(':uf', $medico->uf);
     $stmt->bindValue(':celular', $medico->celular);
     $stmt->bindValue(':email', $medico->email);
-   
+
     $stmt->bindValue(':token', $medico->token);
 
-    try{
+    try {
       $stmt->execute();
       $this->lastException = false;
 
       return $stmt->rowCount() > 0;
-   }catch(PDOException $error){
-     $this->lastException = $error;
-     file_put_contents('medicos.updates.txt', print_r($error, true));
-     return false;
-   }
+    } catch (PDOException $error) {
+      $this->lastException = $error;
+      return false;
+    }
   }
 
-  public function Delete($medico):bool {
-    $sql = "DELETE FROM MEDICOS WHERE id = :id";
+  public function Delete($medico): bool
+  {
+    $sql = 'DELETE FROM MEDICOS WHERE id = :id';
     $stmt = $this->pdo->prepare($sql);
     $stmt->bindValue(':id', $medico->id);
     $stmt->execute();
     return $stmt->rowCount() > 0;
   }
 
-  public function getAll($limit = 1000, $shuffle = false) {
+  public function getAll($limit = 1000, $shuffle = false)
+  {
     $sql = "SELECT *,(SELECT nome FROM ESPECIALIDADES WHERE id = especialidade) AS esp FROM MEDICOS ORDER BY nome_completo ASC LIMIT {$limit}";
     $stmt = $this->pdo->prepare($sql);
     $stmt->execute();
@@ -101,38 +106,41 @@ class Medicos {
     return $stmt->fetchAll(PDO::FETCH_OBJ);
   }
 
-  public function getGroups() {
-    $sql = "SELECT id,nome FROM GRUPO_ESPECIALIDADES ORDER BY id ASC";
+  public function getGroups()
+  {
+    $sql = 'SELECT id,nome FROM GRUPO_ESPECIALIDADES ORDER BY id ASC';
     $stmt = $this->pdo->prepare($sql);
     $stmt->execute();
 
-    $res =  $stmt->fetchAll(PDO::FETCH_OBJ);
+    $res = $stmt->fetchAll(PDO::FETCH_OBJ);
 
     $grupos = [];
 
-    foreach($res as $item) {
+    foreach ($res as $item) {
       $grupos[$item->id] = $item->nome;
     }
 
     return $grupos;
   }
 
-  public function getAllWithGroup($limit = 1000, $shuffle = false) {
+  public function getAllWithGroup($limit = 1000, $shuffle = false)
+  {
     $sql = "SELECT *,(SELECT nome FROM `GRUPO_ESPECIALIDADES` WHERE id = grupo_especialidades) as group_name,(SELECT nome FROM ESPECIALIDADES WHERE id = especialidade) AS esp FROM MEDICOS ORDER BY grupo_especialidades ASC LIMIT {$limit}";
     $stmt = $this->pdo->prepare($sql);
     $stmt->execute();
 
     $results = [];
 
-    foreach($stmt->fetchAll(PDO::FETCH_OBJ) as $item) {
-        $results[$item->grupo_especialidades][] = $item;
+    foreach ($stmt->fetchAll(PDO::FETCH_OBJ) as $item) {
+      $results[$item->grupo_especialidades][] = $item;
     }
 
     return $results;
   }
 
-  public function getArrayById(int $id) {
-    $sql = "SELECT * FROM MEDICOS WHERE id = :id";
+  public function getArrayById(int $id)
+  {
+    $sql = 'SELECT * FROM MEDICOS WHERE id = :id';
     $stmt = $this->pdo->prepare($sql);
     $stmt->bindValue(':id', $id);
     $stmt->execute();
@@ -140,8 +148,9 @@ class Medicos {
     return $stmt->fetch(PDO::FETCH_OBJ);
   }
 
-  public function getById(int $id) {
-    $sql = "SELECT * FROM MEDICOS WHERE id = :id";
+  public function getById(int $id)
+  {
+    $sql = 'SELECT * FROM MEDICOS WHERE id = :id';
     $stmt = $this->pdo->prepare($sql);
     $stmt->bindValue(':id', $id);
     $stmt->execute();
@@ -149,16 +158,18 @@ class Medicos {
     return $stmt->fetch(PDO::FETCH_OBJ);
   }
 
-  public function getMedicoByCpf(string $cpf) {
-    $sql = "SELECT * FROM MEDICOS WHERE cpf = :cpf";
+  public function getMedicoByCpf(string $cpf)
+  {
+    $sql = 'SELECT * FROM MEDICOS WHERE cpf = :cpf';
     $stmt = $this->pdo->prepare($sql);
     $stmt->bindValue(':cpf', $cpf);
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_OBJ);
   }
 
-  public function getMedicoByEmail(string $email) {
-    $sql = "SELECT * FROM MEDICOS WHERE email = :email";
+  public function getMedicoByEmail(string $email)
+  {
+    $sql = 'SELECT * FROM MEDICOS WHERE email = :email';
     $stmt = $this->pdo->prepare($sql);
     $stmt->bindValue(':email', $email);
     $stmt->execute();
@@ -166,8 +177,9 @@ class Medicos {
     return $stmt->fetch(PDO::FETCH_OBJ);
   }
 
-  public function getMedicoByEmailAndSenha(string $email, string $senha) {
-    $sql = "SELECT * FROM MEDICOS WHERE email = :email AND senha = :senha";
+  public function getMedicoByEmailAndSenha(string $email, string $senha)
+  {
+    $sql = 'SELECT * FROM MEDICOS WHERE email = :email AND senha = :senha';
     $stmt = $this->pdo->prepare($sql);
     $stmt->bindValue(':email', $email);
     $stmt->bindValue(':senha', md5(sha1(md5($senha))));
@@ -175,16 +187,18 @@ class Medicos {
     return $stmt->fetch(PDO::FETCH_OBJ);
   }
 
-  public function getMedicoByNome(string $nome) {
-    $sql = "SELECT * FROM MEDICOS WHERE nome_completo = :nome";
+  public function getMedicoByNome(string $nome)
+  {
+    $sql = 'SELECT * FROM MEDICOS WHERE nome_completo = :nome';
     $stmt = $this->pdo->prepare($sql);
     $stmt->bindValue(':nome', $nome);
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_OBJ);
   }
 
-  public function getMedicoByToken($token) {
-    $sql = "SELECT * FROM MEDICOS WHERE token = :token";
+  public function getMedicoByToken($token)
+  {
+    $sql = 'SELECT * FROM MEDICOS WHERE token = :token';
     $stmt = $this->pdo->prepare($sql);
     $stmt->bindValue(':token', $token);
     $stmt->execute();
@@ -192,8 +206,9 @@ class Medicos {
     return $stmt->fetch(PDO::FETCH_OBJ);
   }
 
-  public function getMedicoByNomePreferencia(string $nome) {
-    $sql = "SELECT * FROM MEDICOS WHERE nome_preferencia = :nome";
+  public function getMedicoByNomePreferencia(string $nome)
+  {
+    $sql = 'SELECT * FROM MEDICOS WHERE nome_preferencia = :nome';
     $stmt = $this->pdo->prepare($sql);
     $stmt->bindValue(':nome', $nome);
     $stmt->execute();

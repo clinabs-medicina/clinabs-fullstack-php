@@ -1,7 +1,7 @@
 <?php
 global $pdo, $mailer;
 
-session_start();
+// session_start();
 // Regenera o ID da sessão para segurança (após o session_start)
 session_regenerate_id(true);
 

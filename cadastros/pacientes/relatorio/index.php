@@ -31,7 +31,7 @@ function rel_add($id, $tipo, $items) {
 }
 
 $paciente_token = $_REQUEST['paciente_token'];
-$stmt = $pdo->prepare('SELECT *,TIMESTAMPDIFF(YEAR, data_nascimento, CURDATE()) AS age FROM PACIENTES WHERE token = :token');
+$stmt = $pdo->prepare('SELECT *,(SELECT nome_chamado FROM PAISES WHERE sigla = nacionalidade) AS nome_nacionalidade,TIMESTAMPDIFF(YEAR, data_nascimento, CURDATE()) AS age FROM PACIENTES WHERE token = :token');
 $stmt->bindValue(':token', $paciente_token);
 $stmt->execute();
 
