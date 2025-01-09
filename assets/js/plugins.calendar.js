@@ -1,10 +1,13 @@
 // scripts.js
 let calendarDate = new Date();
-let calendar_events = {};
+let events_days = [];
 
-const renderCalendar = (date, events = {}, update = true) => {
+const renderCalendar = (date) => {
     const parentNode = $('.calendar-container');
 
+    if ($('#calendar').length) {
+        $('#calendar').remove();
+    }
 
     const calendar = document.createElement('div');
     calendar.id = 'calendar';
@@ -16,13 +19,11 @@ const renderCalendar = (date, events = {}, update = true) => {
 
     $.get('/agendamento/calendar_api.php', {
         month: date.getMonth() + 1,
-        year: date.getFullYear(),
-        events: events
+        year: date.getFullYear()
     }).done(function (cal) {
         console.log({
             month: date.getMonth() + 1,
-            year: date.getFullYear(),
-            events: events
+            year: date.getFullYear()
         });
 
         $('#calendar-info').text(`${cal.month}, ${cal.year}`);
@@ -39,19 +40,23 @@ const renderCalendar = (date, events = {}, update = true) => {
         for (let i = 0; i < cal.prev.length; i++) {
             const item = cal.prev[i];
 
-            $(calendar).append(`<div class="day day-disabled day-lock${item.enabled ? ' event-day' : ''}" data-date="${item.date}">${item.day}</div>`);
+            $(calendar).append(`<div class="day day-disabled day-lock" data-date="${item.date}">${item.day}</div>`);
         }
 
         for (let i = 0; i < cal.current.length; i++) {
             const item = cal.current[i];
 
-            $(calendar).append(`<div class="day selectable${item.enabled ? ' event-day' : ''}" data-date="${item.date}">${item.day}</div>`);
+            const evt = events_days.filter(function (ev) {
+                return ev === item.date;
+            });
+
+            $(calendar).append(`<div onclick="openCalendarLink(this)" class="day selectable${evt.length > 0 ? ' event-day' : ''}" data-date="${item.date}">${item.day}</div>`);
         }
 
         for (let i = 0; i < cal.next.length; i++) {
             const item = cal.next[i];
 
-            $(calendar).append(`<div class="day day-disabled day-lock${item.enabled ? ' event-day' : ''}" data-date="${item.date}">${item.day}</div>`);
+            $(calendar).append(`<div class="day day-disabled day-lock" data-date="${item.date}">${item.day}</div>`);
         }
     });
 };
@@ -71,16 +76,26 @@ function queryStringToJSON(queryString) {
 }
 
 
+function setEvents(events) {
+    events_days = events;
+}
 
+function openCalendarLink(elem) {
+    let date = $(elem).data('date');
 
+    $('#dt_ag').val(date);
 
+    console.log(elem);
+    $('#form_agendamento2').submit();
+}
 
 document.addEventListener('DOMContentLoaded', function () {
     calendarDate = new Date();
     //$('#filter_ag_anamnese,#filter_ag_medicos,#filter_ag_especialidades').off('change');
     let selectedYear = new Date().getFullYear();
+    let monthSelect = new Date().getMonth() + 1;
 
-    document.getElementById('calendar').dataset.year = selectedYear;
+    //document.getElementById('calendar').dataset.year = selectedYear;
 
     let query = queryStringToJSON(window.location.search);
 
@@ -123,7 +138,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 events.push(resp[k]);
             }
 
-            renderCalendar(new Date(selectedYear, monthSelect), events);
+
+            renderCalendar(new Date(selectedYear, monthSelect));
+            setEvents(events);
             Swal.close();
         });
 
@@ -156,7 +173,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     events.push(resp[k]);
                 }
 
-                renderCalendar(calendarDate, events);
+
+                renderCalendar(calendarDate);
+                setEvents(events);
 
                 Swal.close();
             }).catch((error) => {
@@ -181,7 +200,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                 events.push(resp[k]);
                             }
 
-                            renderCalendar(calendarDate, events);
+                            setEvents(events);
+                            renderCalendar(calendarDate);
                             Swal.close();
                             $('#filter_ag_medicos').trigger('click').trigger('change');
                         }).catch((error) => {
@@ -285,7 +305,9 @@ document.addEventListener('DOMContentLoaded', function () {
                             events.push(resp[k]);
                         }
 
-                        renderCalendar(calendarDate, events);
+
+                        renderCalendar(calendarDate);
+                        setEvents(events);
                         Swal.close();
                         $('input[name="filter_ag"]:checked').trigger('click');
                     }).catch((error) => {
@@ -317,7 +339,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     events.push(resp[k]);
                 }
 
-                renderCalendar(new Date(new Date().getFullYear(), new Date().getMonth(), 1), events);
+
+                renderCalendar(new Date(new Date().getFullYear(), new Date().getMonth(), 1));
+                setEvents(events);
                 Swal.close();
                 $('input[name="filter_ag"]:checked').trigger('click');
             }).catch((error) => {
@@ -353,26 +377,15 @@ document.addEventListener('DOMContentLoaded', function () {
     $('.calendar-next-btn').on('click', function () {
         calendarDate.setMonth(calendarDate.getMonth() + 1);
 
-        renderCalendar(calendarDate, calendar_events);
+        renderCalendar(calendarDate);
+        setEvents(events_days);
     });
 
     $('.calendar-prev-btn').on('click', function () {
         calendarDate.setMonth(calendarDate.getMonth() - 1);
 
-        renderCalendar(calendarDate, calendar_events);
+        renderCalendar(calendarDate);
+        setEvents(events_days);
     });
 
-
-    preloader('Inicializando o Calendário...');
-    let uri = '/form/agenda.medico.php?key=medicos';
-
-    fetch(uri).then((resp) => resp.json()).then((resp) => {
-        let events = [];
-
-        for (let k in resp) {
-            events.push(resp[k]);
-        }
-
-        renderCalendar(calendarDate, events, false);
-    });
 });
