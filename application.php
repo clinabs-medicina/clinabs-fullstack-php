@@ -65,9 +65,9 @@ if (isset(getallheaders()['X-Forwarded-For'])) {
 
 // session_start();
 
-$user = [];
+//$user = [];
 
-if (isset($_SESSION[$sessionName])) {
+if (isset($_SESSION['token'])) {
 	$sql = "
  SELECT
 	id,
@@ -81,7 +81,8 @@ if (isset($_SESSION[$sessionName])) {
 	token,
 	'' AS prescricao_sem_receita,
 	'' AS inicio_ag,
-	'' AS fim_ag
+	'' AS fim_ag,
+	'' AS anamnese
 FROM
 	USUARIOS AS U 
 	WHERE 
@@ -99,7 +100,8 @@ FROM
 	token,
 	prescricao_sem_receita,
 	inicio_ag,
-	fim_ag
+	fim_ag,
+	anamnese
 FROM
 	MEDICOS AS M 
 	WHERE 
@@ -118,7 +120,8 @@ FROM
 	token,
 	'' AS prescricao_sem_receita,
 	'' AS inicio_ag,
-	'' AS fim_ag
+	'' AS fim_ag,
+	anamnese
 	FROM
 		PACIENTES AS P
 		WHERE 
@@ -137,7 +140,8 @@ FROM
 	token,
 	'' AS prescricao_sem_receita,
 	'' AS inicio_ag,
-	'' AS fim_ag
+	'' AS fim_ag,
+	'' AS anamnese
 	FROM
 	FUNCIONARIOS AS F
 	WHERE 
@@ -149,15 +153,15 @@ FROM
 	$stmt->execute();
 	$user = $stmt->fetch(PDO::FETCH_OBJ);
 
-	$perms = $pdo->query("SELECT * FROM PERMISSOES WHERE id = '{$user->perms}'");
+	//$perms = $pdo->query("SELECT * FROM PERMISSOES WHERE id = '{$user->perms}'");
 
 	$sql = 'SELECT * FROM PERMISSOES WHERE id = :id';
 	$perms = $pdo->prepare($sql);
 	$perms->bindValue(':id', $user->perms);
 	$perms->execute();
 	$user->perms = $perms->fetch(PDO::FETCH_OBJ);
-
-	$_SESSION['user'] = $user;
+	if (isset($user))
+		$_SESSION['userObj'] = $user;
 }
 
 function generateBreadcrumb($path): string
