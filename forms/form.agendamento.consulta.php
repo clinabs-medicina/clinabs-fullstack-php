@@ -523,8 +523,8 @@ if($continue) {
                                 
                                 if($stmt2->rowCount() > 0) {
                                     $msg .= "". PHP_EOL;
-                                    $msg .= "Clinica: ${$medico->clinica_nome}". PHP_EOL;
-                                    $msg .= "Endereço: {$endereco->logradouro}, ${$endereco->numero}". PHP_EOL;
+                                    $msg .= "Clinica: {$medico->clinica_nome}". PHP_EOL;
+                                    $msg .= "Endereço: {$endereco->logradouro}, {$endereco->numero}". PHP_EOL;
                                     $msg .= "Cidade: {$endereco->cidade}". PHP_EOL;
                                     $msg .= "Bairro: {$endereco->bairro}". PHP_EOL;
                                 }

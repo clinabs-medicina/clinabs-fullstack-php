@@ -851,7 +851,7 @@ if ($_user->objeto == 'PACIENTE') {
                     echo '<div class="tab" data-index="4" data-tab="tabControl1">';
                     echo '<h2 class="titulo-h2">Calendário de Agendamentos</h2>';
 
-                    if ($_user->objeto == 'MEDICO' || $user->tipo == 'FUNCIONARIO') {
+                    if ($_user->objeto == 'MEDICO' || $user->objeto == 'FUNCIONARIO') {
                         echo '<input autocomplete="off" name="medico_id" type="hidden" id="medico_id" value="' . $_user->id . '">';
                         echo '<input autocomplete="off" name="medico_token" type="hidden" id="medico_token" value="' . $_user->token . '">';
                     }
@@ -874,8 +874,8 @@ if ($_user->objeto == 'PACIENTE') {
 //                    error_log("Erro main.php new WeeklyCalendar \r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
                 }
 
-                    if ($user->tipo == 'MEDICO' || $user->tipo == 'FUNCIONARIO') {
-                        ?> <section class="main">
+                if ($user->objeto == 'MEDICO' || $user->objeto == 'FUNCIONARIO') {
+                    ?> <section class="main">
 
                     <div class="flex-container">
                         <section class="calendar-container">
@@ -1008,10 +1008,10 @@ if ($_user->objeto == 'PACIENTE') {
                             </div>
                         </section>
                     </div>
-                </section> <?php
-                    } else {
-                        echo 'Acesso Negado.';
-                    }
+                    </section> <?php
+                } else {
+                    echo 'Acesso Negado.';
+                }
 
                     echo '</div>';
 
@@ -1419,7 +1419,7 @@ if ($_user->objeto == 'PACIENTE') {
             </div>
 
             <?php
-            if ($user->tipo == 'MEDICO' || $user->tipo == 'FUNCIONARIO') {
+            if ($user->objeto == 'MEDICO' || $user->objeto == 'FUNCIONARIO') {
                 echo '<input autocomplete="off" name="atendimento_padrao" type="hidden" id="atendimento_padrao" value="' . str_replace('"', "'", $_user->atendimento_padrao) . '">';
             }
             ?>
@@ -1427,7 +1427,7 @@ if ($_user->objeto == 'PACIENTE') {
         <input autocomplete="off" disabled="true" type="hidden" name="profileImage" id="profileImage"
             value="<?= Modules::getUserImage($_user->token) ?>">
         <?php
-        if ($user->tipo == 'MEDICO' || $user->tipo == 'FUNCIONARIO') {
+        if ($user->objeto == 'MEDICO' || $user->objeto == 'FUNCIONARIO') {
             echo '<input autocomplete="off" name="agenda_dados" type="hidden" id="agenda_dados" value="' . str_replace('"', "'", $dados->calendario) . '">';
         }
         ?>
