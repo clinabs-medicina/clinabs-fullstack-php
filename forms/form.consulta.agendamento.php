@@ -240,16 +240,17 @@ if ((strtotime($date) - time()) > $tempo_limite) {
                             $stmt1 = $pdo->prepare('INSERT INTO `VENDAS` (
                                                                             `nome`,
                                                                             `code`,
-                                                                                `amount`, 
-                                                                                `customer`,
-                                                                                `status`, 
-                                                                                `payment_method`,
-                                                                                    `reference`,
-                                                                                    `module`,
-                                                                                    `cupom`,
-                                                                                    `payment_id`,
-                                                                                    `dueTime`
-                                                                                    )
+                                                                            `amount`, 
+                                                                            `customer`,
+                                                                            `status`, 
+                                                                            `payment_method`,
+                                                                            `reference`,
+                                                                            `module`,
+                                                                            `cupom`,
+                                                                            `payment_id`,
+                                                                            `dueTime`,
+                                                                            `asaas_payload`
+                                                                            )
                                                                             VALUES
                                                                                 (
                                                                                 :nome,
@@ -262,7 +263,8 @@ if ((strtotime($date) - time()) > $tempo_limite) {
                                                                                 :module,
                                                                                 :cupom,
                                                                                 :payment_id,
-                                                                                :dueTime
+                                                                                :dueTime,
+                                                                                :asaas_payload
                                                                                 )');
 
                             $stmt1->bindValue(':nome', 'VENDA DE CONSULTA MÉDICA');
@@ -276,6 +278,7 @@ if ((strtotime($date) - time()) > $tempo_limite) {
                             $stmt1->bindValue(':cupom', $ag->cupom);
                             $stmt1->bindValue(':payment_id', $link->id);
                             $stmt1->bindValue(':dueTime', dueDate($ag->data_agendamento, date('Y-m-d H:i')));
+                            $stmt1->bindValue(':asaas_payload', json_encode($link, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
                             try {
                                 $stmt1->execute();

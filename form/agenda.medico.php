@@ -129,9 +129,12 @@ if (isset($data['key'])) {
                             $allowed = strtotime("{$k} {$h}") > strtotime(date('Y-m-d H:i'));
                         }
 
-                        if (strtotime($k) > strtotime(date('Y-m-d')) && $allowed) {
+                        if (strtotime($k) >= strtotime(date('Y-m-d')) && $allowed) {
                             $ag[] = date('Y-m-d', strtotime($k));
                         }
+
+                        $a = strtotime($k);
+                        $b = strtotime(date('Y-m-d'));
                     }
                 } catch (Exception $ex) {
                     $ag[] = [];

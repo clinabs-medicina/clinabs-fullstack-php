@@ -65,7 +65,7 @@ if (isset(getallheaders()['X-Forwarded-For'])) {
 
 // session_start();
 
-//$user = [];
+// $user = [];
 
 if (isset($_SESSION['token'])) {
 	$sql = "
@@ -153,15 +153,15 @@ FROM
 	$stmt->execute();
 	$user = $stmt->fetch(PDO::FETCH_OBJ);
 
-	//$perms = $pdo->query("SELECT * FROM PERMISSOES WHERE id = '{$user->perms}'");
+	// $perms = $pdo->query("SELECT * FROM PERMISSOES WHERE id = '{$user->perms}'");
 
 	$sql = 'SELECT * FROM PERMISSOES WHERE id = :id';
 	$perms = $pdo->prepare($sql);
 	$perms->bindValue(':id', $user->perms);
 	$perms->execute();
 	$user->perms = $perms->fetch(PDO::FETCH_OBJ);
-	if (isset($user))
-		$_SESSION['userObj'] = $user;
+
+	$_SESSION['user'] = $user;
 }
 
 function generateBreadcrumb($path): string

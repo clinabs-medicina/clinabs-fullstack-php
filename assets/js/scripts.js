@@ -1939,61 +1939,48 @@ $(document).ready(function () {
 
   // Cadastro Mdico
 
-  wizardModal("#cadastroMedico", {
-    validate: true,
-
-    onFinish: function (info) { },
-
-    onValidate: function (element, status) {
-      if (element.type === "file" && status === "error") {
-        $(`label[for='${element.id}']`).addClass("anexo-item-error");
-
-        $(`label[for='${element.id}']`).removeClass("anexo-item-success");
-      } else if (element.type === "file" && status === "success") {
-        $(`label[for='${element.id}']`).addClass("anexo-item-success");
-
-        $(`label[for='${element.id}']`).removeClass("anexo-item-error");
-      }
+  wizardModal(
+    "#cadastroMedicoBasico",
+    {
+      validate: true,
+      onFinish: function (info) { },
+      onValidate: function (element, status) { },
+      onStep: function (step) { },
+      autoFill: false,
+      autoSave: false,
     },
+    function (step) {
+      step.btnFinish.show();
 
-    onStep: function (step) {
-      if (step.currentStep > 1) {
-        $(".btn-step-prev").show();
-      } else {
-        $(".btn-step-prev").hide();
-      }
+      step.btnNext.hide();
 
-      if (step.currentStep === step.maxSteps) {
-        step.btnFinish.show();
+      $(step.btnFinish).text("CONCLUIR");
 
-        step.btnNext.hide();
+      fetchForm(
+        step.form,
+        function (data) {
+          if (data.status === "success") {
+            toast(data.text, "success");
 
-        fetchForm(
-          step.form,
-
-          function (data) {
-            if (data.status === "success") {
-              toast(data.text, "success");
-
-              setTimeout(function () {
-                window.location = "/cadastros/medicos";
-              });
-            } else {
-              toast(data.text, "warning");
-            }
-          },
-
-          function (resp) {
-            toast(resp, "error");
+            setTimeout(function () {
+              if ("redirect" in data && data.redirect !== "none") {
+                window.location = data.redirect;
+              } else {
+                window.location = "/";
+              }
+            });
+          } else {
+            toast(data.text, "warning");
           }
-        );
-      }
-    },
+        },
 
-    autoFill: false,
+        function (resp) {
+          toast(resp, "error");
+        }
+      );
+    }
+  );
 
-    autoSave: false,
-  });
 
   fetchForm(
     $("#editarConsulta"),
