@@ -924,9 +924,9 @@ function addAddress() {
                 </div>
 
                 <div class="btns-street">
-                <label data-action="editar" data-token="${n}">Editar</label>
-                <label data-action="excluir" data-token="${n}">Excluir</label>
-                <label data-action="padrao" data-token="${n}">Deixar Padr\xe3o</label>
+                <legend data-action="editar" data-token="${n}">Editar</legend>
+                <legend data-action="excluir" data-token="${n}">Excluir</legend>
+                <legend data-action="padrao" data-token="${n}">Deixar Padr\xe3o</legend>
                 </div>
             </div>
 
