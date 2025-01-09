@@ -324,7 +324,7 @@ if ($user->perms->perfil_situacao_cadastral == 1) {
                                 <option value="AP" <?= ($_user->uf_conselho == 'AP' ? ' selected' : '') ?>>Amapá</option>
                                 <option value="AM" <?= ($_user->uf_conselho == 'AM' ? ' selected' : '') ?>>Amazonas</option>
                                 <option value="BA" <?= ($_user->uf_conselho == 'BA' ? ' selected' : '') ?>>Bahia</option>
-                                <option value="CE" <?= ($_user->uf_conselho == 'CE' ? ' selected' : '') ?>>Cear</option>
+                                <option value="CE" <?= ($_user->uf_conselho == 'CE' ? ' selected' : '') ?>>Ceará</option>
                                 <option value="DF" <?= ($_user->uf_conselho == 'DF' ? ' selected' : '') ?>>Distrito Federal
                                 </option>
                                 <option value="ES" <?= ($_user->uf_conselho == 'ES' ? ' selected' : '') ?>>Espírito Santo
@@ -635,7 +635,12 @@ foreach ($stmtx1->fetchAll(PDO::FETCH_OBJ) as $item) {
                                         </div>';
 }
 
-$stmtx2 = $pdo->prepare("SELECT * FROM UNIDADES WHERE medicos LIKE '%\"{$_user->id}\"%'");
+try {
+    $def_token = json_decode($_user->atendimento_padrao)->token;
+} catch (Exception $ex) {
+    $def_token = '';
+}
+$stmtx2 = $pdo->prepare("SELECT * FROM UNIDADES WHERE medicos LIKE '%\"{$_user->id}\"%' OR token = '{$def_token}'");
 $stmtx2->execute();
 foreach ($stmtx2->fetchAll(PDO::FETCH_OBJ) as $item) {
     if ($street_token == $item->token) {
