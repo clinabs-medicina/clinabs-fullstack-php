@@ -1,263 +1,58 @@
 // scripts.js
-const calendar = document.getElementById('calendar');
+let calendarDate = new Date();
+let calendar_events = {};
 
-const renderCalendar = (date, events = {}) => {
-    document.getElementById('calendar').dataset.year = date.getFullYear();
-
-    $('.calendar-prev-btn').off('click');
-    $('.calendar-next-btn').off('click');
-
-    monthSelect = date.getMonth();
-    const selectedMonth = parseInt(monthSelect);
-    let months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-
-    const element = document.querySelector('#calendar-info');
-
-    if (element)
-        element.textContent = `${months[monthSelect]}, ${date.getFullYear()}`;
+const renderCalendar = (date, events = {}, update = true) => {
+    const parentNode = $('.calendar-container');
 
 
-    // Set to the first day of the month
-    date.setDate(1);
-    const firstDayIndex = date.getDay();
-    let selectedYear = date.getFullYear();
+    const calendar = document.createElement('div');
+    calendar.id = 'calendar';
+    calendar.classList.add('calendar');
 
+    $(parentNode).append(calendar);
 
-    // Get the last day of the month
-    date.setMonth(selectedMonth + 1);
-    date.setDate(0);
-    const lastDay = date.getDate();
+    calendar.dataset.year = calendarDate.getFullYear();
 
-    // Clear the calendar
-    calendar.innerHTML = '';
-
-
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-    var week = today.getDay();
-
-    // Add day headers
-    const days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
-    for (let i = 0; i < days.length; i++) {
-        let day = days[i];
-
-        const dayElement = document.createElement('div');
-        dayElement.classList.add('day-header');
-
-
-        if (i === week && selectedMonth === date.getMonth()) {
-            //dayElement.classList.add('day-today');
-        }
-
-        dayElement.textContent = day;
-        calendar.appendChild(dayElement);
-    }
-
-    // Get the last day of the previous month
-    const prevMonth = new Date(date.getFullYear(), selectedMonth, 0);
-    const lastDayPrevMonth = prevMonth.getDate();
-
-    // Add blank days for the previous month with actual dates
-    for (let i = firstDayIndex - 1; i >= 0; i--) {
-        const blankDay = document.createElement('div');
-        blankDay.textContent = lastDayPrevMonth - i;
-        blankDay.classList.add('day');
-
-        let m = selectedMonth < 10 ? '0' + (selectedMonth) : selectedMonth;
-        let d = lastDayPrevMonth - i < 10 ? '0' + (lastDayPrevMonth - i) : lastDayPrevMonth - i;
-
-        blankDay.dataset.date = `${date.getFullYear()}-${m}-${d}`;
-
-        if (events.length > 0) {
-            events.forEach(event => {
-                if (event === `${date.getFullYear()}-${m}-${d}`) {
-                    // blankDay.classList.add('event-day');
-                } else {
-                    blankDay.classList.add('day-lock');
-                }
-            });
-        }
-
-        calendar.appendChild(blankDay);
-    }
-
-
-
-    // Add days of the current month
-    for (let i = 1; i <= lastDay; i++) {
-        const dayElement = document.createElement('div');
-        dayElement.classList.add('day', 'current');
-        dayElement.textContent = i;
-
-        let m = selectedMonth + 1 < 10 ? '0' + (selectedMonth + 1) : selectedMonth + 1;
-        let d = i < 10 ? '0' + (i) : i;
-
-        if (`${yyyy}-${mm}-${dd}` === `${date.getFullYear()}-${m}-${d}`) {
-            dayElement.classList.add('day-today');
-        }
-
-        dayElement.dataset.date = `${date.getFullYear()}-${m}-${d}`;
-        dayElement.addEventListener('click', function (e) {
-            $('#dt_ag').val(`${date.getFullYear()}-${m}-${d}`);
-            $('form').submit();
+    $.get('/agendamento/calendar_api.php', {
+        month: date.getMonth() + 1,
+        year: date.getFullYear(),
+        events: events
+    }).done(function (cal) {
+        console.log({
+            month: date.getMonth() + 1,
+            year: date.getFullYear(),
+            events: events
         });
 
-        if (events.length > 0) {
-            events.forEach(event => {
-                if (event === `${date.getFullYear()}-${m}-${d}`) {
-                    dayElement.classList.add('event-day');
-                    dayElement.classList.remove('day-lock');
-                } else {
-                    //dayElement.classList.add('day-lock');
-                }
-            });
+        $('#calendar-info').text(`${cal.month}, ${cal.year}`);
+
+        $(calendar).append(`<div class="day-header">Dom</div>`);
+        $(calendar).append(`<div class="day-header">Seg</div>`);
+        $(calendar).append(`<div class="day-header">Ter</div>`);
+        $(calendar).append(`<div class="day-header">Qua</div>`);
+        $(calendar).append(`<div class="day-header">Qui</div>`);
+        $(calendar).append(`<div class="day-header">Sex</div>`);
+        $(calendar).append(`<div class="day-header">Sab</div>`);
+
+
+        for (let i = 0; i < cal.prev.length; i++) {
+            const item = cal.prev[i];
+
+            $(calendar).append(`<div class="day day-disabled day-lock${item.enabled ? ' event-day' : ''}" data-date="${item.date}">${item.day}</div>`);
         }
 
-        if (i < new Date().getDate()) {
-            dayElement.classList.add('day-locked');
+        for (let i = 0; i < cal.current.length; i++) {
+            const item = cal.current[i];
+
+            $(calendar).append(`<div class="day selectable${item.enabled ? ' event-day' : ''}" data-date="${item.date}">${item.day}</div>`);
         }
 
-        calendar.appendChild(dayElement);
-    }
+        for (let i = 0; i < cal.next.length; i++) {
+            const item = cal.next[i];
 
-    // Add blank days for the next month
-    const lastDayIndex = calendar.children.length % 7;
-
-
-    if (lastDayIndex !== 0) {
-        for (let i = 1; i <= 7 - lastDayIndex; i++) {
-            const blankDay = document.createElement('div');
-            blankDay.classList.add('day', 'day-disabled');
-            blankDay.textContent = i;
-
-            let m = selectedMonth + 2 < 10 ? parseInt('0' + (selectedMonth + 2)) : selectedMonth + 2;
-            let d = i < 10 ? '0' + i : i;
-            blankDay.dataset.date = `${date.getFullYear()}-${m}-${d}`;
-
-            if (events.length > 0) {
-                events.forEach(event => {
-
-                    if (event === `${date.getFullYear()}-${m}-${d}`) {
-                        //blankDay.classList.add('event-day');
-                    } else {
-                        blankDay.classList.add('day-lock');
-                    }
-
-
-                });
-            }
-
-            calendar.appendChild(blankDay);
+            $(calendar).append(`<div class="day day-disabled day-lock${item.enabled ? ' event-day' : ''}" data-date="${item.date}">${item.day}</div>`);
         }
-    }
-
-    const elementClk = document.querySelector('.calendar-next-btn');
-    if (elementClk)
-        $(elementClk).off('click');
-    elementClk.addEventListener('click', () => {
-        let nextMonth = selectedMonth + 1;
-
-        if (nextMonth > 11) {
-            nextMonth = 0;
-        }
-
-        monthSelect = nextMonth;
-
-        $('#filter_ag_select').attr('data-month', monthSelect);
-        $('#filter_ag_select').attr('data-year', selectedYear);
-
-        preloader('Verificando Disponibilidade...');
-
-        let key = $('input[name="filter_ag"]:checked').val() ?? '';
-        let val = $('#filter_ag_select').val();
-
-        let uri = `/form/agenda.medico.php?key=${key}&value=${val}`;
-        if (val == null) {
-            uri = `/form/agenda.medico.php?key=${key}`;
-        }
-
-        fetch(uri).then((resp) => resp.json()).then((resp) => {
-            let events = [];
-            for (let k in resp) {
-                events.push(resp[k]);
-            }
-
-            if (monthSelect == 0) {
-                selectedYear += 1;
-            }
-
-
-            renderCalendar(new Date(selectedYear, monthSelect), events);
-            Swal.close();
-        }).catch((error) => {
-            Swal.fire({
-                title: 'Atenção',
-                text: 'Ocorreu um Erro ao Carregar os Horários.',
-                icon: 'error'
-            });
-        });
-
-        $('input[name="filter_ag"]').on('change', function (e) {
-            $('#select2-filter_ag_select-container').text('Selecione uma Opção');
-
-            $('#filter_ag_select').select2('open');
-        });
-
-        return false;
-    });
-
-    const elementCalend = document.querySelector('.calendar-prev-btn');
-    if (elementCalend)
-        $(elementCalend).off('click');
-    elementCalend.addEventListener('click', () => {
-        let prevMonth = selectedMonth - 1;
-        if (prevMonth < 0) {
-            prevMonth = 11;
-            selectedYear--;
-        }
-
-        monthSelect = prevMonth;
-
-        $('#filter_ag_select').attr('data-month', monthSelect);
-        $('#filter_ag_select').attr('data-year', selectedYear);
-
-        preloader('Verificando Disponibilidade...');
-
-
-        let key = $('input[name="filter_ag"]:checked').val() ?? '';
-        let val = $('#filter_ag_select').val();
-
-
-        let uri = `/form/agenda.medico.php?key=${key}&value=${val}`;
-        if (val == null) {
-            uri = `/form/agenda.medico.php?key=${key}`;
-        }
-
-        fetch(uri).then((resp) => resp.json()).then((resp) => {
-            let events = [];
-            for (let k in resp) {
-                events.push(resp[k]);
-            }
-
-
-
-            renderCalendar(new Date(selectedYear, monthSelect), events);
-            Swal.close();
-        }).catch((error) => {
-            Swal.fire({
-                title: 'Atenção',
-                text: 'Ocorreu um Erro ao Carregar os Horários.',
-                icon: 'error'
-            });
-        });
-
-        return false;
-    });
-
-    $('.day.day-lock.event-day.current').each(function () {
-        $(this).removeClass('day-lock');
     });
 };
 
@@ -281,6 +76,7 @@ function queryStringToJSON(queryString) {
 
 
 document.addEventListener('DOMContentLoaded', function () {
+    calendarDate = new Date();
     //$('#filter_ag_anamnese,#filter_ag_medicos,#filter_ag_especialidades').off('change');
     let selectedYear = new Date().getFullYear();
 
@@ -347,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#filter_ag_select').attr('data-month', new Date().getMonth());
         $('#filter_ag_select').attr('data-year', new Date().getFullYear());
 
-        renderCalendar(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), {});
+        renderCalendar(calendarDate, {});
 
 
         if ($('.calendar-container').length > 0) {
@@ -360,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     events.push(resp[k]);
                 }
 
-                renderCalendar(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), events);
+                renderCalendar(calendarDate, events);
 
                 Swal.close();
             }).catch((error) => {
@@ -385,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 events.push(resp[k]);
                             }
 
-                            renderCalendar(new Date(new Date().getFullYear(), new Date().getMonth(), 1), events);
+                            renderCalendar(calendarDate, events);
                             Swal.close();
                             $('#filter_ag_medicos').trigger('click').trigger('change');
                         }).catch((error) => {
@@ -489,7 +285,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             events.push(resp[k]);
                         }
 
-                        renderCalendar(new Date(new Date().getFullYear(), new Date().getMonth(), 1), events);
+                        renderCalendar(calendarDate, events);
                         Swal.close();
                         $('input[name="filter_ag"]:checked').trigger('click');
                     }).catch((error) => {
@@ -554,6 +350,29 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    $('.calendar-prev-btn').off('click');
-    $('.calendar-next-btn').off('click');
+    $('.calendar-next-btn').on('click', function () {
+        calendarDate.setMonth(calendarDate.getMonth() + 1);
+
+        renderCalendar(calendarDate, calendar_events);
+    });
+
+    $('.calendar-prev-btn').on('click', function () {
+        calendarDate.setMonth(calendarDate.getMonth() - 1);
+
+        renderCalendar(calendarDate, calendar_events);
+    });
+
+
+    preloader('Inicializando o Calendário...');
+    let uri = '/form/agenda.medico.php?key=medicos';
+
+    fetch(uri).then((resp) => resp.json()).then((resp) => {
+        let events = [];
+
+        for (let k in resp) {
+            events.push(resp[k]);
+        }
+
+        renderCalendar(calendarDate, events, false);
+    });
 });

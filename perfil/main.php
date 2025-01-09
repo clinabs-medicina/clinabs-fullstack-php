@@ -300,21 +300,21 @@ if ($user->perms->perfil_situacao_cadastral == 1) {
                         <section class="form-group">
                             <label for="tipo_conselho">Tipo de conselho* </label> <select data-search="true" disabled
                                 data-required class="form-select form-control" id="tipo_conselho" name="tipo_conselho"
-                                value="<?= ($_user->objeto_conselho) ?>">
+                                value="<?= ($_user->tipo_conselho) ?>">
                                 <option disabled selected>Selecione uma Opção</option>
-                                <option value="CRM" <?= ($_user->objeto_conselho == 'CRM' ? ' selected' : '') ?>>CRM</option>
-                                <option value="CRO" <?= ($_user->objeto_conselho == 'CRO' ? ' selected' : '') ?>>CRO</option>
-                                <option value="CREFITO" <?= ($_user->objeto_conselho == 'CREFITO' ? ' selected' : '') ?>>
+                                <option value="CRM" <?= ($_user->tipo_conselho == 'CRM' ? ' selected' : '') ?>>CRM</option>
+                                <option value="CRO" <?= ($_user->tipo_conselho == 'CRO' ? ' selected' : '') ?>>CRO</option>
+                                <option value="CREFITO" <?= ($_user->tipo_conselho == 'CREFITO' ? ' selected' : '') ?>>
                                     CREFITO</option>
-                                <option value="CRBM" <?= ($_user->objeto_conselho == 'CRBM' ? ' selected' : '') ?>>CRBM
+                                <option value="CRBM" <?= ($_user->tipo_conselho == 'CRBM' ? ' selected' : '') ?>>CRBM
                                 </option>
-                                <option value="CRMV" <?= ($_user->objeto_conselho == 'CRMV' ? ' selected' : '') ?>>CRMV
+                                <option value="CRMV" <?= ($_user->tipo_conselho == 'CRMV' ? ' selected' : '') ?>>CRMV
                                 </option>
-                                <option value="COFITTO" <?= ($_user->objeto_conselho == 'COFITTO' ? ' selected' : '') ?>>
+                                <option value="COFITTO" <?= ($_user->tipo_conselho == 'COFITTO' ? ' selected' : '') ?>>
                                     COFITTO</option>
-                                <option value="CRN" <?= ($_user->objeto_conselho == 'CRN' ? ' selected' : '') ?>>CRN</option>
-                                <option value="CRP" <?= ($_user->objeto_conselho == 'CRP' ? ' selected' : '') ?>>CRP</option>
-                                <option value="OUTRO" <?= ($_user->objeto_conselho == 'OUTRO' ? ' selected' : '') ?>>OUTRO
+                                <option value="CRN" <?= ($_user->tipo_conselho == 'CRN' ? ' selected' : '') ?>>CRN</option>
+                                <option value="CRP" <?= ($_user->tipo_conselho == 'CRP' ? ' selected' : '') ?>>CRP</option>
+                                <option value="OUTRO" <?= ($_user->tipo_conselho == 'OUTRO' ? ' selected' : '') ?>>OUTRO
                                 </option>
                             </select>
                         </section>
