@@ -846,6 +846,18 @@ inline_files('style', $fws);
         background-position-x: 5px;
         text-indent: 38px;
     }
+
+
+    .calendar-container {
+        background: #fff;
+        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.3);
+        padding: 20px;
+        border-radius: 15px;
+        width: 100%;
+        max-width: 520px;
+        text-align: center;
+        min-height: 587px;
+    }
     </style>
 
 </head>
