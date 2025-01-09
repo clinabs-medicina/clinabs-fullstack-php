@@ -53,8 +53,7 @@ function generateMonthDays($month, $year, $events)
     for ($day = 1; $day <= $daysInMonth; $day++) {
         $dates[] = [
             'date' => sprintf('%04d-%02d-%02d', $year, $month, $day),
-            'day' => date('d', strtotime(sprintf('%04d-%02d-%02d', $year, $month, $day))),
-            'enabled' => in_array(sprintf('%04d-%02d-%02d', $year, $month, $day), $events)
+            'day' => date('d', strtotime(sprintf('%04d-%02d-%02d', $year, $month, $day)))
         ];
     }
 
@@ -81,8 +80,7 @@ function generatePrevMonthDays($month, $year, $events)
     for ($day = $lastDayOfWeek; $day >= 0; $day--) {
         $prevMonthDays[] = [
             'date' => sprintf('%04d-%02d-%02d', $prevYear, $prevMonth, date('d', strtotime("-$day day", $lastDayOfPrevMonth))),
-            'day' => date('d', strtotime("-$day day", $lastDayOfPrevMonth)),
-            'enabled' => in_array(sprintf('%04d-%02d-%02d', $prevYear, $prevMonth, date('d', strtotime("-$day day", $lastDayOfPrevMonth))), $events)
+            'day' => date('d', strtotime("-$day day", $lastDayOfPrevMonth))
         ];
     }
 
@@ -111,8 +109,7 @@ function generateNextMonthDays($month, $year, $events)
     for ($day = 1; $day <= (7 - $firstDayOfWeek); $day++) {
         $nextMonthDays[] = [
             'date' => sprintf('%04d-%02d-%02d', $nextYear, $nextMonth, $day),
-            'day' => date('d', strtotime(sprintf('%04d-%02d-%02d', $nextYear, $nextMonth, $day))),
-            'enabled' => in_array(sprintf('%04d-%02d-%02d', $nextYear, $nextMonth, $day), $events)
+            'day' => date('d', strtotime(sprintf('%04d-%02d-%02d', $nextYear, $nextMonth, $day)))
         ];
     }
 
@@ -144,7 +141,6 @@ $result = [
     'next' => $nextMonthDays
 ];
 
-file_put_contents('calendar.json', json_encode($_REQUEST, JSON_PRETTY_PRINT));
 // Retornar o JSON
 header('Content-Type: application/json');
 echo json_encode($result, JSON_PRETTY_PRINT);
