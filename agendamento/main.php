@@ -168,8 +168,6 @@ echo '</div>';
             <h2 id="calendar-info"></h2>
             <button type="button" class="calendar-next-btn">▶</button>
           </div>
-        
-        <div id="calendar" class="calendar"></div>
     </div>
         
         <?php if (isset($_REQUEST['medico_token'])) {
