@@ -141,7 +141,7 @@ line-height: 0;
 <?php if ($medico->nome_completo == '' ){
 echo '<div class="resumo_profissional sem_medico_selecionado">';
 
-echo '<div style="text-align: center;"><label class="t_descricao_profissional"> Descrição Profissional:  </label></div><br>';
+echo '<div style="text-align: center;"><legend class="t_descricao_profissional"> Descrição Profissional:  </legend></div><br>';
 
 echo '<div style="display: flex; width: 100%">';
 
@@ -150,14 +150,14 @@ echo '<img class="foto_doutor" src="'.Modules::getUserImage($medico->token).'" h
 echo '</div>';
 
 echo '<div style="width: 85%;">';
-echo '<label class="t_nome_doutor"> '.$medico->nome_completo.'  </label><br>';
-echo '<label class="t_crm"> '.$medico->tipo_conselho.': '.$medico->num_conselho.' </label><br>';
-echo '<label class="especialidade_medico">'.$medico->esp.' </label><br>';
+echo '<legend class="t_nome_doutor"> '.$medico->nome_completo.'  </legend><br>';
+echo '<legend class="t_crm"> '.$medico->tipo_conselho.': '.$medico->num_conselho.' </legend><br>';
+echo '<legend class="especialidade_medico">'.$medico->esp.' </legend><br>';
 echo '</div>';
 
 echo '</div>';
 
-echo '<label class="texto_resumo_profissional">'.$medico->descricao.'</label><br>';
+echo '<legend class="texto_resumo_profissional">'.$medico->descricao.'</legend><br>';
 
 echo '</div>';
 
@@ -169,7 +169,7 @@ else {
   
   echo '<div class="resumo_profissional">';
 
-  echo '<div style="text-align: center;"><label class="t_descricao_profissional"> Descrição Profissional:  </label></div><br>';
+  echo '<div style="text-align: center;"><legend class="t_descricao_profissional"> Descrição Profissional:  </legend></div><br>';
   
  echo '<div style="display: flex; width: 100%">';
   
@@ -178,14 +178,14 @@ else {
  echo  '</div>';
   
   echo '<div style="width: 85%;">';
-  echo '<label class="t_nome_doutor">'.$medico->nome_completo.'</label><br>';
-  echo '<label class="t_crm">'.$medico->tipo_conselho.': '.$medico->num_conselho.' </label><br>';
-  echo '<label class="especialidade_medico">'.$medico->esp.'</label><br>';
+  echo '<legend class="t_nome_doutor">'.$medico->nome_completo.'</legend><br>';
+  echo '<legend class="t_crm">'.$medico->tipo_conselho.': '.$medico->num_conselho.' </legend><br>';
+  echo '<legend class="especialidade_medico">'.$medico->esp.'</legend><br>';
  echo  '</div>';
   
   echo '</div>';
   
-  echo '<label class="texto_resumo_profissional">'.$medico->descricao.'</label><br>';
+  echo '<legend class="texto_resumo_profissional">'.$medico->descricao.'</legend><br>';
   
   echo '</div>';
 

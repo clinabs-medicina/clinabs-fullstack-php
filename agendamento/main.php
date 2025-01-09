@@ -105,7 +105,7 @@
 <?php
 
 echo '<div class="resumo_profissional sem_medico_selecionado container">';
-echo '<div style="text-align: center;"><label class="t_descricao_profissional"> Descrição Profissional:  </label></div><br>';
+echo '<div style="text-align: center;"><legend class="t_descricao_profissional"> Descrição Profissional:  </legend></div><br>';
 echo '<div class="container_foto_crm">';
 echo '<div class="container_foto">';
 echo '<img class="foto_doutor " src="'
@@ -113,32 +113,32 @@ echo '<img class="foto_doutor " src="'
   . '" height="300px" width="300px">';
 echo '</div>';
 echo '<div style="width: 100%;" class="medico-perfil">';
-echo '<label class="t_nome_doutor"> '
+echo '<legend class="t_nome_doutor"> '
   . $medico->nome_completo
-  . '  </label><br>';
-echo '<label class="t_crm"> '
+  . '  </legend><br>';
+echo '<legend class="t_crm"> '
   . $medico->tipo_conselho
   . ': '
   . $medico->num_conselho
   . '/'
   . $medico->uf_conselho
-  . '</label><br>';
-echo '<label class="especialidade_medico">'
+  . '</legend><br>';
+echo '<legend class="especialidade_medico">'
   . $medico->esp
-  . ' </label><br>';
+  . ' </legend><br>';
 
-echo '<label class="valores_consultas">' . number_format($medico->valor_consulta_online, 2, ',', '.') . '(online), ' . number_format($medico->valor_consulta, 2, ',', '.') . ' (presencial)</label><br>';
+echo '<legend class="valores_consultas">' . number_format($medico->valor_consulta_online, 2, ',', '.') . '(online), ' . number_format($medico->valor_consulta, 2, ',', '.') . ' (presencial)</legend><br>';
 
 if ($medico->age_min > 0 && $medico->age_max > 0) {
-  echo '<label class="faixa_etaria"><b>Faixa Etária: </b>'
+  echo '<legend class="faixa_etaria"><b>Faixa Etária: </b>'
     . $medico->age_min
-    . " Anos a '.$medico->age_max.' Ano(s)</label><br>";
+    . " Anos a '.$medico->age_max.' Ano(s)</legend><br>";
 } else {
-  echo '<label class="faixa_etaria"><b>Faixa Etária: </b>'
-    . $medico->age_min . ' Ano(s)</label><br>';
+  echo '<legend class="faixa_etaria"><b>Faixa Etária: </b>'
+    . $medico->age_min . ' Ano(s)</legend><br>';
 }
 
-echo '<label class="texto_resumo_profissional">' . (isset($medico->descricao) ? $medico->descricao : '') . '</label><br><label class="texto_resumo_profissional">' . nl2br((isset($medico->descricao) ? $medico->descricao : '')) . '</label><br>';
+echo '<legend class="texto_resumo_profissional">' . (isset($medico->descricao) ? $medico->descricao : '') . '</legend><br><legend class="texto_resumo_profissional">' . nl2br((isset($medico->descricao) ? $medico->descricao : '')) . '</legend><br>';
 echo '</div>';
 echo '</div>';
 

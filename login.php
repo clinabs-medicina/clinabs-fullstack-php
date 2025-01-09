@@ -151,11 +151,11 @@
                 default: {
                     echo '
                     <div>
-                    <label>E-mail</label>
+                    <label for="user-login">E-mail</label>
                     <input name="usuario" id="user-login" type="text" placeholder="Digite seu E-mail" required autocomplete="off">
                 </div>
                 <div>
-                    <label>Senha:</label>
+                    <label for="user-password">Senha:</label>
                     <input name="password" id="user-password" type="password" placeholder="Digite sua senha" required autocomplete="off">
                 </div>
 
