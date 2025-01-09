@@ -47,40 +47,6 @@
 )
   ? ' data-value="' . $_GET['select_filter'] . '"'
   : '' ?>>
-                
-                  
-                  <?php
-
-                  /*
-                   * if(isset($_GET['select_filter']) && $_GET['filter_ag'] == 'medicos') {
-                   *   $stmt = $pdo->prepare("SELECT * FROM MEDICOS WHERE id = :id");
-                   *   $stmt->bindValue(':id', $_GET['select_filter']);
-                   *
-                   *   try {
-                   *     $stmt->execute();
-                   *     $row = $stmt->fetch(PDO::FETCH_OBJ);
-                   *
-                   *     echo "<option selected value=\"{$row->id}\">{$row->nome_completo}</option>";
-                   *   } catch(Exception $error) {
-                   *
-                   *   }
-                   * } else if(isset($_GET['select_filter']) && $_GET['filter_ag'] == 'queixas') {
-                   *   $stmt = $pdo->prepare("SELECT * FROM ANAMNESE WHERE id = :id");
-                   *   $stmt->bindValue(':id', $_GET['select_filter']);
-                   *
-                   *   try {
-                   *     $stmt->execute();
-                   *     $row = $stmt->fetch(PDO::FETCH_OBJ);
-                   *
-                   *     echo "<option selected value=\"{$row->id}\">{$row->nome}</option>";
-                   *   } catch(Exception $error) {
-                   *
-                   *   }
-                   * } else {
-                   *   echo '<option selected disabled></option>';
-                   * }
-                   */
-                  ?>
                   </select>
 
                   <section class="container-medicos curriculo container">

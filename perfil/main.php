@@ -2,16 +2,13 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-if (isset($_SESSION['_user'])) {
-    $user = $_SESSION['_user'];
-} else
-if (isset($_SESSION['userObj'])) {
-    $user = (object) $_SESSION['userObj'];
-}
-if ((!isset($_user)) && isset($user)) {
-    $_user = $user;
-}
 
+$user = $_SESSION['user'];
+$_user = $_SESSION['_user'];
+
+if (!isset($_user->nome_completo)) {
+    $_user = $_SESSION['user'];
+}
 ?>
 
 <section class="main" id="user-main">

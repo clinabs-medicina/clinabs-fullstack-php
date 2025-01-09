@@ -50,7 +50,7 @@ const renderCalendar = (date) => {
                 return ev === item.date;
             });
 
-            $(calendar).append(`<div onclick="openCalendarLink(this)" class="day selectable${evt.length > 0 ? ' event-day' : ''}" data-date="${item.date}">${item.day}</div>`);
+            $(calendar).append(`<div onclick="openCalendarLink(this)" class="day selectable${evt.length > 0 ? ' event-day' : ' day-lock'}" data-date="${item.date}">${item.day}</div>`);
         }
 
         for (let i = 0; i < cal.next.length; i++) {
@@ -128,6 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
         let uri = `/form/agenda.medico.php?key=${key}&value=${val}`;
+
         if (val == null) {
             uri = `/form/agenda.medico.php?key=${key}`;
         }
@@ -354,13 +355,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
 
             $('input[name="filter_ag"]').on('click', function () {
-                $('.calendar .day').css('filter', 'grayscale(1)');
-                $('.calendar .day').css('pointer-events', 'none');
-
                 $('#filter_ag_select').on('change', function () {
-                    $('.calendar .day').css('filter', 'grayscale(0)');
-                    $('.calendar .day').css('pointer-events', 'all');
-
                     setTimeout(function () {
                         $('#filter_ag_select').trigger('click');
 
