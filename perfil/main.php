@@ -624,7 +624,7 @@ foreach ($stmtx1->fetchAll(PDO::FETCH_OBJ) as $item) {
                                             </div>
                                             <div class="street-btns">
                                                 <div class="btns-info">
-                                                <label class="default-street">' . ($street_token == $item->token ? '(Padrão)' : '') . '</label>
+                                                <legend class="default-street">' . ($street_token == $item->token ? '(Padrão)' : '') . '</legend>
                                                 </div>
 
                                                 <div class="btns-street">

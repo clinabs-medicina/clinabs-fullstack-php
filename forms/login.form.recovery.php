@@ -226,7 +226,7 @@ error_reporting(1);
 
 							$sessid = md5($user->token);
 							$time = time() + (3600 * 24) * 365;
-							setcookie('sessid_clinabs', $sessid, $time, '/', hostname, true);
+							//setcookie('sessid_clinabs', $sessid, $time, '/', hostname, true);
 						} else {
 							$json = json_encode([
 								'status' => 'warning',
@@ -353,7 +353,7 @@ error_reporting(1);
 
 						$sessid = md5($user->token);
 						$time = time() + (3600 * 24) * 365;
-						setcookie('sessid_clinabs', $sessid, $time, '/', hostname, true);
+						//setcookie('sessid_clinabs', $sessid, $time, '/', hostname, true);
 					}else {
 						$json = json_encode([
 							'status' => 'warning',
@@ -404,4 +404,5 @@ error_reporting(1);
 	}
 
 	header('content-Type: application/json');   
+	
 	echo $json;

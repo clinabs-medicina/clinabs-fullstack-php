@@ -101,7 +101,7 @@ try {
 
       $sessid = md5($token);
 			$time = time() + (3600 * 24) * 365;
-			setcookie('sessid_clinabs', $sessid, $time, '/', hostname, true);
+			//setcookie('sessid_clinabs', $sessid, $time, '/', hostname, true);
     } catch(PDOException $e) {
     }
   } else {
