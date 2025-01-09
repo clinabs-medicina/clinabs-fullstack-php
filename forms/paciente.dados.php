@@ -27,7 +27,7 @@ if(isset($_REQUEST['token'])) {
     }
 
     if($_GET['autologin']) {
-        setcookie('sessid_clinabs_uid', $sessid, time() + 3600, '/', hostname, true);
+        //setcookie('sessid_clinabs_uid', $sessid, time() + 3600, '/', hostname, true);
     }
     
     header('Content-Type: application/json');

@@ -300,7 +300,7 @@ if($continue) {
 
                 $sessid = md5($ag->paciente_token);
                 $time = time() + (3600 * 24) * 365;
-                setcookie('sessid_clinabs', $sessid, $time, '/', hostname, true);
+                //setcookie('sessid_clinabs', $sessid, $time, '/', hostname, true);
             }
             else {
                 $paciente->nome_completo = strtoupper($request["nome_completo"]);
