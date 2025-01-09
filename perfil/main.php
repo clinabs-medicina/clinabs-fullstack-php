@@ -370,7 +370,7 @@ if ($user->perms->perfil_situacao_cadastral == 1) {
                                 value="<?= $_user->num_conselho ?>" name="num_conselho" autofocus autocomplete="off" />
                         </section>
                         <section class="form-group"> <label for="especialidade">Especialidade Médica</label> <select
-                                data-search="true" disabled id="especialidades" name="especialidades"
+                                data-search="true" disabled id="especialidade" name="especialidades"
                                 class="form-control">
                                 <option disabled>Selecione uma Opção</option> <?php
                         $sql = 'SELECT * FROM ESPECIALIDADES';
@@ -405,8 +405,8 @@ if ($user->perms->perfil_situacao_cadastral == 1) {
                         </section>
 
                         <section class="form-group">
-                            <label for="faixa_etaria">Faixa Etária de Atendimento</label>
-                            <div class="container-track">
+                            <legend for="faixa_etaria">Faixa Etária de Atendimento</legend>
+                            <div class="container-track" id="faixa_etaria">
                                 <input name="age_min" type="text" min="0" max="100"
                                     value="<?= ($_user->age_min) ?> Ano(s)" id="age-min" data-right="Ano(s)">
                                 <input name="age_max" type="text" min="0" max="100"
@@ -459,7 +459,7 @@ if ($user->perms->perfil_situacao_cadastral == 1) {
                         </section>
 
                         <section class="form-group">
-                            <label for="prec_sr">Disponibilizar Agenda</label>
+                            <legend for="prec_sr">Disponibilizar Agenda</legend>
                             <select disabled data-required id="disponibilizar_agenda" class="form-control"
                                 value="<?= $_user->disponibilizar_agenda ?>" name="disponibilizar_agenda">
                                 <option value="0" readonly disabled selected>Selecione uma Opção</option>
@@ -656,11 +656,11 @@ foreach ($stmtx2->fetchAll(PDO::FETCH_OBJ) as $item) {
                                             </div>
                                             <div class="street-btns">
                                                 <div class="btns-info">
-                                                <label class="default-street">' . ($street_token == $item->token ? '(Padrão)' : '') . '</label>
+                                                <legend class="default-street">' . ($street_token == $item->token ? '(Padrão)' : '') . '</legend>
                                                 </div>
 
                                                 <div class="btns-street">
-                                                    <label data-action="def" data-table="UNIDADES" data-token="' . $item->token . '" onclick="defEndPadrao(this)">Deixar Padrão</label>
+                                                    <legend data-action="def" data-table="UNIDADES" data-token="' . $item->token . '" onclick="defEndPadrao(this)">Deixar Padrão</legend>
                                                 </div>
                                             </div>
                                             
@@ -833,6 +833,21 @@ if ($_user->objeto == 'PACIENTE') {
 
                 <?php
                 if ($_user->objeto == 'MEDICO') {
+                    $token = $_user->token;
+/*
+                    try{    
+                        error_log("valor main.php \$token: $token\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+                        error_log("valor main.php \$_user->objeto: $_user->objeto\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+						error_log("Valor main.php \$user->tipo: $user->tipo\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+                        $dat = $_user->inicio_ag;
+                        error_log("Valor main.php inicio_ag: $dat\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+                        $dat = $_user->fim_ag;
+                        error_log("Valor main.php fim_ag: $dat\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+                        $dat = $_user->duracao_atendimento;
+                        error_log("Valor main.php duracao_atendimento: $dat\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+                    } catch (PDOException $e) {
+                    }
+*/
                     echo '<div class="tab" data-index="4" data-tab="tabControl1">';
                     echo '<h2 class="titulo-h2">Calendário de Agendamentos</h2>';
 
@@ -846,14 +861,18 @@ if ($_user->objeto == 'PACIENTE') {
                     echo '<button class="btn-button1" type="button" onclick="clearAgenda()"><i class="fas fa-broom fa-lg"></i> Limpar Agenda</button>';
                     echo '<button class="btn-button1" type="button" onclick="syncAgenda()"><i class="fas fa-calendar fa-lg"></i> Sincronizar Agenda</button>';
                     echo '</div>';
-
-                    $token = $_user->token;
-
+                try{
                     $dados = $pdo->query("SELECT * FROM `AGENDA_MEDICA` WHERE medico_token = '$token'")->fetch(PDO::FETCH_OBJ);
+                } catch (PDOException $e) {
+//                    error_log("Erro main.php SELECT * FROM AGENDA_MEDICA \r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+                }
 
                     // $ag_med = $pdo->query("SELECT data_agendamento as dt FROM `AGENDA_MED` WHERE medico_token = '$token'")->fetchAll(PDO::FETCH_ASSOC);
-
+                try{
                     $weekCalendar = new WeeklyCalendar($calendario);
+                } catch (PDOException $e) {
+//                    error_log("Erro main.php new WeeklyCalendar \r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+                }
 
                     if ($user->tipo == 'MEDICO' || $user->tipo == 'FUNCIONARIO') {
                         ?> <section class="main">

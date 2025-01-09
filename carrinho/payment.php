@@ -249,11 +249,11 @@ ORDER BY
                                             </div>
                                             <div class="street-btns">
                                                 <div class="btns-info">
-                                                <label class="default-street">'.($item->isDefault ? '(Padrão)':'').'</label>
+                                                <label for="" class="enderecos">'.($item->isDefault ? '(Padrão)':'').'</label>
                                                 </div>
                                             </div>
                                             
-                                            <input type="hidden" name="enderecos[]" data-token="'.$item->token.'" class="input-data" value="'.str_replace('"', "'", json_encode($item)).'">
+                                            <input type="hidden" name="enderecos" data-token="'.$item->token.'" class="input-data" value="'.str_replace('"', "'", json_encode($item)).'">
                                         </div>';
                         
                             }
