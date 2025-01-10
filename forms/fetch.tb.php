@@ -9,7 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-if (isset($_REQUEST['tb']) && isset($_SESSION['token'])) {
+if (isset($_REQUEST['tb'])) {
     if (isset($_REQUEST['q'])) {
         if (strtolower($_REQUEST['tb']) == 'medicos') {
             $dados = $pdo->query('SELECT id,identidade_genero,' . implode(', ', explode(',', $_REQUEST['key'])) . ' AS text FROM ' . strtoupper($_REQUEST['tb']) . ' WHERE LOWER(' . $_REQUEST['key'] . ') LIKE "%' . strtolower($_REQUEST['q']) . '%" AND status = "ATIVO" ORDER BY id ASC;');
