@@ -10,10 +10,7 @@ $page->name = 'link_agenda';
 $useDT = true;
 $useSelector = true;
 $useEditor = true;
-
-if (!isset($_SESSION['token']) && !isset($_GET['page'])) {
-    $page->require_login = true;
-}
+$page->require_login = true;
 
 $page->includePlugins = true;
 
