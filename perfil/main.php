@@ -185,14 +185,6 @@ if ($user->perms->perfil_situacao_cadastral == 1) {
                     <?php
                     }
                     if ($_user->objeto == 'MEDICO') {
-                        try{    
-                            $dat = $user->perms->id ?? 0;
-                            error_log("Valor main.php user->perms->id: $dat\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
-                            $dat = $user->perms->grupo_especialidades ?? 0;
-                            error_log("Valor main.php user->perms->grupo_especialidades: $dat\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
-                        } catch (PDOException $e) {
-                        }
-    
                         if ($user->perms->id == 2 || $user->perms->id == 4 || $user->perms->id == 6) {
                             ?>
                     <section class="form-grid area-pme" style="display: none !important">
