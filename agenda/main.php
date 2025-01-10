@@ -200,11 +200,12 @@ foreach ($rows as $row) {
                                 <div class="form-group">
                                     <legend for="filtro_medico">Selecione um Médico</legend>
                                     <div class="select-container">
-                                        <div class="custom-select" data-value="medico_nome">
+                                        <div class="custom-select" id="filtro_medico" data-value="medico_nome">
                                             <div class="select-selected">Selecione uma Opção</div>
                                             <div class="select-arrow"></div>
                                             <div class="select-items">
-                                                <input type="text" name="filtro_medico" class="search-input" placeholder="Pesquisar...">
+                                                <input type="text" name="filtro_medico" class="search-input" placeholder="Pesquisar..."
+                                                    data-value="medico_nome">
                                                 <ul class="options-list">
                                                     <?php
                                                     foreach (array_unique($medicos) as $id => $medico) {
@@ -215,8 +216,7 @@ foreach ($rows as $row) {
                                             </div>
                                         </div>
                                     </div>
-
-                                  </div>
+                                </div>
                             </div>
                         </div>
                     </fieldset>

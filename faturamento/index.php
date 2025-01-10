@@ -1,6 +1,6 @@
 <?php
 $page = new stdClass();
-$page->title = 'Faturamento (Teste)';
+$page->title = 'Faturamento';
 $page->content = 'faturamento/main.php';
 $page->bc = true;
 $page->name = 'link_faturamento';
@@ -10,11 +10,10 @@ $page->includePlugins = true;
 $useDT = true;
 $useSelector = true;
 
-require_once('../config.inc.php');
-
+require_once ('../config.inc.php');
 
 $balance = $asaas->accountBalance();
 $paymentsBalance = $asaas->paymentsBalance();
 
-require_once $_SERVER['DOCUMENT_ROOT'].'/session.php';
-require_once $_SERVER['DOCUMENT_ROOT'].'/MasterPage.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/session.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/MasterPage.php';
