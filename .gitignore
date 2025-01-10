@@ -1,6 +1,6 @@
 data/
 tmp/
-config.*
+config.inc.php
 .htaccess
 .anotacoes/
 .github/
@@ -11,3 +11,5 @@ google_credentials.json
 deploy.json
 *.txt
 forms/*.txt
+composer.json
+composer.lock
