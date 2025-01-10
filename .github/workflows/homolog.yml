@@ -40,7 +40,7 @@ jobs:
             put -O / /tmp/uploaded_files/.busy -o /.htaccess;
             
             # Mirror remaining files
-            mirror -R --exclude .busy --exclude .apache --exclude .htaccess --update /tmp/uploaded_files /;
+            mirror -R --exclude .busy --exclude .apache --exclude .htaccess /tmp/uploaded_files /;
             put -O / /tmp/uploaded_files/.apache -o /.htaccess;
             bye
           "
