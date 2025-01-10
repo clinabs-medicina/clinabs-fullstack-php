@@ -104,7 +104,10 @@ if (isset($_GET['profile'])) {
         require_once $_SERVER['DOCUMENT_ROOT'] . '/MasterPage.php';
     }
 } else {
-    $tableName = $user->tipo . 'S';
+    if (isset($_SESSION['userObj'])) {
+        $user = (object) $_SESSION['userObj'];
+    }
+    $tableName = ($user->tipo ?? $user->objeto) . 'S';
     $stmt2 = $pdo->prepare("SELECT * FROM $tableName WHERE token = :token");
     $stmt2->bindValue(':token', $user->token);
 

@@ -316,7 +316,8 @@ caption {
 
 th {
   text-align: inherit;
-  text-align: -webkit-match-parent;
+  text-align: -webkit-match-parent; 
+text-align: match-parent;
 }
 
 thead,
