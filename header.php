@@ -1,7 +1,7 @@
 <?php
 global $user, $favoritos, $carrinho;
-if (isset($_SESSION['user']))
-    $user = $_SESSION['user'];
+if (isset($_SESSION['userObj']))
+    $user = $_SESSION['userObj'];
 if (isset($_SESSION['_user']))
     $_user = $_SESSION['_user'];
 
@@ -26,7 +26,7 @@ if (isset($_SESSION['token'])) {
 }
 
 if (!isset($_user->nome_completo)) {
-    $_user = $_SESSION['user'];
+    $_user = $_SESSION['userObj'];
     $user_nome = explode(' ', $_user->nome_completo)[0];
 }
 

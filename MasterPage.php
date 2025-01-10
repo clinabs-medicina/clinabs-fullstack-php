@@ -1102,7 +1102,7 @@ if (isset($useCalendar)) {
 </body>
 <?php
 if (isset($_SESSION['_user'])) {
-    $_SESSION['_user'] = $_SESSION['user'];
+    $_SESSION['_user'] = $_SESSION['userObj'];
 }
 ?>
 </html>

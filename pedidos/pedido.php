@@ -127,7 +127,7 @@
         <h2 class="titulo-h1">Documentos do Paciente</h2>
         <div class="container-flex1">
            <div class="d-flex">
-                <input autocomplete="off" type="checkbox" id="doc_validation" name="doc_validation" checked="<?=$_user->doc_cnh == 'on' ? 'checked':''?>"> <strong>Minha CNH contem CPF,RG inclusos</strong>
+                <input autocomplete="off" type="checkbox" id="doc_validation" name="doc_validation" placeholder="Minha CNH contem CPF,RG inclusos" checked="<?=$_user->doc_cnh == 'on' ? 'checked':''?>"> <strong>Minha CNH contem CPF,RG inclusos</strong>
            </div>
         </div>
         <div class="toolbar toolbar-btns-right">
@@ -143,13 +143,13 @@
                                 </section>
                                 <section class="form-group">
                                     <label for="doc_rg_verso" data-attachment="<?=$pedido->paciente->doc_rg_verso?>" class="anexo-item download-anexo-item ped-docs" data-token="<?=($_REQUEST['pedido_code'])?>" data-file="doc_rg_verso" title="clique para Baixar este Documento">
-                                        <img data-title="Obrigatrio" src="<?=(Modules::getDoc($pedido->paciente->doc_rg_verso))?>">
+                                        <img data-title="Obrigatrio" id="obrigatorio" src="<?=(Modules::getDoc($pedido->paciente->doc_rg_verso))?>">
                                         <strong>Anexo RG (Verso)</strong>
                                     </label>
                                 </section>
                                 <section class="form-group">
                                     <label for="doc_cpf_frente" data-attachment="<?=$pedido->paciente->doc_cpf_frente?>" class="anexo-item download-anexo-item ped-docs" data-token="<?=($_REQUEST['pedido_code'])?>" data-file="doc_cpf_frente" title="clique para Baixar este Documento">
-                                        <img data-title="Obrigatrio" src="<?=(Modules::getDoc($pedido->paciente->doc_cpf_frente))?>">
+                                        <img data-title="Obrigatrio" id="obrigatorio1" src="<?=(Modules::getDoc($pedido->paciente->doc_cpf_frente))?>">
                                         <strong>Anexo CPF (Frente)</strong>
                                     </label>
                                 </section>
@@ -168,25 +168,25 @@
                                 </section>
                                 <section class="form-group">
                                     <label for="doc_procuracao" data-attachment="<?=$pedido->paciente->doc_procuracao?>" class="anexo-item download-anexo-item ped-docs" data-token="<?=($_REQUEST['pedido_code'])?>" data-file="doc_procuracao" title="clique para Baixar este Documento">
-                                    <img data-title="Obrigatrio" src="<?=(Modules::getDoc($pedido->paciente->doc_procuracao))?>">
+                                    <img data-title="Obrigatrio" id="obrigatorio2" src="<?=(Modules::getDoc($pedido->paciente->doc_procuracao))?>">
                                     <strong>Procuração</strong>
                                     </label>
                                 </section>
                                 <section class="form-group">
                                     <label for="doc_anvisa" class="anexo-item download-anexo-item ped-docs" data-token="<?=($_REQUEST['pedido_code'])?>" data-file="doc_anvisa" title="clique para Baixar este Documento">
-                                        <img data-title="Obrigatório" data-attachment="<?=$pedido->paciente->doc_anvisa?>" src="<?=(Modules::getDoc($pedido->paciente->doc_anvisa))?>">
+                                        <img data-title="Obrigatorio" id="obrigatorio3" data-attachment="<?=$pedido->paciente->doc_anvisa?>" src="<?=(Modules::getDoc($pedido->paciente->doc_anvisa))?>">
                                         <strong>Documento Anvisa</strong>
                                     </label>
                                 </section>
                                 <section class="form-group">
                                 <label for="doc_termos" data-attachment="<?=$pedido->paciente->doc_termos?>" class="anexo-item download-anexo-item ped-docs" data-token="<?=($_REQUEST['pedido_code'])?>" data-file="doc_termos" title="clique para Baixar este Documento">
-                                        <img src="<?=(Modules::getDoc($pedido->paciente->doc_termos))?>">
+                                        <img id="obrigatorio4" src="<?=(Modules::getDoc($pedido->paciente->doc_termos))?>">
                                         <strong>Termo de Consentimento</strong>
                                     </label>
                                 </section>
                                 <section class="form-group">
                                 <label for="doc_receita" data-attachment="<?=$pedido->doc_receita?>" class="anexo-item download-anexo-item ped-docs" data-token="<?=($_REQUEST['pedido_code'])?>" data-file="doc_receita" title="clique para Baixar este Documento">
-                                        <img src="<?=(Modules::getDoc($pedido->doc_receita))?>">
+                                        <img id="obrigatorio5" src="<?=(Modules::getDoc($pedido->doc_receita))?>">
                                         <strong>Receita Médica</strong>
                                     </label>
                                 </section>

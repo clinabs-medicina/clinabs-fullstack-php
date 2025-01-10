@@ -2,12 +2,12 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-if (isset($_SESSION['_user'])) {
-    $user = $_SESSION['_user'];
-} else
 if (isset($_SESSION['userObj'])) {
     $user = (object) $_SESSION['userObj'];
 }
+if (isset($_SESSION['_user'])) {
+    $_user = $_SESSION['_user'];
+} 
 if ((!isset($_user)) && isset($user)) {
     $_user = $user;
 }
@@ -50,7 +50,7 @@ if ((!isset($_user)) && isset($user)) {
                             ?>
                         </div>
                     </section>
-                    <div class="profile-info"> <img src=""> </div>
+                    <div class="profile-info"> <!--<img src="">--> </div>
                 </div>
 
                 <?php
@@ -185,6 +185,14 @@ if ($user->perms->perfil_situacao_cadastral == 1) {
                     <?php
                     }
                     if ($_user->objeto == 'MEDICO') {
+                        try{    
+                            $dat = $user->perms->id ?? 0;
+                            error_log("Valor main.php user->perms->id: $dat\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+                            $dat = $user->perms->grupo_especialidades ?? 0;
+                            error_log("Valor main.php user->perms->grupo_especialidades: $dat\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+                        } catch (PDOException $e) {
+                        }
+    
                         if ($user->perms->id == 2 || $user->perms->id == 4 || $user->perms->id == 6) {
                             ?>
                     <section class="form-grid area-pme" style="display: none !important">
@@ -513,7 +521,7 @@ if ($user->perms->perfil_situacao_cadastral == 1) {
                                     autocomplete="off" disabled="true" value="" type="text" id="endereco_nome"
                                     name="nome" class="form-control" maxlength="100"> </section>
                             <section class="form-group"> <label for="endereco_nome">Tipo de Endereço</label> <select
-                                    disabled="true" id="tipo_endereco" name="tipo_endereco" class="form-control">
+                                    disabled="true" id="tipo_endereco" name="endereco_nome" class="form-control">
                                     <option value="CASA">CASA</option>
                                     <option value="ATENDIMENTO">ATENDIMENTO</option>
                                     <option value="RESPONSAVEL">RESPONSÁVEL LEGAL</option>
@@ -707,7 +715,7 @@ if ($_user->objeto == 'PACIENTE') {
     foreach (SQL::fetchTable(connector: $pdo, tableName: 'MEDICOS') as $medico) {
         echo '<option data-crm="' . $medico->num_conselho . '" id="' . $medico->token . '" value="' . $medico->token . '"' . ($_user->medico_token == $medico->token ? ' selected' : '') . '>' . $medico->nome_completo . '</option>';
 
-        if ($medico->token == $_user->medico_token || $medico->token == $user->medico_token) {
+        if ($medico->token == $_user->medico_token || $medico->token == $_user->medico_token) {
             $crm = $medico->num_conselho;
         }
     }
@@ -856,7 +864,7 @@ if ($_user->objeto == 'PACIENTE') {
                     echo '<div class="tab" data-index="4" data-tab="tabControl1">';
                     echo '<h2 class="titulo-h2">Calendário de Agendamentos</h2>';
 
-                    if ($_user->objeto == 'MEDICO' || $user->objeto == 'FUNCIONARIO') {
+                    if ($_user->objeto == 'MEDICO' || $_user->objeto == 'FUNCIONARIO') {
                         echo '<input autocomplete="off" name="medico_id" type="hidden" id="medico_id" value="' . $_user->id . '">';
                         echo '<input autocomplete="off" name="medico_token" type="hidden" id="medico_token" value="' . $_user->token . '">';
                     }
@@ -879,7 +887,7 @@ if ($_user->objeto == 'PACIENTE') {
 //                    error_log("Erro main.php new WeeklyCalendar \r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
                 }
 
-                if ($user->objeto == 'MEDICO' || $user->objeto == 'FUNCIONARIO') {
+                if ($_user->objeto == 'MEDICO' || $_user->objeto == 'FUNCIONARIO') {
                     ?> <section class="main">
 
                     <div class="flex-container">
@@ -1384,7 +1392,7 @@ if ($_user->objeto == 'PACIENTE') {
                 if ($user->tipo == 'PACIENTE' && $user->perms->user_docs == 1) {
                     echo '<div class="tab" data-index="9" data-tab="tabControl1">';
 
-                    $user_docs = $pdo->query("SELECT * FROM `ANEXOS_PACIENTES` WHERE paciente_token = '{$user->token}'")->fetchAll(PDO::FETCH_OBJ);
+                    $_user_docs = $pdo->query("SELECT * FROM `ANEXOS_PACIENTES` WHERE paciente_token = '{$_user->token}'")->fetchAll(PDO::FETCH_OBJ);
                     ?>
                             <h1 class="titulo-h1">Documentos</h1>
                             <div class="toolbar">
@@ -1393,7 +1401,7 @@ if ($_user->objeto == 'PACIENTE') {
                             <div class="container-flex1">
                                 <section class="form-grid area-doc">
                                     <?php
-                                    foreach ($user_docs as $doc) {
+                                    foreach ($_user_docs as $doc) {
                                         $desc = base64_decode($doc->descricao);
                                         echo '<section class="form-group">
                                                     <label for="' . uniqid() . '" class="anexo-item anexo-item-view" data-file="' . basename($doc->doc_path) . '">
@@ -1416,7 +1424,7 @@ if ($_user->objeto == 'PACIENTE') {
             </section>
             <div class="form-footer">
                 <input autocomplete="off" disabled="true" type="hidden" name="tabela"
-                    value="<?= isset($_GET['token']) ? $_user->objeto : $user->tipo ?>S">
+                    value="<?= isset($_GET['token']) ? $_user->objeto : $_user->tipo ?>S">
                 <input autocomplete="off" disabled="true" id="user_token" type="hidden" name="token"
                     value="<?= $_user->token ?>"><button type="button" class="btn-button1 btn-edit-form">EDITAR
                     DADOS</button> <button type="submit" class="btn-button1 btn-save-form" disabled="true"
@@ -1424,7 +1432,7 @@ if ($_user->objeto == 'PACIENTE') {
             </div>
 
             <?php
-            if ($user->objeto == 'MEDICO' || $user->objeto == 'FUNCIONARIO') {
+            if ($_user->objeto == 'MEDICO' || $_user->objeto == 'FUNCIONARIO') {
                 echo '<input autocomplete="off" name="atendimento_padrao" type="hidden" id="atendimento_padrao" value="' . str_replace('"', "'", $_user->atendimento_padrao) . '">';
             }
             ?>
@@ -1432,7 +1440,7 @@ if ($_user->objeto == 'PACIENTE') {
         <input autocomplete="off" disabled="true" type="hidden" name="profileImage" id="profileImage"
             value="<?= Modules::getUserImage($_user->token) ?>">
         <?php
-        if ($user->objeto == 'MEDICO' || $user->objeto == 'FUNCIONARIO') {
+        if ($_user->objeto == 'MEDICO' || $_user->objeto == 'FUNCIONARIO') {
             echo '<input autocomplete="off" name="agenda_dados" type="hidden" id="agenda_dados" value="' . str_replace('"', "'", $dados->calendario) . '">';
         }
         ?>
