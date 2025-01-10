@@ -69,6 +69,7 @@ let tabControl = function (e) {
             }`),
             p.setAttribute("type", "radio"),
             p.setAttribute("name", "btn-radio");
+            p.setAttribute("placeholder", "slider");
             let h = document.createElement("div");
             h.setAttribute("class", `auto-btn${
                 f + 1
