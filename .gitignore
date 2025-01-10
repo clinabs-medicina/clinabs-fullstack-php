@@ -13,3 +13,4 @@ deploy.json
 forms/*.txt
 composer.json
 composer.lock
+info/
