@@ -25,7 +25,6 @@ jobs:
       # Prepare files for upload, respecting .gitignore
       - name: Prepare files for upload
         run: |
-          # Get list of files tracked by git (ignoring .gitignore files)
           git ls-files --exclude-standard | tar -czf files_to_upload.tar.gz -T -
           
       # Upload files via FTP using lftp (non-interactive)
