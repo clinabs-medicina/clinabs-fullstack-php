@@ -504,9 +504,12 @@
 .btn-close:disabled,
 .btn-close.disabled {
     pointer-events: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
+    -webkit-user-select: none; 
+-webkit-user-select: none;
+    -moz-user-select: none; 
+-webkit-user-select: none;
+    user-select: none; 
+-webkit-user-select: none;
     opacity: 0.25;
 }
 
