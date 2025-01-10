@@ -1,13 +1,13 @@
-*.htaccess
 data/
+tmp/
+config.*
+.htaccess
 .anotacoes/
 .github/
 *_credentials.json
 wa-config.json
+*.log
 google_credentials.json
 deploy.json
-*.log
-*.inc.php
 *.txt
 forms/*.txt
-tmp/
