@@ -2,13 +2,16 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
-$user = $_SESSION['user'];
-$_user = $_SESSION['_user'];
-
-if (!isset($_user->nome_completo)) {
-    $_user = $_SESSION['user'];
+if (isset($_SESSION['_user'])) {
+    $user = $_SESSION['_user'];
+} else
+if (isset($_SESSION['userObj'])) {
+    $user = (object) $_SESSION['userObj'];
 }
+if ((!isset($_user)) && isset($user)) {
+    $_user = $user;
+}
+
 ?>
 
 <section class="main" id="user-main">
@@ -836,7 +839,7 @@ if ($_user->objeto == 'PACIENTE') {
                 <?php
                 if ($_user->objeto == 'MEDICO') {
                     $token = $_user->token;
-/*
+
                     try{    
                         error_log("valor main.php \$token: $token\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
                         error_log("valor main.php \$_user->objeto: $_user->objeto\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
@@ -849,7 +852,7 @@ if ($_user->objeto == 'PACIENTE') {
                         error_log("Valor main.php duracao_atendimento: $dat\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
                     } catch (PDOException $e) {
                     }
-*/
+
                     echo '<div class="tab" data-index="4" data-tab="tabControl1">';
                     echo '<h2 class="titulo-h2">Calendário de Agendamentos</h2>';
 
