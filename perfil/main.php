@@ -839,7 +839,7 @@ if ($_user->objeto == 'PACIENTE') {
                 <?php
                 if ($_user->objeto == 'MEDICO') {
                     $token = $_user->token;
-
+/*
                     try{    
                         error_log("valor main.php \$token: $token\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
                         error_log("valor main.php \$_user->objeto: $_user->objeto\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
@@ -852,7 +852,7 @@ if ($_user->objeto == 'PACIENTE') {
                         error_log("Valor main.php duracao_atendimento: $dat\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
                     } catch (PDOException $e) {
                     }
-
+*/
                     echo '<div class="tab" data-index="4" data-tab="tabControl1">';
                     echo '<h2 class="titulo-h2">Calendário de Agendamentos</h2>';
 
