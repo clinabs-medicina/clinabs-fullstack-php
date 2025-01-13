@@ -1,14 +1,15 @@
 <?php
-function getUnidades(PDO $pdo) {
+function getUnidades(PDO $pdo)
+{
     $agendamentos_unidades = [];
 
     $today = $_GET['data'];
 
     $unidades = [];
 
-    $_unidades = $pdo->query("SELECT nome, token FROM UNIDADES")->fetchAll(PDO::FETCH_ASSOC);
+    $_unidades = $pdo->query('SELECT nome, token FROM UNIDADES')->fetchAll(PDO::FETCH_ASSOC);
 
-    foreach($_unidades as $unidade) {
+    foreach ($_unidades as $unidade) {
         $unidades[$unidade['token']] = $unidade['nome'];
     }
 
@@ -23,10 +24,10 @@ function getUnidades(PDO $pdo) {
 
         $array['nome'] = $unidades[$dados['token']];
 
-        if(isset($row['unidade_atendimento'])) {
+        if (isset($row['unidade_atendimento'])) {
             $item = $row;
 
-            $un = $pdo->query('SELECT * FROM UNIDADES WHERE token = "'.$dados['token'].'"')->fetch(PDO::FETCH_ASSOC);
+            $un = $pdo->query('SELECT * FROM UNIDADES WHERE token = "' . $dados['token'] . '"')->fetch(PDO::FETCH_ASSOC);
             $un['modalidade'] = $row['modalidade'];
 
             $agendamentos_unidades[$dados['token']][$item['data_agendamento']] = $un;
@@ -36,19 +37,21 @@ function getUnidades(PDO $pdo) {
     return $agendamentos_unidades;
 }
 
-function get_enderecos($pdo) {
-    $stmt = $pdo->query("SELECT nome, logradouro, numero, cidade, bairro, cep, uf, token FROM `UNIDADES` UNION SELECT nome, logradouro, numero, cidade, bairro, cep, uf, token FROM `ENDERECOS`");
+function get_enderecos($pdo)
+{
+    $stmt = $pdo->query('SELECT nome, logradouro, numero, cidade, bairro, cep, uf, token FROM `UNIDADES` UNION SELECT nome, logradouro, numero, cidade, bairro, cep, uf, token FROM `ENDERECOS`');
 
     $enderecos = [];
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $enderecos[$row['token']] = $row;
-    }           
+    }
 
     return $enderecos;
 }
 
-function getU($pdo, $token) {
+function getU($pdo, $token)
+{
     try {
         $stmt = $pdo->prepare("SELECT nome,token,'UNIDADES' AS tipo FROM `UNIDADES` WHERE `token` = :token UNION SELECT nome,token,'ENDERECOS' AS tipo FROM `ENDERECOS` WHERE `token` = :token");
         $stmt->bindValue(':token', $token);
@@ -68,157 +71,147 @@ $_enderecos = get_enderecos($pdo);
 <section class="main">
     <section>
         <h1 class="titulo-h1">Agendamento</h1>
-        <h5><b>Data do Agendamento:</b> <?=date('d/m/Y', strtotime($_GET['data']))?></h5>
+        <h5><b>Data do Agendamento:</b> <?= date('d/m/Y', strtotime($_GET['data'])) ?></h5>
     </section>
 
     <section class="list-medical-flex">
         <?php
-             ini_set('display_errors', 1);
-             error_reporting(1);
-             $items = [];
+        ini_set('display_errors', 1);
+        error_reporting(1);
+        $items = [];
 
-             $c = [];
-             
-             if(isset($_GET['data'])) {
-                 $DATE = $_GET['data'];
-                 
-                 if(!isset($_GET['filter_ag'])) {
-                     $sql = "SELECT DISTINCT
-                        	TB1.medico_token,
-                        	( SELECT COUNT(*) FROM ENDERECOS WHERE user_token = TB1.medico_token AND tipo_endereco = 'ATENDIMENTO' ) AS presencialDisponivel,
-                        	TB1.calendario,
-                        	TB2.nome_completo AS medico_nome,
-                        	TB2.tipo_conselho,
-                        	TB2.uf_conselho,
-                        	(SELECT nome FROM ESPECIALIDADES WHERE id = TB2.especialidade) AS especialidade,
-                        	TB2.num_conselho,
-                        	TB2.identidade_genero,
-                        	TB2.`status`,
-                        	TB2.valor_consulta AS valor_presencial,
-                        	TB2.duracao_atendimento,
-                        	TB2.valor_consulta_online AS valor_online,
+        $c = [];
+
+        if (isset($_GET['data'])) {
+            $DATE = $_GET['data'];
+
+            if (!isset($_GET['filter_ag'])) {
+                $sql = "SELECT DISTINCT
+                        TB1.medico_token,
+                        ( SELECT COUNT(*) FROM ENDERECOS WHERE user_token = TB1.medico_token AND tipo_endereco = 'ATENDIMENTO' ) AS presencialDisponivel,
+                        TB1.calendario,
+                        TB2.nome_completo AS medico_nome,
+                        TB2.tipo_conselho,
+                        TB2.uf_conselho,
+                        (SELECT nome FROM ESPECIALIDADES WHERE id = TB2.especialidade) AS especialidade,
+                        TB2.num_conselho,
+                        TB2.identidade_genero,
+                        TB2.`status`,
+                        TB2.valor_consulta AS valor_presencial,
+                        TB2.duracao_atendimento,
+                        TB2.valor_consulta_online AS valor_online,
                             TB2.tempo_limite_online,
                             TB2.tempo_limite_presencial
                         FROM
-                        	AGENDA_MEDICA AS TB1,
-                        	MEDICOS AS TB2 
+                        AGENDA_MEDICA AS TB1,
+                        MEDICOS AS TB2 
                         WHERE
-                        	calendario LIKE '%\"{$DATE}\"%' 
-                        	AND TB1.medico_token = TB2.token 
-                        	AND TB2.`status` = 'ATIVO'";
-                 }
-                  else {
-                     if(isset($_GET['filter_ag']) && $_GET['filter_ag'] == 'medicos') {
-                         $sql = "SELECT DISTINCT
-                        	TB1.medico_token,
-                        	( SELECT COUNT(*) FROM ENDERECOS WHERE user_token = TB1.medico_token AND tipo_endereco = 'ATENDIMENTO' ) AS presencialDisponivel,
-                        	TB1.calendario,
-                        	TB2.nome_completo AS medico_nome,
-                        	TB2.tipo_conselho,
-                        	TB2.uf_conselho,
-                        	(SELECT nome FROM ESPECIALIDADES WHERE id = TB2.especialidade) AS especialidade,
-                        	TB2.num_conselho,
-                        	TB2.identidade_genero,
-                        	TB2.`status`,
-                        	TB2.valor_consulta AS valor_presencial,
-                        	TB2.duracao_atendimento,
-                        	TB2.valor_consulta_online AS valor_online,
+                        calendario LIKE '%\"{$DATE}\"%' 
+                        AND TB1.medico_token = TB2.token 
+                        AND TB2.`status` = 'ATIVO'";
+            } else {
+                if (isset($_GET['filter_ag']) && $_GET['filter_ag'] == 'medicos') {
+                    $sql = "SELECT DISTINCT
+                        TB1.medico_token,
+                        ( SELECT COUNT(*) FROM ENDERECOS WHERE user_token = TB1.medico_token AND tipo_endereco = 'ATENDIMENTO' ) AS presencialDisponivel,
+                        TB1.calendario,
+                        TB2.nome_completo AS medico_nome,
+                        TB2.tipo_conselho,
+                        TB2.uf_conselho,
+                        (SELECT nome FROM ESPECIALIDADES WHERE id = TB2.especialidade) AS especialidade,
+                        TB2.num_conselho,
+                        TB2.identidade_genero,
+                        TB2.`status`,
+                        TB2.valor_consulta AS valor_presencial,
+                        TB2.duracao_atendimento,
+                        TB2.valor_consulta_online AS valor_online,
                             TB2.tempo_limite_online,
                             TB2.tempo_limite_presencial
                         FROM
-                        	AGENDA_MEDICA AS TB1,
-                        	MEDICOS AS TB2 
+                        AGENDA_MEDICA AS TB1,
+                        MEDICOS AS TB2 
                         WHERE
-                        	calendario LIKE '%\"{$DATE}\"%'
-                        	AND TB2.id = '{$_GET['select_filter']}'
-                        	AND TB1.medico_token = TB2.token 
-                        	AND TB2.`status` = 'ATIVO'";
-                     }
-                     else if(isset($_GET['filter_ag']) && $_GET['filter_ag'] == 'especialidades') {
-                         $sql = "SELECT DISTINCT
-                        	TB1.medico_token,
-                        	( SELECT COUNT(*) FROM ENDERECOS WHERE user_token = TB1.medico_token AND tipo_endereco = 'ATENDIMENTO' ) AS presencialDisponivel,
-                        	TB1.calendario,
-                        	TB2.nome_completo AS medico_nome,
-                        	TB2.tipo_conselho,
-                        	TB2.uf_conselho,
-                        	(SELECT nome FROM ESPECIALIDADES WHERE id = TB2.especialidade) AS especialidade,
-                        	TB2.num_conselho,
-                        	TB2.identidade_genero,
-                        	TB2.`status`,
-                        	TB2.valor_consulta AS valor_presencial,
-                        	TB2.duracao_atendimento,
-                        	TB2.valor_consulta_online AS valor_online,
+                        calendario LIKE '%\"{$DATE}\"%'
+                        AND TB2.id = '{$_GET['select_filter']}'
+                        AND TB1.medico_token = TB2.token 
+                        AND TB2.`status` = 'ATIVO'";
+                } else if (isset($_GET['filter_ag']) && $_GET['filter_ag'] == 'especialidades') {
+                    $sql = "SELECT DISTINCT
+                        TB1.medico_token,
+                        ( SELECT COUNT(*) FROM ENDERECOS WHERE user_token = TB1.medico_token AND tipo_endereco = 'ATENDIMENTO' ) AS presencialDisponivel,
+                        TB1.calendario,
+                        TB2.nome_completo AS medico_nome,
+                        TB2.tipo_conselho,
+                        TB2.uf_conselho,
+                        (SELECT nome FROM ESPECIALIDADES WHERE id = TB2.especialidade) AS especialidade,
+                        TB2.num_conselho,
+                        TB2.identidade_genero,
+                        TB2.`status`,
+                        TB2.valor_consulta AS valor_presencial,
+                        TB2.duracao_atendimento,
+                        TB2.valor_consulta_online AS valor_online,
                             TB2.tempo_limite_online,
                             TB2.tempo_limite_presencial
                         FROM
-                        	AGENDA_MEDICA AS TB1,
-                        	MEDICOS AS TB2 
+                        AGENDA_MEDICA AS TB1,
+                        MEDICOS AS TB2 
                         WHERE
-                        	calendario LIKE '%\"{$DATE}\"%'
-                        	AND TB1.medico_token = TB2.token 
-                        	AND TB2.`status` = 'ATIVO'
-                        	AND TB2.especialidade = '".$_GET['select_filter']."'";
-                     }
-                     
-                     else if(isset($_GET['filter_ag']) && $_GET['filter_ag'] == 'anamnese') {
-                         $sql = "SELECT DISTINCT
-                        	TB1.medico_token,
-                        	( SELECT COUNT(*) FROM ENDERECOS WHERE user_token = TB1.medico_token AND tipo_endereco = 'ATENDIMENTO' ) AS presencialDisponivel,
-                        	TB1.calendario,
-                        	TB2.nome_completo AS medico_nome,
-                        	TB2.tipo_conselho,
-                        	TB2.uf_conselho,
-                        	(SELECT nome FROM ESPECIALIDADES WHERE id = TB2.especialidade) AS especialidade,
-                        	TB2.num_conselho,
-                        	TB2.identidade_genero,
-                        	TB2.`status`,
-                        	TB2.valor_consulta AS valor_presencial,
-                        	TB2.duracao_atendimento,
-                        	TB2.valor_consulta_online AS valor_online,
+                        calendario LIKE '%\"{$DATE}\"%'
+                        AND TB1.medico_token = TB2.token 
+                        AND TB2.`status` = 'ATIVO'
+                        AND TB2.especialidade = '" . $_GET['select_filter'] . "'";
+                } else if (isset($_GET['filter_ag']) && $_GET['filter_ag'] == 'anamnese') {
+                    $sql = "SELECT DISTINCT
+                        TB1.medico_token,
+                        ( SELECT COUNT(*) FROM ENDERECOS WHERE user_token = TB1.medico_token AND tipo_endereco = 'ATENDIMENTO' ) AS presencialDisponivel,
+                        TB1.calendario,
+                        TB2.nome_completo AS medico_nome,
+                        TB2.tipo_conselho,
+                        TB2.uf_conselho,
+                        (SELECT nome FROM ESPECIALIDADES WHERE id = TB2.especialidade) AS especialidade,
+                        TB2.num_conselho,
+                        TB2.identidade_genero,
+                        TB2.`status`,
+                        TB2.valor_consulta AS valor_presencial,
+                        TB2.duracao_atendimento,
+                        TB2.valor_consulta_online AS valor_online,
                             TB2.tempo_limite_online,
                             TB2.tempo_limite_presencial
                         FROM
-                        	AGENDA_MEDICA AS TB1,
-                        	MEDICOS AS TB2 
+                        AGENDA_MEDICA AS TB1,
+                        MEDICOS AS TB2 
                         WHERE
-                        	calendario LIKE '%\"{$DATE}\"%'
-                        	AND TB1.medico_token = TB2.token 
-                        	AND TB2.`status` = 'ATIVO'
-                        	AND TB2.anamnese LIKE '%\"".$_GET['select_filter']."\"%'";
-                     }
-                 }
+                        calendario LIKE '%\"{$DATE}\"%'
+                        AND TB1.medico_token = TB2.token 
+                        AND TB2.`status` = 'ATIVO'
+                        AND TB2.anamnese LIKE '%\"" . $_GET['select_filter'] . '"%\'';
+                }
+            }
 
-                 
-                
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
 
-                        	$stmt = $pdo->prepare($sql);
-                        	$stmt->execute();
-                        	
-                        	$items = $stmt->fetchAll(PDO::FETCH_OBJ);
+            $items = $stmt->fetchAll(PDO::FETCH_OBJ);
 
+            foreach ($items as $item) {
+                $id = uniqid();
 
-                        	foreach($items as $item) {
-                        	    $id = uniqid();
+                $online_item = false;
+                $presencial_item = false;
 
-                                $online_item = false;
-                                $presencial_item = false;
+                $agendamentos = json_decode($item->calendario, true)[$DATE];
 
+                try {
+                    $unidade_token = json_decode($item->calendario, true)['token'];
+                    $unidade_tipo = json_decode($item->calendario, true)['table'];
+                } catch (Exception $e) {
+                    $unidade_token = null;
+                    $unidade_tipo = null;
+                }
 
-                        	    $agendamentos = json_decode($item->calendario, true)[$DATE];
+                $prefixo = strtoupper($item->identidade_genero) == 'FEMININO' ? 'Dra.' : 'Dr.';
 
-                                try {
-                                    $unidade_token = json_decode($item->calendario, true)['token'];
-                                    $unidade_tipo = json_decode($item->calendario, true)['table'];
-                                } catch (Exception $e) {
-                                    $unidade_token = null;
-                                    $unidade_tipo = null;
-                                }
-
-                                $prefixo = strtoupper($item->identidade_genero) == 'FEMININO' ? 'Dra.':'Dr.';
-
-
-                                $stmtx1 = $pdo->prepare("SELECT
+                $stmtx1 = $pdo->prepare('SELECT
                                                                             data_agendamento,
                                                                           ( SELECT nome_completo FROM MEDICOS WHERE token = medico_token ) AS medico_nome,
                                                                           ( SELECT valor_consulta FROM MEDICOS WHERE token = medico_token ) AS valor_presencial,
@@ -232,105 +225,92 @@ $_enderecos = get_enderecos($pdo);
                                                                         WHERE
                                                                             data_agendamento LIKE :date
                                                                         AND
-                                                                            medico_token = :medico_token");
-                                                                                
-                                                    $stmtx1->bindValue(':date', date('Y-m-d', strtotime($_GET['data'])).'%');
-                                                    $stmtx1->bindValue(':medico_token', $item->medico_token);
-                                                    
-                                                    $stmtx1->execute();
+                                                                            medico_token = :medico_token');
 
-                                                    $hrs = [];
-                                                    $ags = [];
-                                                    
-                                                    foreach( $stmtx1->fetchAll(PDO::FETCH_ASSOC) as $dt) {
-                                                        $hrs[] = $dt['data_agendamento'];
-                                                       
-                                                        
+                $stmtx1->bindValue(':date', date('Y-m-d', strtotime($_GET['data'])) . '%');
+                $stmtx1->bindValue(':medico_token', $item->medico_token);
 
-                                                        if(!in_array(date('Y-m-d H:i:s', strtotime($_GET['data'].' '.$ag['time'])), $hrs) && strtotime($_GET['data'].' '.$ag['time']) > strtotime(date('Y-m-d H:i')))
-                                                            {
-                                                                $ags[] = $ag;
-                                                            }
-                                                    }
+                $stmtx1->execute();
 
-                                                    foreach($agendamentos as $ag) {
-                                                          if(!in_array(date('Y-m-d H:i:s', strtotime($_GET['data'].' '.$ag['time'])), $hrs) && strtotime($_GET['data'].' '.$ag['time']) > strtotime(date('Y-m-d H:i')))
-                                                            {
-                                                                $ags[] = $ag;
+                $hrs = [];
+                $ags = [];
 
-                                                                if($ag['online'] == "true") {
-                                                                    $online_item = true;
-                                                                }
-                                                                
-                                                                if($ag['presencial'] == "true") {
-                                                                    $presencial_item = true;
-                                                                }
-                                                            }
-                                                             
-                                                    }
+                foreach ($stmtx1->fetchAll(PDO::FETCH_ASSOC) as $dt) {
+                    $hrs[] = $dt['data_agendamento'];
 
-                                                    
-                                              
-                        	   if(count($ags) >= 1) {
-                                $c[] = $item;
+                    if (!in_array(date('Y-m-d H:i:s', strtotime($_GET['data'] . ' ' . $ag['time'])), $hrs) && strtotime($_GET['data'] . ' ' . $ag['time']) > strtotime(date('Y-m-d H:i'))) {
+                        $ags[] = $ag;
+                    }
+                }
 
-                                $hrs = [];
+                foreach ($agendamentos as $ag) {
+                    if (!in_array(date('Y-m-d H:i:s', strtotime($_GET['data'] . ' ' . $ag['time'])), $hrs) && strtotime($_GET['data'] . ' ' . $ag['time']) > strtotime(date('Y-m-d H:i'))) {
+                        $ags[] = $ag;
 
-                                $include = false;
+                        if ($ag['online'] == 'true') {
+                            $online_item = true;
+                        }
 
+                        if ($ag['presencial'] == 'true') {
+                            $presencial_item = true;
+                        }
+                    }
+                }
 
-                                foreach($agendamentos as $ag) {
-                                    $online = $ag['online'];
-                                    $presencial = $ag['presencial'];
+                if (count($ags) >= 1) {
+                    $c[] = $item;
 
-                                    $unidade_token = $ag['token'];
-                                    
-         
-                                      if(!in_array(date('Y-m-d H:i', strtotime($_GET['data'].' '.$ag['time'])), $hrs) && strtotime($_GET['data'].' '.$ag['time']) > strtotime(date('Y-m-d H:i')))
-                                        {
-                                            $xx = $pdo->query("SELECT data_agendamento FROM AGENDA_MED WHERE data_agendamento = '{$_GET["data"]} {$ag["time"]}' AND medico_token = '{$item->medico_token}'");
-                                            
-                                            $data_agendamento = "{$_GET['data']} {$ag['time']}:00";
-                                    
+                    $hrs = [];
 
-                                            if($xx->rowCount() == 0){
-                                                $online  = $online ? 'SIM':'NÃO';
-                                                $presencial = $presencial ? 'SIM':'NÃO';
-                                                $title = '';
-                                                $time_left = (strtotime($ag['date'].' '.$ag['time']) - time());
-                                                $time_limit = ($item->tempo_limite_online * 60);
-                                                
-                                                if($time_left >= $time_limit && $ag['online'] && $ag['presencial']) {
-                                                    $include = true;
-                                                } else {
-                                                    if($ag['presencial']  && !isset($_agendamentos_unidades[$ag['endereco']][$data_agendamento])) {
-                                                        if($time_left >= $time_limit) {
-                                                            $include = true;
-                                                        }
-                                                    } else {
-                                                        if($time_left >= $time_limit) {
-                                                            $include = true;
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                      }
+                    $include = false;
+
+                    foreach ($agendamentos as $ag) {
+                        $online = $ag['online'];
+                        $presencial = $ag['presencial'];
+
+                        $unidade_token = $ag['token'];
+
+                        if (!in_array(date('Y-m-d H:i', strtotime($_GET['data'] . ' ' . $ag['time'])), $hrs) && strtotime($_GET['data'] . ' ' . $ag['time']) > strtotime(date('Y-m-d H:i'))) {
+                            $xx = $pdo->query("SELECT data_agendamento FROM AGENDA_MED WHERE data_agendamento = '{$_GET['data']} {$ag['time']}' AND medico_token = '{$item->medico_token}'");
+
+                            $data_agendamento = "{$_GET['data']} {$ag['time']}:00";
+
+                            if ($xx->rowCount() == 0) {
+                                $online = $online ? 'SIM' : 'NÃO';
+                                $presencial = $presencial ? 'SIM' : 'NÃO';
+                                $title = '';
+                                $time_left = (strtotime($ag['date'] . ' ' . $ag['time']) - time());
+                                $time_limit = ($item->tempo_limite_online * 60);
+
+                                if ($time_left >= $time_limit && $ag['online'] && $ag['presencial']) {
+                                    $include = true;
+                                } else {
+                                    if ($ag['presencial'] && !isset($_agendamentos_unidades[$ag['endereco']][$data_agendamento])) {
+                                        if ($time_left >= $time_limit) {
+                                            $include = true;
+                                        }
+                                    } else {
+                                        if ($time_left >= $time_limit) {
+                                            $include = true;
+                                        }
+                                    }
                                 }
+                            }
+                        }
+                    }
 
-                                
-
-                                if($include) {
-                        	    echo '<form class="box-mediclist" method="GET" action="/agenda/consulta" id="form_'.$id.'">
+                    if ($include) {
+                        echo '<form class="box-mediclist" method="GET" action="/agenda/consulta" id="form_' . $id . '">
                                             <div class="listmedic-box-esq">
                                                 <div class="listmedic-box-esq-user">
-                                                    <div><img src="'.Modules::getUserImage($item->medico_token).'" height="140px" class="imagem-user" alt=""></div>
+                                                    <div><img src="' . Modules::getUserImage($item->medico_token) . '" height="140px" class="imagem-user" alt=""></div>
                                                     <!-- <span><img src="/assets/images/ico-heart.svg" alt="">1000 likes</span> -->
                                             </div>
                                             <div class="listmedic-box-dir-user">
-                                                <span class="crm-bg">'.($item->tipo_conselho.' '.$item->num_conselho.' '.$item->uf_conselho).'</span>
-                                                <h4>'.$prefixo.' '.$item->medico_nome.'</h4>
+                                                <span class="crm-bg">' . ($item->tipo_conselho . ' ' . $item->num_conselho . ' ' . $item->uf_conselho) . '</span>
+                                                <h4>' . $prefixo . ' ' . $item->medico_nome . '</h4>
                                                 <hr>
-                                                <p class="listmedic-box-dir-subtitle">'.$item->especialidade.'</p>
+                                                <p class="listmedic-box-dir-subtitle">' . $item->especialidade . '</p>
                                                 <div class="listmedic-box-dir-ico location-clinic">
                                                     <img src="/assets/images/ico-map.svg" alt="">
                                                     <div class="street-info street-item-info"></div>
@@ -339,11 +319,11 @@ $_enderecos = get_enderecos($pdo);
                                                     
                                                 </div>
                                                 <div class="listmedic-boxlink-box">
-                                                <input'.($presencial_item == true && $online_item == false ? ' checked':'').' required class="btn-modalidade" type="radio" name="atendimento" style="display: none" id="atendimento_presencial_'.$id.'" value="presencial" data-value="'.intval($item->valor_presencial).'" data-duration="'.$item->duracao_atendimento.'">
-                                                <input'.($presencial_item == false && $online_item == true ? ' checked':'').' required class="btn-modalidade" type="radio" name="atendimento" style="display: none" id="atendimento_online_'.$id.'" value="online" data-value="'.intval($item->valor_online ?? $item->valor_presencial).'" data-duration="'.$item->duracao_atendimento.'">';
-                                                    echo $presencial_item && (strtotime(date('H:i'))) >= strtotime($horario_funcionamento['inicio']) && (strtotime(date('H:i'))) <= strtotime($horario_funcionamento['fim']) ? '<label'.($presencial_item == true && $online_item == false ? ' checked':'').' for="atendimento_presencial_'.$id.'" class="listmedic-boxlink" data-for="atendimento" data-form="form_'.$id.'" data-value="presencial">PRESENCIAL</label>':'';
-                                                    echo $online_item ? '<label'.($presencial_item == false && $online_item == true ? ' checked':'').' for="atendimento_online_'.$id.'" class="listmedic-boxlink" data-for="atendimento" data-form="form_'.$id.'" data-value="online">ONLINE</label>':'';
-                                                echo '</div>
+                                                <input' . ($presencial_item == true && $online_item == false ? ' checked' : '') . ' required class="btn-modalidade" type="radio" name="atendimento" style="display: none" id="atendimento_presencial_' . $id . '" value="presencial" data-value="' . intval($item->valor_presencial) . '" data-duration="' . $item->duracao_atendimento . '">
+                                                <input' . ($presencial_item == false && $online_item == true ? ' checked' : '') . ' required class="btn-modalidade" type="radio" name="atendimento" style="display: none" id="atendimento_online_' . $id . '" value="online" data-value="' . intval($item->valor_online ?? $item->valor_presencial) . '" data-duration="' . $item->duracao_atendimento . '">';
+                        echo $presencial_item && (strtotime(date('H:i'))) >= strtotime($horario_funcionamento['inicio']) && (strtotime(date('H:i'))) <= strtotime($horario_funcionamento['fim']) ? '<label' . ($presencial_item == true && $online_item == false ? ' checked' : '') . ' for="atendimento_presencial_' . $id . '" class="listmedic-boxlink" data-for="atendimento" data-form="form_' . $id . '" data-value="presencial">PRESENCIAL</label>' : '';
+                        echo $online_item ? '<label' . ($presencial_item == false && $online_item == true ? ' checked' : '') . ' for="atendimento_online_' . $id . '" class="listmedic-boxlink" data-for="atendimento" data-form="form_' . $id . '" data-value="online">ONLINE</label>' : '';
+                        echo '</div>
                                             </div>
                         
                                         </div>
@@ -356,80 +336,75 @@ $_enderecos = get_enderecos($pdo);
   
                                             <div class="listmedic-box-dir-boxtime item-disabled">';
 
-                                            
-                                            $xy = 0;
+                        $xy = 0;
 
-                                                foreach($agendamentos as $ag) {
-                        
-                                                      if(!in_array(date('Y-m-d H:i', strtotime($_GET['data'].' '.$ag['time'])), $hrs) && strtotime($_GET['data'].' '.$ag['time']) > strtotime(date('Y-m-d H:i')))
-                                                        {
-                                                            $xx = $pdo->query("SELECT data_agendamento FROM AGENDA_MED WHERE data_agendamento = '{$_GET["data"]} {$ag["time"]}' AND medico_token = '{$item->medico_token}'");
-                                                            
-                                                            $data_agendamento = "{$_GET['data']} {$ag['time']}:00";
+                        foreach ($agendamentos as $ag) {
+                            if (!in_array(date('Y-m-d H:i', strtotime($_GET['data'] . ' ' . $ag['time'])), $hrs) && strtotime($_GET['data'] . ' ' . $ag['time']) > strtotime(date('Y-m-d H:i'))) {
+                                $xx = $pdo->query("SELECT data_agendamento FROM AGENDA_MED WHERE data_agendamento = '{$_GET['data']} {$ag['time']}' AND medico_token = '{$item->medico_token}'");
 
-                                                            if($_agendamentos_unidades[$ag["endereco"]][$data_agendamento]["modalidade"] == 'PRESENCIAL') {
-                                                                $ag['presencial'] = false;
-                                                            }
-        
-                                                            if($_agendamentos_unidades[$ag['endereco']][$data_agendamento]['modalidade'] == 'ONLINE') {
-                                                                $ag['online'] = false;
-                                                            }
+                                if ($xx->rowCount() == 0) {
+                                    $data_agendamento = "{$_GET['data']} {$ag['time']}:00";
 
-                                                          
-                                                                $online  = $online ? 'SIM':'NÃO';
-                                                                $presencial = $presencial ? 'SIM':'NÃO';
-                                                                $title = '';
-                                                                $time_left = (strtotime($ag['date'].' '.$ag['time']) - time());
-                                                                $time_limit = ($item->tempo_limite_online * 60);
+                                    if ($_agendamentos_unidades[$ag['endereco']][$data_agendamento]['modalidade'] == 'PRESENCIAL') {
+                                        $ag['presencial'] = false;
+                                    }
 
-                                                         
-                                                                if($time_left >= $time_limit && $ag['online'] && $ag['presencial'] && (strtotime(date('H:i'))) >= strtotime($horario_funcionamento['inicio']) && (strtotime(date('H:i'))) < strtotime($horario_funcionamento['fim'])) {
-                                                                    $xy++;
-                                                                    echo '<div data-endereco-tipo="'.(getU($pdo, $ag['endereco'])['tipo'] ?? null).'" data-street="'."{$_enderecos[$ag['endereco']]['logradouro']}, {$_enderecos[$ag['endereco']]['numero']} | {$_enderecos[$ag['endereco']]['cidade']}/{$_enderecos[$ag['endereco']]['uf']} | {$_enderecos[$ag['endereco']]['bairro']} | {$_enderecos[$ag['endereco']]['cep']}".'" data-street-name="'.$_enderecos[$ag['endereco']]['nome'].'" data-unidade="'.$ag['endereco'].'" data-date="'.date('d/m/Y', strtotime($_GET['data'])).'" title="'.$title.'" class="ag-item-time-btn" data-online="'.($ag['online']).'" data-presencial="'.($ag['presencial']).'">
-                                                                        <img src="/assets/images/ico-agenda-clock.svg" height="25px">'.$ag['time'].'
-                                                                    </div>';
-                                                                } else {
-                                                                    if($ag['presencial'] && !isset($_agendamentos_unidades[$ag['endereco']][$data_agendamento])) {
-                                                                        if($time_left >= $time_limit) {
-                                                                            $xy++;
-                                                                            echo '<div data-endereco-tipo="'.(getU($pdo, $ag['endereco'])['tipo'] ?? null).'" data-street="'."{$_enderecos[$ag['endereco']]['logradouro']}, {$_enderecos[$ag['endereco']]['numero']} | {$_enderecos[$ag['endereco']]['cidade']}/{$_enderecos[$ag['endereco']]['uf']} | {$_enderecos[$ag['endereco']]['bairro']} | {$_enderecos[$ag['endereco']]['cep']}".'" data-street-name="'.$_enderecos[$ag['endereco']]['nome'].'"  data-unidade="'.$ag['endereco'].'" data-date="'.date('d/m/Y', strtotime($_GET['data'])).'" title="'.$title.'" class="ag-item-time-btn" data-online="'.($ag['online']).'" data-presencial="'.($ag['presencial']).'">
-                                                                                <img src="/assets/images/ico-agenda-clock.svg" height="25px">'.$ag['time'].'
-                                                                            </div>';
-                                                                        }
-                                                                    } else {
-                                                                        if($time_left >= $time_limit) {
-                                                                            $xy++;
-                                                                            echo '<div data-endereco-tipo="'.(getU($pdo, $ag['endereco'])['tipo'] ?? null).'" data-street="'."{$_enderecos[$ag['endereco']]['logradouro']}, {$_enderecos[$ag['endereco']]['numero']} | {$_enderecos[$ag['endereco']]['cidade']}/{$_enderecos[$ag['endereco']]['uf']} | {$_enderecos[$ag['endereco']]['bairro']} | {$_enderecos[$ag['endereco']]['cep']}".'" data-street-name="'.$_enderecos[$ag['endereco']]['nome'].'"  data-unidade="'.$ag['endereco'].'" data-date="'.date('d/m/Y', strtotime($_GET['data'])).'" title="'.$title.'" class="ag-item-time-btn" data-online="'.($ag['online']).'" data-presencial="'.($ag['presencial']).'">
-                                                                                <img src="/assets/images/ico-agenda-clock.svg" height="25px">'.$ag['time'].'
-                                                                            </div>';
-                                                                        }
-                                                                    }
-                                                                }
-                                                            
-                                                      }
-                                                }
-                  
-                                        
-                                            echo '</div>
+                                    if ($_agendamentos_unidades[$ag['endereco']][$data_agendamento]['modalidade'] == 'ONLINE') {
+                                        $ag['online'] = false;
+                                    }
+
+                                    $online = $online ? 'SIM' : 'NÃO';
+                                    $presencial = $presencial ? 'SIM' : 'NÃO';
+                                    $title = '';
+                                    $time_left = (strtotime($ag['date'] . ' ' . $ag['time']) - time());
+                                    $time_limit = ($item->tempo_limite_online * 60);
+
+                                    if ($time_left >= $time_limit && $ag['online'] && $ag['presencial'] && (strtotime(date('H:i'))) >= strtotime($horario_funcionamento['inicio']) && (strtotime(date('H:i'))) < strtotime($horario_funcionamento['fim'])) {
+                                        $xy++;
+                                        echo '<div data-endereco-tipo="' . (getU($pdo, $ag['endereco'])['tipo'] ?? null) . '" data-street="' . "{$_enderecos[$ag['endereco']]['logradouro']}, {$_enderecos[$ag['endereco']]['numero']} | {$_enderecos[$ag['endereco']]['cidade']}/{$_enderecos[$ag['endereco']]['uf']} | {$_enderecos[$ag['endereco']]['bairro']} | {$_enderecos[$ag['endereco']]['cep']}" . '" data-street-name="' . $_enderecos[$ag['endereco']]['nome'] . '" data-unidade="' . $ag['endereco'] . '" data-date="' . date('d/m/Y', strtotime($_GET['data'])) . '" title="' . $title . '" class="ag-item-time-btn" data-online="' . ($ag['online']) . '" data-presencial="' . ($ag['presencial']) . '">
+                                                                            <img src="/assets/images/ico-agenda-clock.svg" height="25px">' . $ag['time'] . '
+                                                                        </div>';
+                                    } else {
+                                        if ($ag['presencial'] && !isset($_agendamentos_unidades[$ag['endereco']][$data_agendamento])) {
+                                            if ($time_left >= $time_limit) {
+                                                $xy++;
+                                                echo '<div data-endereco-tipo="' . (getU($pdo, $ag['endereco'])['tipo'] ?? null) . '" data-street="' . "{$_enderecos[$ag['endereco']]['logradouro']}, {$_enderecos[$ag['endereco']]['numero']} | {$_enderecos[$ag['endereco']]['cidade']}/{$_enderecos[$ag['endereco']]['uf']} | {$_enderecos[$ag['endereco']]['bairro']} | {$_enderecos[$ag['endereco']]['cep']}" . '" data-street-name="' . $_enderecos[$ag['endereco']]['nome'] . '"  data-unidade="' . $ag['endereco'] . '" data-date="' . date('d/m/Y', strtotime($_GET['data'])) . '" title="' . $title . '" class="ag-item-time-btn" data-online="' . ($ag['online']) . '" data-presencial="' . ($ag['presencial']) . '">
+                                                                                    <img src="/assets/images/ico-agenda-clock.svg" height="25px">' . $ag['time'] . '
+                                                                                </div>';
+                                            }
+                                        } else {
+                                            if ($time_left >= $time_limit) {
+                                                $xy++;
+                                                echo '<div data-endereco-tipo="' . (getU($pdo, $ag['endereco'])['tipo'] ?? null) . '" data-street="' . "{$_enderecos[$ag['endereco']]['logradouro']}, {$_enderecos[$ag['endereco']]['numero']} | {$_enderecos[$ag['endereco']]['cidade']}/{$_enderecos[$ag['endereco']]['uf']} | {$_enderecos[$ag['endereco']]['bairro']} | {$_enderecos[$ag['endereco']]['cep']}" . '" data-street-name="' . $_enderecos[$ag['endereco']]['nome'] . '"  data-unidade="' . $ag['endereco'] . '" data-date="' . date('d/m/Y', strtotime($_GET['data'])) . '" title="' . $title . '" class="ag-item-time-btn" data-online="' . ($ag['online']) . '" data-presencial="' . ($ag['presencial']) . '">
+                                                                                    <img src="/assets/images/ico-agenda-clock.svg" height="25px">' . $ag['time'] . '
+                                                                                </div>';
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        echo '</div>
                         
                                         </div>
                                         <input type="hidden" name="redirect" value="/agenda/consulta">
-                                        <input type="hidden" name="medico_token" value="'.trim($item->medico_token).'">
+                                        <input type="hidden" name="medico_token" value="' . trim($item->medico_token) . '">
                                         <input type="hidden" name="endereco" value="">
                                         <input type="hidden" name="tipo_endereco" value="">
                                         
-                                        <input type="hidden" name="valor_consulta_presencial" value="'.trim($item->valor_presencial).'">
-                                        <input type="hidden" name="valor_consulta_online" value="'.trim($item->valor_online).'">
-                                        <input type="hidden" name="duracao_consulta" value="'.trim($item->duracao_atendimento).'"> 
-                                        <input type="hidden" name="data_agendamento" value="'.$_GET['data'].'">
-                                        <input type="hidden" id="no-show" value="'.($xy > 0 ? 'visible':'hidden').'">
+                                        <input type="hidden" name="valor_consulta_presencial" value="' . trim($item->valor_presencial) . '">
+                                        <input type="hidden" name="valor_consulta_online" value="' . trim($item->valor_online) . '">
+                                        <input type="hidden" name="duracao_consulta" value="' . trim($item->duracao_atendimento) . '"> 
+                                        <input type="hidden" name="data_agendamento" value="' . $_GET['data'] . '">
+                                        <input type="hidden" id="no-show" value="' . ($xy > 0 ? 'visible' : 'hidden') . '">
                                     </form>';
-                                            }
-                            }
-                        }
-             }
+                    }
+                }
+            }
+        }
 
-          if(count($c) == 0) {
+        if (count($c) == 0) {
             echo '
             <div class="msg-sys">
             <div class="msg-sys-flex">
@@ -445,6 +420,6 @@ $_enderecos = get_enderecos($pdo);
             </div>
         </div>';
         }
-        
-       ?>
+
+        ?>
     </section>
