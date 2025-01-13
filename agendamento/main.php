@@ -74,7 +74,7 @@ echo '<div class="resumo_profissional sem_medico_selecionado container">';
 echo '<div style="text-align: center;"><legend class="t_descricao_profissional"> Descrição Profissional:  </legend></div><br>';
 echo '<div class="container_foto_crm">';
 echo '<div class="container_foto">';
-echo '<img class="foto_doutor " src="'
+echo '<img class="foto_doutor" title="" src="'
   . Modules::getUserImage($medico->token)
   . '" height="300px" width="300px">';
 echo '</div>';
@@ -127,7 +127,7 @@ echo '</div>';
 
         <div class="calendar-container">
           <div class="calendar-legend">
-            <div class="legend"><button type="button" style="background-color: #05ad94;color: #fff"></button> Horários Disponiveis</div>
+            <div class="legend"><button type="button" title="" style="background-color: #05ad94;color: #fff"></button> Horários Disponiveis</div>
           </div>
           <div class="calendar-header">
             <button type="button" class="calendar-prev-btn">◀</button>

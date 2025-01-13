@@ -6,9 +6,9 @@ if (session_status() === PHP_SESSION_NONE) {
 
 //session_regenerate_id(true);
 
+session_destroy();
 
 if(isset($_GET['session'])) {
-    session_destroy();
 /*    
     setcookie('sessid_clinabs_user_data', $sessid, [
         'expires' => time() + 3600,
