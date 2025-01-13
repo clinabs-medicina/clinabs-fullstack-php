@@ -33,7 +33,7 @@
             $medico->token = 'das9ewfjsa9da'; ?> 
            
            <?php
-           echo '<img class="foto_doutor" src="'.Modules::getUserImage($medico->token).'" height="50px" width="50px">';   
+           echo '<img class="foto_doutor" title="" src="'.Modules::getUserImage($medico->token).'" height="50px" width="50px">';   
            ?>
 
             <?=$medico->nome_completo?>
