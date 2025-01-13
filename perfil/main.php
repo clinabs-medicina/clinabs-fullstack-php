@@ -513,7 +513,7 @@ if ($user->perms->perfil_situacao_cadastral == 1) {
                                     autocomplete="off" disabled="true" value="" type="text" id="endereco_nome"
                                     name="nome" class="form-control" maxlength="100"> </section>
                             <section class="form-group"> <label for="endereco_nome">Tipo de Endereço</label> <select
-                                    disabled="true" id="tipo_endereco" name="endereco_nome" class="form-control">
+                                    disabled="true" name="endereco_nome" class="form-control">
                                     <option value="CASA">CASA</option>
                                     <option value="ATENDIMENTO">ATENDIMENTO</option>
                                     <option value="RESPONSAVEL">RESPONSÁVEL LEGAL</option>
@@ -754,14 +754,14 @@ if ($_user->objeto == 'PACIENTE') {
                         </div>
                     </div>
                     <div class="container-flex1">
-                        <div class="d-flex"> <input autocomplete="off" type="checkbox" id="doc_validation"
+                        <div class="d-flex"> <input autocomplete="off" type="checkbox" id="doc_validation" placeholder="Arquivo"
                                 name="doc_validation" checked="<?= $_user->doc_cnh == 'on' ? 'checked' : '' ?>">
                             <strong>Minha CNH contém CPF e RG inclusos</strong>
                         </div>
                     </div>
                     <section class="form-grid area-doc">
                         <section class="form-group"> <label for="doc_rg_frente" class="anexo-item download-anexo-item"
-                                data-file="<?= $_user->doc_rg_frente ?>"> <img data-title="Obrigatrio"
+                                data-file="<?= $_user->doc_rg_frente ?>"> <img data-title="Obrigatrio" title="Obrigatório" id="obrigatorio" 
                                     src="<?= (Modules::getDoc($_user->doc_rg_frente)) ?>"> <input autocomplete="off"
                                     name="doc_rg_frente" type="hidden" id="file_doc_rg_frente"
                                     value="<?= ($_user->doc_rg_frente) ?>"> <input autocomplete="off" type="file"
@@ -771,7 +771,7 @@ if ($_user->objeto == 'PACIENTE') {
                             </label> </section>
                         <section class="form-group" <?= $_user->doc_cnh == 'on' ? ' style="display:none"' : '' ?>> <label
                                 for="doc_rg_verso" class="anexo-item download-anexo-item"
-                                data-file="<?= $_user->doc_rg_verso ?>"> <img data-title="Obrigatrio"
+                                data-file="<?= $_user->doc_rg_verso ?>"> <img data-title="Obrigatrio"  title="Obrigatório" id="obrigatorio1"
                                     src="<?= (Modules::getDoc($_user->doc_rg_verso)) ?>"> <input autocomplete="off"
                                     name="doc_rg_verso" type="hidden" id="file_doc_rg_verso"
                                     value="<?= ($_user->doc_rg_verso) ?>"> <input autocomplete="off" type="file"
@@ -780,7 +780,7 @@ if ($_user->objeto == 'PACIENTE') {
                                     (Verso)</strong> </label> </section>
                         <section class="form-group" <?= $_user->doc_cnh == 'on' ? ' style="display:none"' : '' ?>> <label
                                 for="doc_cpf_frente" class="anexo-item download-anexo-item"
-                                data-file="<?= $_user->doc_cpf_frente ?>"> <img data-title="Obrigatrio"
+                                data-file="<?= $_user->doc_cpf_frente ?>"> <img data-title="Obrigatrio"  title="Obrigatório" id="obrigatorio2" 
                                     src="<?= (Modules::getDoc($_user->doc_cpf_frente)) ?>"> <input autocomplete="off"
                                     name="doc_cpf_frente" type="hidden" id="file_doc_cpf_frente"
                                     value="<?= ($_user->doc_cpf_frente) ?>"> <input autocomplete="off" type="file"
@@ -789,7 +789,7 @@ if ($_user->objeto == 'PACIENTE') {
                                     (Frente)</strong> </label> </section>
                         <section class="form-group" <?= $_user->doc_cnh == 'on' ? ' style="display:none"' : '' ?>> <label
                                 for="doc_cpf_verso" class="anexo-item download-anexo-item"
-                                data-file="<?= $_user->doc_cpf_verso ?>"> <img data-title="Obrigatório"
+                                data-file="<?= $_user->doc_cpf_verso ?>"> <img data-title="Obrigatorio" id="obrigatorio3" title="Obrigatório"
                                     src="<?= (Modules::getDoc($_user->doc_cpf_verso)) ?>"> <input autocomplete="off"
                                     type="file" accept="image/jpeg,image/jpg, image/png, application/pdf"
                                     style="display: none" class="input-upload-doc" disabled id="doc_cpf_verso"> <input
@@ -798,7 +798,7 @@ if ($_user->objeto == 'PACIENTE') {
                         </section>
                         <section class="form-group"> <label for="doc_comp_residencia"
                                 class="anexo-item download-anexo-item" data-file="<?= $_user->comp_residencia ?>"> <img
-                                    data-title="Obrigatório" src="<?= (Modules::getDoc($_user->doc_comp_residencia)) ?>">
+                                    data-title="Obrigatorio" id="obrigatorio4"  title="Obrigatório" src="<?= (Modules::getDoc($_user->doc_comp_residencia)) ?>">
                                 <input autocomplete="off" name="doc_comp_residencia" type="hidden"
                                     id="file_doc_comp_residencia" value="<?= ($_user->doc_comp_residencia) ?>"> <input
                                     autocomplete="off" type="file"
@@ -806,7 +806,7 @@ if ($_user->objeto == 'PACIENTE') {
                                     class="input-upload-doc" disabled id="doc_comp_residencia"> <strong>Comprovante de
                                     Residência</strong> </label> </section>
                         <section class="form-group"> <label for="doc_procuracao" class="anexo-item download-anexo-item"
-                                data-file="<?= $_user->doc_procuracao ?>"> <img data-title="Obrigatório"
+                                data-file="<?= $_user->doc_procuracao ?>"> <img data-title="Obrigatorio" id="obrigatorio5" title="Obrigatório"
                                     src="<?= (Modules::getDoc($_user->doc_procuracao)) ?>"> <input autocomplete="off"
                                     name="doc_procuracao" type="hidden" id="file_doc_procuracao"
                                     value="<?= ($_user->doc_procuracao) ?>"> <input autocomplete="off" type="file"
@@ -815,7 +815,7 @@ if ($_user->objeto == 'PACIENTE') {
                                     class="input-upload-doc" disabled id="doc_procuracao"> <strong>Procuração</strong>
                             </label> </section>
                         <section class="form-group"> <label for="doc_anvisa" class="anexo-item download-anexo-item"
-                                data-file="<?= $_user->doc_anvisa ?>"> <img data-title="Obrigatório"
+                                data-file="<?= $_user->doc_anvisa ?>"> <img data-title="Obrigatorio" id="obrigatorio6"  title="Obrigatório" 
                                     src="<?= (Modules::getDoc($_user->doc_anvisa)) ?>"> <input autocomplete="off"
                                     name="doc_anvisa" type="hidden" id="file_doc_anvisa"
                                     value="<?= $_user->doc_anvisa ?>"> <input autocomplete="off" type="file"
@@ -1397,7 +1397,7 @@ if ($_user->objeto == 'PACIENTE') {
                                         $desc = base64_decode($doc->descricao);
                                         echo '<section class="form-group">
                                                     <label for="' . uniqid() . '" class="anexo-item anexo-item-view" data-file="' . basename($doc->doc_path) . '">
-                                                        <img data-title="Obrigatório" src="/assets/images/ico-doc-pdf.svg">
+                                                        <img data-title="Obrigatorio" id="obrigatorio7" title="Obrigatório" src="/assets/images/ico-doc-pdf.svg">
                                                         <strong>' . $doc->doc_type . '</strong>
                                                         <small>' . $desc . '</small>
                                                     </label> 
