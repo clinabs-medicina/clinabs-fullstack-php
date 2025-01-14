@@ -179,3 +179,43 @@ $(document).ready(function () {
         });
     });
 });
+
+
+function change_payment(elem) {
+    let token = $(elem).data('id');
+    let action = $(elem).data('action');
+
+    let prefix = '';
+
+    if (action == 'delete_payment') {
+        prefix = 'Cancelar';
+    } else if (action == 'confirm_payment') {
+        prefix = 'Confirmar';
+    } else if (action == 'auth_payment') {
+        prefix = 'Autorizar';
+    }
+
+    Swal.fire({
+        title: 'Atenção',
+        showConfirmButton: true,
+        showCancelButton: false,
+        showDenyButton: true,
+        confirmButtonText: 'CONFIRMAR',
+        denyButtonText: 'CANCELAR',
+        text: `Deseja ${pefix} este Pagamento?`,
+        allowOutsideClick: false,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            preloader('Alterando Pagamento...');
+            $.post('/form/payment.actions.php', { 'action': action, 'id': token }, function (r) {
+                if (r.status == 'success') {
+                    Swal.fire({ title: "Aten\xE7\xE3o", text: r.message, icon: "success" }).then(() => {
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire({ title: "Aten\xE7\xE3o", text: r.message, icon: "error" });
+                }
+            }, 'json');
+        }
+    });
+}

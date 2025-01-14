@@ -602,7 +602,7 @@ function newPrescFunc() {
                 );
 
                 $("#produto_sa").append(`<option value="_none" disabled> </option>`);
-                $.get(
+                $.post(
                     `/forms/fetch.tb.php?tb=MEDICAMENTOS&key=nome,unidade_medida,conteudo,tipo_conteudo,medico_token,id`
                 ).done(function (medicamentos) {
                     $.each(medicamentos.results, function (i) {
@@ -714,7 +714,7 @@ function newPrescFunc() {
                     };
 
                     $.ajax({
-                        type: "GET",
+                        type: "POST",
                         url: "/formularios/prescricao.add.php",
                         data: data,
                         dataType: "json",
@@ -782,7 +782,7 @@ function newPrescFunc() {
                     };
 
                     $.ajax({
-                        type: "GET",
+                        type: "POST",
                         url: "/formularios/acompanhamento.add.php",
                         data: data,
                         dataType: "json",
