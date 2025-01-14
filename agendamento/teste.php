@@ -146,7 +146,7 @@ echo '<div style="text-align: center;"><legend class="t_descricao_profissional">
 echo '<div style="display: flex; width: 100%">';
 
 echo '<div style="width: 15%; text-align: center;">';
-echo '<img class="foto_doutor" title="" src="'.Modules::getUserImage($medico->token).'" height="300px" width="300px">';     
+echo '<img class="foto_doutor" title="Foto Doutor" src="'.Modules::getUserImage($medico->token).'" height="300px" width="300px">';     
 echo '</div>';
 
 echo '<div style="width: 85%;">';
@@ -174,7 +174,7 @@ else {
  echo '<div style="display: flex; width: 100%">';
   
  echo '<div style="width: 15%; text-align: center;">';
- echo  '<img class="foto_doutor" title="" src="'.Modules::getUserImage($medico->token).'" height="300px" width="300px">';     
+ echo  '<img class="foto_doutor" title="Foto Doutor" src="'.Modules::getUserImage($medico->token).'" height="300px" width="300px">';     
  echo  '</div>';
   
   echo '<div style="width: 85%;">';
@@ -400,7 +400,7 @@ else {
 
         <div class="calendar-container">
           <div class="calendar-legend">
-            <div class="legend"><button type="button" title="" style="background-color: #05ad94;color: #fff"></button> Horários Disponiveis</div>
+            <div class="legend"><button type="button" title="Horários Disponiveis" style="background-color: #05ad94;color: #fff"></button> Horários Disponiveis</div>
           </div>
           <div class="calendar-header">
             <button type="button" class="calendar-prev-btn">◀</button>

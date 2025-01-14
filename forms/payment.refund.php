@@ -1,7 +1,7 @@
 <?php
 require_once '../config.inc.php';
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 
 $resp = $asaas->refund($_GET['payment_id'], $_GET['valor'], $_GET['description']);
 

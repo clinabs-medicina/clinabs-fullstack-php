@@ -195,5 +195,5 @@ if ($stmt->rowCount() > 0) {
     ], 64 | 128 | 196 | 256);
 }
 
-header('content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 echo $json;

@@ -403,6 +403,6 @@ error_reporting(1);
 		}
 	}
 
-	header('content-Type: application/json');   
+	header('Content-Type: application/json; charset=utf-8');   
 	
 	echo $json;

@@ -8,7 +8,7 @@ if(isset($_REQUEST['token'])) {
     $dados = $pacientes->getPacienteByToken($_REQUEST['token']);
     $dados['data_nascimento'] = date('d/m/Y', strtotime($dados['data_nascimento']));
 
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode($dados);
 
 }else {
@@ -30,6 +30,6 @@ if(isset($_REQUEST['token'])) {
         //setcookie('sessid_clinabs_uid', $sessid, time() + 3600, '/', hostname, true);
     }
     
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode($dados, JSON_PRETTY_PRINT);
 }

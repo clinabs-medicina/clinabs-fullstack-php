@@ -20,5 +20,5 @@ try {
     $json = json_encode(['title' => 'Atenção', 'icon' => 'error', 'text' => 'Ocorreu um Erro ao Buscar as Informaçãoes.'], JSON_PRETTY_PRINT);
 }
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 echo $json;

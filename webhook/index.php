@@ -136,5 +136,5 @@ if ($payload->event == 'PAYMENT_RECEIVED') {
     ];
 }
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 echo json_encode($payload, JSON_PRETTY_PRINT);

@@ -65,5 +65,5 @@ try {
     ];
 }
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 echo json_encode($resp, JSON_PRETTY_PRINT);

@@ -40,10 +40,10 @@ if (strtotime(date('H:i')) >= strtotime('07:00') && strtotime(date('H:i')) <= st
         }
     }
 
-    header('content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode($rows, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 } else {
-    header('content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
 
     echo json_encode([
         'status' => 'error', 

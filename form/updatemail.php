@@ -145,6 +145,6 @@ if(isset($_GET['nome']) && isset($_GET['mail']) && isset($_GET['password'])) {
     $json = json_encode(['status' => 'error','icon' => 'info', 'text' => 'Nenhum dado Enviado']);
 }
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 echo $json;
 ?>

@@ -67,10 +67,10 @@ if(!isset($_REQUEST['columns'])) {
     $result['data'] = $values;
     $result['columns'] = $columns;
 
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode($result);
 }else {
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode($columns);
 }
 

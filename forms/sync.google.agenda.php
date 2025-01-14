@@ -55,7 +55,7 @@ foreach($agendamentos as $x) {
 
 
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 if($_GET['view']) {
   echo json_encode($events, JSON_PRETTY_PRINT);
 } else {

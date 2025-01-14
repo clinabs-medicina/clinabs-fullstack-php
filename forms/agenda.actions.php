@@ -163,5 +163,5 @@ if($res['status'] != $_REQUEST['status']) {
     ], JSON_PRETTY_PRINT);
 }
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 echo $json;

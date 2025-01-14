@@ -100,5 +100,5 @@ function isTimeInRange($checkTime, $startTime, $endTime) {
         }
     }
 
-//header('Content-Type: application/json');
+//header('Content-Type: application/json; charset=utf-8');
 //echo json_encode($events, JSON_PRETTY_PRINT);

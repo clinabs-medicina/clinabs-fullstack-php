@@ -193,5 +193,5 @@ if (isset($data['key'])) {
     }
 }
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 echo json_encode(array_values(array_unique($resp['data'])), JSON_PRETTY_PRINT);

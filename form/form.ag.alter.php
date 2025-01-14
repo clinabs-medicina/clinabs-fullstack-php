@@ -169,5 +169,5 @@ if(isset($_REQUEST['alter_ag']))
 }
 
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 echo json_encode($res, JSON_PRETTY_PRINT);

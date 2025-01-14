@@ -54,5 +54,5 @@ if(isset($_POST['agenda_token']) && isset($_FILES['doc_receita'])) {
     }
 }
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 echo json_encode($resp, JSON_PRETTY_PRINT);

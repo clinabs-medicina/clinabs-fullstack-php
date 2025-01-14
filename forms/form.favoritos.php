@@ -27,12 +27,12 @@ function SumVal($items) {
 }
 
 if(isset($_REQUEST['product_id'])) {
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode($favoritos->add($_REQUEST['product_id'],isset($_REQUEST['pid']) ? $_REQUEST['pid'] : uniqid(), $user->cpf));
 } else if(isset($_REQUEST['remove']) && isset($_REQUEST['pid'])) {
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode($favoritos->removeItem($_REQUEST['pid'], $user->cpf) > 0 ? ['status' => 'success'] : ['status' => 'danger', 'exception' => $favoritos->lastException->getMessage()]);
 }else {
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode(['total' => count($favoritos->getAll($user->cpf)) ], 16 | 128);
 }

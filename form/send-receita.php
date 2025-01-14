@@ -30,7 +30,7 @@ if(isset($_GET['receita_token']) && isset($_GET['paciente_token'])) {
         ];
     }
 
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode($resp, JSON_PRETTY_PRINT);
 }else {
     $resp = [
@@ -39,6 +39,6 @@ if(isset($_GET['receita_token']) && isset($_GET['paciente_token'])) {
         'icon' => 'error'
     ];
 
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode($resp, JSON_PRETTY_PRINT);
 }

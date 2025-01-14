@@ -52,5 +52,5 @@ $post = array(
 
 
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 print(json_encode($post, JSON_PRETTY_PRINT));

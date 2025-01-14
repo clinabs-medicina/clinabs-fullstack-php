@@ -14,13 +14,13 @@ $stmt->bindValue(':id', $data['id']);
             'nome' => $medico->nome_completo
         ];
 
-        header('Content-Type: application/json');
+        header('Content-Type: application/json; charset=utf-8');
         echo json_encode($resp, JSON_PRETTY_PRINT);
     } catch(Exception $ex) {
         $resp = [
             'status' => []
         ];
 
-        header('Content-Type: application/json');
+        header('Content-Type: application/json; charset=utf-8');
         echo json_encode($resp, JSON_PRETTY_PRINT);
     }

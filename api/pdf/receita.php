@@ -169,7 +169,7 @@ $receita = $agenda->getByToken($_GET['token']);
 
 
   if($_GET['dump'] == 1) {
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode([
       'body' => $_REQUEST,
       'rule' => $selectors,

@@ -25,7 +25,7 @@ $stmt->bindValue(":marcas", $data["marcas"]);
 $stmt->bindValue(":senha", $pwd);
 $stmt->bindValue(":token", $token);
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 
 try {
     $stmt->execute();
