@@ -30,6 +30,6 @@ foreach($produtos as $produto) {
 }
 
 file_put_contents('../dollar.json', json_encode($dollar, JSON_PRETTY_PRINT));
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 curl_close($curl);
 echo json_encode($dollar, JSON_PRETTY_PRINT);

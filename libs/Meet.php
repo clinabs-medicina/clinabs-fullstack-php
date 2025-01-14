@@ -13,7 +13,7 @@ class WhereByMeet {
 
     $headers = [
       'Authorization: Bearer ' . $this->api_key,
-      'Content-Type: application/json'
+      'Content-Type: application/json; charset=utf-8'
     ];
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -42,7 +42,7 @@ class WhereByMeet {
 
     $headers = [
       'Authorization: Bearer ' . $this->api_key,
-      'Content-Type: application/json'
+      'Content-Type: application/json; charset=utf-8'
     ];
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);

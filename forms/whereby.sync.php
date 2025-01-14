@@ -9,5 +9,5 @@ $res->socket = "/{$roomName}";
 $res->roomId = $_GET['roomId'];
 
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 echo json_encode($res, JSON_PRETTY_PRINT);

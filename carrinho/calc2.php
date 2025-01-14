@@ -27,6 +27,6 @@ if(isset($_REQUEST['qtde']) && isset($_REQUEST['pid'])) {
     $item['valor'] = $prod['valor'];
     $item['frete'] = $frete;
     $item['total'] = $prod['valor_total'];
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode($item, JSON_PRETTY_PRINT);
 }

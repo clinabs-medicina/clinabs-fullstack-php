@@ -6,7 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $produtos_carrinho = $carrinho->getAll($_SESSION['token']);
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 
 $valor = 0;
 $total = 0;

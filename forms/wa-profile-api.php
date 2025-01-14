@@ -44,5 +44,5 @@ require_once('../config.inc.php');
 
                         $wa->requestProfileImage($whatsapp->result->number);
                         
-                        header('content-Type: application/json');
+                        header('Content-Type: application/json; charset=utf-8');
                         echo json_encode($whatsapp->result, JSON_PRETTY_PRINT);

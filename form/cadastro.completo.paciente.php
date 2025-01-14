@@ -52,7 +52,7 @@ if($age->y < 18) {
   $stmt->bindValue(":responsavel_contato", $_REQUEST['responsavel_celular']);
 }
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 
 try {
   $stmt->execute();

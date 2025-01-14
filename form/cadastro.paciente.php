@@ -31,7 +31,7 @@ $stmt->bindValue(":responsavel_cpf", $_REQUEST['responsavel_cpf']);
 $stmt->bindValue(":responsavel_rg", $_REQUEST['responsavel_rg']);
 $stmt->bindValue(":responsavel_contato", $_REQUEST['responsavel_celular']);
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 $IP = getallheaders()['X-Forwarded-For'] ?? $_SERVER['REMOTE_ADDR'];
 
 try {

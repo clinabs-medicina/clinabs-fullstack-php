@@ -23,7 +23,7 @@ $stmt->bindValue(":celular", preg_replace("/[^0-9]/", "", $data["celular"]));
 $stmt->bindValue(":senha", $pwd);
 $stmt->bindValue(":token", $token);
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 
 try {
     $stmt->execute();

@@ -1,5 +1,5 @@
 <?php
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 
 
 $ram_total = intval(preg_replace('/[^0-9]+/', '', shell_exec("free | grep 'Mem:' | awk '{ print \$2}'")));

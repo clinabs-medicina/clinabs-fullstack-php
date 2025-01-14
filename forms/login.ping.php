@@ -25,7 +25,7 @@ if(isset($_SESSION['token'])) {
     $data = ['status' => 'error','reason' => $ex->getMessage(), 'data' => $ds, 'affected' => $stmt0->rowCount()];
   }
 
-  header('Content-Type: application/json');
+  header('Content-Type: application/json; charset=utf-8');
   echo json_encode($data, JSON_PRETTY_PRINT);
 }
 

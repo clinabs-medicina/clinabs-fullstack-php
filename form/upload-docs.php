@@ -82,5 +82,5 @@ if ($_FILES['file']['error'] === UPLOAD_ERR_OK) {
 }
 
 // Return JSON response
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 echo json_encode($response);

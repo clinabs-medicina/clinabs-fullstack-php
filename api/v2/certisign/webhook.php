@@ -92,13 +92,13 @@ if($data->action == 'SIGNATURE-DIGITAL') {
 
         $stmt->execute();
 
-        header('Content-Type: application/json');
+        header('Content-Type: application/json; charset=utf-8');
         echo json_encode($result, JSON_PRETTY_PRINT);
     }
 } 
 
 else {
     $result = ['no document received from CertiSign'];
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode($result, JSON_PRETTY_PRINT);
 }

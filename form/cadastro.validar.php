@@ -33,5 +33,5 @@ if(isset($data['table']) && isset($data['key']) && isset($data['value']) && !emp
         'reason' =>  'Você precisa enviar os dados nos parãmetros POST {table},{key},{value}'
     ];
 }
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 echo json_encode($resp, JSON_PRETTY_PRINT);

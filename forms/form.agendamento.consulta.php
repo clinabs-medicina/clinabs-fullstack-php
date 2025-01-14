@@ -841,7 +841,7 @@ if($continue) {
     ];
 }
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 
 if(isset($json)) {
     echo json_encode($json, JSON_PRETTY_PRINT);

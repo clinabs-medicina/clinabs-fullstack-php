@@ -39,5 +39,5 @@ else if(isset($_GET['celular'])) {
     }
 }
 
-header('content-type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 echo json_encode($result, JSON_PRETTY_PRINT);

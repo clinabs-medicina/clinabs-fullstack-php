@@ -59,7 +59,7 @@ if(strlen($data['unidade_image']) > 0){
     $stmt->bindValue(':token', uniqid());
 }
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 
 try {
     $stmt->execute();

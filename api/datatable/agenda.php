@@ -103,5 +103,5 @@ if(isset($_REQUEST['columns'])) {
 }
 
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 echo json_encode($result, JSON_PRETTY_PRINT);

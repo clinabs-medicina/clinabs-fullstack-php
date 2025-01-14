@@ -66,5 +66,5 @@ function parse_sql_error($code, $exception) {
         ], JSON_PRETTY_PRINT);
     }
 
-    header('content-type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     echo $json;

@@ -34,10 +34,10 @@ function SumVal($items) {
 }
 
 if(isset($_REQUEST['product_id'])) {
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode($carrinho->add($_REQUEST['product_id'],isset($_REQUEST['pid']) ? $_REQUEST['pid'] : uniqid(), $user->cpf, $_SESSION['token']));
 } else if(isset($_REQUEST['remove']) && isset($_REQUEST['pid'])) {
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode($carrinho->removeItem($_REQUEST['pid'], $_SESSION['token']) > 0 ? ['status' => 'success'] : ['status' => 'danger', 'exception' => $carrinho->lastException->getMessage()]);
 }
 else{
@@ -48,6 +48,6 @@ else{
         'total' => (SumVal($items['objs']) + $frete)
     ];
 
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode($items, 64|128|256);
 }

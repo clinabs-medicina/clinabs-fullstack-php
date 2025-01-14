@@ -27,7 +27,7 @@ stream_copy_to_stream($input, $output);
 fclose($input);
 fclose($output);
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 if(file_exists($filePath) && filesize($filePath) > 1024) {
     $resp = ['status' => 'success', 'text' => 'Arquivo Enviado com Sucesso!', 'path' => basename($filePath), 'mime' => $finfo];
 } else {

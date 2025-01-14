@@ -1,5 +1,5 @@
 <?php
-header('Content-Type: text/html; charset=utf-8');
+header('Content-Type: application/json; charset=utf-8');
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/session.php';
@@ -45,7 +45,7 @@ function parse_bool($value)
 }
 
 if (isset($_GET['profile'])) {
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode($user, JSON_PRETTY_PRINT);
 } elseif (isset($_GET['token'])) {
     $sql = '
@@ -98,7 +98,7 @@ if (isset($_GET['profile'])) {
     $_SESSION['_user'] = $_user;
 
     if (isset($_GET['dump'])) {
-        header('Content-Type: application/json');
+        header('Content-Type: application/json; charset=utf-8');
         echo json_encode($_user, JSON_PRETTY_PRINT);
     } else {
         require_once $_SERVER['DOCUMENT_ROOT'] . '/MasterPage.php';
