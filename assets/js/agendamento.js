@@ -293,12 +293,13 @@ function newAgendamento() {
 }
 
 
-function auth_payment(elem) {
+function auth_payment(elem, useId = false) {
     let token = $(elem).data('token');
 
     preloader('Carregando Ordem de Pagamento...');
 
-    $.get('/form/auth.payment.php', { token: token }).done(function (resp) {
+    $.get('/form/auth.payment.php', { 'token': token, 'useId': useId }).done(function (resp) {
+        console.log(resp);
 
         if (resp.status === 'success') {
             Swal.fire({
@@ -327,7 +328,15 @@ function auth_payment(elem) {
                 if (resp.isConfirmed) {
                     preloader('Realizando Pagamento...');
 
-                    $.post('/form/auth.payment.php', { token: token, status: 'CONFIRMADO', 'confirm': resp.isConfirmed, 'user_id': $('meta[name="user-id"]').attr('content'), 'user_name': $('meta[name="user-name"]').attr('content'), 'user_type': $('meta[name="user"]').attr('content') }).done(function (resp) {
+                    $.post('/form/auth.payment.php', {
+                        'token': token,
+                        'useId': useId,
+                        'status': 'CONFIRMADO',
+                        'confirm': resp.isConfirmed,
+                        'user_id': $('meta[name="user-id"]').attr('content'),
+                        'user_name': $('meta[name="user-name"]').attr('content'),
+                        'user_type': $('meta[name="user"]').attr('content')
+                    }).done(function (resp) {
                         Swal.fire(resp).then(function () {
                             window.location.reload();
                         });
@@ -341,17 +350,26 @@ function auth_payment(elem) {
                 } else if (resp.isDenied) {
                     preloader('Cancelando Pagamento...');
 
-                    $.post('/form/auth.payment.php', { token: token, status: 'REJEITADO', 'confirm': resp.isConfirmed, 'user_id': $('meta[name="user-id"]').attr('content'), 'user_name': $('meta[name="user-name"]').attr('content'), 'user_type': $('meta[name="user"]').attr('content') }).done(function (resp) {
-                        Swal.fire(resp).then(function () {
-                            window.location.reload();
+                    $.post('/form/auth.payment.php',
+                        {
+                            'token': token,
+                            'useId': useId,
+                            'status': 'REJEITADO',
+                            'confirm': resp.isConfirmed,
+                            'user_id': $('meta[name="user-id"]').attr('content'),
+                            'user_name': $('meta[name="user-name"]').attr('content'),
+                            'user_type': $('meta[name="user"]').attr('content')
+                        }).done(function (resp) {
+                            Swal.fire(resp).then(function () {
+                                window.location.reload();
+                            });
+                        }).fail(function () {
+                            Swal.fire({
+                                title: "Aten\xe7\xe3o",
+                                text: "Ocorreu um erro ao cancelar o pagamento, tente novamente",
+                                icon: "error"
+                            });
                         });
-                    }).fail(function () {
-                        Swal.fire({
-                            title: "Aten\xe7\xe3o",
-                            text: "Ocorreu um erro ao cancelar o pagamento, tente novamente",
-                            icon: "error"
-                        });
-                    });
                 }
             });
         } else {

@@ -138,17 +138,14 @@
                                         echo '<td>' . $payment->payment_method . '</td>';
                                         echo "<td><span>{$payment->status}</span></td>";
                                         echo '<td>';
-                                        echo '<div  class="td-dflex">';
 
                                         if ($payment->status === 'AGUARDANDO CONFIRMAÇÃO') {
-                                            echo "<img title=\"Confirmar Solicitação\" class=\"btn-action\" onclick=\"change_payment(this)\" data-token=\"{$payment->id}\" data-action=\"auth_payment\" src=\"/assets/images/ico-success.svg\" height=\"32px\">";
+                                            echo "<img data-token=\"{$payment->id}\" title=\"Confirmar Solicitação\" class=\"btn-action\" onclick=\"auth_payment(this, true)\" data-token=\"{$payment->id}\" data-action=\"auth_payment\" src=\"/assets/images/ico-success.svg\" height=\"32px\">";
                                         } else if ($payment->status === 'AGENDADO') {
                                             echo "<img title=\"Cancelar Pagamento\"  onclick=\"change_payment(this)\" data-token=\"{$payment->id}\" data-action=\"delete_payment\" src=\"/assets/images/ico-trash.svg\" height=\"22px\">";
                                         } else if ($payment->status === 'PAGAMENTO PENDENTE') {
-                                            echo "<img title=\"Confirmar Pagamento\" onclick=\"change_payment(this)\" data-token=\"{$payment->id}\" data-action=\"confirm_payment\" src=\"/assets/images/ico-success.svg\" height=\"32px\">";
+                                            echo "<img title=\"Confirmar Pagamento\" onclick=\"change_payment(this)\" data-token=\"{$payment->id}\" data-action=\"confirm_payment\" src=\"/assets/images/ico-money.svg\" height=\"32px\">";
                                         }
-
-                                        echo '</div>';
                                         echo '</td>';
                                         echo '</tr>';
                                     }
