@@ -10,7 +10,7 @@
                     <img src="">
                     </svg>
                     R$
-                    <?= number_format($balance, 2, '.', ',') ?>
+                    <?= number_format($balance, 2, ',', '.') ?>
                 </h3>
             </div>
 
@@ -19,7 +19,7 @@
                 <h3>
                     <img src="">
                     R$
-                    <?= number_format($paymentsBalance->value, 2, '.', ',') ?>
+                    <?= number_format($paymentsBalance->value, 2, ',', '.') ?>
                 </h3>
             </div>
         </section>
