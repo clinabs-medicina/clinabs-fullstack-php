@@ -1,6 +1,6 @@
 <section class="main">
     <div class="flex-container">
-        <form id="cadastroPacienteBasico" action="/form/cadastro.paciente.php" method="POST"
+        <form id="cadastroPacienteBasico" action="/form/cadastro.paciente.php" autocomplete="on" method="POST"
             class="wizard-form validate-form">
             <h3 class="form-title titulo-h1">Cadastro de Paciente</h3>
             <!-- Indicadores -->
@@ -69,7 +69,7 @@
                 <section class="form-grid area1">
                     <section class="form-group">
                         <label for="email">E-mail</label>
-                        <input data-table="PACIENTE" type="email" name="email" id="email"
+                        <input data-table="PACIENTE" type="email" name="email" id="email" autocomplete="on"
                             class="form-control lower-case" placeholder="Digite seu E-mail" required
                             value="<?=($user->tipo == 'PACIENTE' ? $user->email :'')?>" />
                     </section>
