@@ -617,8 +617,8 @@ div:where(.swal2-icon) {
   font-family: inherit;
   line-height: 5em;
   cursor: default;
-  user-select: none; 
   -webkit-user-select: none;
+  user-select: none; 
 }
 div:where(.swal2-icon) .swal2-icon-content {
   display: flex;

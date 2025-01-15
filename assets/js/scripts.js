@@ -2131,9 +2131,10 @@ $(document).ready(function () {
     });
   }
 
+  $('input[type="search"]').attr('id', 'searchInput');
+  $('input[type="search"]').attr('name', 'searchInput');
+  $('input[type="search"]').attr('placeholder', 'Pesquisar....');
 
-
-  $('input[type="search"]').attr("placeholder", "Pesquisar....");
   $("#cadastroConsulta").find(".btn-step-submit").show();
   $("#editarConsulta")
     .find(".btn-step-submit")

@@ -3,7 +3,7 @@
         <h1 class="titulo-h1">Funcionarios</h1>
     </section>
     <div class="flex-container produtos-flex">
-        <table name="funcionario" id="tableFuncionarios" class="display dataTable no-footer">
+        <table name="funcionario" id="tableFuncionarios" name="tbFuncionarios" class="display dataTable no-footer">
         <thead>
          <tr>
          <th>Nome</th>
