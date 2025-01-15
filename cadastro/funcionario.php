@@ -22,7 +22,7 @@
 
 <section class="main">
     <div class="flex-container">
-        <form id="cadastroFuncionarioBasico" action="/form/cadastro.funcionario.php" method="POST" class="wizard-form">
+        <form id="cadastroFuncionarioBasico" action="/form/cadastro.funcionario.php" method="POST" class="wizard-form" autocomplete="on">
             <h3 class="form-title titulo-h1">Cadastro de Funcionário</h3>
             <!-- Indicadores -->
             <div class="form-header">

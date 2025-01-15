@@ -4,7 +4,7 @@ $valor_consulta = strtolower($_GET['atendimento']) == 'online' ? $_GET['valor_co
 
 <section class="main">
     <div class="flex-container">
-        <form id="cadastroAgendamento" action="/forms/form.consulta.agendamento.php" method="GET" class="wizard-form">
+        <form id="cadastroAgendamento" action="/forms/form.consulta.agendamento.php" method="GET" class="wizard-form" autocomplete="on">
             <h3 class="form-title titulo-h1">Agendamento de Consulta</h3>
             <div class="form-header">
                 <span class="stepIndicator">Dados Pessoais</span>
@@ -64,7 +64,7 @@ $valor_consulta = strtolower($_GET['atendimento']) == 'online' ? $_GET['valor_co
                 <section class="form-grid area1">
                     <section class="form-group">
                         <label for="email">E-mail</label>
-                        <input type="email" name="email" id="email" class="form-control lower-case" placeholder="Digite seu E-mail" required value="<?=($_user->email)?>" />
+                        <input type="email" name="email" id="email" class="form-control lower-case" placeholder="Digite seu E-mail" autocomplete="on" required value="<?=($_user->email)?>" />
                     </section>
 
                     <section class="form-group">
@@ -167,7 +167,7 @@ $valor_consulta = strtolower($_GET['atendimento']) == 'online' ? $_GET['valor_co
                        <div class="payment-details-info">
                            <span>Código</span>
                            <span class="cupom">
-                               <input name="cupom" id="cupomDesconto" value="">
+                               <input name="cupom" id="cupomDesconto" placeholder="Cupom de desconto" value="">
                                <button type="button" class="btn-cupom btn-button1">APLICAR</button>
                            </span>
                        </div>
