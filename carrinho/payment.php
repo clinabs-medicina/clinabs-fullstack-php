@@ -1,6 +1,6 @@
 <section class="main">
     <div class="flex-container">
-        <form id="cadastroCompraMedicamento" action="/formularios/form.compra.medicamentos.php" method="GET" class="wizard-form">
+        <form id="cadastroCompraMedicamento" action="/formularios/form.compra.medicamentos.php" method="GET" class="wizard-form" autocomplete="off">
             <h3 class="form-title titulo-h1">Compra de Medicamentos</h3>
 
             <div class="form-header">
@@ -410,7 +410,7 @@ ORDER BY
                        <div class="payment-details-info">
                            <span>Código</span>
                            <span class="cupom">
-                               <input name="cupom" id="cupomDesconto" value="">
+                               <input name="cupom" id="cupomDesconto" placeholder="Cupom de desconto" value="">
                                <button type="button" class="btn-cupom btn-button1">APLICAR</button>
                            </span>
                        </div>

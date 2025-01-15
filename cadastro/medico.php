@@ -22,9 +22,9 @@
 
 <section class="main">
     <div class="flex-container">
-        <form id="cadastroMedicoBasico" action="/form/cadastro.medico.php" method="POST"
+        <form id="cadastroMedicoBasico" action="/form/cadastro.medico.php" autocomplete="on" method="POST"
             class="wizard-form validate-form">
-            <h3 class="form-title titulo-h1">Cadastro de Paciente</h3>
+            <h3 class="form-title titulo-h1">Cadastro de Médico</h3>
             <!-- Indicadores -->
             <div class="form-header">
                 <span class="stepIndicator">(*) Campos obrigatórios</span>
@@ -131,15 +131,15 @@
                     </section>
 
                     <section class="form-group">
-                        <label for="nacionalidade">Número conselho<small>*</small></label>
-                        <input required id="num_conselho" class="form-control uppercase" type="text" placeholder="Número do conselho." name="num_conselho" autofocus autocomplete="off" />
+                        <label for="num_conselho">Número conselho<small>*</small></label>
+                        <input required id="num_conselho" name="num_conselho" class="form-control uppercase" type="text" placeholder="Número do conselho." autofocus autocomplete="off" />
                     </section>
                 </section>
 
                 <section class="form-grid area1">
                     <section class="form-group">
                         <label for="email">E-mail <small>*</small></label>
-                        <input data-table="MEDICO" type="email" name="email" id="email" class="form-control" placeholder="Digite seu E-mail" required />
+                        <input data-table="MEDICO" type="email" name="email" id="email" autocomplete="on" class="form-control" placeholder="Digite seu E-mail" required />
                     </section>
 
                     <section class="form-group">
