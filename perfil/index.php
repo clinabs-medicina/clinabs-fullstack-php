@@ -1,5 +1,5 @@
 <?php
-header('Content-Type: application/json; charset=utf-8');
+header('Content-Type: text/html; charset=utf-8');
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/session.php';
