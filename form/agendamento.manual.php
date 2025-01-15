@@ -57,11 +57,13 @@ $ag->valor = $_REQUEST['valorConsulta'];
 $ag->meet = json_encode($room);
 $ag->descricao = $_REQUEST['descricao'];
 $ag->payment_method = $_REQUEST['formaPgto'];
+$ag->tipo_agendamento = $_REQUEST['optAgendamento'];
 
-$sql = 'INSERT INTO `AGENDA_MED` (`descricao`, `valor`,`paciente_token`, `medico_token`, `modalidade`, `anamnese`, `data_agendamento`, `duracao_agendamento`, `meet`, `token`, `payment_method`, `status`) 
-VALUES (:descricao, :valor, :paciente_token, :medico_token, :modalidade, :anamnese, :data_agendamento, :duracao_agendamento, :meet, :token, :payment_method, :sts);';
+$sql = 'INSERT INTO `AGENDA_MED` (`tipo_agendamento`, `descricao`, `valor`,`paciente_token`, `medico_token`, `modalidade`, `anamnese`, `data_agendamento`, `duracao_agendamento`, `meet`, `token`, `payment_method`, `status`) 
+VALUES (:tipo_agendamento, :descricao, :valor, :paciente_token, :medico_token, :modalidade, :anamnese, :data_agendamento, :duracao_agendamento, :meet, :token, :payment_method, :sts);';
 
 $stmt = $pdo->prepare($sql);
+$stmt->bindValue(':tipo_agendamento', $ag->tipo_agendamento);
 $stmt->bindValue(':descricao', $ag->descricao);
 $stmt->bindValue(':valor', $ag->valor);
 $stmt->bindValue(':paciente_token', $ag->paciente_token);
@@ -122,72 +124,6 @@ try {
 
         try {
             $stmt1->execute();
-
-            // Notificação do Paciente
-            $data_agendamento = date('d/m/Y H:i', strtotime($ag->data_agendamento));
-            $medico_nome = $medico->nome_completo;
-            $especialidade = $medico->especialidade;
-            $prefixo = strtolower($medico->identidade_genero) == 'feminino'
-                ? 'Dra.'
-                : 'Dr.';
-            $especialidade = $medico->especialidade;
-
-            $msg = "Olá {$paciente->nome_completo}," . PHP_EOL;
-            $msg .=
-                'Sua Consulta foi Agendada com Sucesso!' . PHP_EOL;
-            $msg .= '' . PHP_EOL;
-
-            $msg .=
-                "Data do Agendamento: {$data_agendamento}"
-                . PHP_EOL;
-            $msg .= "Médico: {$prefixo} {$medico_nome}" . PHP_EOL;
-            $msg .= "Especialidade: {$especialidade}" . PHP_EOL;
-            $msg .= '' . PHP_EOL;
-
-            if ($ag->modalidade == 'ONLINE') {
-                $msg .= PHP_EOL . "Link da Consulta: {$room->roomUrl}";
-            }
-
-            $wa->sendLinkMessage(
-                phoneNumber: $paciente->celular,
-                text: $msg,
-                linkUrl: "https://$hostname/",
-                linkTitle: 'CLINABS',
-                linkDescription: 'Fatura',
-                linkImage: "https://$hostname/assets/images/logo.png"
-            );
-
-            // Notificação do Médico
-            $stmtc = $pdo->query(
-                "SELECT nome_completo,celular, identidade_genero, (SELECT nome FROM ESPECIALIDADES WHERE id = especialidade) AS especialidade,token FROM MEDICOS WHERE token = '{$_REQUEST['medicoSelect']}'"
-            );
-
-            $medico = $stmtc->fetch(PDO::FETCH_OBJ);
-
-            $data = date('d/m/Y', strtotime($ag->data_agendamento));
-            $hora = date('H:i', strtotime($ag->data_agendamento));
-            $medico_nome = $medico->nome_completo;
-
-            $prefixo =
-                strtolower($medico->identidade_genero) == 'feminino'
-                    ? 'Dra.'
-                    : 'Dr.';
-
-            $msg = "Olá, {$prefixo} {$medico->nome_completo}," . PHP_EOL;
-            $msg .= "foi realizado um agendamento {$ag->modalidade} para dia *{$data}* para às {$hora}." . PHP_EOL;
-
-            if ($ag->modalidade == 'ONLINE') {
-                $msg .= PHP_EOL . "Link da Consulta: {$room->hostRoomUrl}";
-            }
-
-            $res = $wa->sendLinkMessage(
-                phoneNumber: $medico->celular,
-                text: $msg,
-                linkUrl: "https://$hostname/",
-                linkTitle: 'CLINABS',
-                linkDescription: 'Financeiro',
-                linkImage: "https://$hostname/assets/images/logo.png"
-            );
 
             $json = [
                 'status' => 'success',
@@ -271,100 +207,6 @@ try {
 
                 $stmt1->execute();
 
-                // Notificação do Paciente
-                $fatura_valor = number_format($ag->valor, 2, ',', '.');
-                $data_agendamento = date('d/m/Y H:i', strtotime($ag->data_agendamento));
-                $medico_nome = $medico->nome_completo;
-                $especialidade = $medico->especialidade;
-                $prefixo = strtolower($medico->identidade_genero) == 'feminino'
-                    ? 'Dra.'
-                    : 'Dr.';
-                $especialidade = $medico->especialidade;
-
-                $msg = "Olá {$paciente->nome_completo}," . PHP_EOL;
-                $msg .=
-                    'Sua Consulta foi Agendada com Sucesso!' . PHP_EOL;
-                $msg .= '' . PHP_EOL;
-                $msg .=
-                    'para a efetivação é necessário realizar o pagamento desta Fatura para Confirmar o seu Agendamento.'
-                    . PHP_EOL;
-                $msg .= '' . PHP_EOL;
-                $msg .= "Fatura: #{$token}" . PHP_EOL;
-                $msg .= "Valor: R\$ {$fatura_valor}" . PHP_EOL;
-                $msg .=
-                    "Data do Agendamento: {$data_agendamento}"
-                    . PHP_EOL;
-                $msg .= "Médico: {$prefixo} {$medico_nome}" . PHP_EOL;
-                $msg .= "Especialidade: {$especialidade}" . PHP_EOL;
-                $msg .= '' . PHP_EOL;
-                $msg .= '' . PHP_EOL;
-                $msg .=
-                    'clique neste link para efetivar o pagamento!'
-                    . PHP_EOL;
-                $msg .= '' . PHP_EOL;
-                $msg .= '' . PHP_EOL;
-
-                $msg .= 'Ajuda:' . PHP_EOL;
-                $msg .= '' . PHP_EOL;
-                $msg .=
-                    '-> Se o link não está abrindo, você deve adicionar nosso contato em seu celular.'
-                    . PHP_EOL;
-                $msg .=
-                    '-> Você pode pagar com PIX, Cartão de Crédito ou Débito'
-                    . PHP_EOL;
-                $msg .=
-                    '-> A Validade deste pagamento é até hoje as 23:59:59'
-                    . PHP_EOL;
-
-                if ($ag->modalidade == 'ONLINE') {
-                    $msg .= PHP_EOL . "Link da Consulta: {$meet->roomUrl}";
-                }
-
-                $wa->sendLinkMessage(
-                    phoneNumber: $paciente->celular,
-                    text: $msg,
-                    linkUrl: $link->invoiceUrl,
-                    linkTitle: 'CLINABS',
-                    linkDescription: 'Fatura',
-                    linkImage: "https://$hostname/assets/images/logo.png"
-                );
-
-                // Notificação do Médico
-                $stmtc = $pdo->query(
-                    "SELECT nome_completo,celular, identidade_genero, (SELECT nome FROM ESPECIALIDADES WHERE id = especialidade) AS especialidade,token FROM MEDICOS WHERE token = '{$_REQUEST['medicoSelect']}'"
-                );
-
-                $medico = $stmtc->fetch(PDO::FETCH_OBJ);
-
-                $data = date('d/m/Y', strtotime($ag->data_agendamento));
-                $hora = date('H:i', strtotime($ag->data_agendamento));
-                $medico_nome = $medico->nome_completo;
-
-                $prefixo =
-                    strtolower($medico->identidade_genero) == 'feminino'
-                        ? 'Dra.'
-                        : 'Dr.';
-
-                $msg = "Olá, {$prefixo} {$medico->nome_completo}," . PHP_EOL;
-                $msg .= "foi realizado um agendamento {$ag->modalidade} para dia *{$data}* para às {$hora}." . PHP_EOL;
-                $msg .= 'O pagamento da consulta tem o prazo de até 48 horas para ser efetuado pelo paciente.' . PHP_EOL;
-                $msg .= 'No momento o pagamento encontra-se como pendente. ' . PHP_EOL;
-                $msg .= '' . PHP_EOL;
-                $msg .= 'Obs: Após o prazo de 48 horas, caso não seja efetuado o pagamento, a agenda estará livre para novo agendamento.';
-
-                if ($ag->modalidade == 'ONLINE') {
-                    $msg .= PHP_EOL . "Link da Consulta: {$meet->hostRoomUrl}";
-                }
-
-                $res = $wa->sendLinkMessage(
-                    phoneNumber: $medico->celular,
-                    text: $msg,
-                    linkUrl: "https://$hostname/agenda",
-                    linkTitle: 'CLINABS',
-                    linkDescription: 'Financeiro',
-                    linkImage: "https://$hostname/assets/images/logo.png"
-                );
-
                 $json = [
                     'status' => 'success',
                     'icon' => 'success',
@@ -443,88 +285,6 @@ try {
 
                 $stmt1->execute();
 
-                // Notificação do Paciente
-                $fatura_valor = number_format($ag->valor, 2, ',', '.');
-                $data_agendamento = date('d/m/Y H:i', strtotime($ag->data_agendamento));
-                $medico_nome = $medico->nome_completo;
-                $especialidade = $medico->especialidade;
-                $prefixo = strtolower($medico->identidade_genero) == 'feminino'
-                    ? 'Dra.'
-                    : 'Dr.';
-                $especialidade = $medico->especialidade;
-
-                $msg = "Olá {$paciente->nome_completo}," . PHP_EOL;
-                $msg .=
-                    'Sua Consulta foi Agendada com Sucesso!' . PHP_EOL;
-                $msg .= '' . PHP_EOL;
-                $msg .=
-                    'para a efetivação é necessário realizar o pagamento desta Fatura para Confirmar o seu Agendamento.'
-                    . PHP_EOL;
-                $msg .= '' . PHP_EOL;
-                $msg .= "Fatura: #{$token}" . PHP_EOL;
-                $msg .= "Valor: R\$ {$fatura_valor}" . PHP_EOL;
-                $msg .=
-                    "Data do Agendamento: {$data_agendamento}"
-                    . PHP_EOL;
-                $msg .= "Médico: {$prefixo} {$medico_nome}" . PHP_EOL;
-                $msg .= "Especialidade: {$especialidade}" . PHP_EOL;
-                $msg .= '' . PHP_EOL;
-                $msg .= '' . PHP_EOL;
-                $msg .=
-                    'você escolheu pagar no dia da Consulta!, então lembre-se de chegar um pouco antes para efetuar o pagamento e efetiovar sua consulta.'
-                    . PHP_EOL;
-                $msg .= '' . PHP_EOL;
-                $msg .= '' . PHP_EOL;
-
-                if ($ag->modalidade == 'ONLINE') {
-                    $msg .= PHP_EOL . "Link da Consulta: {$meet->roomUrl}";
-                }
-
-                $wa->sendLinkMessage(
-                    phoneNumber: $paciente->celular,
-                    text: $msg,
-                    linkUrl: "https://$hostname/",
-                    linkTitle: 'CLINABS',
-                    linkDescription: 'Fatura',
-                    linkImage: "https://$hostname/assets/images/logo.png"
-                );
-
-                // Notificação do Médico
-                $stmtc = $pdo->query(
-                    "SELECT nome_completo,celular, identidade_genero, (SELECT nome FROM ESPECIALIDADES WHERE id = especialidade) AS especialidade,token FROM MEDICOS WHERE token = '{$_REQUEST['medicoSelect']}'"
-                );
-
-                $medico = $stmtc->fetch(PDO::FETCH_OBJ);
-
-                $data = date('d/m/Y', strtotime($ag->data_agendamento));
-                $hora = date('H:i', strtotime($ag->data_agendamento));
-                $medico_nome = $medico->nome_completo;
-
-                $prefixo =
-                    strtolower($medico->identidade_genero) == 'feminino'
-                        ? 'Dra.'
-                        : 'Dr.';
-
-                $msg = "Olá, {$prefixo} {$medico->nome_completo}," . PHP_EOL;
-                $msg .= "foi realizado um agendamento {$ag->modalidade} para dia *{$data}* para às {$hora}." . PHP_EOL;
-                $msg .= 'O pagamento da consulta tem o prazo de até 48 horas para ser efetuado pelo paciente.' . PHP_EOL;
-                $msg .= 'No momento o pagamento encontra-se como pendente. ' . PHP_EOL;
-                $msg .= '' . PHP_EOL;
-                $msg .= 'Obs: Após o prazo de 48 horas, caso não seja efetuado o pagamento, a agenda estará livre para novo agendamento.';
-
-                if ($ag->modalidade == 'ONLINE') {
-                    $msg .= PHP_EOL . "Link da Consulta: {$meet->hostRoomUrl}";
-                }
-
-                $res = $wa->sendLinkMessage(
-                    phoneNumber: $medico->celular,
-                    text: $msg,
-                    linkUrl: "https://$hostname/",
-                    linkTitle: 'CLINABS',
-                    linkDescription: 'Financeiro',
-                    linkImage: "https://$hostname/assets/images/logo.png"
-                );
-
                 $json = [
                     'status' => 'success',
                     'icon' => 'success',
@@ -547,6 +307,8 @@ try {
         'text' => 'Erro ao Agendar a Consulta',
         'data' => $error
     ];
+
+    file_put_contents('logs-ag.txt', $error->getMessage());
 }
 
 header('Content-Type: application/json');

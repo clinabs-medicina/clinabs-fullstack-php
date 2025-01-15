@@ -4,6 +4,7 @@ $('docuement').ready(function () {
     });
 });
 
+
 function newAgendamento() {
     Swal.fire({
         title: 'Novo Agendamento',
@@ -303,12 +304,14 @@ function auth_payment(elem, useId = false) {
 
         if (resp.status === 'success') {
             Swal.fire({
-                allowOutsideClick: false,
+                allowOutsideClick: true,
                 showConfirmButton: true,
                 showDenyButton: true,
                 showCloseButton: true,
+                showCancelButton: true,
                 confirmButtonText: 'CONFIRMAR',
                 denyButtonText: 'REJEITAR',
+                cancelButtonText: 'FECHAR',
                 width: 'auto',
                 html: `
                 <div style="text-align:left">

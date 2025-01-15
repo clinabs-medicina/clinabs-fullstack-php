@@ -66,6 +66,25 @@ inline_files('style', $fws);
     <link rel="icon favicon" href="/assets/images/favicon.ico">
     <link href="/assets/css/select2.css" rel="stylesheet" type="text/css" crossorigin="sameorign" />
     <style>
+        .date-picker-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ok-button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .ok-button:hover {
+            background-color: #45a049;
+        }
+
         @font-face {
             font-family: 'Inter';
             src: url('/assets/fonts/Inter-Regular.ttf') format('truetype');
@@ -1079,10 +1098,10 @@ if (isset($useCalendar)) {
     echo '<script src="/assets/js/script2.js"></script>';
 }
 ?> 
-   
 
    <script>
         $('document').ready(function(){
+            
             //$('select').select2();
             $('select.form-control.select-tags').select2({
                 tags: true

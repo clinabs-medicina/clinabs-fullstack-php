@@ -32,11 +32,27 @@ $result = $s3Client->putObject([
 
 // Enviar para o S3
 
-$result = $s3Client->putObject([
+/*
+ * $result = $s3Client->putObject([
+ *     'Bucket' => $bucket,
+ *     'Key' => "{$targetDir}/{$fileName}",
+ *     'Body' => fopen($file, 'r'),
+ * ]);
+ */
+
+$result = $s3Client->listObjects([
+    'Bucket' => $bucket,
+]);
+
+$result = $s3Client->getObject([
     'Bucket' => $bucket,
     'Key' => "{$targetDir}/{$fileName}",
-    'Body' => fopen($file, 'r'),
 ]);
+
+$objectContents = $result['Body']->getContents();
+$base64EncodedContents = base64_encode($objectContents);
+
+file_put_contents('S3_' . $fileName, $objectContents);
 
 echo '<pre>';
 print_r($result ?? []);

@@ -135,7 +135,7 @@
                                         echo "<td>{$payment->paciente}</td>";
                                         echo '<td>R$ ' . number_format($payment->amount, 2, ',', '.') . '</td>';
                                         echo '<td></td>';
-                                        echo '<td>' . $payment->payment_method . '</td>';
+                                        echo '<td>' . $asaas->get_status($payment->payment_method) . '</td>';
                                         echo "<td><span>{$payment->status}</span></td>";
                                         echo '<td>';
 
@@ -143,7 +143,7 @@
                                             echo "<img data-token=\"{$payment->id}\" title=\"Confirmar Solicitação\" class=\"btn-action\" onclick=\"auth_payment(this, true)\" data-token=\"{$payment->id}\" data-action=\"auth_payment\" src=\"/assets/images/ico-success.svg\" height=\"32px\">";
                                         } else if ($payment->status === 'AGENDADO') {
                                             echo "<img title=\"Cancelar Pagamento\"  onclick=\"change_payment(this)\" data-token=\"{$payment->id}\" data-action=\"delete_payment\" src=\"/assets/images/ico-trash.svg\" height=\"22px\">";
-                                        } else if ($payment->status === 'PAGAMENTO PENDENTE') {
+                                        } else if ($payment->status === 'AGUARDANDO PAGAMENTO') {
                                             echo "<img title=\"Confirmar Pagamento\" onclick=\"change_payment(this)\" data-token=\"{$payment->id}\" data-action=\"confirm_payment\" src=\"/assets/images/ico-money.svg\" height=\"32px\">";
                                         }
                                         echo '</td>';

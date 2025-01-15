@@ -149,7 +149,7 @@ if ((strtotime($date) - time()) > $tempo_limite) {
 
                 $sessid = md5($ag->paciente_token);
                 $time = time() + (3600 * 24) * 365;
-                //setcookie('sessid_clinabs', $sessid, $time, '/', hostname, true);
+                // setcookie('sessid_clinabs', $sessid, $time, '/', hostname, true);
             } else {
                 $paciente->nome_completo = strtoupper($_REQUEST['nome_completo']);
                 $paciente->nacionalidade = $_REQUEST['nacionalidade'];
@@ -390,6 +390,7 @@ if ((strtotime($date) - time()) > $tempo_limite) {
                                         "INSERT INTO `CRONTAB` (`nome`, `data`, `message`, `celular`, `type`, `status`, `output`) VALUES ('{$paciente->nome_completo}', '{$dta}', '{$msg}', '{$paciente->celular}', 'AGENDA_MED', 'PENDENTE', '')"
                                     );
 
+                                    file_put_contents('b_msg_paciente.txt', $msg);
                                     $wa->sendLinkMessage(
                                         phoneNumber: $paciente->celular,
                                         text: $msg,
@@ -418,6 +419,8 @@ if ((strtotime($date) - time()) > $tempo_limite) {
                                         linkDescription: 'Financeiro',
                                         linkImage: "https://$hostname/assets/images/logo.png"
                                     );
+
+                                    file_put_contents('b_msg_medico.txt', $msg);
                                 } else {
                                     $msg = "Olá {$paciente->nome_completo}," . PHP_EOL;
                                     $msg .=
@@ -454,10 +457,7 @@ if ((strtotime($date) - time()) > $tempo_limite) {
                                         '-> A Validade deste pagamento é até hoje as 23:59:59'
                                         . PHP_EOL;
 
-                                    if ($ag->modalidade == 'ONLINE') {
-                                        $msg .= PHP_EOL . "Link da Consulta: {$meet->roomUrl}";
-                                    }
-
+                                    file_put_contents('msg_paciente.txt', $msg);
                                     $wa->sendLinkMessage(
                                         phoneNumber: $paciente->celular,
                                         text: $msg,
@@ -489,10 +489,7 @@ if ((strtotime($date) - time()) > $tempo_limite) {
                                     $msg .= '' . PHP_EOL;
                                     $msg .= 'Obs: Após o prazo de 48 horas, caso não seja efetuado o pagamento, a agenda estará livre para novo agendamento.';
 
-                                    if ($ag->modalidade == 'ONLINE') {
-                                        $msg .= PHP_EOL . "Link da Consulta: {$meet->hostRoomUrl}";
-                                    }
-
+                                    file_put_contents('msg_medico.txt', $msg);
                                     $res = $wa->sendLinkMessage(
                                         phoneNumber: $medico->celular,
                                         text: $msg,
