@@ -25,6 +25,7 @@ if ($user->tipo == 'FUNCIONARIO') {
   AGENDA_MED.medico_online,
   AGENDA_MED.paciente_online,
   AGENDA_MED.modalidade,
+  AGENDA_MED.tipo_agendamento,
   (SELECT PACIENTES.nome_completo FROM PACIENTES WHERE PACIENTES.token = AGENDA_MED.paciente_token) AS paciente_nome, 
   (SELECT PACIENTES.celular FROM PACIENTES WHERE PACIENTES.token = AGENDA_MED.paciente_token) AS whatsapp, 
   (SELECT MEDICOS.nome_completo FROM MEDICOS WHERE MEDICOS.token = AGENDA_MED.medico_token) AS medico_nome, 
@@ -56,6 +57,7 @@ AGENDA_MED.valor,
 AGENDA_MED.medico_online,
 AGENDA_MED.paciente_online,
 AGENDA_MED.modalidade,
+AGENDA_MED.tipo_agendamento,
 (SELECT payment_id FROM VENDAS WHERE code = token) as payment_id,
 (SELECT PACIENTES.nome_completo FROM PACIENTES WHERE PACIENTES.token = AGENDA_MED.paciente_token) AS paciente_nome,
 (SELECT PACIENTES.celular FROM PACIENTES WHERE PACIENTES.token = AGENDA_MED.paciente_token) AS whatsapp, 
@@ -90,6 +92,7 @@ AGENDA_MED.valor,
 AGENDA_MED.medico_online,
 AGENDA_MED.paciente_online,
 AGENDA_MED.modalidade,
+AGENDA_MED.tipo_agendamento,
 (SELECT PACIENTES.nome_completo FROM PACIENTES WHERE PACIENTES.token = AGENDA_MED.paciente_token) AS paciente_nome,
 (SELECT PACIENTES.celular FROM PACIENTES WHERE PACIENTES.token = AGENDA_MED.paciente_token) AS whatsapp, 
 (SELECT MEDICOS.nome_completo FROM MEDICOS WHERE MEDICOS.token = AGENDA_MED.medico_token) AS medico_nome, 
@@ -122,7 +125,8 @@ WHERE medico_token = '" . $user->token . "';";
   AGENDA_MED.medico_online,
   AGENDA_MED.paciente_online,
   AGENDA_MED.modalidade,
-  AGENDA_MED.duracao_agendamento, 
+  AGENDA_MED.duracao_agendamento,
+  AGENDA_MED.tipo_agendamento, 
   (SELECT PACIENTES.nome_completo FROM PACIENTES WHERE PACIENTES.token = AGENDA_MED.paciente_token LIMIT 1) AS paciente_nome,
   (SELECT PACIENTES.id FROM PACIENTES WHERE PACIENTES.token = AGENDA_MED.paciente_token LIMIT 1) AS paciente_id,
   (SELECT PACIENTES.celular FROM PACIENTES WHERE PACIENTES.token = AGENDA_MED.paciente_token LIMIT 1) AS whatsapp, 
@@ -315,12 +319,13 @@ foreach ($rows as $row) {
         <table id="tableAgendamento" class="display dataTable">
             <thead>
                 <tr>
-                    <th data-name="data_agendamento">Data <span class="hide-mb">Agendamento</span></th>
+                    <th style="max-width: 100px !important;" data-name="data_agendamento">Data <span class="hide-mb">Agendamento</span></th>
+                    <th width="100px">Tipo</th>
                     <th data-name="paciente_nome">Paciente</th>
                     <th class="hide-mb" data-name="queixa_principal">Queixa</th>
                     <th class="hide-mb" data-name="medico_nome">Médico</th>
                     <th data-name="status">Status</th>
-                    <th class="hide-mb" data-name="modalidade">Tipo</th>
+                    <th width="80px" class="hide-mb" data-name="modalidade">Modalidade</th>
                     <th width="90px">Ações</th>
                     <th data-name="telemedicina"><span class="hide-mb">Telemedicina</span></th>
                 </tr>
@@ -350,16 +355,16 @@ foreach ($rows as $row) {
                   $date_formated = date('d/m/Y', strtotime($date));
 
                   echo "<tr data-room=\"{$roomName}\" data-index=\"{$i}\" class=\"ag_row ag_row{$i}\" data-date=\"{$date}\" data-paciente=\"{$column->paciente_token}\" data=ts=\"{$ts}\" id=\"{$column->token}\" data-stime=\"{$startTime}\">";
-                  echo "<td data-value=\"{$date}\" data-label=\"Data: \" width=\"260px\" class=\"ag-day\"><div class=\"calendar-day\">
+                  echo "<td data-value=\"{$date}\" data-label=\"Data: \" width=\"160px\" class=\"ag-day\"><div class=\"calendar-day\">
                   <img src=\"/assets/images/ico-calendar.svg\" height=\"32px\">
                   <div class=\"datetime-column\">
                   <span>{$date_formated} {$hora_agendamento}</span>
                   <span class=\"calendar-time\">Das {$hora_agendamento} as {$data_max}</span>
                   </div>
-                  <span class=\"calendar-duration hide-mb\">
-                  <img src=\"/assets/images/ico-agenda-clock.svg\" width=\"20px\" style=\"display:inline-flex; vertical-align:middle; margin: -5px 5px 0 5px;\">{$dur} Min</span>
                   </div>
                   </td>";
+
+                  echo "<td>{$column->tipo_agendamento}</td>";
 
                   $timer = date('Y-m-d') . ' ' . $column->startTime;
 
