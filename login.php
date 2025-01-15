@@ -192,12 +192,12 @@
          </div><!-- BOX ESQUERDA LOGIN -->
         
         <div class="box-right"><!-- BOX DIREITA LOGIN -->
-            <img class="login-logoright" src="/assets/images/logo-sys.svg">
+            <img class="login-logoright" src="/assets/images/logo-sys.svg" title="logo">
             <p>Sistema de consultas online para pacientes que dependem de medicamentos com canabidiol. Um ambiente seguro, informativo e interativo para melhorar a qualidade de vida dos pacientes que necessitam desse tratamento.</p>
             <ul class="login-icosocial">
-                <li><a href="<?=$INSTAGEM_LINK?>"><img src="/assets/images/ico-facebook.svg" width="50px"></a></li>
-                <li><a href="<?=$FACEBOOK_LINK?>"><img src="/assets/images/ico-instagram.svg" width="50px"></a></li>
-                <li><a href="<?=$YOUTUBE_LINK?>"><img src="/assets/images/ico-youtube.svg" width="50px"></a></li>
+                <li><a href="<?=$INSTAGEM_LINK?>"><img src="/assets/images/ico-facebook.svg" width="50px" title="Facebook"></a></li>
+                <li><a href="<?=$FACEBOOK_LINK?>"><img src="/assets/images/ico-instagram.svg" width="50px" title="Instagram"></a></li>
+                <li><a href="<?=$YOUTUBE_LINK?>"><img src="/assets/images/ico-youtube.svg" width="50px" title="Youtube"></a></li>
             </ul>
         </div><!-- BOX DIREITA LOGIN -->
         
