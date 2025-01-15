@@ -10,7 +10,7 @@
                     <img src="">
                     </svg>
                     R$
-                    <?= number_format($balance, 2, ',', '.') ?>
+                    <?= number_format($balance, 2, '.', ',') ?>
                 </h3>
             </div>
 
@@ -19,7 +19,7 @@
                 <h3>
                     <img src="">
                     R$
-                    <?= number_format($paymentsBalance->value, 2, ',', '.') ?>
+                    <?= number_format($paymentsBalance->value, 2, '.', ',') ?>
                 </h3>
             </div>
         </section>
@@ -96,7 +96,7 @@
                                         echo '<td>' . date('d/m/Y', strtotime($payload->dateCreated ?? $payment->created_at)) . '</td>';
                                         echo "<td>{$payload->description}</td>";
                                         echo "<td>{$payment->paciente_nome}</td>";
-                                        echo '<td>R$ ' . number_format($payload->value, 2, ',', '.') . '</td>';
+                                        echo '<td>R$ ' . number_format($payload->value, 2, '.', ',') . '</td>';
                                         echo '<td>' . date('d/m/Y', strtotime($payload->dueDate)) . '</td>';
                                         echo "<td>{$ptype}</td>";
                                         echo "<td><span class=\"badge badge-{$psts}\">{$sts}</span></td>";
@@ -133,7 +133,7 @@
                                         echo '<td>' . date('d/m/Y', strtotime($payment->created_at)) . '</td>';
                                         echo "<td>{$payment->nome}</td>";
                                         echo "<td>{$payment->paciente}</td>";
-                                        echo '<td>R$ ' . number_format($payment->amount, 2, ',', '.') . '</td>';
+                                        echo '<td>R$ ' . number_format($payment->amount, 2, '.', ',') . '</td>';
                                         echo '<td></td>';
                                         echo '<td>' . $asaas->get_status($payment->payment_method) . '</td>';
                                         echo "<td><span>{$payment->status}</span></td>";
@@ -187,7 +187,7 @@
                                 echo '<td>' . date('d/m/Y', strtotime($payment->created_at)) . '</td>';
                                 echo "<td>{$payment->nome}</td>";
                                 echo "<td>{$payment->paciente_nome}</td>";
-                                echo '<td>R$ ' . number_format($payment->amount, 2, ',', '.') . '</td>';
+                                echo '<td>R$ ' . number_format($payment->amount, 2, '.', ',') . '</td>';
                                 echo "<td><span>{$payment->status}</span></td>";
                                 echo '<td>';
                                 echo '<div  class="td-dflex">';
