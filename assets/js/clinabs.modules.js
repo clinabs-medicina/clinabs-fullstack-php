@@ -207,7 +207,7 @@ function caixa_recebimento_exec(payment_id, payment_value, client_name) {
             preloader('Processando Pagamento...');
             $.post('/forms/confirmar.pagamento.externo.php', payload).done(function (result) {
                 Swal.fire(result).then(function () {
-                    if (result.staus === 'success') {
+                    if (result.status === 'success') {
                         window.location.reload();
                     }
                 });

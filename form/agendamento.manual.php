@@ -151,7 +151,7 @@ try {
                 id: $pac->id,
                 tipo: $ag->payment_method,
                 valor: $ag->valor,
-                reference: $agenda_token,
+                reference: $ag->token,
                 descricao: 'VENDA DE CONSULTA MÉDICA',
                 paymentDue: date('Y-m-d', strtotime($ag->data_agendamento))
             );
@@ -233,7 +233,7 @@ try {
                 id: $pac->id,
                 tipo: 'UNDEFINED',
                 valor: $ag->valor,
-                reference: $agenda_token,
+                reference: $ag->token,
                 descricao: 'VENDA DE CONSULTA MÉDICA',
                 paymentDue: date('Y-m-d', strtotime($ag->data_agendamento))
             );
@@ -307,8 +307,6 @@ try {
         'text' => 'Erro ao Agendar a Consulta',
         'data' => $error
     ];
-
-    file_put_contents('logs-ag.txt', $error->getMessage());
 }
 
 header('Content-Type: application/json; charset=utf-8');

@@ -363,7 +363,13 @@ function auth_payment(elem, useId = false) {
                             'user_name': $('meta[name="user-name"]').attr('content'),
                             'user_type': $('meta[name="user"]').attr('content')
                         }).done(function (resp) {
-                            Swal.fire(resp).then(function () {
+                            Swal.fire({
+                                icon: resp.icon,
+                                title: resp.text,
+                                showCancelButton: false,
+                                showConfirmButton: true,
+                                confirmButtonText: 'OK'
+                            }).then(function () {
                                 window.location.reload();
                             });
                         }).fail(function () {
