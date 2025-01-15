@@ -1951,9 +1951,7 @@ $(document).ready(function () {
     },
     function (step) {
       step.btnFinish.show();
-
       step.btnNext.hide();
-
       $(step.btnFinish).text("CONCLUIR");
 
       fetchForm(
