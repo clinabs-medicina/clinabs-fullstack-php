@@ -144,7 +144,7 @@ if ((!isset($_user)) && isset($user)) {
                         </section>
                         <section class="form-group"> <legend for="situacao">Situação Cadastral</legend> <?php
 if ($user->perms->perfil_situacao_cadastral == 1) {
-    ?> <select class="form-control" name="situacao">
+    ?> <select class="form-control" name="situacao" title="SelSituacao">
                                 <option value="ATIVO" <?= ($_user->status == 'ATIVO' ? ' selected' : '') ?>>REGULAR</option>
                                 <option value="INATIVO" <?= ($_user->status == 'INATIVO' ? ' selected' : '') ?>>INATIVO
                                 </option>
