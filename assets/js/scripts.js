@@ -2131,9 +2131,12 @@ $(document).ready(function () {
     });
   }
 
-  $('input[type="search"]').attr('id', 'searchInput');
-  $('input[type="search"]').attr('name', 'searchInput');
-  $('input[type="search"]').attr('placeholder', 'Pesquisar....');
+  $('input[type="search"]').each(function() {
+    var idAleatorio = gerarIdUnico();
+      $(this).attr('id', idAleatorio);
+      $(this).attr('name', idAleatorio);
+      $(this).attr('placeholder', 'Pesquisar....');
+  });
 
   $("#cadastroConsulta").find(".btn-step-submit").show();
   $("#editarConsulta")
@@ -2321,7 +2324,10 @@ $(document).ready(function () {
   });
 });
 
-
+// Função para gerar um identificador único
+function gerarIdUnico() {
+  return 'searchInput_' + Math.random().toString(36).substr(2, 9);
+}
 
 function validateCPF(cpf) {
   // Remove non-numeric characters
