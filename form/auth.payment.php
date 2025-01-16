@@ -161,7 +161,7 @@ Você tem uma Consulta Agendada com *{$prefixo} {$ag['medico']}* em *{$data_agen
 
 {$linkMeetPaciente}";
 
-                    $msg2 = "Olá ${prefixo} {$ag['medico']},
+                    $msg2 = "Olá {$prefixo} {$ag['medico']},
 
 Viocê tem um agendamento *{$ag['modalidade']}* para dia *{$data_agendamento}*.
 com  *{$ag['paciente']}*.
@@ -210,7 +210,7 @@ Você tem uma Consulta Agendada com *{$prefixo} {$ag['medico']}* em *{$data_agen
 
 {$linkMeetPaciente}";
 
-                        $msg2 = "Olá ${prefixo} {$ag['medico']},
+                        $msg2 = "Olá {$prefixo} {$ag['medico']},
 
 Viocê tem um agendamento *{$ag['modalidade']}* para dia *{$data_agendamento}*.
 com  *{$ag['paciente']}*.
