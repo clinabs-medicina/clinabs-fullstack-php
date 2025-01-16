@@ -7,7 +7,7 @@ ini_set('display_errors', 1);
 @ini_set('max_execution_time', '300');
 error_reporting(1);
 
-$request = $_POST;
+$request = $_REQUEST;
 
 if (isset($request['enderecos'])) {
     $user_token = $request['token'];

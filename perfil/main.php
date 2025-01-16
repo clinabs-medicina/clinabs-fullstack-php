@@ -2,12 +2,10 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-if (isset($_SESSION['userObj'])) {
-    $user = (object) $_SESSION['userObj'];
-}
+
 if (isset($_SESSION['_user'])) {
     $_user = $_SESSION['_user'];
-} 
+}
 if ((!isset($_user)) && isset($user)) {
     $_user = $user;
 }
@@ -244,9 +242,8 @@ if ($user->perms->perfil_situacao_cadastral == 1) {
                                 ?>
                             </select>
                             <?php
-                            } else {
-                                echo "<input class=\"form-control uppercase\" name=\"grupo_especialidades\" value=\"{$_user->grupo_especialidades}\">";
                             }
+
                             ?>
                         </section>
 
@@ -295,7 +292,29 @@ if ($user->perms->perfil_situacao_cadastral == 1) {
                     </section>
                     <?php
                         }
+
+                        if ($user->perms->grupo_especialidades == 0 && $_user->objeto == 'MEDICO') {
+                            ?>
+                                <select style="display: none !important" disabled="true" value="<?= ($_user->grupo_especialidades) ?>"
+                                    id="grupo_especialidades" name="grupo_especialidades" class="form-control">
+                                    <option disabled>Selecione uma Opção</option>
+                                    <?php
+                                    $xstmt = $pdo->query('SELECT * FROM `GRUPO_ESPECIALIDADES`');
+                                    $grupos = $xstmt->fetchAll(PDO::FETCH_OBJ);
+
+                                    foreach ($grupos as $grupo) {
+                                        if ($_user->grupo_especialidades == $grupo->id) {
+                                            echo "<option selected value=\"{$grupo->id}\">{$grupo->nome}</option>";
+                                        } else {
+                                            echo "<option value=\"{$grupo->id}\">{$grupo->nome}</option>";
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            <?php
+                        }
                         ?>
+            
                     <section class="form-grid area21">
                         <section class="form-group">
                             <label for="tipo_conselho">Tipo de conselho* </label> <select data-search="true" disabled
@@ -839,20 +858,21 @@ if ($_user->objeto == 'PACIENTE') {
                 <?php
                 if ($_user->objeto == 'MEDICO') {
                     $token = $_user->token;
-/*
-                    try{    
-                        error_log("valor main.php \$token: $token\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
-                        error_log("valor main.php \$_user->objeto: $_user->objeto\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
-						error_log("Valor main.php \$user->tipo: $user->tipo\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
-                        $dat = $_user->inicio_ag;
-                        error_log("Valor main.php inicio_ag: $dat\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
-                        $dat = $_user->fim_ag;
-                        error_log("Valor main.php fim_ag: $dat\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
-                        $dat = $_user->duracao_atendimento;
-                        error_log("Valor main.php duracao_atendimento: $dat\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
-                    } catch (PDOException $e) {
-                    }
-*/
+
+                    /*
+                     * try{
+                     *     error_log("valor main.php \$token: $token\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+                     *     error_log("valor main.php \$_user->objeto: $_user->objeto\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+                     * 	error_log("Valor main.php \$user->tipo: $user->tipo\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+                     *     $dat = $_user->inicio_ag;
+                     *     error_log("Valor main.php inicio_ag: $dat\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+                     *     $dat = $_user->fim_ag;
+                     *     error_log("Valor main.php fim_ag: $dat\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+                     *     $dat = $_user->duracao_atendimento;
+                     *     error_log("Valor main.php duracao_atendimento: $dat\r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+                     * } catch (PDOException $e) {
+                     * }
+                     */
                     echo '<div class="tab" data-index="4" data-tab="tabControl1">';
                     echo '<h2 class="titulo-h2">Calendário de Agendamentos</h2>';
 
@@ -866,21 +886,21 @@ if ($_user->objeto == 'PACIENTE') {
                     echo '<button class="btn-button1" type="button" onclick="clearAgenda()"><i class="fas fa-broom fa-lg"></i> Limpar Agenda</button>';
                     echo '<button class="btn-button1" type="button" onclick="syncAgenda()"><i class="fas fa-calendar fa-lg"></i> Sincronizar Agenda</button>';
                     echo '</div>';
-                try{
-                    $dados = $pdo->query("SELECT * FROM `AGENDA_MEDICA` WHERE medico_token = '$token'")->fetch(PDO::FETCH_OBJ);
-                } catch (PDOException $e) {
-//                    error_log("Erro main.php SELECT * FROM AGENDA_MEDICA \r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
-                }
+                    try {
+                        $dados = $pdo->query("SELECT * FROM `AGENDA_MEDICA` WHERE medico_token = '$token'")->fetch(PDO::FETCH_OBJ);
+                    } catch (PDOException $e) {
+                        //                    error_log("Erro main.php SELECT * FROM AGENDA_MEDICA \r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+                    }
 
                     // $ag_med = $pdo->query("SELECT data_agendamento as dt FROM `AGENDA_MED` WHERE medico_token = '$token'")->fetchAll(PDO::FETCH_ASSOC);
-                try{
-                    $weekCalendar = new WeeklyCalendar($calendario);
-                } catch (PDOException $e) {
-//                    error_log("Erro main.php new WeeklyCalendar \r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
-                }
+                    try {
+                        $weekCalendar = new WeeklyCalendar($calendario);
+                    } catch (PDOException $e) {
+                        //                    error_log("Erro main.php new WeeklyCalendar \r\n" . PHP_EOL, 3, 'C:\xampp\htdocs\errors.log');
+                    }
 
-                if ($_user->objeto == 'MEDICO' || $_user->objeto == 'FUNCIONARIO') {
-                    ?> <section class="main">
+                    if ($_user->objeto == 'MEDICO' || $_user->objeto == 'FUNCIONARIO') {
+                        ?> <section class="main">
 
                     <div class="flex-container">
                         <section class="calendar-container">
@@ -1014,9 +1034,9 @@ if ($_user->objeto == 'PACIENTE') {
                         </section>
                     </div>
                     </section> <?php
-                } else {
-                    echo 'Acesso Negado.';
-                }
+                    } else {
+                        echo 'Acesso Negado.';
+                    }
 
                     echo '</div>';
 
@@ -1416,7 +1436,7 @@ if ($_user->objeto == 'PACIENTE') {
             </section>
             <div class="form-footer">
                 <input autocomplete="off" disabled="true" type="hidden" name="tabela"
-                    value="<?= isset($_GET['token']) ? $_user->objeto : $_user->tipo ?>S">
+                    value="<?= $_user->objeto ?>S">
                 <input autocomplete="off" disabled="true" id="user_token" type="hidden" name="token"
                     value="<?= $_user->token ?>"><button type="button" class="btn-button1 btn-edit-form">EDITAR
                     DADOS</button> <button type="submit" class="btn-button1 btn-save-form" disabled="true"
