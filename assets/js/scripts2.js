@@ -2700,12 +2700,18 @@ function upload_doc_ped(elem) {
         .catch(function (error) { });
 }
 
+
 function quill_editor(elem, sec = null) {
+    /*
     let id = elem.id;
     $(elem).hide();
+
     let textEditor = document.createElement("div");
     textEditor.classList.add("quill-text-editor-area");
+
     $(elem).after(textEditor);
+
+    const data_html = $(elem).data('html');
 
     var toolbarOptions = [
         ["bold", "italic", "underline", "strike"],
@@ -2722,7 +2728,7 @@ function quill_editor(elem, sec = null) {
         modules: {
             toolbar: toolbarOptions,
         },
-        placeholder: "Escreva um texto aqui...",
+        placeholder: "Escreva seu texto aqui...",
         theme: "snow",
     });
 
@@ -2738,8 +2744,39 @@ function quill_editor(elem, sec = null) {
         }
     });
 
+    quill.setContents(data_html, "user");
+
     return quill;
+    */
 }
+
+
+function tmce_editor(elems) {
+    $(elems).each(function () {
+        let contents = $(this).data('html');
+
+        tinymce.init({
+            selector: this,
+            height: 300,
+            setup: function (editor) {
+                editor.on('init', function () {
+                    editor.setContent(contents);
+                });
+            },
+            plugins: [
+                'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+                'searchreplace wordcount visualblocks visualchars code fullscreen',
+                'insertdatetime media nonbreaking save table contextmenu directionality',
+                'emoticons template paste textcolor colorpicker textpattern imagetools codesample toc'
+            ],
+            toolbar1: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+            toolbar2: 'print preview media | forecolor backcolor emoticons | codesample',
+        });
+
+
+    });
+}
+
 
 function serialize_ops(items) {
     return items["ops"];

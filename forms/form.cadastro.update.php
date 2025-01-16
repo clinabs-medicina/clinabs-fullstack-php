@@ -313,6 +313,7 @@ switch ($request['tabela']) {
 
     case 'MEDICOS':
         {
+            file_put_contents('medico.json', json_encode($request, JSON_PRETTY_PRINT));
             $stmt = $pdo->prepare('UPDATE `MEDICOS` 
             SET 
             `nome_completo` = :nome_completo,
@@ -368,7 +369,7 @@ switch ($request['tabela']) {
             $stmt->bindValue(':anamnese', is_array($request['anamnese']) ? json_encode($request['anamnese']) : '[]');
             $stmt->bindValue(':especialidade', preg_replace('/[^0-9]+/', '', json_encode($request['especialidades'])));
             $stmt->bindValue(':descricao', $request['descricao']);
-            $stmt->bindValue(':descricao_completa', $request['descricao_completa']);
+            $stmt->bindValue(':descricao_completa', base64_decode($request['descricao_html']));
             $stmt->bindValue(':valor_consulta', str_replace(',', '.', $request['valor_consulta']));
             $stmt->bindValue(':valor_consulta_online', str_replace(',', '.', $request['valor_consulta_online']));
             $stmt->bindValue(':duracao_atendimento', $request['duracao_atendimento']);

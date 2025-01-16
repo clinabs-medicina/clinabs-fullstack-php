@@ -83,9 +83,18 @@ $(document).ready(function () {
 
 
   if ($('textarea[name="descricao_html"]').length > 0) {
+    /*
     quill_editor(
       $('textarea[name="descricao_html"]'),
       $("#descricao_completa")
+    );
+    */
+
+    tmce_editor(
+      [
+        $('textarea[name="descricao_html"]'),
+        $("#descricao_completa")
+      ]
     );
   }
 

@@ -1,3 +1,28 @@
+$('document').ready(function () {
+    tinymce.init({
+        language: "pt_BR",
+        selector: '.tiny-mce',
+        plugins: "",
+        autosave_restore_when_empty: !0,
+        toolbar: "undo redo | bold italic underline strikethrough | link image media table mergetags | align lineheight | checklist numlist bullist indent outdent | removeformat",
+        tinycomments_mode: "embedded",
+        tinycomments_author: "",
+        setup: function (editor) {
+            editor.on("init", function () {
+                $('.tiny-mce[data-html]').each(function () {
+                    editor.setContent(atob($(this).data('html')));
+                });
+            });
+
+            editor.on('change', function () {
+                const content = editor.getContent();
+                const textarea = editor.getElement();
+
+                $(`#${$(textarea).data('id')}`).val(btoa(content));
+            });
+        }
+    });
+});
 
 function wb_fs() { document.fullscreenElement ? (document.exitFullscreen(), $(".breadcrumbs").show(), $("header.header").show(), $("section.footer-1").show(), $("section.footer-2").show()) : (document.body.requestFullscreen(), $(".breadcrumbs").hide(), $("header.header").hide(), $("section.footer-1").hide(), $("section.footer-2").hide()) } function newPrescFuncWb() {
     let t = `<div class="flex-col"><p>
