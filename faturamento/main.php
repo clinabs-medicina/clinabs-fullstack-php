@@ -55,6 +55,7 @@
                                 <th>ID</th>
                                 <th>Data</th>
                                 <th>Descrição</th>
+                                <th>Data de Agendamento</th>
                                 <th>Paciente</th>
                                 <th>Valor</th>
                                 <th>Vencimento</th>
@@ -66,10 +67,12 @@
                         <tbody>
                             <?php
                             try {
-                                $payloads = $pdo->query("SELECT     `id`,     (         SELECT nome_completo         FROM PACIENTES         WHERE             token = (                 SELECT paciente_token                 FROM AGENDA_MED                 WHERE                     token = VENDAS.code                 LIMIT 1             )         LIMIT 1     ) AS paciente,     (         SELECT nome_completo         FROM PACIENTES         WHERE             payment_id = VENDAS.customer         LIMIT 1     ) AS paciente_nome,     (         SELECT data_agendamento         FROM AGENDA_MED         WHERE             AGENDA_MED.token = VENDAS.reference         LIMIT 1     ) AS data_agendamento,     `nome`,     `dueTime`,     `code`,     `payment_id`,     `amount`,     `customer`,     `status`,     `created_at`,     `updated_at`,     `payment_method`,     `asaas_payload` FROM `VENDAS` WHERE     module = 'AGENDA_MED' ORDER BY `created_at` DESC;");
+                                $payloads = $pdo->query("SELECT     `id`, (SELECT data_agendamento FROM AGENDA_MED WHERE token = VENDAS.code LIMIT 1) AS data_agendamento,    (         SELECT nome_completo         FROM PACIENTES         WHERE             token = (                 SELECT paciente_token                 FROM AGENDA_MED                 WHERE                     token = VENDAS.code                 LIMIT 1             )         LIMIT 1     ) AS paciente,     (         SELECT nome_completo         FROM PACIENTES         WHERE             payment_id = VENDAS.customer         LIMIT 1     ) AS paciente_nome,     (         SELECT data_agendamento         FROM AGENDA_MED         WHERE             AGENDA_MED.token = VENDAS.reference         LIMIT 1     ) AS data_agendamento,     `nome`,     `dueTime`,     `code`,     `payment_id`,     `amount`,     `customer`,     `status`,     `created_at`,     `updated_at`,     `payment_method`,     `asaas_payload` FROM `VENDAS` WHERE     module = 'AGENDA_MED' ORDER BY `created_at` DESC;");
                                 $payments = $payloads->fetchAll(PDO::FETCH_OBJ);
 
                                 foreach ($payments as $payment) {
+                                    $data_agendamento = date('d/m/Y H:i', strtotime($payment->data_agendamento));
+
                                     if ($payment->customer != null && $payment->customer != '' && $payment->asaas_payload != '[]') {
                                         $payload = json_decode($payment->asaas_payload);
                                         $sts = $asaas->get_status($payload->status);
@@ -95,6 +98,7 @@
                                         echo "<td>{$link}</td>";
                                         echo '<td>' . date('d/m/Y', strtotime($payload->dateCreated ?? $payment->created_at)) . '</td>';
                                         echo "<td>{$payload->description}</td>";
+                                        echo "<td>{$data_agendamento}</td>";
                                         echo "<td>{$payment->paciente_nome}</td>";
                                         echo '<td>R$ ' . number_format($payload->value, 2, ',', '.') . '</td>';
                                         echo '<td>' . date('d/m/Y', strtotime($payload->dueDate)) . '</td>';
@@ -132,6 +136,7 @@
                                         echo "<td>{$payment->id}</td>";
                                         echo '<td>' . date('d/m/Y', strtotime($payment->created_at)) . '</td>';
                                         echo "<td>{$payment->nome}</td>";
+                                        echo "<td>{$data_agendamento}</td>";
                                         echo "<td>{$payment->paciente}</td>";
                                         echo '<td>R$ ' . number_format($payment->amount, 2, ',', '.') . '</td>';
                                         echo '<td></td>';
@@ -146,6 +151,7 @@
                                         } else if ($payment->status === 'AGUARDANDO PAGAMENTO') {
                                             echo "<img title=\"Confirmar Pagamento\" onclick=\"change_payment(this)\" data-token=\"{$payment->id}\" data-action=\"confirm_payment\" src=\"/assets/images/ico-money.svg\" height=\"32px\">";
                                         }
+
                                         echo '</td>';
                                         echo '</tr>';
                                     }
