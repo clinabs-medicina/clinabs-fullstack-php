@@ -513,13 +513,9 @@ if ($user->perms->perfil_situacao_cadastral == 1) {
                                 name="descricao" style="width: 100%;height: 128px"
                                 maxlength="512"><?= $_user->descricao ?></textarea> <small class="txt-counter"
                                 data-area="descricao">512 caracteres restantes</small> </section>
-                        <section class="form-group"> <label for="nacionalidade">Descrição Completa</label> <textarea
-                                disabled name="descricao_html" style="width: 100%;height: 128px"
-                                data-file="medicos/<?= $_user->token ?>"></textarea>
+                        <section class="form-group"> <label for="nacionalidade">Descrição Completa</label> 
+                        <textarea class="tinymce" disabled name="descricao_completa" style="width: 100%;height: 128px"><?= ($_user->descricao_html) ?></textarea>
 
-
-                            <textarea disabled id="descricao_completa" name="descricao_completa"
-                                style="display: none;"><?= ($_user->descricao_html) ?></textarea>
                         </section>
                     </section> <?php
                     }

@@ -2700,47 +2700,6 @@ function upload_doc_ped(elem) {
         .catch(function (error) { });
 }
 
-function quill_editor(elem, sec = null) {
-    let id = elem.id;
-    $(elem).hide();
-    let textEditor = document.createElement("div");
-    textEditor.classList.add("quill-text-editor-area");
-    $(elem).after(textEditor);
-
-    var toolbarOptions = [
-        ["bold", "italic", "underline", "strike"],
-        ["blockquote", "code-block"],
-        [{ header: [1, 2, 3, 4, 5, 6, false] }],
-        ["link", "image", "video", "formula"],
-        [{ color: [] }, { background: [] }],
-        [{ font: [] }],
-        [{ align: [] }],
-        ["clean"],
-    ];
-
-    const quill = new Quill(textEditor, {
-        modules: {
-            toolbar: toolbarOptions,
-        },
-        placeholder: "Escreva um texto aqui...",
-        theme: "snow",
-    });
-
-    $.get(`/data/${$(elem).data("file")}.json`).done(function (contents) {
-        quill.setContents(contents, "user");
-    });
-
-    quill.on("text-change", () => {
-        $(elem).val(window.btoa(JSON.stringify(quill.getContents())));
-
-        if (sec !== null) {
-            $(sec).val(quill.getSemanticHTML());
-        }
-    });
-
-    return quill;
-}
-
 function serialize_ops(items) {
     return items["ops"];
 }
