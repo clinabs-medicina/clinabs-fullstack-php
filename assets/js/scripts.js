@@ -2133,10 +2133,9 @@ $(document).ready(function () {
 
   $('input[type="search"]').each(function() {
     var idAleatorio = gerarIdUnico();
-    $(this).attr('id', idAleatorio);
-    idAleatorio = gerarIdUnico();
-    $(this).attr('name', idAleatorio);
-    $(this).attr('placeholder', 'Pesquisar....');
+      $(this).attr('id', idAleatorio);
+      $(this).attr('name', idAleatorio);
+      $(this).attr('placeholder', 'Pesquisar....');
   });
 
   $("#cadastroConsulta").find(".btn-step-submit").show();
