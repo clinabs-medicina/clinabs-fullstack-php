@@ -18,8 +18,7 @@ function inline_files(string $type, array $files)
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, initial-scale=0.75, maximum-scale=1, minimum-scale=0.75">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     <meta content="text/html; charset=UTF-8;" http-equiv="Content-Type" />
     <meta name="user" content="<?= $user->tipo ?? 'none' ?>" />
     <meta name="user-id" content="<?= $user->token ?? 'none' ?>" />
