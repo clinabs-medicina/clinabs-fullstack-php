@@ -1002,12 +1002,8 @@ inline_files('style', $fws);
 
     <!--<script src="https://cdn.tiny.cloud/1/o69uuqv853g4pxc40ctycrnc5e3imuz426yspmq9l28bvv0v/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>-->
     
-    <?php
-    if (isset($useEditor)) {
-        echo '<script src="/assets/js/plugins/tinymce/tinymce.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>';
-    }
-    ?>
+
+    <script src="/assets/js/plugins/tinymce/tinymce.min.js"></script>
 
     <script src="/assets/js/imask.min.js"></script>
     <script src="/assets/js/clinabs.plugins.js"></script>
