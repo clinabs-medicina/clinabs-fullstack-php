@@ -403,7 +403,7 @@ function syncAgenda() {
             $.get('/api/google_calendar/index.php', {
                 token: $('#user_token').val()
             }, function () {
-                window.location = `${window.location}?tab=4`;
+                window.location.reload();
             });
         }
     })
