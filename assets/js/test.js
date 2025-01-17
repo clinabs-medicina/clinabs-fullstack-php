@@ -403,11 +403,35 @@ function show_logs_details(elem) {
 
 
 function syncAgenda() {
-    preloader('Sincronizando...');
-    $.get('/api/google_calendar/index.php', function () {
-        Swal.close();
-        window.location.reload();
-    });
+    console.log(`GET /api/google_calendar/index.php { 'token': ${$('#user_token').val()} }`);
+
+    Swal.fire({
+        title: 'Sincronizar Agenda',
+        html: `<b style="color: red">Aten\xe7\xe3o: </b> Voc\xea est\xe1 prestes a Sincronizar sua agenda com a Agenda do Google abaixo est\xe1 os dados que vai ser coletados da Agenda
+             <br>
+             <br>
+             <ul>
+                <li>=> Hor\xe1rios Ocupados</li>
+             </ul>
+             `,
+        imageUrl: "/assets/images/google_calendar.svg",
+        imageHeight: 64,
+        allowOutSideClick: false,
+        showCancelButton: false,
+        showConfirmButton: true,
+        showDenyButton: true,
+        confirmButtonText: 'Sincronizar',
+        denyButtonText: 'Cancelar'
+    }).then((t) => {
+        if (t.isConfirmed) {
+            preloader('Sincronizando...');
+            $.get('/api/google_calendar/index.php', {
+                token: $('#user_token').val()
+            }, function () {
+                window.location.reload();
+            });
+        }
+    })
 }
 
 

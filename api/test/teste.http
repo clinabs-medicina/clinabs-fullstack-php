@@ -1,0 +1,48 @@
+POST https://dev.clinabs.com.br/api/test/index.php
+
+HTTP/1.1 200 - OK
+date: Mon, 21 Jun 2021 19:38:10 GMT
+content-type: application/json
+content-length: 387
+connection: close
+server: gunicorn/19.9.0
+access-control-allow-origin: *
+access-control-allow-credentials: true
+{
+  "args": {},
+  "data": "",
+  "files": {},
+  "form": {},
+  "headers": {
+    "Accept": "*/*",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Content-Length": "0",
+    "Host": "httpbin.org",
+    "User-Agent": "httpyac",
+    "X-Amzn-Trace-Id": "Root=1-60d0eaa2-3379384b530308d96e9ade95"
+  },
+  "json": null,
+  "origin": "79.243.57.74",
+  "url": "https://httpbin.org/post"
+}
+
+HTTP/1.1 200  - OK
+server: nginx
+date: Thu, 16 Jan 2025 14:35:03 GMT
+content-type: application/json
+transfer-encoding: chunked
+connection: keep-alive
+expires: Thu, 19 Nov 1981 08:52:00 GMT
+cache-control: max-age=0
+pragma: no-cache
+content-encoding: gzip
+vary: Accept-Encoding
+set-cookie: PHPSESSID=fe533f9be4632dcc2a36fc2c6c1eb6b1; path=/; HttpOnly
+x-content-type-options: nosniff
+strict-transport-security: max-age=0; includeSubDomains; preload, max-age=31536000;
+cross-origin-embedder-policy: unsafe-none
+cross-origin-resource-policy: cross-origin
+cross-origin-opener-policy: same-origin
+content-security-policy: frame-ancestors 'self' https://clinabs.whereby.com https://clinabs.com https://www.clinabs.com;
+accept-encoding: gzip, compress, br
+access-control-allow-origin: *

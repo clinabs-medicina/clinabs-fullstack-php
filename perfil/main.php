@@ -509,15 +509,25 @@ if ($user->perms->perfil_situacao_cadastral == 1) {
                         </section>
                     </section>
                     <section class="form-grid area-full">
-                        <section class="form-group"> <label for="nacionalidade">Descrição</label> <textarea disabled
-                                name="descricao" style="width: 100%;height: 128px"
-                                maxlength="512"><?= $_user->descricao ?></textarea> <small class="txt-counter"
-                                data-area="descricao">512 caracteres restantes</small> </section>
-                        <section class="form-group"> <label for="nacionalidade">Descrição Completa</label> 
-                        <textarea data-id="descricao_html"
-                            class="tiny-mce"
-                                disabled style="width: 100%;height: 128px"
-                                data-file="medicos/<?= $_user->token ?>"><?= $_user->descricao_html ?></textarea>
+                        <section class="form-group"> <label for="descricao">Descrição</label> 
+                        <textarea disabled
+                            id="descricao"
+                            name="descricao" style="width: 100%;height: 128px"
+                            maxlength="512"><?= $_user->descricao ?>
+                        </textarea> 
+                        <small class="txt-counter"
+                            data-area="descricao">512 caracteres restantes</small> 
+                        </section>
+                        <section class="form-group"> <label for="descricao_completa">Descrição Completa</label> 
+                        <textarea class="tinymce" id="descricao_completa" disabled name="descricao_completa" style="width: 100%;height: 128px"><?= ($_user->descricao_html) ?></textarea>
+
+
+                        <section class="form-group"> <label for="form_acompanhamento">Formulário de Acompanhamento</label> 
+                        <textarea class="tinymce" disabled name="form_acompanhamento" style="width: 100%;height: 128px"><?= ($_user->form_acompanhamento) ?></textarea>
+
+
+                        <section class="form-group"> <label for="posologia_receita">Posologia de Receita</label> 
+                        <textarea class="tinymce" disabled name="posologia_receita" style="width: 100%;height: 128px"><?= ($_user->posologia_receita) ?></textarea>
                         </section>
                     </section> 
                 

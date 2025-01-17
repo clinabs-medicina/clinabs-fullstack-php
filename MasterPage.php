@@ -18,7 +18,7 @@ function inline_files(string $type, array $files)
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta content="text/html; charset=UTF-8;" http-equiv="Content-Type" />
     <meta name="user" content="<?= $user->tipo ?? 'none' ?>" />
     <meta name="user-id" content="<?= $user->token ?? 'none' ?>" />
@@ -99,7 +99,7 @@ inline_files('style', $fws);
 
         * {
             user-select: none; 
--webkit-user-select: none;
+            -webkit-user-select: none;
         }
 
 
@@ -117,6 +117,11 @@ inline_files('style', $fws);
         }
         .form-grid.row-4 {
             grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+
+        .tox.tox-tinymce.tox-edit-focus {
+            width: 100%;
+            height: 276px;
         }
     </style>
     <?php
@@ -1002,12 +1007,8 @@ inline_files('style', $fws);
 
     <!--<script src="https://cdn.tiny.cloud/1/o69uuqv853g4pxc40ctycrnc5e3imuz426yspmq9l28bvv0v/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>-->
     
-    <?php
-    if (isset($useEditor)) {
-        echo '<script src="/assets/js/plugins/tinymce/tinymce.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>';
-    }
-    ?>
+
+    <script src="/assets/js/plugins/tinymce/tinymce.min.js"></script>
 
     <script src="/assets/js/imask.min.js"></script>
     <script src="/assets/js/clinabs.plugins.js"></script>
