@@ -332,6 +332,8 @@ switch ($request['tabela']) {
             `especialidade` = :especialidade,
             `descricao` = :descricao,
             `descricao_html` = :descricao_completa,
+            `form_acompanhamento`= :form_acompanhamento,
+            `posologia_receita` = :posologia_receita,
             `valor_consulta` = :valor_consulta,
             `valor_consulta_online` = :valor_consulta_online,
             `duracao_atendimento` = :duracao_atendimento,
@@ -369,6 +371,8 @@ switch ($request['tabela']) {
             $stmt->bindValue(':especialidade', preg_replace('/[^0-9]+/', '', json_encode($request['especialidades'])));
             $stmt->bindValue(':descricao', $request['descricao']);
             $stmt->bindValue(':descricao_completa', $request['descricao_completa']);
+            $stmt->bindValue(':posologia_receita', $request['posologia_receita']);
+            $stmt->bindValue(':form_acompanhamento', $request['form_acompanhamento']);
             $stmt->bindValue(':valor_consulta', str_replace(',', '.', $request['valor_consulta']));
             $stmt->bindValue(':valor_consulta_online', str_replace(',', '.', $request['valor_consulta_online']));
             $stmt->bindValue(':duracao_atendimento', $request['duracao_atendimento']);

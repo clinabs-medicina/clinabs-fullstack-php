@@ -99,7 +99,7 @@ inline_files('style', $fws);
 
         * {
             user-select: none; 
--webkit-user-select: none;
+            -webkit-user-select: none;
         }
 
 
@@ -117,6 +117,11 @@ inline_files('style', $fws);
         }
         .form-grid.row-4 {
             grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+
+        .tox.tox-tinymce.tox-edit-focus {
+            width: 100%;
+            height: 276px;
         }
     </style>
     <?php

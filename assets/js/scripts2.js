@@ -561,7 +561,10 @@ function newPrescFunc() {
         </tr>
      </table>
      </div></p>`;
-    select_html += `<textarea id="swal-textarea" class="tiny-mce" name="descricao_html" style="width: 100%;" rows="4"></textarea></div>
+    select_html += `<textarea id="swal-textarea" class="tiny-mce" name="descricao_html" style="width: 100%; height: 400px" rows="10">
+    
+    </textarea>
+    </div>
           <div class="swal2-checks">
               <label for="prescricao_mod"><input type="radio" name="presc_mod" id="prescricao_mod" checked value="prescricao"> Prescrição de Medicamentos</label>
               <label for="acompanhamento_mod"><input type="radio" name="presc_mod" id="acompanhamento_mod" value="acompanhamento"> Acompanhamento Médico</label>
@@ -582,6 +585,71 @@ function newPrescFunc() {
         denyButtonText: "Cancelar",
         allowOutsideClick: false,
         didOpen: function () {
+            let form_acompanhamento = '';
+            let posologia_receita = '';
+
+            let fist_run = true;
+
+            tinymce.remove();
+
+            tinymce
+                .init({
+                    selector: ".tiny-mce",
+                    plugins: "",
+                    autosave_restore_when_empty: false,
+                    toolbar:
+                        "undo redo | bold italic underline strikethrough | link image media table mergetags | align lineheight | checklist numlist bullist indent outdent | removeformat",
+                    tinycomments_mode: "embedded",
+                    tinycomments_author: $('metas[name="user-name"]').attr('content'),
+                    setup: function (editor) {
+                        const savedContent = localStorage.getItem('tinymce-content-presc');
+                        if (savedContent) {
+                            editor.on('init', () => {
+                                editor.setContent(savedContent);
+                                $('span.tox-statusbar__branding').remove();
+                            });
+                        }
+
+
+                        editor.on('input', () => {
+                            const content = editor.getContent();
+                            localStorage.setItem('tinymce-content-presc', content);
+                        });
+                    },
+                })
+                .then(function () {
+                    $('div[role="application"]').attr(
+                        "style",
+                        "visibility: hidden; width: 100%; height: 202px;"
+                    );
+
+                    $("#produto_sa").bind("change", function () {
+                        $("#product_ref").val(
+                            $("#produto_sa option:selected").data("ref")
+                        );
+                        $("#produto_sa").select2("close");
+
+                        if (this.value === "_new") {
+                            newProductNotAssociated();
+                        } else {
+                            $("#produto_frascos").focus();
+                            $("#produto_sa").trigger("change");
+                        }
+                    });
+
+                    $(".swal2-actions").show();
+                    $(".ld-modal").hide();
+                });
+
+            $.get('/form/medico.perfil.php?id=' + $('#tablePrescricao').data('medico')).done(function (data) {
+                form_acompanhamento = data.medico.form_acompanhamento;
+                posologia_receita = data.medico.posologia_receita;
+
+                if (tinyMCE.activeEditor.getContent().length == 0) {
+                    tinyMCE.activeEditor.setContent(posologia_receita, "user");
+                }
+            });
+
             $(".swal2-actions").hide();
             $('input[name="presc_mod"]').on("change", function () {
                 $("#prescricao_mod").removeAttr("checked");
@@ -590,8 +658,15 @@ function newPrescFunc() {
                 $(this).attr("checked", "checked");
 
                 if (this.value === "acompanhamento") {
+                    $('.swal2-title').text('Novo Acompanhamento');
                     $(".swal2-html-container table").hide();
+
+                    if (fist_run) {
+                        tinyMCE.activeEditor.setContent(form_acompanhamento, "user");
+                        fist_run = false;
+                    }
                 } else {
+                    $('.swal2-title').text('Nova Prescrição');
                     $(".swal2-html-container table").show();
                 }
             });
@@ -640,59 +715,10 @@ function newPrescFunc() {
 
                 $("#produto_sa").select2();
 
-                tinymce.remove();
-
-                tinymce
-                    .init({
-                        language: "pt_BR",
-                        selector: ".tiny-mce",
-                        plugins: "",
-                        autosave_restore_when_empty: false,
-                        toolbar:
-                            "undo redo | bold italic underline strikethrough | link image media table mergetags | align lineheight | checklist numlist bullist indent outdent | removeformat",
-                        tinycomments_mode: "embedded",
-                        tinycomments_author: "",
-                        setup: function (editor) {
-                            const savedContent = localStorage.getItem('tinymce-content-presc');
-                            if (savedContent) {
-                                editor.on('init', () => {
-                                    editor.setContent(savedContent);
-                                });
-                            }
-
-
-                            editor.on('input', () => {
-                                const content = editor.getContent();
-                                localStorage.setItem('tinymce-content-presc', content);
-                            });
-                        },
-                    })
-                    .then(function () {
-                        $('div[role="application"]').attr(
-                            "style",
-                            "visibility: hidden; width: 100%; height: 202px;"
-                        );
-
-                        $("#produto_sa").bind("change", function () {
-                            $("#product_ref").val(
-                                $("#produto_sa option:selected").data("ref")
-                            );
-                            $("#produto_sa").select2("close");
-
-                            if (this.value === "_new") {
-                                newProductNotAssociated();
-                            } else {
-                                $("#produto_frascos").focus();
-                                $("#produto_sa").trigger("change");
-                            }
-                        });
-
-                        $(".swal2-actions").show();
-                        $(".ld-modal").hide();
-                    });
             });
         },
         preConfirm: function () {
+
             if ($('input[name="presc_mod"]:checked').val() === "prescricao") {
                 if (
                     $("#produto_frascos").val() >= 1 &&
@@ -805,6 +831,7 @@ function newPrescFunc() {
                     return true;
                 } else {
                     $("textarea").focus();
+
                     return false;
                 }
             }
@@ -917,7 +944,6 @@ function addPrescFunc2(show_acompanhamento = true, text = "Nova Observação", a
 
             tinymce
                 .init({
-                    language: "pt_BR",
                     selector: ".tiny-mce",
                     plugins: "",
                     autosave_restore_when_empty: true,
@@ -927,6 +953,7 @@ function addPrescFunc2(show_acompanhamento = true, text = "Nova Observação", a
                     tinycomments_author: "",
                 })
                 .then(function () {
+                    $('span.tox-statusbar__branding').remove();
                     $('div[role="application"]').attr(
                         "style",
                         "visibility: hidden; width: 100%; height: 202px;"
@@ -1205,7 +1232,6 @@ function editPrescFunc(elem, presc = false) {
 
                 tinymce
                     .init({
-                        language: "pt_BR",
                         selector: ".tiny-mce",
                         plugins: "",
                         autosave_restore_when_empty: true,
@@ -1215,6 +1241,7 @@ function editPrescFunc(elem, presc = false) {
                         tinycomments_author: "",
                     })
                     .then(function () {
+                        $('span.tox-statusbar__branding').remove();
                         $('div[role="application"]').attr(
                             "style",
                             "visibility: hidden; width: 100%; height: 202px;"
@@ -1904,7 +1931,6 @@ function editPrescFuncSR(elem, presc = false) {
 
                     tinymce
                         .init({
-                            language: "pt_BR",
                             selector: ".tiny-mce",
                             plugins: "",
                             autosave_restore_when_empty: true,
@@ -1914,6 +1940,7 @@ function editPrescFuncSR(elem, presc = false) {
                             tinycomments_author: "",
                         })
                         .then(function () {
+                            $('span.tox-statusbar__branding').remove();
                             $('div[role="application"]').attr(
                                 "style",
                                 "visibility: hidden; width: 100%; height: 202px;"
@@ -3054,7 +3081,6 @@ function editPrescFunc(elem) {
         didOpen: function () {
             tinymce
                 .init({
-                    language: "pt_BR",
                     selector: ".tiny-mce",
                     plugins: "",
                     autosave_restore_when_empty: true,
@@ -3064,6 +3090,7 @@ function editPrescFunc(elem) {
                     tinycomments_author: "",
                 })
                 .then(function () {
+                    $('span.tox-statusbar__branding').remove();
                     $('div[role="application"]').attr(
                         "style",
                         "visibility: hidden; width: 100%; height: 202px;"
